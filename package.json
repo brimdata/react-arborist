@@ -11,8 +11,11 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "react": "^17.0.2",
+    "react-dnd": "^14.0.3",
+    "react-dnd-html5-backend": "^14.0.1",
     "react-dom": "^17.0.2",
     "react-scripts": "4.0.3",
+    "react-window": "^1.8.6",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"
   },
@@ -39,5 +42,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-window": "^1.8.5",
+    "classnames": "^2.3.1",
+    "react-feather": "^2.0.9",
+    "react-use-dimensions": "^1.2.1",
+    "tree-model-improved": "^2.0.1"
   }
 }
