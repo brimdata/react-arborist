@@ -1,4 +1,4 @@
 # React Arborist
 
-> A sortable, virtual, style-less tree component for React.
+> A sortable, virtual, customizable tree component for React.
 
