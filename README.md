@@ -12,7 +12,8 @@ yarn add react-arborist
 npm install react-arborist
 ```
 
-![React Arborist Demo](http://g.recordit.co/XGrsubdORi.gif)
+![Demo](https://user-images.githubusercontent.com/3460638/131920177-c47c34e5-d3e3-4826-937d-b366f527cdfe.gif)
+
 
 ## Features
 
