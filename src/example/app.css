@@ -14,10 +14,6 @@ html, body, #root {
   width: 100%;
 }
 
-.react-tree-list {
-  outline: 1px solid blue;
-}
-
 aside { 
   width: 300px;
   height: 100%; 
