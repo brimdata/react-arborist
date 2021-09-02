@@ -2,6 +2,16 @@
 
 *A full-featured tree component for React.*
 
+## Installation
+
+```
+yarn add react-arborist
+```
+
+```
+npm install react-arborist
+```
+
 ![React Arborist Demo](http://g.recordit.co/XGrsubdORi.gif)
 
 ## Features
