@@ -10,7 +10,8 @@ type Props = {
 
 export function DropCursor({ root, cursor }: Props) {
   const treeView = useStaticContext();
-  if (!cursor || !root || !cursor.index) return null;
+  if (!cursor || !root || cursor.index === null || cursor.level === null)
+    return null;
   const top = treeView.rowHeight * cursor.index;
   const left = treeView.indent * cursor.level + 20;
   const style: CSSProperties = {

@@ -68,8 +68,8 @@ export type SelectedCheck = (index: number) => boolean;
 
 export type CursorLocation = {
   parentId: string | null;
-  index: number;
-  level: number;
+  index: number | null;
+  level: number | null;
 };
 
 export type DragItem = {
@@ -100,17 +100,23 @@ export type TreeViewProps = {
   onOpen?: IdHandler;
   onClose?: IdHandler;
   onRename?: RenameHandler;
+  className?: string | undefined;
 };
 
-export type TreeViewProviderProps = Omit<
-  Required<TreeViewProps>,
-  "children"
-> & {
+export type TreeViewProviderProps = {
   handle: ForwardedRef<TreeViewHandle>;
   renderer: NodeRenderer<any>;
   visibleNodes: Node[];
   listRef: MutableRefObject<HTMLDivElement | null>;
   children: ReactElement;
+  indent: number;
+  rowHeight: number;
+  width: number;
+  height: number;
+  onMove: OnMove;
+  onOpen: IdHandler;
+  onClose: IdHandler;
+  onRename: RenameHandler;
 };
 
 export type StaticContext = TreeViewProviderProps & {

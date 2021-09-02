@@ -24,16 +24,6 @@ export const indexOf = (node: Node) => {
   return node.parent.children!.findIndex((c) => c.id === node.id);
 };
 
-export const getLevel = (node: Node) => {
-  let n: Node | null = node;
-  let level = -1;
-  while (n) {
-    n = n.parent;
-    level++;
-  }
-  return level;
-};
-
 export function enrichTree(model: NodeModel): Node {
   function visitSelfAndChildren(
     m: NodeModel,
@@ -48,15 +38,17 @@ export function enrichTree(model: NodeModel): Node {
     }
     return n;
   }
-  return visitSelfAndChildren(model, 0, null);
+  return visitSelfAndChildren(model, -1, null);
 }
 
 export function flattenTree(root: Node): Node[] {
   const list: Node[] = [];
   let index = 0;
   function collect(node: Node) {
-    node.rowIndex = index++;
-    list.push(node);
+    if (node.level >= 0) {
+      node.rowIndex = index++;
+      list.push(node);
+    }
     if (node.isOpen) {
       node.children?.forEach(collect);
     }
@@ -81,3 +73,5 @@ export function createNode(
     rowIndex: null,
   };
 }
+
+export function noop() {}

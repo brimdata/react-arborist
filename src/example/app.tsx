@@ -1,5 +1,5 @@
 import React from "react";
-import { TreeView } from "../lib";
+import { TreeList } from "../lib";
 import "./app.css";
 import { useBackend } from "./backend";
 import { Node } from "./node";
@@ -13,7 +13,8 @@ export default function App() {
   return (
     <div className="example">
       <aside ref={ref}>
-        <TreeView
+        <TreeList
+          className="react-tree-list"
           onMove={backend.onMove}
           onOpen={backend.onOpen}
           onClose={backend.onClose}
@@ -25,7 +26,7 @@ export default function App() {
           height={height || 100}
         >
           {Node}
-        </TreeView>
+        </TreeList>
       </aside>
       <main>
         <h1>Example Tree List</h1>

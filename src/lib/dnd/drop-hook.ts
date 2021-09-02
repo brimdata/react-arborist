@@ -20,7 +20,7 @@ export function useDropHook(
   const treeView = useStaticContext();
   const [, ref] = useDrop<DragItem, DropResult, { isOver: boolean }>(
     () => ({
-      accept: "ITEM",
+      accept: "NODE",
       canDrop: (item) => {
         for (let id of item.dragIds) {
           const drag = treeView.getNode(id);

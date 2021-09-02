@@ -20,7 +20,7 @@ export function useDragHook(
     CollectedProps
   >(
     () => ({
-      type: "ITEM",
+      type: "NODE",
       item: () => ({
         id: node.id,
         dragIds: isSelected(node.rowIndex) ? ids : [node.id],

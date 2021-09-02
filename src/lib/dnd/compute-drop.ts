@@ -1,6 +1,6 @@
 import { XYCoord } from "react-dnd";
 import { Node } from "../types";
-import { bound, getLevel, indexOf, isFolder } from "../utils";
+import { bound, indexOf, isFolder } from "../utils";
 
 function measureHover(el: HTMLElement, offset: XYCoord) {
   const rect = el.getBoundingClientRect();
@@ -18,17 +18,29 @@ function measureHover(el: HTMLElement, offset: XYCoord) {
 type HoverData = ReturnType<typeof measureHover>;
 
 function getNodesAroundCursor(
-  node: Node,
+  node: Node | null,
   prev: Node | null,
   next: Node | null,
   hover: HoverData
 ): [Node | null, Node | null] {
-  if (prev && isFolder(node) && !hover.inMiddle && hover.inTopHalf) {
-    return [prev, node];
-  } else if (prev && !isFolder(node) && hover.inTopHalf) {
-    return [prev, node];
+  if (!node) {
+    // We're hoving over the empty part of the list, not over an item,
+    // Put the cursor below the last item which is "prev"
+    return [prev, null];
+  }
+
+  if (isFolder(node)) {
+    if (!hover.inMiddle && hover.inTopHalf) {
+      return [prev, node];
+    } else {
+      return [node, next];
+    }
   } else {
-    return [node, next];
+    if (hover.inTopHalf) {
+      return [prev, node];
+    } else {
+      return [node, next];
+    }
   }
 }
 
@@ -52,7 +64,7 @@ function getDropLocation(
   } else if (isFolder(drop) && hover.inMiddle) {
     // keep args the same
   } else {
-    while (drop.parent && getLevel(drop) > level) {
+    while (drop.parent && drop.level > level) {
       drop = drop.parent;
     }
     dropIndex = indexOf(drop) + 1;
@@ -65,7 +77,7 @@ type Args = {
   element: HTMLElement;
   offset: XYCoord;
   indent: number;
-  node: Node;
+  node: Node | null;
   prevNode: Node | null;
   nextNode: Node | null;
 };
@@ -76,7 +88,7 @@ function getDropLevel(
   belowCursor: Node | null,
   indent: number
 ) {
-  const hoverLevel = Math.round(Math.max(0, hovering.x - 12) / indent);
+  const hoverLevel = Math.round(Math.max(0, hovering.x) / indent);
   let min, max;
   if (!aboveCursor) {
     max = 0;
@@ -109,10 +121,10 @@ export function computeDrop({
   );
   if (!above) {
     return {
-      parentId: null,
+      parentId: below?.parent?.id || null,
       index: 0,
       cursor: {
-        parentId: null,
+        parentId: below?.parent?.id || null,
         index: 0,
         level: 0,
       },
@@ -120,13 +132,17 @@ export function computeDrop({
   }
   const level = getDropLevel(hovering, above, below, indent);
   const [parent, index] = getDropLocation(above, level, hovering);
+  // @ts-ignore
   return {
     parentId: parent ? parent.id : null,
     index: index,
-    cursor: {
-      parentId: parent ? parent.id : null,
-      index: above.rowIndex! + 1,
-      level: level,
-    },
+    cursor:
+      !parent?.isOpen && index === 0
+        ? { parentId: parent ? parent.id : null, index: null, level: null }
+        : {
+            parentId: parent ? parent.id : null,
+            index: above.rowIndex! + 1,
+            level: level,
+          },
   };
 }
