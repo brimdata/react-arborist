@@ -2,7 +2,7 @@
 
 *A full-featured tree component for React.*
 
-![React Arborist Demo](http://g.recordit.co/XGrsubdORi.gif)
+![Demo](https://user-images.githubusercontent.com/3460638/131919853-bbbe296e-b709-4362-b0a8-624e31051338.mp4)
 
 ## Features
 
