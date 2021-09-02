@@ -1,4 +1,5 @@
 import { Node, NodeModel } from "./types";
+import { nanoid } from "nanoid";
 
 export function bound(n: number, min: number, max: number) {
   return Math.max(Math.min(n, max), min);
@@ -24,7 +25,7 @@ export const indexOf = (node: Node) => {
   return node.parent.children!.findIndex((c) => c.id === node.id);
 };
 
-export function enrichTree(model: NodeModel): Node {
+export function enrichTree(model: NodeModel, hideRoot: boolean = false): Node {
   function visitSelfAndChildren(
     m: NodeModel,
     level: number,
@@ -38,7 +39,7 @@ export function enrichTree(model: NodeModel): Node {
     }
     return n;
   }
-  return visitSelfAndChildren(model, -1, null);
+  return visitSelfAndChildren(model, hideRoot ? -1 : 0, null);
 }
 
 export function flattenTree(root: Node): Node[] {
@@ -75,3 +76,88 @@ export function createNode(
 }
 
 export function noop() {}
+
+const gotLineage = `House Arryn
+ Jon
+  Robin
+House Tully
+ Hoster
+  Lysa
+  Edmure
+  Catelyn
+House Stark
+ Rickard
+  Brandon
+  Eddard
+   Robb
+   Sansa
+   Arya
+   Brandon
+   Rckon
+  Benjen
+  Lyanna
+House Targaryen
+ Aerys II (the Mad)
+  Rhaegar
+   Jon Snow
+  Viserys
+  Daenerys
+House Baratheon
+ Steffon
+  Robert
+  Stannis
+   Shireen
+  Renly
+House Lanister
+ Tywin
+  Jaime
+  Cersei
+   Joffery
+   Myrcella
+   Tommen
+  Tyrion
+House Tyrell
+ Olenna
+  Mace
+   Margaery
+   Loras
+House Martell
+ Doran
+  Trystane
+ Elia
+ Oberyn
+  Sand Snakes
+`;
+
+export function makeTree(string: string) {
+  const root = { id: "ROOT", isOpen: true };
+  let prevNode = root;
+  let prevLevel = -1;
+  string.split("\n").forEach((line) => {
+    const name = line.trimStart();
+    const level = line.length - name.length;
+    const diff = level - prevLevel;
+    const node = { id: nanoid(), name, isOpen: true };
+    if (diff === 1) {
+      // First child
+      //@ts-ignore
+      node.parent = prevNode;
+      //@ts-ignore
+      prevNode.children = [node];
+    } else {
+      // Find the parent and go up
+      //@ts-ignore
+      let parent = prevNode.parent;
+      for (let i = diff; i < 0; i++) {
+        parent = parent.parent;
+      }
+      //@ts-ignore
+      node.parent = parent;
+      parent.children.push(node);
+    }
+    prevNode = node;
+    prevLevel = level;
+  });
+
+  return root;
+}

@@ -14,6 +14,7 @@ export default function App() {
     <div className="example">
       <aside ref={ref}>
         <TreeList
+          hideRoot
           className="react-tree-list"
           onMove={backend.onMove}
           onOpen={backend.onOpen}
@@ -29,7 +30,7 @@ export default function App() {
         </TreeList>
       </aside>
       <main>
-        <h1>Example Tree List</h1>
+        <h1>React Arborist</h1>
       </main>
     </div>
   );

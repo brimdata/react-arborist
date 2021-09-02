@@ -101,6 +101,7 @@ export type TreeViewProps = {
   onClose?: IdHandler;
   onRename?: RenameHandler;
   className?: string | undefined;
+  hideRoot?: boolean;
 };
 
 export type TreeViewProviderProps = {

@@ -14,7 +14,10 @@ function TreeListComponent(
   props: TreeViewProps,
   ref: ForwardedRef<TreeViewHandle>
 ) {
-  const root = useMemo(() => enrichTree(props.data), [props.data]);
+  const root = useMemo(
+    () => enrichTree(props.data, props.hideRoot),
+    [props.data, props.hideRoot]
+  );
   const visibleNodes = useMemo(() => flattenTree(root), [root]);
   const listRef = useRef<HTMLDivElement | null>(null);
 
