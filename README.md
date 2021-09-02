@@ -2,6 +2,8 @@
 
 *A full-featured tree component for React.*
 
+![Demo](https://user-images.githubusercontent.com/3460638/131920177-c47c34e5-d3e3-4826-937d-b366f527cdfe.gif)
+
 ## Installation
 
 ```
@@ -11,9 +13,6 @@ yarn add react-arborist
 ```
 npm install react-arborist
 ```
-
-![Demo](https://user-images.githubusercontent.com/3460638/131920177-c47c34e5-d3e3-4826-937d-b366f527cdfe.gif)
-
 
 ## Features
 
