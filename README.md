@@ -2,7 +2,8 @@
 
 *A full-featured tree component for React.*
 
-![Demo](https://user-images.githubusercontent.com/3460638/131919853-bbbe296e-b709-4362-b0a8-624e31051338.mp4)
+![Demo](https://user-images.githubusercontent.com/3460638/131920177-c47c34e5-d3e3-4826-937d-b366f527cdfe.gif)
+
 
 ## Features
 
