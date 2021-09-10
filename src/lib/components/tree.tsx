@@ -10,7 +10,7 @@ import { enrichTree, flattenTree, noop } from "../utils";
 import { Preview } from "./preview";
 import { Row } from "./row";
 
-function TreeListComponent(
+function TreeComponent(
   props: TreeViewProps,
   ref: ForwardedRef<TreeViewHandle>
 ) {
@@ -47,7 +47,7 @@ function TreeListComponent(
 }
 
 function OuterDrop(props: { children: ReactElement }) {
-  const treeList = useStaticContext();
+  const tree = useStaticContext();
 
   // In case we drop an item at the bottom of the list
   const [, drop] = useDrop(
@@ -56,55 +56,55 @@ function OuterDrop(props: { children: ReactElement }) {
       hover: (item, m) => {
         if (!m.isOver({ shallow: true })) return;
         const offset = m.getClientOffset();
-        if (!treeList.listRef.current || !offset) return;
+        if (!tree.listRef.current || !offset) return;
         const { cursor } = computeDrop({
-          element: treeList.listRef.current,
+          element: tree.listRef.current,
           offset: offset,
-          indent: treeList.indent,
+          indent: tree.indent,
           node: null,
-          prevNode: treeList.visibleNodes[treeList.visibleNodes.length - 1],
+          prevNode: tree.visibleNodes[tree.visibleNodes.length - 1],
           nextNode: null,
         });
-        treeList.dispatch(setCursorLocation(cursor));
+        tree.dispatch(setCursorLocation(cursor));
       },
       drop: (item, m) => {
         if (m.didDrop()) return;
         console.log("drop!!");
         const offset = m.getClientOffset();
-        if (!treeList.listRef.current || !offset) return;
+        if (!tree.listRef.current || !offset) return;
         const { parentId, index } = computeDrop({
-          element: treeList.listRef.current,
+          element: tree.listRef.current,
           offset: offset,
-          indent: treeList.indent,
+          indent: tree.indent,
           node: null,
-          prevNode: treeList.visibleNodes[treeList.visibleNodes.length - 1],
+          prevNode: tree.visibleNodes[tree.visibleNodes.length - 1],
           nextNode: null,
         });
         return { parentId, index };
       },
     }),
-    [treeList]
+    [tree]
   );
 
-  drop(treeList.listRef);
+  drop(tree.listRef);
 
   return props.children;
 }
 
 function List(props: { className?: string }) {
-  const treeList = useStaticContext();
+  const tree = useStaticContext();
   return (
     <FixedSizeList
       className={props.className}
-      outerRef={treeList.listRef}
-      itemCount={treeList.visibleNodes.length}
-      height={treeList.height}
-      width={treeList.width}
-      itemSize={treeList.rowHeight}
+      outerRef={tree.listRef}
+      itemCount={tree.visibleNodes.length}
+      height={tree.height}
+      width={tree.width}
+      itemSize={tree.rowHeight}
     >
       {Row}
     </FixedSizeList>
   );
 }
 
-export const TreeList = forwardRef(TreeListComponent);
+export const Tree = forwardRef(TreeComponent);
