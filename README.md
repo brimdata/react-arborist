@@ -1,6 +1,10 @@
 # React Arborist
 
-*A full-featured tree component for React.*
+A full-featured tree component for React. 
+
+The tree is a ubiquitous UI component in software applications. There are already many libraries that provide this componet for React apps, but none were full-featured enough to stand on their own.
+
+This libraries provides all the common features expected in a tree viewer. You can select one or many nodes to drag and drop into new positions, open and close folders, render an inline form for renaming, efficiently show thousands of items with virtualization, and provide your own node renderer to control the style.
 
 ![Demo](https://user-images.githubusercontent.com/3460638/131920177-c47c34e5-d3e3-4826-937d-b366f527cdfe.gif)
 
