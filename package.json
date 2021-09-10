@@ -1,6 +1,6 @@
 {
   "name": "react-arborist",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "license": "MIT",
   "files": [
     "dist/lib"
@@ -16,7 +16,8 @@
     "start": "react-scripts start",
     "build": "tsc --noEmit false --outDir dist --declaration",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepublish": "yarn build"
   },
   "eslintConfig": {
     "extends": [
