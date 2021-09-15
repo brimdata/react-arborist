@@ -1,31 +1,21 @@
-import { ForwardedRef, forwardRef, ReactElement, useMemo, useRef } from "react";
-import { DndProvider, useDrop } from "react-dnd";
+import { ReactElement, useRef } from "react";
+import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FixedSizeList } from "react-window";
 import { TreeViewProvider, useStaticContext } from "../context";
-import { computeDrop } from "../dnd/compute-drop";
-import { setCursorLocation } from "../reducer";
-import { TreeViewHandle, TreeViewProps } from "../types";
-import { enrichTree, flattenTree, noop } from "../utils";
+import { useVisibleNodes } from "../data/visible-nodes-hook";
+import { useOuterDrop } from "../dnd/outer-drop-hook";
+import { IdObj, TreeProps } from "../types";
+import { noop } from "../utils";
 import { Preview } from "./preview";
 import { Row } from "./row";
 
-function TreeComponent(
-  props: TreeViewProps,
-  ref: ForwardedRef<TreeViewHandle>
-) {
-  const root = useMemo(
-    () => enrichTree(props.data, props.hideRoot),
-    [props.data, props.hideRoot]
-  );
-  const visibleNodes = useMemo(() => flattenTree(root), [root]);
-  const listRef = useRef<HTMLDivElement | null>(null);
-
+export function Tree<T extends IdObj>(props: TreeProps<T>) {
   return (
     <TreeViewProvider
-      handle={ref}
-      visibleNodes={visibleNodes}
-      listRef={listRef}
+      handle={props.handle}
+      visibleNodes={useVisibleNodes<T>(props)}
+      listRef={useRef<HTMLDivElement | null>(null)}
       renderer={props.children}
       width={props.width}
       height={props.height}
@@ -47,47 +37,7 @@ function TreeComponent(
 }
 
 function OuterDrop(props: { children: ReactElement }) {
-  const tree = useStaticContext();
-
-  // In case we drop an item at the bottom of the list
-  const [, drop] = useDrop(
-    () => ({
-      accept: "NODE",
-      hover: (item, m) => {
-        if (!m.isOver({ shallow: true })) return;
-        const offset = m.getClientOffset();
-        if (!tree.listRef.current || !offset) return;
-        const { cursor } = computeDrop({
-          element: tree.listRef.current,
-          offset: offset,
-          indent: tree.indent,
-          node: null,
-          prevNode: tree.visibleNodes[tree.visibleNodes.length - 1],
-          nextNode: null,
-        });
-        tree.dispatch(setCursorLocation(cursor));
-      },
-      drop: (item, m) => {
-        if (m.didDrop()) return;
-        console.log("drop!!");
-        const offset = m.getClientOffset();
-        if (!tree.listRef.current || !offset) return;
-        const { parentId, index } = computeDrop({
-          element: tree.listRef.current,
-          offset: offset,
-          indent: tree.indent,
-          node: null,
-          prevNode: tree.visibleNodes[tree.visibleNodes.length - 1],
-          nextNode: null,
-        });
-        return { parentId, index };
-      },
-    }),
-    [tree]
-  );
-
-  drop(tree.listRef);
-
+  useOuterDrop();
   return props.children;
 }
 
@@ -106,5 +56,3 @@ function List(props: { className?: string }) {
     </FixedSizeList>
   );
 }
-
-export const Tree = forwardRef(TreeComponent);

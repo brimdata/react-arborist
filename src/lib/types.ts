@@ -1,36 +1,35 @@
 import {
   ComponentType,
-  ForwardedRef,
+  CSSProperties,
   MouseEvent,
   MouseEventHandler,
   MutableRefObject,
   ReactElement,
+  Ref,
 } from "react";
 import { Action } from "./reducer";
 import { SelectionData } from "./selection/selection";
 
-export type Node<M extends NodeModel = NodeModel> = {
+export type Node<T = unknown> = {
   id: string;
-  model: M;
+  model: T;
   level: number;
-  children: Node<M>[] | null;
-  parent: Node<M> | null;
+  children: Node<T>[] | null;
+  parent: Node<T> | null;
   isOpen: boolean;
   rowIndex: number | null;
 };
 
-export type NodesById = { [id: string]: Node };
+export type NodesById<T> = { [id: string]: Node<T> };
 
-export type NodeModel = {
+export interface IdObj {
   id: string;
-  children?: NodeModel[];
-  isOpen?: boolean;
-};
+}
 
-export type NodeRendererProps<M extends NodeModel> = {
+export type NodeRendererProps<T> = {
   preview: boolean;
-  node: Node<M>;
-  props: object;
+  node: Node<T>;
+  props: { style: CSSProperties; ref: Ref<any> };
   indent: number;
   state: NodeState;
   handlers: NodeHandlers;
@@ -50,9 +49,7 @@ export type NodeHandlers = {
   rename: (name: string) => void;
 };
 
-export type NodeRenderer<M extends NodeModel = NodeModel> = ComponentType<
-  NodeRendererProps<M>
->;
+export type NodeRenderer<T> = ComponentType<NodeRendererProps<T>>;
 
 export type OnMove = (
   dragIds: string[],
@@ -62,71 +59,75 @@ export type OnMove = (
 
 export type IdHandler = (id: string) => void;
 export type RenameHandler = (id: string, name: string) => void;
-export type NodeClickHandler = (e: MouseEvent, n: Node) => void;
+export type NodeClickHandler<T> = (e: MouseEvent, n: Node<T>) => void;
 export type IndexClickHandler = (e: MouseEvent, index: number) => void;
 export type SelectedCheck = (index: number) => boolean;
 
 export type CursorLocation = {
-  parentId: string | null;
   index: number | null;
   level: number | null;
+  parentId: string | null;
 };
 
 export type DragItem = {
-  id: string;
   dragIds: string[];
+  id: string;
 };
 
 export type SelectionState = {
-  ids: string[];
   data: SelectionData | null;
+  ids: string[];
 };
 
 export type StateContext = {
-  visibleIds: string[];
-  editingId: string | null;
   cursorLocation: CursorLocation | null;
+  editingId: string | null;
   selection: SelectionState;
+  visibleIds: string[];
 };
 
-export type TreeViewProps = {
-  children: NodeRenderer<any>;
-  data: NodeModel;
-  width: number;
+export interface TreeProps<T> {
+  children: NodeRenderer<T>;
+  data: T;
   height: number;
+  width: number;
+
+  className?: string | undefined;
+  getChildren?: (model: T) => T[] | undefined;
+  getIsOpen?: (model: T) => boolean;
+  handle?: Ref<TreeHandle>;
+  hideRoot?: boolean;
   indent?: number;
-  rowHeight?: number;
+  onClose?: IdHandler;
   onMove?: OnMove;
   onOpen?: IdHandler;
-  onClose?: IdHandler;
   onRename?: RenameHandler;
-  className?: string | undefined;
-  hideRoot?: boolean;
-};
+  rowHeight?: number;
+}
 
-export type TreeViewProviderProps = {
-  handle: ForwardedRef<TreeViewHandle>;
-  renderer: NodeRenderer<any>;
-  visibleNodes: Node[];
-  listRef: MutableRefObject<HTMLDivElement | null>;
+export type TreeProviderProps<T> = {
   children: ReactElement;
-  indent: number;
-  rowHeight: number;
-  width: number;
+  handle?: Ref<TreeHandle>;
   height: number;
+  indent: number;
+  listRef: MutableRefObject<HTMLDivElement | null>;
+  onClose: IdHandler;
   onMove: OnMove;
   onOpen: IdHandler;
-  onClose: IdHandler;
   onRename: RenameHandler;
+  renderer: NodeRenderer<any>;
+  rowHeight: number;
+  visibleNodes: Node<T>[];
+  width: number;
 };
 
-export type StaticContext = TreeViewProviderProps & {
+export type StaticContext<T> = TreeProviderProps<T> & {
   dispatch: (a: Action) => void;
-  getNode: (id: string) => Node | null;
+  getNode: (id: string) => Node<T> | null;
 };
 
-export type TreeViewHandle = {
+export type TreeHandle = {
+  edit: (id: string) => void;
   selectedIds: string[];
   selectId: (id: string) => void;
-  edit: (id: string) => void;
 };

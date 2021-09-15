@@ -1,4 +1,4 @@
-import {
+import React, {
   createContext,
   useContext,
   useImperativeHandle,
@@ -18,10 +18,11 @@ import {
 import { Selection } from "./selection/selection";
 import { useSelectionKeys } from "./selection/selection-hook";
 import {
+  IdObj,
   Node,
   SelectionState,
   StaticContext,
-  TreeViewProviderProps,
+  TreeProviderProps,
 } from "./types";
 
 const CursorParentId = createContext<string | null>(null);
@@ -29,7 +30,7 @@ export function useCursorParentId() {
   return useContext(CursorParentId);
 }
 
-const Static = createContext<StaticContext | null>(null);
+const Static = createContext<StaticContext<IdObj> | null>(null);
 export function useStaticContext() {
   const value = useContext(Static);
   if (!value) throw new Error("Context must be in a provider");
@@ -62,7 +63,7 @@ export function useEditingId(): string | null {
   return useContext(EditingIdContext);
 }
 
-export function TreeViewProvider(props: TreeViewProviderProps) {
+export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
   const [state, dispatch] = useReducer(reducer, initState());
 
   const visibleIds = useMemo(
@@ -82,11 +83,11 @@ export function TreeViewProvider(props: TreeViewProviderProps) {
     );
   }, [props.visibleNodes]);
 
-  const staticValue = useMemo<StaticContext>(
+  const staticValue = useMemo<StaticContext<T>>(
     () => ({
       ...props,
       dispatch,
-      getNode: (id: string): Node | null => {
+      getNode: (id: string): Node<T> | null => {
         if (id in idToIndex) return props.visibleNodes[idToIndex[id]] || null;
         else return null;
       },

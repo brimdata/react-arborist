@@ -1,10 +1,9 @@
 import React from "react";
-import { TreeList } from "../lib";
-import "./app.css";
-import { useBackend } from "./backend";
-import { Node } from "./node";
 // @ts-ignore
 import useDimensions from "react-use-dimensions";
+import { Tree } from "../lib";
+import "./app.css";
+import { useBackend } from "./backend";
 
 export default function App() {
   const backend = useBackend();
@@ -13,21 +12,29 @@ export default function App() {
   return (
     <div className="example">
       <aside ref={ref}>
-        <TreeList
-          hideRoot
+        <Tree
           className="react-tree-list"
+          data={backend.data}
+          getChildren={(m) => m.children}
+          getIsOpen={(m) => m.isOpen}
+          height={height || 100}
+          hideRoot
+          indent={24}
+          onClose={backend.onClose}
           onMove={backend.onMove}
           onOpen={backend.onOpen}
-          onClose={backend.onClose}
           onRename={backend.onRename}
-          indent={24}
           rowHeight={22}
-          data={backend.data}
           width={width}
-          height={height || 100}
         >
-          {Node}
-        </TreeList>
+          {({ node, indent, props }) => {
+            return (
+              <div {...props} style={{ ...props.style, paddingLeft: indent }}>
+                {node.model.name}
+              </div>
+            );
+          }}
+        </Tree>
       </aside>
       <main>
         <h1>React Arborist</h1>

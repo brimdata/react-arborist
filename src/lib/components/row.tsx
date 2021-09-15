@@ -1,4 +1,4 @@
-import { CSSProperties, memo, MouseEvent, useMemo, useRef } from "react";
+import React, { CSSProperties, memo, MouseEvent, useMemo, useRef } from "react";
 import {
   useCursorParentId,
   useEditingId,

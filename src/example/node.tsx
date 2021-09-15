@@ -1,7 +1,9 @@
 import classNames from "classnames";
 import React, { FocusEvent, KeyboardEvent } from "react";
 import { ChevronDown, ChevronRight, FileText, Folder } from "react-feather";
-import { NodeHandlers, NodeRenderer } from "../lib";
+import { NodeHandlers } from "../lib";
+import { NodeRendererProps } from "../lib/types";
+import { MyData } from "./backend";
 
 const size = 16;
 const color = "#999";
@@ -43,13 +45,13 @@ function Icon({ isFolder, isSelected }: any) {
   }
 }
 
-export const Node: NodeRenderer<{ id: string; name: string }> = ({
+export const Node = ({
   node,
   props,
   indent,
   state,
   handlers,
-}) => {
+}: NodeRendererProps<MyData>) => {
   const folder = Array.isArray(node.children);
   const open = state.isOpen;
   const name = node.model.name;

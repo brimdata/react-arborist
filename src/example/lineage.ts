@@ -1,4 +1,4 @@
-import { makeTree } from "../lib/utils";
+import { makeTree } from "../lib/data/make-tree";
 
 const gotLineage = `House Arryn
  Jon

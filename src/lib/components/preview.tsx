@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import React, { CSSProperties } from "react";
 import { useDragLayer, XYCoord } from "react-dnd";
 import { useStaticContext } from "../context";
 import { DragItem } from "../types";
@@ -51,7 +51,7 @@ export function Preview() {
         <treeView.renderer
           preview
           node={node}
-          props={{}}
+          props={{ style: {}, ref: () => {} }}
           state={{
             isEditing: false,
             isSelected: false,

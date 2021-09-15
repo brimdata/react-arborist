@@ -1,19 +1,26 @@
 import { useCallback, useMemo, useState } from "react";
 import TreeModel from "tree-model-improved";
+import { makeLargeData } from "./large-dataset";
 import lineage from "./lineage";
 
 function findById(node: any, id: string): TreeModel.Node<any> | null {
   return node.first((n: any) => n.model.id === id);
 }
 
-const initData = lineage;
+// const initData = lineage;
+const initData = makeLargeData();
+export type MyData = {
+  id: string;
+  isOpen: boolean;
+  name: string;
+  children?: MyData[];
+};
 
 export function useBackend() {
-  const [data, setData] = useState(initData);
+  const [data, setData] = useState<MyData>(initData as MyData);
   const root = useMemo(() => new TreeModel().parse(data), [data]);
   const find = useCallback((id) => findById(root, id), [root]);
   const update = () => setData({ ...root.model });
-
   return {
     data,
     onMove: (
