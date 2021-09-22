@@ -127,8 +127,8 @@ These are the properties on the styles object passed to the NodeRenderer.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| styles.row | CSSProperties | Since the tree only renderes the rows that are currently visible, all the rows are absolutely positioned with a fixed top and left. Those styles are in this property.
-| styles.indent | CSSProperties | This is simply a left padding set to the level of the tree multiplied by the tree indent prop.
+| row | CSSProperties | Since the tree only renderes the rows that are currently visible, all the rows are absolutely positioned with a fixed top and left. Those styles are in this property.
+| indent | CSSProperties | This is simply a left padding set to the level of the tree multiplied by the tree indent prop.
 
 ### State Prop
 
@@ -136,7 +136,7 @@ These are the properties on the state object passed to the NodeRenderer.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| state.isOpen | boolean | True if this node has children and the children are visible. Use this to display some type a open or closed icon.
+| isOpen | boolean | True if this node has children and the children are visible. Use this to display some type a open or closed icon.
 | isSelected | boolean | True if this node is selected. Use this to show a "selected" state. Maybe a different background?
 | isHoveringOverChild | boolean | True if the user is dragging an node, and the node is hovering over one of this node's direct children. This can be used to indicate which folder the user is dragging an item into.
 | isDragging | boolean | True if this node is being dragged.
