@@ -19,7 +19,7 @@ export function Tree<T extends IdObj>(props: TreeProps<T>) {
       renderer={props.children}
       width={props.width}
       height={props.height}
-      indent={props.indent || 12}
+      indent={props.indent || 24}
       rowHeight={props.rowHeight || 24}
       onClose={props.onClose || noop}
       onMove={props.onMove || noop}
