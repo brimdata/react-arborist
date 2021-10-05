@@ -2,9 +2,9 @@
 
 A full-featured tree component for React. 
 
-The tree is a ubiquitous UI component in software applications. There are already many libraries that provide this componet for React apps, but none were full-featured enough to stand on their own.
+The tree UI is ubiquitous in software applications. There are many tree component libraries for React, but none were full-featured enough to stand on their own.
 
-This libraries provides all the common features expected in a tree viewer. You can select one or many nodes to drag and drop into new positions, open and close folders, render an inline form for renaming, efficiently show thousands of items with virtualization, and provide your own node renderer to control the style.
+This library provides all the common features expected in a tree. You can select one or many nodes to drag and drop into new positions, open and close folders, render an inline form for renaming, efficiently show thousands of items, and provide your own node renderer to control the style.
 
 ![Demo](https://user-images.githubusercontent.com/3460638/131920177-c47c34e5-d3e3-4826-937d-b366f527cdfe.gif)
 
@@ -22,7 +22,7 @@ npm install react-arborist
 
 Render the tree data structure.
 
-```js
+```jsx
 const data = {
   id: "The Root",
   children: [{id: "Node A"}, {id: "Node B"}]
@@ -46,9 +46,19 @@ function Node({ ref, styles, data}) {
   )
 }
 ```
+
+#### Contents
+* [Expected Data Structure](#expected-data-structure)
+* [Tree Component API](#tree-component)
+* [Node Renderer API](#node-renderer-component)
+	* [Styles Prop](#styles-prop)
+	* [State Prop](#state-prop)
+	* [Handlers Prop](#handlers-prop)
+	* [Tree Prop](#tree-prop)
+
 ## Expected Data Structure
 
-The Tree component expects the data prop to be a tree like data stucture with the following type.
+The Tree component expects the data prop to be a tree-like data structure with the following type:
 
 ```ts
 type Data = {
@@ -58,7 +68,7 @@ type Data = {
 }
 ```
 
-If your data does not look like this, you can provide a `childrenAccessor` prop which can be a string or a function. You can also provide an `isOpenAccessor`.
+If your data does not look like this, you can provide a `childrenAccessor` prop. You can also provide `isOpenAccessor`. The value can be a string or a function.
 
 ```ts
 <Tree childrenAccessor="items" ... 
@@ -68,7 +78,7 @@ If your data does not look like this, you can provide a `childrenAccessor` prop 
 
 ## Tree Component
 
-Unlike some other Tree Components, react-arborist is designed as a [controlled component](https://reactjs.org/docs/forms.html#controlled-components). This means the consumer will provide the tree data and the handlers to change said data. The only state managed interally is for drag and drop, selection, and editing.
+Unlike other Tree Components, react-arborist is designed as a [controlled component](https://reactjs.org/docs/forms.html#controlled-components). This means the consumer will provide the tree data and the handlers to update it. The only state managed internally is for drag and drop, selection, and editing.
 
 | Prop | Default | Description |
 | --- | --- | --- |
@@ -89,7 +99,9 @@ Unlike some other Tree Components, react-arborist is designed as a [controlled c
 The only child of the Tree Component must be a NodeRenderer function as described below.
 
 ```jsx
-const NodeRenderer = ({data, ref, styles, tree}) => ...
+const NodeRenderer = ({
+  innerRef, data, styles, handlers, state, tree
+}) => ...
 
 const MyApp = () => 
   <Tree>
@@ -99,27 +111,37 @@ const MyApp = () =>
 
 ## Node Renderer Component
 
+The Node Renderer is where you get to make the tree your own. You completely own the style and functionality. The props passed to it should enable you to do whatever you need.
+
 The most basic node renderer will look like this:
 
 ```jsx
-function NodeRenderer({ref, styles, data, state, handlers}) {
+function NodeRenderer({
+  innerRef, 
+  styles, 
+  data, 
+  state, 
+  handlers, 
+  tree
+}) {
   return (
-    <div ref={ref} style={styles.row}>
+    <div ref={innerRef} style={styles.row}>
       <div style={styles.indent}>{data.id}</div>
     </div>
   )
 }
 ```
 
-The function above is passed data for this individual node, the DOM ref used for drag and drop, the styles to position the row in the virtualized list and the styles to indent the current node according to it's level in the tree.
+The function above is passed data for this individual node, the DOM ref used for drag and drop, the styles to position the row in the virtualized list and the styles to indent the current node according to its level in the tree.
 
 | Prop | Type | Description |
 | ---- | ---- | ----------- |
 | data | Node | A single node from the tree data structure provided. | 
-| ref  | Ref | Must be attched to the root element returned by the NodeRenderer. This is needed for drag and drop to work.
+| innerRef  | Ref | Must be attached to the root element returned by the NodeRenderer. This is needed for drag and drop to work.
 | [styles](#styles-prop) | object | This is an object that contains styles for the position of the row, and the level of indentation. Each key is described below.
 | [state](#state-prop) | object | An handful of boolean values that indicate the current state of this node. See below for details.
-| [handlers](#handlers-prop) | object | A collection of handlers to attach to the DOM, that provide selectable and toggleable behaviors. Each handler is described below.
+| [handlers](#handlers-prop) | object | A collection of handlers to attach to the DOM, that provide selectable and toggle-able behaviors. Each handler is described below.
+| [tree](#tree-prop) | TreeMonitor | This object can be used to get at the internal state of the whole tree component. For example, `tree.getSelectedNodes()`. All the methods are listed below in the Tree Prop section.
 
 ### Styles Prop
 
@@ -127,7 +149,7 @@ These are the properties on the styles object passed to the NodeRenderer.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| row | CSSProperties | Since the tree only renderes the rows that are currently visible, all the rows are absolutely positioned with a fixed top and left. Those styles are in this property.
+| row | CSSProperties | Since the tree only renders the rows that are currently visible, all the rows are absolutely positioned with a fixed top and left. Those styles are in this property.
 | indent | CSSProperties | This is simply a left padding set to the level of the tree multiplied by the tree indent prop.
 
 ### State Prop
@@ -136,14 +158,14 @@ These are the properties on the state object passed to the NodeRenderer.
 
 | Name | Type | Description |
 | ---- | ---- | ----------- |
-| isOpen | boolean | True if this node has children and the children are visible. Use this to display some type a open or closed icon.
+| isOpen | boolean | True if this node has children and the children are visible. Use this to display some type a open or closed icon. 
 | isSelected | boolean | True if this node is selected. Use this to show a "selected" state. Maybe a different background?
-| isHoveringOverChild | boolean | True if the user is dragging an node, and the node is hovering over one of this node's direct children. This can be used to indicate which folder the user is dragging an item into.
+| isHoveringOverChild | boolean | True if the user is dragging n node, and the node is hovering over one of this node's direct children. This can be used to indicate which folder the user is dragging an item into.
 | isDragging | boolean | True if this node is being dragged.
-| isFistOfSelected | boolean | True if this is the first of a contiguous group of selected rows. 
-This can be used to tastfully style a group of selected items. Maybe a different border radius on the first and last rows?
+| isFirstOfSelected | boolean | True if this is the first of a contiguous group of selected rows. This can be used to tastefully style a group of selected items. Maybe a different border radius on the first and last rows?
 | isLastOfSelected | boolean | True if this is the last of a contiguous group of selected rows.
 | isEditing | boolean | True if this row is being edited. When true, the renderer should return some type of form input.
+
 
 ### Handlers Prop
 
@@ -156,3 +178,20 @@ These are the properties on the handlers object passed to the NodeRenderer.
 | edit | `() => void` | Makes this node editable. This will re-render the Node with the `state.isEditing` prop set to `true`.
 | submit | `(update: string) => void` | Sends the update to the `onEdit` handler in the Tree component, and sets the `state.isEditing` prop to `false`.
 | reset | `() => void` | Re-renders with the `state.isEditing` prop set to `false`.
+
+### Tree Prop
+
+The tree monitor provides methods to get the tree's internal state. A use case might be in a right click menu. 
+
+```jsx
+// In your node renderer
+onContextMenu={() => {
+  // Do something with all the selected nodes
+  tree.getSelectedIds()
+}}
+```
+
+| Methods | Returns | Description |
+| ---- | ---- | ----------- |
+| `getSelectedIds()` | `string[]` | Get the the ids of all currently selected nodes.
+| `edit(id: string)` | `void` | Edit a node programatically.

@@ -9,6 +9,7 @@ import {
 } from "react";
 import { Action } from "./reducer";
 import { SelectionData } from "./selection/selection";
+import { TreeMonitor } from "./tree-monitor";
 
 export type Node<T = unknown> = {
   id: string;
@@ -27,38 +28,43 @@ export interface IdObj {
 }
 
 export type NodeRendererProps<T> = {
-  preview: boolean;
-  node: Node<T>;
-  props: { style: CSSProperties; ref: Ref<any> };
-  indent: number;
+  innerRef: (el: HTMLDivElement | null) => void;
+  styles: { row: CSSProperties; indent: CSSProperties };
+  data: T;
   state: NodeState;
   handlers: NodeHandlers;
+  tree: TreeMonitor;
+  preview: boolean;
 };
 
 export type NodeState = {
-  isEditing: boolean;
-  isSelected: boolean;
   isOpen: boolean;
+  isSelected: boolean;
   isHoveringOverChild: boolean;
+  isDragging: boolean;
+  isFirstOfSelected: boolean;
+  isLastOfSelected: boolean;
+  isEditing: boolean;
 };
 
 export type NodeHandlers = {
-  toggleIsOpen: MouseEventHandler;
-  toggleIsSelected: MouseEventHandler;
-  toggleIsEditing: () => void;
-  rename: (name: string) => void;
+  toggle: MouseEventHandler;
+  select: MouseEventHandler;
+  edit: () => void;
+  submit: (name: string) => void;
+  reset: () => void;
 };
 
 export type NodeRenderer<T> = ComponentType<NodeRendererProps<T>>;
 
-export type OnMove = (
+export type MoveHandler = (
   dragIds: string[],
   parentId: string | null,
   index: number
 ) => void;
 
-export type IdHandler = (id: string) => void;
-export type RenameHandler = (id: string, name: string) => void;
+export type ToggleHandler = (id: string, isOpen: boolean) => void;
+export type EditHandler = (id: string, name: string) => void;
 export type NodeClickHandler<T> = (e: MouseEvent, n: Node<T>) => void;
 export type IndexClickHandler = (e: MouseEvent, index: number) => void;
 export type SelectedCheck = (index: number) => boolean;
@@ -86,35 +92,33 @@ export type StateContext = {
   visibleIds: string[];
 };
 
+export type Accessor<T, R> = string | ((obj: T) => R);
+
 export interface TreeProps<T> {
   children: NodeRenderer<T>;
   data: T;
-  height: number;
-  width: number;
-
-  className?: string | undefined;
-  getChildren?: (model: T) => T[] | undefined;
-  getIsOpen?: (model: T) => boolean;
-  handle?: Ref<TreeHandle>;
-  hideRoot?: boolean;
-  indent?: number;
-  onClose?: IdHandler;
-  onMove?: OnMove;
-  onOpen?: IdHandler;
-  onRename?: RenameHandler;
+  height?: number;
+  width?: number;
   rowHeight?: number;
+  indent?: number;
+  hideRoot?: boolean;
+  onToggle?: ToggleHandler;
+  onMove?: MoveHandler;
+  onEdit?: EditHandler;
+  childrenAccessor?: Accessor<T, T[] | undefined>;
+  isOpenAccessor?: Accessor<T, boolean>;
+  openByDefault?: boolean;
+  className?: string | undefined;
 }
 
 export type TreeProviderProps<T> = {
   children: ReactElement;
-  handle?: Ref<TreeHandle>;
   height: number;
   indent: number;
   listRef: MutableRefObject<HTMLDivElement | null>;
-  onClose: IdHandler;
-  onMove: OnMove;
-  onOpen: IdHandler;
-  onRename: RenameHandler;
+  onToggle: ToggleHandler;
+  onMove: MoveHandler;
+  onEdit: EditHandler;
   renderer: NodeRenderer<any>;
   rowHeight: number;
   visibleNodes: Node<T>[];
@@ -124,10 +128,5 @@ export type TreeProviderProps<T> = {
 export type StaticContext<T> = TreeProviderProps<T> & {
   dispatch: (a: Action) => void;
   getNode: (id: string) => Node<T> | null;
-};
-
-export type TreeHandle = {
-  edit: (id: string) => void;
-  selectedIds: string[];
-  selectId: (id: string) => void;
+  monitor: TreeMonitor;
 };

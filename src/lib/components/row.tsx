@@ -1,4 +1,11 @@
-import React, { CSSProperties, memo, MouseEvent, useMemo, useRef } from "react";
+import React, {
+  CSSProperties,
+  memo,
+  MouseEvent,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
 import {
   useCursorParentId,
   useEditingId,
@@ -24,13 +31,13 @@ export const Row = memo(function Row({ index, style }: Props) {
   const el = useRef<HTMLDivElement | null>(null);
   const [{ isDragging }, dragRef] = useDragHook(node);
   const dropRef = useDropHook(el, node, prev, next);
-
   const isEditing = node.id === useEditingId();
   const isSelected = selected(index);
   const nextSelected = next && selected(index + 1);
   const prevSelected = prev && selected(index - 1);
   const isHoveringOverChild = node.id === cursorParentId;
   const isOpen = node.isOpen;
+  const indent = treeView.indent * node.level;
   const state = useMemo(() => {
     return {
       isEditing,
@@ -51,40 +58,44 @@ export const Row = memo(function Row({ index, style }: Props) {
     isDragging,
   ]);
 
-  const props = useMemo(
+  const ref = useCallback(
+    (n: HTMLDivElement | null) => {
+      el.current = n;
+      dragRef(dropRef(n));
+    },
+    [dragRef, dropRef]
+  );
+
+  const styles = useMemo(
     () => ({
-      style,
-      ref: (n: HTMLDivElement | null) => {
-        el.current = n;
-        dragRef(dropRef(n));
-      },
+      row: { ...style, transition: "all 100ms" },
+      indent: { paddingLeft: indent },
     }),
-    [style, dragRef, dropRef]
+    [indent, style]
   );
 
   const handlers = useMemo(() => {
     return {
-      toggleIsSelected: (e: MouseEvent) => {
+      select: (e: MouseEvent) => {
         if (node.rowIndex === null) return;
         treeView.dispatch(select(node.rowIndex, e.metaKey, e.shiftKey));
       },
-      toggleIsOpen: (e: MouseEvent) => {
+      toggle: (e: MouseEvent) => {
         e.stopPropagation();
-        node.isOpen ? treeView.onClose(node.id) : treeView.onOpen(node.id);
+        treeView.onToggle(node.id, !node.isOpen);
       },
-      toggleIsEditing: () => {
-        if (isEditing) {
-          treeView.dispatch(edit(null));
-        } else {
-          treeView.dispatch(edit(node.id));
-        }
+      edit: () => {
+        treeView.dispatch(edit(node.id));
       },
-      rename: (name: string) => {
-        if (name.trim()) treeView.onRename(node.id, name);
+      submit: (name: string) => {
+        if (name.trim()) treeView.onEdit(node.id, name);
+        treeView.dispatch(edit(null));
+      },
+      reset: () => {
         treeView.dispatch(edit(null));
       },
     };
-  }, [treeView, node, isEditing]);
+  }, [treeView, node]);
 
   const Renderer = useMemo(() => {
     return memo(treeView.renderer);
@@ -92,12 +103,13 @@ export const Row = memo(function Row({ index, style }: Props) {
 
   return (
     <Renderer
-      preview={false}
-      node={node}
-      props={props}
+      innerRef={ref}
+      data={node.model}
+      styles={styles}
       state={state}
-      indent={treeView.indent * node.level}
       handlers={handlers}
+      preview={false}
+      tree={treeView.monitor}
     />
   );
 });

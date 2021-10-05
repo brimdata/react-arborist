@@ -9,10 +9,17 @@ export function useVisibleNodes<T extends IdObj>(props: TreeProps<T>) {
       enrichTree<T>(
         props.data,
         props.hideRoot,
-        props.getChildren,
-        props.getIsOpen
+        props.childrenAccessor,
+        props.isOpenAccessor,
+        props.openByDefault
       ),
-    [props.data, props.hideRoot, props.getChildren, props.getIsOpen]
+    [
+      props.data,
+      props.hideRoot,
+      props.childrenAccessor,
+      props.isOpenAccessor,
+      props.openByDefault,
+    ]
   );
   return useMemo(() => flattenTree(root), [root]);
 }

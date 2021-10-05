@@ -15,6 +15,7 @@ export function DropCursor({ root, cursor }: Props) {
   const top = treeView.rowHeight * cursor.index;
   const left = treeView.indent * cursor.level;
   const style: CSSProperties = {
+    transition: "all 30ms",
     position: "absolute",
     pointerEvents: "none",
     top: top - 2 + "px",

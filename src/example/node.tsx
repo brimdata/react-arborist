@@ -46,25 +46,27 @@ function Icon({ isFolder, isSelected }: any) {
 }
 
 export const Node = ({
-  node,
-  props,
-  indent,
+  innerRef,
+  data,
+  styles,
   state,
   handlers,
+  tree,
 }: NodeRendererProps<MyData>) => {
-  const folder = Array.isArray(node.children);
+  const folder = Array.isArray(data.children);
   const open = state.isOpen;
-  const name = node.model.name;
+  const name = data.name;
 
   return (
     <div
-      {...props}
+      ref={innerRef}
+      style={styles.row}
       className={classNames("row", state)}
-      onClick={handlers.toggleIsSelected}
+      onClick={handlers.select}
     >
-      <div className="row-contents" style={{ paddingLeft: indent }}>
+      <div className="row-contents" style={styles.indent}>
         <MaybeToggleButton
-          toggle={handlers.toggleIsOpen}
+          toggle={handlers.toggle}
           isOpen={open}
           isFolder={folder}
           isSelected={state.isSelected}
@@ -77,7 +79,11 @@ export const Node = ({
         ) : (
           <span>
             {name}{" "}
-            {state.isSelected && <a onClick={handlers.toggleIsEditing}>✍️</a>}
+            {state.isSelected && (
+              <button style={{ display: "inline" }} onClick={handlers.edit}>
+                ✍️
+              </button>
+            )}
           </span>
         )}
       </div>
@@ -87,20 +93,20 @@ export const Node = ({
 
 type FormProps = { defaultValue: string } & NodeHandlers;
 
-function RenameForm({ defaultValue, rename, toggleIsEditing }: FormProps) {
+function RenameForm({ defaultValue, submit, reset }: FormProps) {
   const inputProps = {
     defaultValue,
     autoFocus: true,
     onBlur: (e: FocusEvent<HTMLInputElement>) => {
-      rename(e.currentTarget.value);
+      submit(e.currentTarget.value);
     },
     onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => {
       switch (e.key) {
         case "Enter":
-          rename(e.currentTarget.value);
+          submit(e.currentTarget.value);
           break;
         case "Escape":
-          toggleIsEditing();
+          reset();
           break;
       }
     },

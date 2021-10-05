@@ -1,14 +1,14 @@
 import { useCallback, useMemo, useState } from "react";
 import TreeModel from "tree-model-improved";
-import { makeLargeData } from "./large-dataset";
+// import { makeLargeData } from "./large-dataset";
 import lineage from "./lineage";
 
 function findById(node: any, id: string): TreeModel.Node<any> | null {
   return node.first((n: any) => n.model.id === id);
 }
 
-// const initData = lineage;
-const initData = makeLargeData();
+const initData = lineage;
+// const initData = makeLargeData();
 export type MyData = {
   id: string;
   isOpen: boolean;
@@ -39,23 +39,15 @@ export function useBackend() {
       update();
     },
 
-    onOpen: (id: string) => {
+    onToggle: (id: string, isOpen: boolean) => {
       const node = find(id);
       if (node) {
-        node.model.isOpen = true;
+        node.model.isOpen = isOpen;
         update();
       }
     },
 
-    onClose: (id: string) => {
-      const node = find(id);
-      if (node) {
-        node.model.isOpen = false;
-        update();
-      }
-    },
-
-    onRename: (id: string, name: string) => {
+    onEdit: (id: string, name: string) => {
       const node = find(id);
       if (node) {
         node.model.name = name;

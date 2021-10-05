@@ -2,6 +2,7 @@ import React from "react";
 // @ts-ignore
 import useDimensions from "react-use-dimensions";
 import { Tree } from "../lib";
+import { Node } from "./node";
 import "./app.css";
 import { useBackend } from "./backend";
 
@@ -15,25 +16,18 @@ export default function App() {
         <Tree
           className="react-tree-list"
           data={backend.data}
-          getChildren={(m) => m.children}
-          getIsOpen={(m) => m.isOpen}
+          childrenAccessor="children"
+          isOpenAccessor="isOpen"
           height={height || 100}
           hideRoot
           indent={24}
-          onClose={backend.onClose}
           onMove={backend.onMove}
-          onOpen={backend.onOpen}
-          onRename={backend.onRename}
+          onToggle={backend.onToggle}
+          onEdit={backend.onEdit}
           rowHeight={22}
           width={width}
         >
-          {({ node, indent, props }) => {
-            return (
-              <div {...props} style={{ ...props.style, paddingLeft: indent }}>
-                {node.model.name}
-              </div>
-            );
-          }}
+          {Node}
         </Tree>
       </aside>
       <main>

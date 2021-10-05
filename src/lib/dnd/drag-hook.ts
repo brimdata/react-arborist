@@ -33,7 +33,7 @@ export function useDragHook(
         const drop = monitor.getDropResult();
         if (drop && drop.parentId) {
           treeView.onMove(item.dragIds, drop.parentId, drop.index);
-          treeView.onOpen(drop.parentId);
+          treeView.onToggle(drop.parentId, true);
         }
       },
     }),

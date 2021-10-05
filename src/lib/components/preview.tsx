@@ -50,20 +50,25 @@ export function Preview() {
       <div className="row preview" style={getStyle(offset)}>
         <treeView.renderer
           preview
-          node={node}
-          props={{ style: {}, ref: () => {} }}
+          innerRef={() => {}}
+          data={node.model}
+          styles={{ row: {}, indent: {} }}
+          tree={treeView.monitor}
           state={{
+            isDragging: false,
             isEditing: false,
             isSelected: false,
+            isFirstOfSelected: false,
+            isLastOfSelected: false,
             isHoveringOverChild: false,
             isOpen: node.isOpen,
           }}
-          indent={treeView.indent * node.level}
           handlers={{
-            toggleIsEditing: () => {},
-            toggleIsSelected: () => {},
-            toggleIsOpen: () => {},
-            rename: () => {},
+            edit: () => {},
+            select: () => {},
+            toggle: () => {},
+            submit: () => {},
+            reset: () => {},
           }}
         />
       </div>
