@@ -128,13 +128,13 @@ main {
     opacity: 0;
   }
   to {
-    opacity: 0.8;
+    opacity: 0.5;
   }
 }
 
 .preview {
   animation: fade-in 500ms;
-  opacity: 0.8;
+  opacity: 0.5;
 }
 
 .selected-count {

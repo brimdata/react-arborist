@@ -52,7 +52,10 @@ export function Preview() {
           preview
           innerRef={() => {}}
           data={node.model}
-          styles={{ row: {}, indent: {} }}
+          styles={{
+            row: {},
+            indent: { paddingLeft: node.level * treeView.indent },
+          }}
           tree={treeView.monitor}
           state={{
             isDragging: false,
