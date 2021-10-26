@@ -1,4 +1,4 @@
-import { ReactElement, useRef } from "react";
+import { forwardRef, ReactElement, useRef } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FixedSizeList } from "react-window";
@@ -61,10 +61,12 @@ function List(props: { className?: string }) {
   );
 }
 
-function OuterElement({ children, ...rest }: any) {
+const OuterElement = forwardRef(function Outer(props, ref) {
+  const { children, ...rest } = props;
   const tree = useStaticContext();
   return (
-    <div {...rest}>
+    // @ts-ignore
+    <div ref={ref} {...rest}>
       <div
         style={{
           height: tree.visibleNodes.length * tree.rowHeight,
@@ -80,4 +82,4 @@ function OuterElement({ children, ...rest }: any) {
       {children}
     </div>
   );
-}
+});

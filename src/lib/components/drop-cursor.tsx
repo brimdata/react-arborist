@@ -27,7 +27,9 @@ const lineStyle = {
   flex: 1,
   height: "2px",
   background: "#4B91E2",
+  borderRadius: "1px",
 };
+
 const circleStyle = {
   width: "4px",
   height: "4px",

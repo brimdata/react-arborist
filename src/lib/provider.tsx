@@ -1,22 +1,16 @@
 import { useEffect, useLayoutEffect, useMemo, useReducer } from "react";
-import { DropCursor } from "./components/drop-cursor";
 import {
-  SelectionContext,
+  CursorLocationContext,
   CursorParentId,
-  Static,
   EditingIdContext,
   IsCursorOverFolder,
-  CursorLocationContext,
+  SelectionContext,
+  Static,
 } from "./context";
-import {
-  initState,
-  reducer,
-  setCursorLocation,
-  setVisibleIds,
-} from "./reducer";
+import { initState, reducer, setVisibleIds } from "./reducer";
 import { useSelectionKeys } from "./selection/selection-hook";
 import { TreeMonitor } from "./tree-monitor";
-import { StaticContext, TreeProviderProps, Node, StateContext } from "./types";
+import { Node, StateContext, StaticContext, TreeProviderProps } from "./types";
 
 export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
   const [state, dispatch] = useReducer(reducer, initState());
