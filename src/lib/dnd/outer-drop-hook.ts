@@ -31,7 +31,6 @@ export function useOuterDrop() {
       },
       drop: (item, m) => {
         if (m.didDrop()) return;
-        console.log("drop!!");
         const offset = m.getClientOffset();
         if (!tree.listRef.current || !offset) return;
         const { parentId, index } = computeDrop({

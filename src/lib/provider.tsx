@@ -6,6 +6,7 @@ import {
   Static,
   EditingIdContext,
   IsCursorOverFolder,
+  CursorLocationContext,
 } from "./context";
 import {
   initState,
@@ -71,13 +72,11 @@ export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
             value={state.cursorLocation?.parentId || null}
           >
             <IsCursorOverFolder.Provider value={isOverFolder(state)}>
-              {props.children}
+              <CursorLocationContext.Provider value={state.cursorLocation}>
+                {props.children}
+              </CursorLocationContext.Provider>
             </IsCursorOverFolder.Provider>
           </CursorParentId.Provider>
-          <DropCursor
-            root={props.listRef.current}
-            cursor={state.cursorLocation}
-          />
         </SelectionContext.Provider>
       </EditingIdContext.Provider>
     </Static.Provider>

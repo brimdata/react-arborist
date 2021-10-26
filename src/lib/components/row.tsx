@@ -73,7 +73,7 @@ export const Row = memo(function Row({ index, style }: Props) {
 
   const styles = useMemo(
     () => ({
-      row: { ...style, transition: "all 100ms" },
+      row: { ...style },
       indent: { paddingLeft: indent },
     }),
     [indent, style]

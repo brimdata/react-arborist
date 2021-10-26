@@ -88,7 +88,7 @@ function getDropLevel(
   belowCursor: Node | null,
   indent: number
 ) {
-  const hoverLevel = Math.round(Math.max(0, hovering.x) / indent);
+  const hoverLevel = Math.round(Math.max(0, hovering.x - indent) / indent);
   let min, max;
   if (!aboveCursor) {
     max = 0;

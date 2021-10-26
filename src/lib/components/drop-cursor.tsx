@@ -1,29 +1,21 @@
 import React, { CSSProperties } from "react";
-import { createPortal } from "react-dom";
-import { useStaticContext } from "../context";
-import { CursorLocation } from "../types";
+import { useCursorLocation, useStaticContext } from "../context";
 
-type Props = {
-  root: HTMLDivElement | null;
-  cursor: CursorLocation | null;
-};
-
-export function DropCursor({ root, cursor }: Props) {
+export function DropCursor() {
   const treeView = useStaticContext();
-  if (!cursor || !root || cursor.index === null || cursor.level === null)
-    return null;
+  const cursor = useCursorLocation();
+  if (!cursor || cursor.index === null || cursor.level === null) return null;
   const top = treeView.rowHeight * cursor.index;
   const left = treeView.indent * cursor.level;
   const style: CSSProperties = {
-    transition: "all 30ms",
     position: "absolute",
     pointerEvents: "none",
     top: top - 2 + "px",
-    left: left + "px",
+    left: treeView.indent + left + "px",
     right: treeView.indent + "px",
   };
 
-  return createPortal(<DefaultCursor style={style} />, root);
+  return <DefaultCursor style={style} />;
 }
 
 const placeholderStyle = {

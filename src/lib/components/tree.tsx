@@ -8,6 +8,7 @@ import { useOuterDrop } from "../dnd/outer-drop-hook";
 import { TreeViewProvider } from "../provider";
 import { IdObj, TreeProps } from "../types";
 import { noop } from "../utils";
+import { DropCursor } from "./drop-cursor";
 import { Preview } from "./preview";
 import { Row } from "./row";
 
@@ -43,15 +44,40 @@ function OuterDrop(props: { children: ReactElement }) {
 function List(props: { className?: string }) {
   const tree = useStaticContext();
   return (
-    <FixedSizeList
-      className={props.className}
-      outerRef={tree.listRef}
-      itemCount={tree.visibleNodes.length}
-      height={tree.height}
-      width={tree.width}
-      itemSize={tree.rowHeight}
-    >
-      {Row}
-    </FixedSizeList>
+    <div style={{ height: tree.height, width: tree.width, overflow: "hidden" }}>
+      <FixedSizeList
+        className={props.className}
+        outerRef={tree.listRef}
+        itemCount={tree.visibleNodes.length}
+        height={tree.height}
+        width={tree.width}
+        itemSize={tree.rowHeight}
+        itemKey={(index) => tree.visibleNodes[index]?.id || index}
+        outerElementType={OuterElement}
+      >
+        {Row}
+      </FixedSizeList>
+    </div>
+  );
+}
+
+function OuterElement({ children, ...rest }: any) {
+  const tree = useStaticContext();
+  return (
+    <div {...rest}>
+      <div
+        style={{
+          height: tree.visibleNodes.length * tree.rowHeight,
+          width: "100%",
+          overflow: "hidden",
+          position: "absolute",
+          left: "0",
+          right: "0",
+        }}
+      >
+        <DropCursor />
+      </div>
+      {children}
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 import { createContext, useContext, useMemo } from "react";
 import { Selection } from "./selection/selection";
-import { IdObj, SelectionState, StaticContext } from "./types";
+import { CursorLocation, IdObj, SelectionState, StaticContext } from "./types";
 
 export const CursorParentId = createContext<string | null>(null);
 export function useCursorParentId() {
@@ -10,6 +10,11 @@ export function useCursorParentId() {
 export const IsCursorOverFolder = createContext<boolean>(false);
 export function useIsCursorOverFolder() {
   return useContext(IsCursorOverFolder);
+}
+
+export const CursorLocationContext = createContext<CursorLocation | null>(null);
+export function useCursorLocation() {
+  return useContext(CursorLocationContext);
 }
 
 export const Static = createContext<StaticContext<IdObj> | null>(null);
