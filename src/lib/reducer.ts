@@ -25,7 +25,11 @@ export const setVisibleIds = (
   idMap,
 });
 
-export const select = (index: number, meta: boolean, shift: boolean) => ({
+export const select = (
+  index: number | null,
+  meta: boolean,
+  shift: boolean
+) => ({
   type: "SELECT" as "SELECT",
   index,
   meta,
@@ -76,7 +80,9 @@ export function reducer(state: StateContext, action: Action): StateContext {
       }
     case "SELECT":
       var s = Selection.parse(state.selection.data, state.visibleIds);
-      if (action.meta) {
+      if (action.index === null) {
+        s.clear();
+      } else if (action.meta) {
         if (s.contains(action.index)) {
           s.deselect(action.index);
         } else {

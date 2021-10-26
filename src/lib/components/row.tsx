@@ -81,9 +81,13 @@ export const Row = memo(function Row({ index, style }: Props) {
 
   const handlers = useMemo(() => {
     return {
-      select: (e: MouseEvent) => {
+      select: (e: MouseEvent, selectOnClick: boolean = true) => {
         if (node.rowIndex === null) return;
-        treeView.dispatch(select(node.rowIndex, e.metaKey, e.shiftKey));
+        if (selectOnClick || e.metaKey || e.shiftKey) {
+          treeView.dispatch(select(node.rowIndex, e.metaKey, e.shiftKey));
+        } else {
+          treeView.dispatch(select(null, false, false));
+        }
       },
       toggle: (e: MouseEvent) => {
         e.stopPropagation();

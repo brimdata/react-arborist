@@ -49,7 +49,7 @@ export type NodeState = {
 
 export type NodeHandlers = {
   toggle: MouseEventHandler;
-  select: MouseEventHandler;
+  select: (e: MouseEvent, selectOnClick?: boolean) => void;
   edit: () => void;
   submit: (name: string) => void;
   reset: () => void;

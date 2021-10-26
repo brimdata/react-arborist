@@ -63,6 +63,11 @@ main {
   display: flex;
   width: 100%;
   border: 2px solid transparent;
+  border-radius: 4px;
+}
+
+.row:active .row-contents {
+  background-color: hsla(0 0% 0% / 0.1);
 }
 
 .row-contents input {
@@ -100,41 +105,9 @@ main {
   background: green;
 }
 
-.drop-placeholder {
-  display: flex;
-  align-items: center;
-}
-
-.placeholder-line {
-  flex: 1;
-  height: 2px;
-  background: #4B91E2;
-}
-
-.placeholder-circle {
-  width: 4px;
-  height: 4px;
-  box-shadow: 0 0 0 3px #4B91E2;
-  border-radius: 50%;
-}
-
-.isHoveringOverChild .row-contents  {
-  /* border: 2px solid #4B91E2; */
-  /* border-radius: 3px; */
-}
-
-.isOverFolder .row-contents{
+.isOverFolder .row-contents {
   background: hsla(0 0% 0% / 0.05);
-  border-radius: 3px;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 0.5;
-  }
+  
 }
 
 .preview {
