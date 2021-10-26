@@ -1,13 +1,15 @@
 import { useDrop } from "react-dnd";
 import { useStaticContext } from "../context";
 import { setCursorLocation } from "../reducer";
+import { DragItem } from "../types";
 import { computeDrop } from "./compute-drop";
+import { DropResult } from "./drop-hook";
 
 export function useOuterDrop() {
   const tree = useStaticContext();
 
   // In case we drop an item at the bottom of the list
-  const [, drop] = useDrop(
+  const [, drop] = useDrop<DragItem, DropResult, { isOver: boolean }>(
     () => ({
       accept: "NODE",
       hover: (item, m) => {
@@ -23,6 +25,9 @@ export function useOuterDrop() {
           nextNode: null,
         });
         tree.dispatch(setCursorLocation(cursor));
+      },
+      canDrop: (item, m) => {
+        return m.isOver({ shallow: true });
       },
       drop: (item, m) => {
         if (m.didDrop()) return;
