@@ -11,14 +11,16 @@ export type DropResult = {
   index: number;
 };
 
+export type CollectedProps = undefined;
+
 export function useDropHook(
   el: RefObject<HTMLElement | null>,
   node: Node,
   prev: Node | null,
   next: Node | null
-): ConnectDropTarget {
+): [CollectedProps, ConnectDropTarget] {
   const treeView = useStaticContext();
-  const [, ref] = useDrop<DragItem, DropResult, { isOver: boolean }>(
+  return useDrop<DragItem, DropResult, CollectedProps>(
     () => ({
       accept: "NODE",
       canDrop: (item) => {
@@ -62,6 +64,4 @@ export function useDropHook(
     }),
     [node, prev, el, treeView]
   );
-
-  return ref;
 }

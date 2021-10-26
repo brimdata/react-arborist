@@ -5,11 +5,17 @@ import {
   CursorParentId,
   Static,
   EditingIdContext,
+  IsCursorOverFolder,
 } from "./context";
-import { initState, reducer, setVisibleIds } from "./reducer";
+import {
+  initState,
+  reducer,
+  setCursorLocation,
+  setVisibleIds,
+} from "./reducer";
 import { useSelectionKeys } from "./selection/selection-hook";
 import { TreeMonitor } from "./tree-monitor";
-import { StaticContext, TreeProviderProps, Node } from "./types";
+import { StaticContext, TreeProviderProps, Node, StateContext } from "./types";
 
 export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
   const [state, dispatch] = useReducer(reducer, initState());
@@ -64,7 +70,9 @@ export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
           <CursorParentId.Provider
             value={state.cursorLocation?.parentId || null}
           >
-            {props.children}
+            <IsCursorOverFolder.Provider value={isOverFolder(state)}>
+              {props.children}
+            </IsCursorOverFolder.Provider>
           </CursorParentId.Provider>
           <DropCursor
             root={props.listRef.current}
@@ -74,4 +82,14 @@ export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
       </EditingIdContext.Provider>
     </Static.Provider>
   );
+}
+
+function isOverFolder(state: StateContext) {
+  if (state.cursorLocation) {
+    return (
+      !!state.cursorLocation.parentId && state.cursorLocation.index === null
+    );
+  } else {
+    return false;
+  }
 }

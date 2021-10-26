@@ -133,11 +133,11 @@ export function computeDrop({
   const level = getDropLevel(hovering, above, below, indent);
   const [parent, index] = getDropLocation(above, level, hovering);
   // @ts-ignore
-  return {
+  const ret = {
     parentId: parent ? parent.id : null,
     index: index,
     cursor:
-      !parent?.isOpen && index === 0
+      parent && index === 0
         ? { parentId: parent ? parent.id : null, index: null, level: null }
         : {
             parentId: parent ? parent.id : null,
@@ -145,4 +145,5 @@ export function computeDrop({
             level: level,
           },
   };
+  return ret;
 }

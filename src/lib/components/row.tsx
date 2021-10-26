@@ -9,6 +9,7 @@ import React, {
 import {
   useCursorParentId,
   useEditingId,
+  useIsCursorOverFolder,
   useIsSelected,
   useStaticContext,
 } from "../context";
@@ -28,14 +29,16 @@ export const Row = memo(function Row({ index, style }: Props) {
   const next = treeView.visibleNodes[index + 1] || null;
   const prev = treeView.visibleNodes[index - 1] || null;
   const cursorParentId = useCursorParentId();
+  const cursorOverFolder = useIsCursorOverFolder();
   const el = useRef<HTMLDivElement | null>(null);
   const [{ isDragging }, dragRef] = useDragHook(node);
-  const dropRef = useDropHook(el, node, prev, next);
+  const [, dropRef] = useDropHook(el, node, prev, next);
   const isEditing = node.id === useEditingId();
   const isSelected = selected(index);
   const nextSelected = next && selected(index + 1);
   const prevSelected = prev && selected(index - 1);
   const isHoveringOverChild = node.id === cursorParentId;
+  const isOverFolder = node.id === cursorParentId && cursorOverFolder;
   const isOpen = node.isOpen;
   const indent = treeView.indent * node.level;
   const state = useMemo(() => {
@@ -47,6 +50,7 @@ export const Row = memo(function Row({ index, style }: Props) {
       isSelected,
       isHoveringOverChild,
       isOpen,
+      isOverFolder,
     };
   }, [
     isEditing,
@@ -56,6 +60,7 @@ export const Row = memo(function Row({ index, style }: Props) {
     isHoveringOverChild,
     isOpen,
     isDragging,
+    isOverFolder,
   ]);
 
   const ref = useCallback(

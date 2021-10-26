@@ -7,6 +7,11 @@ export function useCursorParentId() {
   return useContext(CursorParentId);
 }
 
+export const IsCursorOverFolder = createContext<boolean>(false);
+export function useIsCursorOverFolder() {
+  return useContext(IsCursorOverFolder);
+}
+
 export const Static = createContext<StaticContext<IdObj> | null>(null);
 export function useStaticContext() {
   const value = useContext(Static);

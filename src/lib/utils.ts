@@ -19,6 +19,7 @@ export const isDecendent = (a: Node, b: Node) => {
 };
 
 export const indexOf = (node: Node) => {
+  // This should probably not throw an error, but instead return null
   if (!node.parent) throw Error("Node does not have a parent");
   return node.parent.children!.findIndex((c) => c.id === node.id);
 };
