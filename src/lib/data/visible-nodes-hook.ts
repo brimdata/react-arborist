@@ -21,5 +21,6 @@ export function useVisibleNodes<T extends IdObj>(props: TreeProps<T>) {
       props.openByDefault,
     ]
   );
-  return useMemo(() => flattenTree(root), [root]);
+  const visibleNodes = useMemo(() => flattenTree(root), [root]);
+  return [visibleNodes, root] as [Node<T>[], Node<T>];
 }

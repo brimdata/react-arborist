@@ -14,6 +14,10 @@ export default function App() {
     <div className="example">
       <aside ref={ref}>
         <Tree
+          ref={(tree) => {
+            // @ts-ignore
+            global.tree = tree;
+          }}
           className="react-tree-list"
           data={backend.data}
           childrenAccessor="children"

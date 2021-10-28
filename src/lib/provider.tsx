@@ -1,4 +1,12 @@
-import { useEffect, useLayoutEffect, useMemo, useReducer } from "react";
+import {
+  useEffect,
+  useImperativeHandle,
+  useLayoutEffect,
+  useMemo,
+  useReducer,
+  useRef,
+} from "react";
+import { FixedSizeList } from "react-window";
 import {
   CursorLocationContext,
   CursorParentId,
@@ -14,20 +22,31 @@ import { Node, StateContext, StaticContext, TreeProviderProps } from "./types";
 
 export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
   const [state, dispatch] = useReducer(reducer, initState());
-  // eslint-disable-next-line
-  const monitor = useMemo(() => new TreeMonitor(state, dispatch), []);
+  const list = useRef<FixedSizeList>();
+  const monitor = useMemo(
+    () => new TreeMonitor(state, dispatch, list),
+    // eslint-disable-next-line
+    []
+  );
+  useImperativeHandle(props.imperativeHandle, () => monitor);
+
+  // useEffect(() => {
+  // if (scrollId) {
+  // list.current?.scrollToItem(index);
+  // }
+  // }, [scrollId]);
 
   useEffect(() => {
-    monitor.assign(state, dispatch);
+    monitor.assign(state, dispatch, list);
     // eslint-disable-next-line
-  }, [state, dispatch]);
+  }, [state, dispatch, list]);
 
   const visibleIds = useMemo(
     () => props.visibleNodes.map((n) => n.id),
     [props.visibleNodes]
   );
 
-  useSelectionKeys(props.listRef, dispatch, visibleIds);
+  useSelectionKeys(props.listEl, dispatch, visibleIds);
 
   const idToIndex = useMemo(() => {
     return props.visibleNodes.reduce<{ [id: string]: number }>(
@@ -43,6 +62,7 @@ export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
     () => ({
       ...props,
       monitor,
+      list,
       dispatch,
       getNode: (id: string): Node<T> | null => {
         if (id in idToIndex) return props.visibleNodes[idToIndex[id]] || null;

@@ -15,9 +15,9 @@ export function useOuterDrop() {
       hover: (item, m) => {
         if (!m.isOver({ shallow: true })) return;
         const offset = m.getClientOffset();
-        if (!tree.listRef.current || !offset) return;
+        if (!tree.listEl.current || !offset) return;
         const { cursor } = computeDrop({
-          element: tree.listRef.current,
+          element: tree.listEl.current,
           offset: offset,
           indent: tree.indent,
           node: null,
@@ -32,9 +32,9 @@ export function useOuterDrop() {
       drop: (item, m) => {
         if (m.didDrop()) return;
         const offset = m.getClientOffset();
-        if (!tree.listRef.current || !offset) return;
+        if (!tree.listEl.current || !offset) return;
         const { parentId, index } = computeDrop({
-          element: tree.listRef.current,
+          element: tree.listEl.current,
           offset: offset,
           indent: tree.indent,
           node: null,
@@ -47,5 +47,5 @@ export function useOuterDrop() {
     [tree]
   );
 
-  drop(tree.listRef);
+  drop(tree.listEl);
 }

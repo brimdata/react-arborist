@@ -1,4 +1,4 @@
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, memo } from "react";
 import { useDragLayer, XYCoord } from "react-dnd";
 import { useStaticContext } from "../context";
 import { DragItem } from "../types";
@@ -26,60 +26,83 @@ const getCountStyle = (offset: XYCoord | null) => {
 };
 
 export function Preview() {
-  const treeView = useStaticContext();
-
-  const { item, offset, mouse, isDragging } = useDragLayer<{
-    item: DragItem;
-    offset: XYCoord | null;
-    mouse: XYCoord | null;
-    isDragging: boolean;
-  }>((m) => ({
-    isDragging: m.isDragging(),
+  const { offset, mouse, item, isDragging } = useDragLayer((m) => ({
     offset: m.getSourceClientOffset(),
     mouse: m.getClientOffset(),
     item: m.getItem(),
+    isDragging: m.isDragging(),
   }));
 
-  if (!isDragging) return null;
-
-  const node = treeView.getNode(item.id);
-  if (!node) return null;
-
   return (
-    <div style={layerStyles}>
-      <div className="row preview" style={getStyle(offset)}>
-        <treeView.renderer
-          preview
-          innerRef={() => {}}
-          data={node.model}
-          styles={{
-            row: {},
-            indent: { paddingLeft: node.level * treeView.indent },
-          }}
-          tree={treeView.monitor}
-          state={{
-            isDragging: false,
-            isEditing: false,
-            isSelected: false,
-            isFirstOfSelected: false,
-            isLastOfSelected: false,
-            isHoveringOverChild: false,
-            isOpen: node.isOpen,
-          }}
-          handlers={{
-            edit: () => {},
-            select: () => {},
-            toggle: () => {},
-            submit: () => {},
-            reset: () => {},
-          }}
-        />
-      </div>
-      {item.dragIds.length > 1 && (
-        <div className="selected-count" style={getCountStyle(mouse)}>
-          {item.dragIds.length}
-        </div>
-      )}
+    <Overlay isDragging={isDragging}>
+      <Position offset={offset}>
+        <PreviewNode item={item} />
+      </Position>
+      <Count mouse={mouse} item={item} />
+    </Overlay>
+  );
+}
+
+const Overlay = memo(function Overlay(props: {
+  children: JSX.Element[];
+  isDragging: boolean;
+}) {
+  if (!props.isDragging) return null;
+  return <div style={layerStyles}>{props.children}</div>;
+});
+
+function Position(props: { children: JSX.Element; offset: XYCoord | null }) {
+  return (
+    <div className="row preview" style={getStyle(props.offset)}>
+      {props.children}
     </div>
   );
 }
+
+function Count(props: { item: DragItem; mouse: XYCoord | null }) {
+  const { item, mouse } = props;
+  if (item?.dragIds?.length > 1)
+    return (
+      <div className="selected-count" style={getCountStyle(mouse)}>
+        {item.dragIds.length}
+      </div>
+    );
+  else return null;
+}
+
+const PreviewNode = memo(function PreviewNode(props: {
+  item: DragItem | null;
+}) {
+  const tree = useStaticContext();
+  if (!props.item) return null;
+  const node = tree.getNode(props.item.id);
+  if (!node) return null;
+  return (
+    <tree.renderer
+      preview
+      innerRef={() => {}}
+      data={node.model}
+      styles={{
+        row: {},
+        indent: { paddingLeft: node.level * tree.indent },
+      }}
+      tree={tree.monitor}
+      state={{
+        isDragging: false,
+        isEditing: false,
+        isSelected: false,
+        isFirstOfSelected: false,
+        isLastOfSelected: false,
+        isHoveringOverChild: false,
+        isOpen: node.isOpen,
+      }}
+      handlers={{
+        edit: () => {},
+        select: () => {},
+        toggle: () => {},
+        submit: () => {},
+        reset: () => {},
+      }}
+    />
+  );
+});

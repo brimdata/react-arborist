@@ -66,10 +66,6 @@ main {
   border-radius: 4px;
 }
 
-.row:active .row-contents {
-  background-color: hsla(0 0% 0% / 0.1);
-}
-
 .row-contents input {
   display: block;
   width: 100%;

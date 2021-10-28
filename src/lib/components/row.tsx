@@ -23,11 +23,11 @@ type Props = {
 };
 
 export const Row = memo(function Row({ index, style }: Props) {
-  const treeView = useStaticContext();
+  const tree = useStaticContext();
   const selected = useIsSelected();
-  const node = treeView.visibleNodes[index];
-  const next = treeView.visibleNodes[index + 1] || null;
-  const prev = treeView.visibleNodes[index - 1] || null;
+  const node = tree.visibleNodes[index];
+  const next = tree.visibleNodes[index + 1] || null;
+  const prev = tree.visibleNodes[index - 1] || null;
   const cursorParentId = useCursorParentId();
   const cursorOverFolder = useIsCursorOverFolder();
   const el = useRef<HTMLDivElement | null>(null);
@@ -40,7 +40,7 @@ export const Row = memo(function Row({ index, style }: Props) {
   const isHoveringOverChild = node.id === cursorParentId;
   const isOverFolder = node.id === cursorParentId && cursorOverFolder;
   const isOpen = node.isOpen;
-  const indent = treeView.indent * node.level;
+  const indent = tree.indent * node.level;
   const state = useMemo(() => {
     return {
       isEditing,
@@ -84,31 +84,31 @@ export const Row = memo(function Row({ index, style }: Props) {
       select: (e: MouseEvent, selectOnClick: boolean = true) => {
         if (node.rowIndex === null) return;
         if (selectOnClick || e.metaKey || e.shiftKey) {
-          treeView.dispatch(select(node.rowIndex, e.metaKey, e.shiftKey));
+          tree.dispatch(select(node.rowIndex, e.metaKey, e.shiftKey));
         } else {
-          treeView.dispatch(select(null, false, false));
+          tree.dispatch(select(null, false, false));
         }
       },
       toggle: (e: MouseEvent) => {
         e.stopPropagation();
-        treeView.onToggle(node.id, !node.isOpen);
+        tree.onToggle(node.id, !node.isOpen);
       },
       edit: () => {
-        treeView.dispatch(edit(node.id));
+        tree.dispatch(edit(node.id));
       },
       submit: (name: string) => {
-        if (name.trim()) treeView.onEdit(node.id, name);
-        treeView.dispatch(edit(null));
+        if (name.trim()) tree.onEdit(node.id, name);
+        tree.dispatch(edit(null));
       },
       reset: () => {
-        treeView.dispatch(edit(null));
+        tree.dispatch(edit(null));
       },
     };
-  }, [treeView, node]);
+  }, [tree, node]);
 
   const Renderer = useMemo(() => {
-    return memo(treeView.renderer);
-  }, [treeView.renderer]);
+    return memo(tree.renderer);
+  }, [tree.renderer]);
 
   return (
     <Renderer
@@ -118,7 +118,7 @@ export const Row = memo(function Row({ index, style }: Props) {
       state={state}
       handlers={handlers}
       preview={false}
-      tree={treeView.monitor}
+      tree={tree.monitor}
     />
   );
 });
