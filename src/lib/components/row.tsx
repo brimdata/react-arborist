@@ -15,7 +15,6 @@ import {
 } from "../context";
 import { useDragHook } from "../dnd/drag-hook";
 import { useDropHook } from "../dnd/drop-hook";
-import { edit, select } from "../reducer";
 
 type Props = {
   style: CSSProperties;
@@ -25,9 +24,9 @@ type Props = {
 export const Row = memo(function Row({ index, style }: Props) {
   const tree = useStaticContext();
   const selected = useIsSelected();
-  const node = tree.visibleNodes[index];
-  const next = tree.visibleNodes[index + 1] || null;
-  const prev = tree.visibleNodes[index - 1] || null;
+  const node = tree.api.visibleNodes[index];
+  const next = tree.api.visibleNodes[index + 1] || null;
+  const prev = tree.api.visibleNodes[index - 1] || null;
   const cursorParentId = useCursorParentId();
   const cursorOverFolder = useIsCursorOverFolder();
   const el = useRef<HTMLDivElement | null>(null);
@@ -84,9 +83,9 @@ export const Row = memo(function Row({ index, style }: Props) {
       select: (e: MouseEvent, selectOnClick: boolean = true) => {
         if (node.rowIndex === null) return;
         if (selectOnClick || e.metaKey || e.shiftKey) {
-          tree.dispatch(select(node.rowIndex, e.metaKey, e.shiftKey));
+          tree.api.select(node.rowIndex, e.metaKey, e.shiftKey);
         } else {
-          tree.dispatch(select(null, false, false));
+          tree.api.select(null, false, false);
         }
       },
       toggle: (e: MouseEvent) => {
@@ -94,14 +93,14 @@ export const Row = memo(function Row({ index, style }: Props) {
         tree.onToggle(node.id, !node.isOpen);
       },
       edit: () => {
-        tree.dispatch(edit(node.id));
+        tree.api.edit(node.id);
       },
       submit: (name: string) => {
         if (name.trim()) tree.onEdit(node.id, name);
-        tree.dispatch(edit(null));
+        tree.api.edit(null);
       },
       reset: () => {
-        tree.dispatch(edit(null));
+        tree.api.edit(null);
       },
     };
   }, [tree, node]);
@@ -118,7 +117,7 @@ export const Row = memo(function Row({ index, style }: Props) {
       state={state}
       handlers={handlers}
       preview={false}
-      tree={tree.monitor}
+      tree={tree.api}
     />
   );
 });

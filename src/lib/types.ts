@@ -8,9 +8,8 @@ import React, {
   Ref,
 } from "react";
 import { FixedSizeList } from "react-window";
-import { Action } from "./reducer";
 import { SelectionData } from "./selection/selection";
-import { TreeMonitor } from "./tree-monitor";
+import { TreeApi } from "./tree-api";
 
 // Forward ref can't forward generics without this little re-declare
 // https://fettblog.eu/typescript-react-generic-forward-refs/
@@ -42,7 +41,7 @@ export type NodeRendererProps<T> = {
   data: T;
   state: NodeState;
   handlers: NodeHandlers;
-  tree: TreeMonitor;
+  tree: TreeApi<T>;
   preview: boolean;
 };
 
@@ -118,11 +117,11 @@ export interface TreeProps<T> {
   isOpenAccessor?: Accessor<T, boolean>;
   openByDefault?: boolean;
   className?: string | undefined;
-  handle?: Ref<TreeMonitor>;
+  handle?: Ref<TreeApi<T>>;
 }
 
 export type TreeProviderProps<T> = {
-  imperativeHandle: React.Ref<TreeMonitor> | undefined;
+  imperativeHandle: React.Ref<TreeApi<T>> | undefined;
   children: ReactElement;
   height: number;
   indent: number;
@@ -132,14 +131,11 @@ export type TreeProviderProps<T> = {
   onEdit: EditHandler;
   renderer: NodeRenderer<any>;
   rowHeight: number;
-  visibleNodes: Node<T>[];
   root: Node<T>;
   width: number;
 };
 
 export type StaticContext<T> = TreeProviderProps<T> & {
-  dispatch: (a: Action) => void;
-  getNode: (id: string) => Node<T> | null;
-  monitor: TreeMonitor;
+  api: TreeApi<T>;
   list: MutableRefObject<FixedSizeList | undefined>;
 };

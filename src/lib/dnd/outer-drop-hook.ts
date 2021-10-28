@@ -1,6 +1,5 @@
 import { useDrop } from "react-dnd";
 import { useStaticContext } from "../context";
-import { setCursorLocation } from "../reducer";
 import { DragItem } from "../types";
 import { computeDrop } from "./compute-drop";
 import { DropResult } from "./drop-hook";
@@ -21,10 +20,10 @@ export function useOuterDrop() {
           offset: offset,
           indent: tree.indent,
           node: null,
-          prevNode: tree.visibleNodes[tree.visibleNodes.length - 1],
+          prevNode: tree.api.visibleNodes[tree.api.visibleNodes.length - 1],
           nextNode: null,
         });
-        tree.dispatch(setCursorLocation(cursor));
+        tree.api.showCursor(cursor);
       },
       canDrop: (item, m) => {
         return m.isOver({ shallow: true });
@@ -38,7 +37,7 @@ export function useOuterDrop() {
           offset: offset,
           indent: tree.indent,
           node: null,
-          prevNode: tree.visibleNodes[tree.visibleNodes.length - 1],
+          prevNode: tree.api.visibleNodes[tree.api.visibleNodes.length - 1],
           nextNode: null,
         });
         return { parentId, index };

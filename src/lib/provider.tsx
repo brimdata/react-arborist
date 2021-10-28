@@ -1,11 +1,4 @@
-import {
-  useEffect,
-  useImperativeHandle,
-  useLayoutEffect,
-  useMemo,
-  useReducer,
-  useRef,
-} from "react";
+import { useImperativeHandle, useMemo, useReducer, useRef } from "react";
 import { FixedSizeList } from "react-window";
 import {
   CursorLocationContext,
@@ -15,68 +8,26 @@ import {
   SelectionContext,
   Static,
 } from "./context";
-import { initState, reducer, setVisibleIds } from "./reducer";
+import { initState, reducer } from "./reducer";
 import { useSelectionKeys } from "./selection/selection-hook";
-import { TreeMonitor } from "./tree-monitor";
-import { Node, StateContext, StaticContext, TreeProviderProps } from "./types";
+import { useTreeApi } from "./tree-api-hook";
+import { StateContext, StaticContext, TreeProviderProps } from "./types";
 
 export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
   const [state, dispatch] = useReducer(reducer, initState());
   const list = useRef<FixedSizeList>();
-  const monitor = useMemo(
-    () => new TreeMonitor(state, dispatch, list),
-    // eslint-disable-next-line
-    []
-  );
-  useImperativeHandle(props.imperativeHandle, () => monitor);
+  const api = useTreeApi<T>(state, dispatch, props.root, list.current);
 
-  // useEffect(() => {
-  // if (scrollId) {
-  // list.current?.scrollToItem(index);
-  // }
-  // }, [scrollId]);
-
-  useEffect(() => {
-    monitor.assign(state, dispatch, list);
-    // eslint-disable-next-line
-  }, [state, dispatch, list]);
-
-  const visibleIds = useMemo(
-    () => props.visibleNodes.map((n) => n.id),
-    [props.visibleNodes]
-  );
-
-  useSelectionKeys(props.listEl, dispatch, visibleIds);
-
-  const idToIndex = useMemo(() => {
-    return props.visibleNodes.reduce<{ [id: string]: number }>(
-      (map, node, index) => {
-        map[node.id] = index;
-        return map;
-      },
-      {}
-    );
-  }, [props.visibleNodes]);
-
+  useImperativeHandle(props.imperativeHandle, () => api);
+  useSelectionKeys(props.listEl, api);
   const staticValue = useMemo<StaticContext<T>>(
-    () => ({
-      ...props,
-      monitor,
-      list,
-      dispatch,
-      getNode: (id: string): Node<T> | null => {
-        if (id in idToIndex) return props.visibleNodes[idToIndex[id]] || null;
-        else return null;
-      },
-    }),
-    // eslint-disable-next-line
-    [props, idToIndex]
+    () => ({ ...props, api, list }),
+    [props, api, list]
   );
 
-  useLayoutEffect(() => {
-    dispatch(setVisibleIds(visibleIds, idToIndex));
-  }, [idToIndex, visibleIds]);
-
+  /**
+   * This context pattern is ridiculous, next time use redux.
+   */
   return (
     // @ts-ignore
     <Static.Provider value={staticValue}>

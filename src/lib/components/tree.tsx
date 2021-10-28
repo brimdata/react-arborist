@@ -1,13 +1,13 @@
-import { forwardRef, ReactElement, useRef } from "react";
+import { forwardRef, ReactElement, useMemo, useRef } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FixedSizeList } from "react-window";
 import { useStaticContext } from "../context";
-import { useVisibleNodes } from "../data/visible-nodes-hook";
+import { enrichTree } from "../data/enrich-tree";
 import { useOuterDrop } from "../dnd/outer-drop-hook";
 import { TreeViewProvider } from "../provider";
-import { TreeMonitor } from "../tree-monitor";
-import { IdObj, TreeProps } from "../types";
+import { TreeApi } from "../tree-api";
+import { IdObj, Node, TreeProps } from "../types";
 import { noop } from "../utils";
 import { DropCursor } from "./drop-cursor";
 import { Preview } from "./preview";
@@ -24,7 +24,7 @@ const OuterElement = forwardRef(function Outer(
     <div ref={ref} {...rest}>
       <div
         style={{
-          height: tree.visibleNodes.length * tree.rowHeight,
+          height: tree.api.visibleNodes.length * tree.rowHeight,
           width: "100%",
           overflow: "hidden",
           position: "absolute",
@@ -46,11 +46,11 @@ function List(props: { className?: string }) {
       <FixedSizeList
         className={props.className}
         outerRef={tree.listEl}
-        itemCount={tree.visibleNodes.length}
+        itemCount={tree.api.visibleNodes.length}
         height={tree.height}
         width={tree.width}
         itemSize={tree.rowHeight}
-        itemKey={(index) => tree.visibleNodes[index]?.id || index}
+        itemKey={(index) => tree.api.visibleNodes[index]?.id || index}
         outerElementType={OuterElement}
         // @ts-ignore
         ref={tree.list}
@@ -68,13 +68,28 @@ function OuterDrop(props: { children: ReactElement }) {
 
 export const Tree = forwardRef(function Tree<T extends IdObj>(
   props: TreeProps<T>,
-  ref: React.Ref<TreeMonitor>
+  ref: React.Ref<TreeApi<T>>
 ) {
-  const [visibleNodes, root] = useVisibleNodes<T>(props);
+  const root = useMemo<Node<T>>(
+    () =>
+      enrichTree<T>(
+        props.data,
+        props.hideRoot,
+        props.childrenAccessor,
+        props.isOpenAccessor,
+        props.openByDefault
+      ),
+    [
+      props.data,
+      props.hideRoot,
+      props.childrenAccessor,
+      props.isOpenAccessor,
+      props.openByDefault,
+    ]
+  );
   return (
     <TreeViewProvider
       imperativeHandle={ref}
-      visibleNodes={visibleNodes}
       root={root}
       listEl={useRef<HTMLDivElement | null>(null)}
       renderer={props.children}

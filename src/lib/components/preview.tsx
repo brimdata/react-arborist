@@ -75,7 +75,7 @@ const PreviewNode = memo(function PreviewNode(props: {
 }) {
   const tree = useStaticContext();
   if (!props.item) return null;
-  const node = tree.getNode(props.item.id);
+  const node = tree.api.getNode(props.item.id);
   if (!node) return null;
   return (
     <tree.renderer
@@ -86,7 +86,7 @@ const PreviewNode = memo(function PreviewNode(props: {
         row: {},
         indent: { paddingLeft: node.level * tree.indent },
       }}
-      tree={tree.monitor}
+      tree={tree.api}
       state={{
         isDragging: false,
         isEditing: false,

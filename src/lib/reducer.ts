@@ -11,59 +11,53 @@ export const initState = (): StateContext => ({
   },
 });
 
-export const setCursorLocation = (location: CursorLocation | null) => ({
-  type: "SET_CURSOR_LOCATION" as "SET_CURSOR_LOCATION",
-  location,
-});
+export const actions = {
+  setCursorLocation: (location: CursorLocation | null) => ({
+    type: "SET_CURSOR_LOCATION" as "SET_CURSOR_LOCATION",
+    location,
+  }),
 
-export const setVisibleIds = (
-  ids: string[], // index to id
-  idMap: { [id: string]: number } // id to index
-) => ({
-  type: "SET_VISIBLE_IDS" as "SET_VISIBLE_IDS",
-  ids,
-  idMap,
-});
+  setVisibleIds: (
+    ids: string[], // index to id
+    idMap: { [id: string]: number } // id to index
+  ) => ({
+    type: "SET_VISIBLE_IDS" as "SET_VISIBLE_IDS",
+    ids,
+    idMap,
+  }),
 
-export const select = (
-  index: number | null,
-  meta: boolean,
-  shift: boolean
-) => ({
-  type: "SELECT" as "SELECT",
-  index,
-  meta,
-  shift,
-});
+  select: (index: number | null, meta: boolean, shift: boolean) => ({
+    type: "SELECT" as "SELECT",
+    index,
+    meta,
+    shift,
+  }),
 
-export const selectId = (id: string) => ({
-  type: "SELECT_ID" as "SELECT_ID",
-  id,
-});
+  selectId: (id: string) => ({
+    type: "SELECT_ID" as "SELECT_ID",
+    id,
+  }),
 
-export const edit = (id: string | null) => ({
-  type: "EDIT" as "EDIT",
-  id,
-});
+  edit: (id: string | null) => ({
+    type: "EDIT" as "EDIT",
+    id,
+  }),
 
-export const stepUp = (shift: boolean, ids: string[]) => ({
-  type: "STEP_UP" as "STEP_UP",
-  shift,
-});
+  stepUp: (shift: boolean, ids: string[]) => ({
+    type: "STEP_UP" as "STEP_UP",
+    shift,
+  }),
 
-export const stepDown = (shift: boolean, ids: string[]) => ({
-  type: "STEP_DOWN" as "STEP_DOWN",
-  shift,
-});
+  stepDown: (shift: boolean, ids: string[]) => ({
+    type: "STEP_DOWN" as "STEP_DOWN",
+    shift,
+  }),
+};
 
-export type Action =
-  | ReturnType<typeof setCursorLocation>
-  | ReturnType<typeof select>
-  | ReturnType<typeof setVisibleIds>
-  | ReturnType<typeof selectId>
-  | ReturnType<typeof edit>
-  | ReturnType<typeof stepUp>
-  | ReturnType<typeof stepDown>;
+type ActionObj = {
+  [Prop in keyof typeof actions]: ReturnType<typeof actions[Prop]>;
+};
+export type Action = ActionObj[keyof ActionObj];
 
 export function reducer(state: StateContext, action: Action): StateContext {
   switch (action.type) {
@@ -139,8 +133,11 @@ export function reducer(state: StateContext, action: Action): StateContext {
         },
       };
     case "SET_VISIBLE_IDS":
+      // The visible ids changed
       var ids = state.selection.ids;
+      // Start with a blank selection
       var s2 = new Selection([], null, "none", state.visibleIds);
+      // Add each of the old selected ids to this new selection
       for (let id of ids) {
         if (id in action.idMap) s2.multiSelect(action.idMap[id]);
       }
