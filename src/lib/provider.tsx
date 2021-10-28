@@ -16,7 +16,7 @@ import { StateContext, StaticContext, TreeProviderProps } from "./types";
 export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
   const [state, dispatch] = useReducer(reducer, initState());
   const list = useRef<FixedSizeList>();
-  const api = useTreeApi<T>(state, dispatch, props.root, list.current);
+  const api = useTreeApi<T>(state, dispatch, props, list.current);
 
   useImperativeHandle(props.imperativeHandle, () => api);
   useSelectionKeys(props.listEl, api);

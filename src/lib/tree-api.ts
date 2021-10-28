@@ -3,19 +3,25 @@ import { Dispatch } from "react";
 import { FixedSizeList } from "react-window";
 import { flattenTree } from "./data/flatten-tree";
 import { Action, actions } from "./reducer";
-import { CursorLocation, Node, StateContext } from "./types";
+import { CursorLocation, Node, StateContext, TreeProviderProps } from "./types";
 
-export class TreeApi<T> {
+export class TreeApi<T = unknown> {
   constructor(
     public dispatch: Dispatch<Action>,
     public state: StateContext,
-    public root: Node<T>,
+    public props: TreeProviderProps<T>,
     public list: FixedSizeList | undefined
   ) {}
 
-  assign(state: StateContext, root: Node<T>, list: FixedSizeList | undefined) {
+  assign(
+    dispatch: Dispatch<Action>,
+    state: StateContext,
+    props: TreeProviderProps<T>,
+    list: FixedSizeList | undefined
+  ) {
+    this.dispatch = dispatch;
     this.state = state;
-    this.root = root;
+    this.props = props;
     this.list = list;
   }
 
@@ -29,8 +35,8 @@ export class TreeApi<T> {
     return this.state.selection.ids;
   }
 
-  edit(id: string | null) {
-    this.dispatch(actions.edit(id));
+  edit(id: string | number | null) {
+    this.dispatch(actions.edit(id ? id.toString() : null));
   }
 
   select(index: number | null, meta: boolean, shift: boolean) {
@@ -53,16 +59,38 @@ export class TreeApi<T> {
     this.dispatch(actions.setCursorLocation(location));
   }
 
-  scrollToId(id: string | number) {
+  scrollToId(id: string) {
     if (!this.list) return;
-    const index = this.idToIndex[id.toString()];
+    const index = this.idToIndex[id];
     if (index) {
       this.list.scrollToItem(index, "start");
     } else {
-      // The id is not visible at the moment
-      // Find the id in the tree, open all the parents,
-      // Then scroll to it
-      console.log("No id found");
+      this.openParents(id);
+      // This appears to be synchronous
+      // But I've only tested it in the console and
+      // not in an event handler which will be batched...
+
+      // We may need to wrap this in a timeout or trigger an effect somehow
+      setTimeout(() => {
+        const index = this.idToIndex[id];
+        if (index) {
+          this.list?.scrollToItem(index, "start");
+        }
+      });
+    }
+  }
+
+  open(id: string) {
+    this.props.onToggle(id, true);
+  }
+
+  openParents(id: string) {
+    const node = dfs(this.props.root, id);
+    let parent = node?.parent;
+
+    while (parent) {
+      this.open(parent.id);
+      parent = parent.parent;
     }
   }
 
@@ -75,7 +103,7 @@ export class TreeApi<T> {
   }
 
   get visibleNodes() {
-    return createList(this.root);
+    return createList(this.props.root);
   }
 }
 
@@ -87,3 +115,15 @@ const createIndex = memoizeOne((nodes: Node[]) => {
   }, {});
 });
 const createList = memoizeOne(flattenTree);
+
+function dfs(node: Node<unknown>, id: string): Node<unknown> | null {
+  if (!node) return null;
+  if (node.id === id) return node;
+  if (node.children) {
+    for (let child of node.children) {
+      const result = dfs(child, id);
+      if (result) return result;
+    }
+  }
+  return null;
+}

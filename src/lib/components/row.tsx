@@ -1,11 +1,4 @@
-import React, {
-  CSSProperties,
-  memo,
-  MouseEvent,
-  useCallback,
-  useMemo,
-  useRef,
-} from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import {
   useCursorParentId,
   useEditingId,
@@ -17,11 +10,11 @@ import { useDragHook } from "../dnd/drag-hook";
 import { useDropHook } from "../dnd/drop-hook";
 
 type Props = {
-  style: CSSProperties;
+  style: React.CSSProperties;
   index: number;
 };
 
-export const Row = memo(function Row({ index, style }: Props) {
+export const Row = React.memo(function Row({ index, style }: Props) {
   const tree = useStaticContext();
   const selected = useIsSelected();
   const node = tree.api.visibleNodes[index];
@@ -80,7 +73,7 @@ export const Row = memo(function Row({ index, style }: Props) {
 
   const handlers = useMemo(() => {
     return {
-      select: (e: MouseEvent, selectOnClick: boolean = true) => {
+      select: (e: React.MouseEvent, selectOnClick: boolean = true) => {
         if (node.rowIndex === null) return;
         if (selectOnClick || e.metaKey || e.shiftKey) {
           tree.api.select(node.rowIndex, e.metaKey, e.shiftKey);
@@ -88,7 +81,7 @@ export const Row = memo(function Row({ index, style }: Props) {
           tree.api.select(null, false, false);
         }
       },
-      toggle: (e: MouseEvent) => {
+      toggle: (e: React.MouseEvent) => {
         e.stopPropagation();
         tree.onToggle(node.id, !node.isOpen);
       },
@@ -106,7 +99,7 @@ export const Row = memo(function Row({ index, style }: Props) {
   }, [tree, node]);
 
   const Renderer = useMemo(() => {
-    return memo(tree.renderer);
+    return React.memo(tree.renderer);
   }, [tree.renderer]);
 
   return (

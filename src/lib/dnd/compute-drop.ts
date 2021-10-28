@@ -59,7 +59,7 @@ function getDropLocation(
     return [null, 0];
   }
 
-  if (isFolder(drop) && drop.isOpen) {
+  if (isFolder(drop) && drop.isOpen && drop.children?.length) {
     // keep args the same
   } else if (isFolder(drop) && hover.inMiddle) {
     // keep args the same

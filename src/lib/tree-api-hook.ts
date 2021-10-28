@@ -2,12 +2,12 @@ import { Dispatch, useLayoutEffect, useMemo } from "react";
 import { FixedSizeList } from "react-window";
 import { Action, actions } from "./reducer";
 import { TreeApi } from "./tree-api";
-import { Node, StateContext } from "./types";
+import { StateContext, TreeProviderProps } from "./types";
 
 export function useTreeApi<T>(
   state: StateContext,
   dispatch: Dispatch<Action>,
-  root: Node<T>,
+  props: TreeProviderProps<T>,
   list: FixedSizeList | undefined
 ) {
   /**
@@ -16,15 +16,11 @@ export function useTreeApi<T>(
    * reference will not.
    */
   const api = useMemo(
-    () => new TreeApi(dispatch, state, root, list),
+    () => new TreeApi<T>(dispatch, state, props, list),
     // eslint-disable-next-line
     []
   );
-
-  useLayoutEffect(
-    () => api.assign(state, root, list),
-    [api, state, root, list]
-  );
+  api.assign(dispatch, state, props, list);
 
   /**
    * This ensures that the selection remains correct even
@@ -32,7 +28,7 @@ export function useTreeApi<T>(
    */
   useLayoutEffect(() => {
     dispatch(actions.setVisibleIds(api.visibleIds, api.idToIndex));
-  }, [dispatch, api, root]);
+  }, [dispatch, api, props.root]);
 
   return api;
 }
