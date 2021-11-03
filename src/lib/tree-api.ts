@@ -2,8 +2,9 @@ import memoizeOne from "memoize-one";
 import { Dispatch } from "react";
 import { FixedSizeList } from "react-window";
 import { flattenTree } from "./data/flatten-tree";
+import { Cursor } from "./dnd/compute-drop";
 import { Action, actions } from "./reducer";
-import { CursorLocation, Node, StateContext, TreeProviderProps } from "./types";
+import { Node, StateContext, TreeProviderProps } from "./types";
 
 export class TreeApi<T = unknown> {
   constructor(
@@ -52,11 +53,11 @@ export class TreeApi<T = unknown> {
   }
 
   hideCursor() {
-    this.dispatch(actions.setCursorLocation(null));
+    this.dispatch(actions.setCursorLocation({ type: "none" }));
   }
 
-  showCursor(location: CursorLocation) {
-    this.dispatch(actions.setCursorLocation(location));
+  showCursor(cursor: Cursor) {
+    this.dispatch(actions.setCursorLocation(cursor));
   }
 
   scrollToId(id: string) {
@@ -69,7 +70,6 @@ export class TreeApi<T = unknown> {
       // This appears to be synchronous
       // But I've only tested it in the console and
       // not in an event handler which will be batched...
-
       // We may need to wrap this in a timeout or trigger an effect somehow
       setTimeout(() => {
         const index = this.idToIndex[id];

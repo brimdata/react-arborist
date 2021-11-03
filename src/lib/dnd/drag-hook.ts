@@ -19,6 +19,7 @@ export function useDragHook(
     CollectedProps
   >(
     () => ({
+      canDrag: () => node.isDraggable,
       type: "NODE",
       item: () => ({
         id: node.id,

@@ -8,6 +8,7 @@ import {
   SelectionContext,
   Static,
 } from "./context";
+import { Cursor } from "./dnd/compute-drop";
 import { initState, reducer } from "./reducer";
 import { useSelectionKeys } from "./selection/selection-hook";
 import { useTreeApi } from "./tree-api-hook";
@@ -33,11 +34,9 @@ export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
     <Static.Provider value={staticValue}>
       <EditingIdContext.Provider value={state.editingId}>
         <SelectionContext.Provider value={state.selection}>
-          <CursorParentId.Provider
-            value={state.cursorLocation?.parentId || null}
-          >
+          <CursorParentId.Provider value={getParentId(state.cursor)}>
             <IsCursorOverFolder.Provider value={isOverFolder(state)}>
-              <CursorLocationContext.Provider value={state.cursorLocation}>
+              <CursorLocationContext.Provider value={state.cursor}>
                 {props.children}
               </CursorLocationContext.Provider>
             </IsCursorOverFolder.Provider>
@@ -48,12 +47,15 @@ export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
   );
 }
 
-function isOverFolder(state: StateContext) {
-  if (state.cursorLocation) {
-    return (
-      !!state.cursorLocation.parentId && state.cursorLocation.index === null
-    );
-  } else {
-    return false;
+function getParentId(cursor: Cursor) {
+  switch (cursor.type) {
+    case "highlight":
+      return cursor.id;
+    default:
+      return null;
   }
+}
+
+function isOverFolder(state: StateContext) {
+  return state.cursor.type === "highlight";
 }

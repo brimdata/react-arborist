@@ -8,6 +8,7 @@ import React, {
   Ref,
 } from "react";
 import { FixedSizeList } from "react-window";
+import { Cursor } from "./dnd/compute-drop";
 import { SelectionData } from "./selection/selection";
 import { TreeApi } from "./tree-api";
 
@@ -26,6 +27,8 @@ export type Node<T = unknown> = {
   children: Node<T>[] | null;
   parent: Node<T> | null;
   isOpen: boolean;
+  isDraggable: boolean;
+  isDroppable: boolean;
   rowIndex: number | null;
 };
 
@@ -94,14 +97,11 @@ export type SelectionState = {
 };
 
 export type StateContext = {
-  cursorLocation: CursorLocation | null;
+  cursor: Cursor;
   editingId: string | null;
   selection: SelectionState;
   visibleIds: string[];
 };
-
-export type Accessor<T, R> = string | ((obj: T) => R);
-
 export interface TreeProps<T> {
   children: NodeRenderer<T>;
   data: T;
@@ -113,8 +113,10 @@ export interface TreeProps<T> {
   onToggle?: ToggleHandler;
   onMove?: MoveHandler;
   onEdit?: EditHandler;
-  childrenAccessor?: Accessor<T, T[] | undefined>;
-  isOpenAccessor?: Accessor<T, boolean>;
+  getChildren?: string | ((d: T) => T[]);
+  isOpen?: string | ((d: T) => boolean);
+  disableDrag?: string | boolean | ((d: T) => boolean);
+  disableDrop?: string | boolean | ((d: T) => boolean);
   openByDefault?: boolean;
   className?: string | undefined;
   handle?: Ref<TreeApi<T>>;

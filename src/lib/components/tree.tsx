@@ -75,15 +75,19 @@ export const Tree = forwardRef(function Tree<T extends IdObj>(
       enrichTree<T>(
         props.data,
         props.hideRoot,
-        props.childrenAccessor,
-        props.isOpenAccessor,
+        props.getChildren,
+        props.isOpen,
+        props.disableDrag,
+        props.disableDrop,
         props.openByDefault
       ),
     [
       props.data,
       props.hideRoot,
-      props.childrenAccessor,
-      props.isOpenAccessor,
+      props.getChildren,
+      props.isOpen,
+      props.disableDrag,
+      props.disableDrop,
       props.openByDefault,
     ]
   );

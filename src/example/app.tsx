@@ -20,9 +20,10 @@ export default function App() {
           }}
           className="react-tree-list"
           data={backend.data}
-          childrenAccessor="children"
-          isOpenAccessor="isOpen"
+          getChildren="children"
+          isOpen="isOpen"
           height={height || 100}
+          disableDrop={(d) => d.name === "House Stark"}
           hideRoot
           indent={24}
           onMove={backend.onMove}

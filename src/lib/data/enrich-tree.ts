@@ -1,11 +1,13 @@
-import { Accessor, IdObj, Node } from "../types";
+import { TreeProps, IdObj, Node } from "../types";
 
 function createNode<T extends IdObj>(
   model: T,
   level: number,
   parent: Node<T> | null,
   children: Node<T>[] | null,
-  isOpen: boolean
+  isOpen: boolean,
+  isDraggable: boolean,
+  isDroppable: boolean
 ): Node<T> {
   return {
     id: model.id,
@@ -13,25 +15,32 @@ function createNode<T extends IdObj>(
     parent,
     children,
     isOpen,
+    isDraggable,
+    isDroppable,
     model,
     rowIndex: null,
   };
 }
 
-function access<T, R>(obj: T, accessor: Accessor<T, R>): R {
-  if (typeof accessor === "string") {
-    // @ts-ignore
-    return obj[accessor];
-  } else {
-    return accessor(obj);
+function access(obj: any, accessor: string | boolean | Function) {
+  if (typeof accessor === "boolean") {
+    return accessor;
   }
+
+  if (typeof accessor === "string") {
+    return obj[accessor];
+  }
+
+  return accessor(obj);
 }
 
 export function enrichTree<T extends IdObj>(
   model: T,
   hideRoot: boolean = false,
-  getChildren: Accessor<T, T[] | undefined> = "children",
-  getIsOpen: Accessor<T, boolean> = "isOpen",
+  getChildren: TreeProps<T>["getChildren"] = "children",
+  isOpen: TreeProps<T>["isOpen"] = "isOpen",
+  disableDrag: TreeProps<T>["disableDrag"] = false,
+  disableDrop: TreeProps<T>["disableDrop"] = false,
   openByDefault: boolean = true
 ): Node<T> {
   function visitSelfAndChildren(
@@ -39,15 +48,19 @@ export function enrichTree<T extends IdObj>(
     level: number,
     parent: Node<T> | null
   ) {
-    const isOpen = access<T, boolean | undefined>(model, getIsOpen);
+    const open = access(model, isOpen) as boolean;
+    const draggable = !access(model, disableDrag) as boolean;
+    const droppable = !access(model, disableDrop) as boolean;
     const node = createNode<T>(
       model,
       level,
       parent,
       null,
-      isOpen === undefined ? openByDefault : isOpen
+      open === undefined ? openByDefault : open,
+      draggable,
+      droppable
     );
-    const children = access<T, T[] | undefined>(model, getChildren);
+    const children = access(model, getChildren) as T[];
 
     if (children) {
       node.children = children.map((child: T) =>

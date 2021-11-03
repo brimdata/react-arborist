@@ -8,7 +8,7 @@ export function useOuterDrop() {
   const tree = useStaticContext();
 
   // In case we drop an item at the bottom of the list
-  const [, drop] = useDrop<DragItem, DropResult, { isOver: boolean }>(
+  const [, drop] = useDrop<DragItem, DropResult | null, { isOver: boolean }>(
     () => ({
       accept: "NODE",
       hover: (item, m) => {
@@ -23,7 +23,7 @@ export function useOuterDrop() {
           prevNode: tree.api.visibleNodes[tree.api.visibleNodes.length - 1],
           nextNode: null,
         });
-        tree.api.showCursor(cursor);
+        if (cursor) tree.api.showCursor(cursor);
       },
       canDrop: (item, m) => {
         return m.isOver({ shallow: true });
@@ -32,7 +32,7 @@ export function useOuterDrop() {
         if (m.didDrop()) return;
         const offset = m.getClientOffset();
         if (!tree.listEl.current || !offset) return;
-        const { parentId, index } = computeDrop({
+        const { drop } = computeDrop({
           element: tree.listEl.current,
           offset: offset,
           indent: tree.indent,
@@ -40,7 +40,7 @@ export function useOuterDrop() {
           prevNode: tree.api.visibleNodes[tree.api.visibleNodes.length - 1],
           nextNode: null,
         });
-        return { parentId, index };
+        return drop;
       },
     }),
     [tree]

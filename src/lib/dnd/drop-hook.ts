@@ -19,10 +19,11 @@ export function useDropHook(
   next: Node | null
 ): [CollectedProps, ConnectDropTarget] {
   const tree = useStaticContext();
-  return useDrop<DragItem, DropResult, CollectedProps>(
+  return useDrop<DragItem, DropResult | null, CollectedProps>(
     () => ({
       accept: "NODE",
       canDrop: (item) => {
+        if (!node.isDroppable) return false;
         for (let id of item.dragIds) {
           const drag = tree.api.getNode(id);
           if (!drag) return false;
@@ -42,15 +43,15 @@ export function useDropHook(
             prevNode: prev,
             nextNode: next,
           });
-          tree.api.showCursor(cursor);
+          if (cursor) tree.api.showCursor(cursor);
         } else {
           tree.api.hideCursor();
         }
       },
-      drop: (item, m): DropResult | undefined => {
+      drop: (item, m): DropResult | undefined | null => {
         const offset = m.getClientOffset();
         if (!el.current || !offset) return;
-        const { parentId, index } = computeDrop({
+        const { drop } = computeDrop({
           element: el.current,
           offset: offset,
           indent: tree.indent,
@@ -58,7 +59,7 @@ export function useDropHook(
           prevNode: prev,
           nextNode: next,
         });
-        return { parentId, index };
+        return drop;
       },
     }),
     [node, prev, el, tree]

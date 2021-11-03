@@ -7,7 +7,6 @@ export function useSelectionKeys<T>(
 ) {
   useEffect(() => {
     const el = ref.current;
-    el?.setAttribute("tabindex", "0");
     const cb = (e: KeyboardEvent) => {
       if (e.code === "ArrowDown") {
         e.preventDefault();

@@ -4,7 +4,7 @@ import { useCursorLocation, useStaticContext } from "../context";
 export function DropCursor() {
   const treeView = useStaticContext();
   const cursor = useCursorLocation();
-  if (!cursor || cursor.index === null || cursor.level === null) return null;
+  if (!cursor || cursor.type !== "line") return null;
   const top = treeView.rowHeight * cursor.index;
   const left = treeView.indent * cursor.level;
   const style: CSSProperties = {

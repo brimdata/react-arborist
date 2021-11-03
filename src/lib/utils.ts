@@ -6,6 +6,14 @@ export function bound(n: number, min: number, max: number) {
 
 export const isFolder = (node: Node<any>) => !!node.children;
 
+export function isItem(node: Node | null) {
+  return node && !isFolder(node);
+}
+
+export function isClosed(node: Node | null) {
+  return node && isFolder(node) && !node.isOpen;
+}
+
 /**
  * Is first param a decendent of the second param
  */

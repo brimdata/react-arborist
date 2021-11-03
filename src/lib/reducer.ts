@@ -1,9 +1,10 @@
+import { Cursor } from "./dnd/compute-drop";
 import { Selection } from "./selection/selection";
-import { CursorLocation, StateContext } from "./types";
+import { StateContext } from "./types";
 
 export const initState = (): StateContext => ({
   visibleIds: [],
-  cursorLocation: null,
+  cursor: { type: "none" } as Cursor,
   editingId: null,
   selection: {
     data: null,
@@ -12,9 +13,9 @@ export const initState = (): StateContext => ({
 });
 
 export const actions = {
-  setCursorLocation: (location: CursorLocation | null) => ({
+  setCursorLocation: (cursor: Cursor) => ({
     type: "SET_CURSOR_LOCATION" as "SET_CURSOR_LOCATION",
-    location,
+    cursor,
   }),
 
   setVisibleIds: (
@@ -67,10 +68,10 @@ export function reducer(state: StateContext, action: Action): StateContext {
         editingId: action.id,
       };
     case "SET_CURSOR_LOCATION":
-      if (equal(state.cursorLocation, action.location)) {
+      if (equal(state.cursor, action.cursor)) {
         return state;
       } else {
-        return { ...state, cursorLocation: action.location };
+        return { ...state, cursor: action.cursor };
       }
     case "SELECT":
       var s = Selection.parse(state.selection.data, state.visibleIds);
@@ -154,10 +155,7 @@ export function reducer(state: StateContext, action: Action): StateContext {
   }
 }
 
-function equal(a: CursorLocation | null, b: CursorLocation | null) {
-  if (a === b) return true;
+function equal(a: Cursor | null, b: Cursor | null) {
   if (a === null || b === null) return false;
-  return (
-    a.parentId === b.parentId && a.index === b.index && a.level === b.level
-  );
+  return JSON.stringify(a) === JSON.stringify(b);
 }

@@ -1,6 +1,7 @@
 import { createContext, useContext, useMemo } from "react";
+import { Cursor } from "./dnd/compute-drop";
 import { Selection } from "./selection/selection";
-import { CursorLocation, IdObj, SelectionState, StaticContext } from "./types";
+import { IdObj, SelectionState, StaticContext } from "./types";
 
 export const CursorParentId = createContext<string | null>(null);
 export function useCursorParentId() {
@@ -12,7 +13,7 @@ export function useIsCursorOverFolder() {
   return useContext(IsCursorOverFolder);
 }
 
-export const CursorLocationContext = createContext<CursorLocation | null>(null);
+export const CursorLocationContext = createContext<Cursor | null>(null);
 export function useCursorLocation() {
   return useContext(CursorLocationContext);
 }
