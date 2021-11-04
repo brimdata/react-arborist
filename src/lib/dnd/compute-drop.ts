@@ -30,10 +30,11 @@ function getNodesAroundCursor(
     // Put the cursor below the last item which is "prev"
     return [prev, null];
   }
-
   if (isFolder(node)) {
     if (hover.atTop) {
       return [prev, node];
+    } else if (hover.inMiddle) {
+      return [node, node];
     } else {
       return [node, next];
     }
@@ -77,16 +78,17 @@ function getDropLevel(
   return bound(hoverLevel, min, max);
 }
 
-function canDrop(above: Node | null) {
+function canDrop(above: Node | null, below: Node | null) {
   if (!above) {
     return true;
   }
-  let parent: Node | null = above;
-  if (isClosed(above)) parent = above.parent;
 
-  while (parent) {
-    if (!parent.isDroppable) return false;
-    parent = parent.parent;
+  let n: Node | null = above;
+  if (isClosed(above) && above !== below) n = above.parent;
+
+  while (n) {
+    if (!n.isDroppable) return false;
+    n = n.parent;
   }
   return true;
 }
@@ -145,7 +147,7 @@ export function computeDrop(args: Args): ComputedDrop {
   const { node, nextNode, prevNode } = args;
   const [above, below] = getNodesAroundCursor(node, prevNode, nextNode, hover);
 
-  if (!canDrop(above)) {
+  if (!canDrop(above, below)) {
     return { drop: null, cursor: noCursor() };
   }
 

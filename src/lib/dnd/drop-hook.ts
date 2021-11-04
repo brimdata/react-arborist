@@ -23,7 +23,6 @@ export function useDropHook(
     () => ({
       accept: "NODE",
       canDrop: (item) => {
-        if (!node.isDroppable) return false;
         for (let id of item.dragIds) {
           const drag = tree.api.getNode(id);
           if (!drag) return false;

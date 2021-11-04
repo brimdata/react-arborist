@@ -23,7 +23,7 @@ export default function App() {
           getChildren="children"
           isOpen="isOpen"
           height={height || 100}
-          disableDrop={(d) => d.name === "House Stark"}
+          disableDrop={(d) => d.name === "House Arryn"}
           hideRoot
           indent={24}
           onMove={backend.onMove}
