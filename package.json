@@ -1,6 +1,6 @@
 {
   "name": "react-arborist",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "license": "MIT",
   "files": [
     "dist/lib"
