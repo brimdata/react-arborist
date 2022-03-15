@@ -1,63 +1,7 @@
 {
-  "name": "react-arborist",
-  "version": "0.1.14",
-  "license": "MIT",
-  "files": [
-    "dist/lib"
+  "name": "react-arborist-monorepo",
+  "workspaces": [
+    "./packages/*"
   ],
-  "main": "dist/lib/index.js",
-  "types": "dist/lib/index.d.ts",
-  "dependencies": {
-    "react-dnd": "^14.0.3",
-    "react-dnd-html5-backend": "^14.0.1",
-    "react-window": "^1.8.6"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "tsc --noEmit false --outDir dist --declaration --module CommonJS",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "prepublishOnly": "npm run build"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "peerDependencies": {
-    "react": ">= 16.14",
-    "react-dom": ">= 16.14"
-  },
-  "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.8.0",
-    "@types/react-dom": "^16.8.0",
-    "@types/react-window": "^1.8.5",
-    "classnames": "^2.3.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-feather": "^2.0.9",
-    "react-scripts": "4.0.3",
-    "react-use-dimensions": "^1.2.1",
-    "tree-model-improved": "^2.0.1",
-    "typescript": "^4.1.2",
-    "web-vitals": "^1.0.1"
-  }
+  "private": true
 }
