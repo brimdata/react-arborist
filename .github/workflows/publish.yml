@@ -13,6 +13,6 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: yarn
       - run: yarn workspace react-arborist build
-      - run: yarn workspace react-arborist publish
+      - run: yarn workspace react-arborist npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
