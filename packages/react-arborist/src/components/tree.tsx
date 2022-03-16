@@ -21,7 +21,7 @@ const OuterElement = forwardRef(function Outer(
   const tree = useStaticContext();
   return (
     // @ts-ignore
-    <div ref={ref} {...rest} onClick={tree.onClick}>
+    <div ref={ref} {...rest} onClick={tree.onClick} onContextMenu={tree.onContextMenu}>
       <div
         style={{
           height: tree.api.visibleNodes.length * tree.rowHeight,

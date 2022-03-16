@@ -32,6 +32,7 @@ export default function App() {
           width={props.width}
           height={props.height}
           onClick={() => console.log("clicked!")}
+          onContextMenu={() => console.log("context menu")}
         >
           {Node}
         </Tree>}
