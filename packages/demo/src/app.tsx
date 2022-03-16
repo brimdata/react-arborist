@@ -31,6 +31,7 @@ export default function App() {
           rowHeight={22}
           width={props.width}
           height={props.height}
+          onClick={() => console.log("clicked!")}
         >
           {Node}
         </Tree>}

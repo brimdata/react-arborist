@@ -133,6 +133,8 @@ export type TreeProviderProps<T> = {
   onToggle: ToggleHandler;
   onMove: MoveHandler;
   onEdit: EditHandler;
+  onClick?: MouseEventHandler;
+  onContextMenu?: MouseEventHandler;
   renderer: NodeRenderer<any>;
   rowHeight: number;
   root: Node<T>;

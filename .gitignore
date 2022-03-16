@@ -31,4 +31,6 @@ dist
 !.yarn/plugins
 !.yarn/releases
 !.yarn/sdks
-!.yarn/versions.parcel-cache
+!.yarn/versions
+
+.parcel-cache

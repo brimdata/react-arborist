@@ -21,7 +21,7 @@ const OuterElement = forwardRef(function Outer(
   const tree = useStaticContext();
   return (
     // @ts-ignore
-    <div ref={ref} {...rest}>
+    <div ref={ref} {...rest} onClick={tree.onClick}>
       <div
         style={{
           height: tree.api.visibleNodes.length * tree.rowHeight,
@@ -39,10 +39,10 @@ const OuterElement = forwardRef(function Outer(
   );
 });
 
-function List(props: { className?: string, onClick?: MouseEventHandler, onContextMenu?: MouseEventHandler }) {
+function List(props: { className?: string}) {
   const tree = useStaticContext();
   return (
-    <div style={{ height: tree.height, width: tree.width, overflow: "hidden" }} onClick={props.onClick} onContextMenu={props.onContextMenu}>
+    <div style={{ height: tree.height, width: tree.width, overflow: "hidden" }}>
       <FixedSizeList
         className={props.className}
         outerRef={tree.listEl}
@@ -104,10 +104,12 @@ export const Tree = forwardRef(function Tree<T extends IdObj>(
       onMove={props.onMove || noop}
       onToggle={props.onToggle || noop}
       onEdit={props.onEdit || noop}
+      onClick={props.onClick}
+      onContextMenu={props.onContextMenu}
     >
       <DndProvider backend={HTML5Backend}>
         <OuterDrop>
-          <List className={props.className} onClick={props.onClick}/>
+          <List className={props.className}/>
         </OuterDrop>
         <Preview />
       </DndProvider>
