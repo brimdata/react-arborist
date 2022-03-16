@@ -4,5 +4,10 @@
     "./packages/*"
   ],
   "private": true,
-  "packageManager": "yarn@3.2.0"
+  "packageManager": "yarn@3.2.0",
+  "devDependencies": {
+    "@parcel/packager-ts": "2.3.2",
+    "@parcel/transformer-typescript-types": "2.3.2",
+    "typescript": ">=3.0.0"
+  }
 }

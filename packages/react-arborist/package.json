@@ -5,6 +5,7 @@
   "source": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/module.js",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "memoize-one": "^6.0.0",
     "react-dnd": "^14.0.3",
@@ -12,10 +13,8 @@
     "react-window": "^1.8.6"
   },
   "scripts": {
-    "watch": "parcel watch",
-    "build": "run-p 'build:**'",
-    "build:js": "parcel build",
-    "build:types": "tsc --outFile dist/types.d.ts"
+    "build": "parcel build --target main --target module",
+    "check": "tsc --outDir dist"
   },
   "peerDependencies": {
     "react": ">= 16.14",
@@ -26,7 +25,6 @@
     "@types/react": "^17.0.40",
     "@types/react-window": "^1.8.5",
     "jest": "^27.5.1",
-    "npm-run-all": "^4.1.5",
     "parcel": "^2.3.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",

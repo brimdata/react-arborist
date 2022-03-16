@@ -1042,6 +1042,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@parcel/packager-ts@npm:2.3.2":
+  version: 2.3.2
+  resolution: "@parcel/packager-ts@npm:2.3.2"
+  dependencies:
+    "@parcel/plugin": 2.3.2
+  checksum: 852a4a33e5fd084af517ba0b48987a8225cf850cedac3f59044295dd99ae0d09e15d4c1ec72b16f40804b19fcf68618436d814541cd2f4a2c48c49855a013dcc
+  languageName: node
+  linkType: hard
+
 "@parcel/plugin@npm:2.3.2":
   version: 2.3.2
   resolution: "@parcel/plugin@npm:2.3.2"
@@ -1286,6 +1295,32 @@ __metadata:
     posthtml-render: ^3.0.0
     semver: ^5.7.1
   checksum: 6de3f7be314c6e685b2c9c56e8193cbbdb1ab40581be9dede30a4e9301596fb0349f70bb2cdcb75327da0d5e62ad789e3ce8ec067239b643f065d54d9286fade
+  languageName: node
+  linkType: hard
+
+"@parcel/transformer-typescript-types@npm:2.3.2":
+  version: 2.3.2
+  resolution: "@parcel/transformer-typescript-types@npm:2.3.2"
+  dependencies:
+    "@parcel/diagnostic": 2.3.2
+    "@parcel/plugin": 2.3.2
+    "@parcel/source-map": ^2.0.0
+    "@parcel/ts-utils": 2.3.2
+    nullthrows: ^1.1.1
+  peerDependencies:
+    typescript: ">=3.0.0"
+  checksum: 89b2aaf765b4fcccd0a6b3afecf8a6c7dc17417ba63f931b18ac391f79dd3d7218fb1e53948a24c5429e6416fae19947cbf161ee76064572795e4982066c26e6
+  languageName: node
+  linkType: hard
+
+"@parcel/ts-utils@npm:2.3.2":
+  version: 2.3.2
+  resolution: "@parcel/ts-utils@npm:2.3.2"
+  dependencies:
+    nullthrows: ^1.1.1
+  peerDependencies:
+    typescript: ">=3.0.0"
+  checksum: 9cabf8de2e273b94160b6d2b4821c6dfba04db3bee61d1e165ef742bd2d56a7a4098066f61cc0c0af135fa9ad12c254736922de1db63528a294400dcb2623f5d
   languageName: node
   linkType: hard
 
@@ -2034,6 +2069,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"classnames@npm:^2.3.1":
+  version: 2.3.1
+  resolution: "classnames@npm:2.3.1"
+  checksum: 14db8889d56c267a591f08b0834989fe542d47fac659af5a539e110cc4266694e8de86e4e3bbd271157dbd831361310a8293e0167141e80b0f03a0f175c80960
+  languageName: node
+  linkType: hard
+
 "clean-stack@npm:^2.0.0":
   version: 2.2.0
   resolution: "clean-stack@npm:2.2.0"
@@ -2412,9 +2454,14 @@ __metadata:
   dependencies:
     "@types/react": ^17.0.40
     "@types/react-dom": ^17.0.13
+    classnames: ^2.3.1
     parcel: ^2.3.2
     react: ^17.0.2
+    react-arborist: "workspace:*"
     react-dom: ^17.0.2
+    react-feather: ^2.0.9
+    react-virtualized-auto-sizer: ^1.0.6
+    tree-model-improved: ^2.0.1
     typescript: ^4.6.2
   languageName: unknown
   linkType: soft
@@ -2724,6 +2771,13 @@ __metadata:
   dependencies:
     to-regex-range: ^5.0.1
   checksum: cc283f4e65b504259e64fd969bcf4def4eb08d85565e906b7d36516e87819db52029a76b6363d0f02d0d532f0033c9603b9e2d943d56ee3b0d4f7ad3328ff917
+  languageName: node
+  linkType: hard
+
+"find-insert-index@npm:0.0.1":
+  version: 0.0.1
+  resolution: "find-insert-index@npm:0.0.1"
+  checksum: a77d17cfeb258c8b0618f92ec177baa2aa0ab5ef9525c27422d2b82828ab61ac1452000df0fbcabe75b2de4787133daefda573c9cab2efb15b2f517b29e79929
   languageName: node
   linkType: hard
 
@@ -3917,7 +3971,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loose-envify@npm:^1.1.0":
+"loose-envify@npm:^1.1.0, loose-envify@npm:^1.4.0":
   version: 1.4.0
   resolution: "loose-envify@npm:1.4.0"
   dependencies:
@@ -4011,6 +4065,13 @@ __metadata:
   version: 2.0.0
   resolution: "merge-stream@npm:2.0.0"
   checksum: 6fa4dcc8d86629705cea944a4b88ef4cb0e07656ebf223fa287443256414283dd25d91c1cd84c77987f2aec5927af1a9db6085757cb43d90eb170ebf4b47f4f4
+  languageName: node
+  linkType: hard
+
+"mergesort@npm:0.0.1":
+  version: 0.0.1
+  resolution: "mergesort@npm:0.0.1"
+  checksum: f174d414944950b8d504ca7392790de74c8c6064398742a46ac3a90d993be5b1157476b14d34aa909277a939085997eb9941654efa5c4dc38aa145a7f64df7e7
   languageName: node
   linkType: hard
 
@@ -4945,6 +5006,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prop-types@npm:^15.7.2":
+  version: 15.8.1
+  resolution: "prop-types@npm:15.8.1"
+  dependencies:
+    loose-envify: ^1.4.0
+    object-assign: ^4.1.1
+    react-is: ^16.13.1
+  checksum: c056d3f1c057cb7ff8344c645450e14f088a915d078dcda795041765047fa080d38e5d626560ccaac94a4e16e3aa15f3557c1a9a8d1174530955e992c675e459
+  languageName: node
+  linkType: hard
+
 "psl@npm:^1.1.33":
   version: 1.8.0
   resolution: "psl@npm:1.8.0"
@@ -4962,10 +5034,14 @@ __metadata:
 "react-arborist-monorepo@workspace:.":
   version: 0.0.0-use.local
   resolution: "react-arborist-monorepo@workspace:."
+  dependencies:
+    "@parcel/packager-ts": 2.3.2
+    "@parcel/transformer-typescript-types": 2.3.2
+    typescript: ">=3.0.0"
   languageName: unknown
   linkType: soft
 
-"react-arborist@workspace:packages/react-arborist":
+"react-arborist@workspace:*, react-arborist@workspace:packages/react-arborist":
   version: 0.0.0-use.local
   resolution: "react-arborist@workspace:packages/react-arborist"
   dependencies:
@@ -4974,6 +5050,7 @@ __metadata:
     "@types/react-window": ^1.8.5
     jest: ^27.5.1
     memoize-one: ^6.0.0
+    parcel: ^2.3.2
     react: ^17.0.2
     react-dnd: ^14.0.3
     react-dnd-html5-backend: ^14.0.1
@@ -5033,7 +5110,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-is@npm:^16.7.0":
+"react-feather@npm:^2.0.9":
+  version: 2.0.9
+  resolution: "react-feather@npm:2.0.9"
+  dependencies:
+    prop-types: ^15.7.2
+  peerDependencies:
+    react: ^16.8.6 || ^17
+  checksum: 8535541c1041ba9ce02e1b6fe4425dc6857030ae2223d89fa2aa1faf82b04e542c863b267ee7ba5961d22fe3216f43241200a5807d8a8df48a96485ac8b68bf7
+  languageName: node
+  linkType: hard
+
+"react-is@npm:^16.13.1, react-is@npm:^16.7.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
   checksum: f7a19ac3496de32ca9ae12aa030f00f14a3d45374f1ceca0af707c831b2a6098ef0d6bdae51bd437b0a306d7f01d4677fcc8de7c0d331eb47ad0f46130e53c5f
@@ -5051,6 +5139,16 @@ __metadata:
   version: 0.9.0
   resolution: "react-refresh@npm:0.9.0"
   checksum: 6440146176f19402ffb7d66f317e40b1c42c88579b4d439b49021e38be6307c642da3e8732a72e6997b6bb1127db0da92f4aa433da4313ce8ebad0c1efa2ed4a
+  languageName: node
+  linkType: hard
+
+"react-virtualized-auto-sizer@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "react-virtualized-auto-sizer@npm:1.0.6"
+  peerDependencies:
+    react: ^15.3.0 || ^16.0.0-alpha || ^17.0.0
+    react-dom: ^15.3.0 || ^16.0.0-alpha || ^17.0.0
+  checksum: 81270e9d328e9b779515f42b6aa8dea2f21097f69fc776906d6b7d31ada03706d34408a6318baf59531f180402fbf74fdb9928ab65d53442a134b7ee5ba01265
   languageName: node
   linkType: hard
 
@@ -5642,6 +5740,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tree-model-improved@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "tree-model-improved@npm:2.0.1"
+  dependencies:
+    find-insert-index: 0.0.1
+    mergesort: 0.0.1
+  checksum: 21013a33e815bc72cf2a465940ea968fdfe3dd08d884942cc191e4ec54d9a55ac9896d88500e1877a636b32eccc459bce7f2469a22e63e3bc9cbf400c96e9978
+  languageName: node
+  linkType: hard
+
 "type-check@npm:~0.3.2":
   version: 0.3.2
   resolution: "type-check@npm:0.3.2"
@@ -5681,7 +5789,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.6.2":
+"typescript@npm:>=3.0.0, typescript@npm:^4.6.2":
   version: 4.6.2
   resolution: "typescript@npm:4.6.2"
   bin:
@@ -5691,7 +5799,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.6.2#~builtin<compat/typescript>":
+"typescript@patch:typescript@>=3.0.0#~builtin<compat/typescript>, typescript@patch:typescript@^4.6.2#~builtin<compat/typescript>":
   version: 4.6.2
   resolution: "typescript@patch:typescript@npm%3A4.6.2#~builtin<compat/typescript>::version=4.6.2&hash=bda367"
   bin:
