@@ -15,4 +15,4 @@ jobs:
       - run: yarn workspace react-arborist build
       - run: yarn workspace react-arborist npm publish
         env:
-          NPM_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+          YARN_NPM_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
