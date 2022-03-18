@@ -97,7 +97,7 @@ const PreviewNode = memo(function PreviewNode(props: {
         isOpen: node.isOpen,
       }}
       handlers={{
-        edit: () => {},
+        edit: () => Promise.resolve({ cancelled: true }),
         select: () => {},
         toggle: () => {},
         submit: () => {},
