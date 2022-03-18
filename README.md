@@ -1,4 +1,4 @@
-# React Arborist
+<h1><img alt="React Arborist Logo" src="https://user-images.githubusercontent.com/3460638/159076412-1231a1e6-14ca-4fa6-9c90-3b61a2a1bc56.png" width="100px" height="100px" /> React Arborist</h1>
 
 A full-featured tree component for React. 
 
