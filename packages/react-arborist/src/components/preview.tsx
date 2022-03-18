@@ -91,8 +91,8 @@ const PreviewNode = memo(function PreviewNode(props: {
         isDragging: false,
         isEditing: false,
         isSelected: false,
-        isFirstOfSelected: false,
-        isLastOfSelected: false,
+        isSelectedStart: false,
+        isSelectedEnd: false,
         isHoveringOverChild: false,
         isOpen: node.isOpen,
       }}

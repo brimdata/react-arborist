@@ -162,8 +162,8 @@ These are the properties on the state object passed to the NodeRenderer.
 | isSelected | boolean | True if this node is selected. Use this to show a "selected" state. Maybe a different background?
 | isHoveringOverChild | boolean | True if the user is dragging n node, and the node is hovering over one of this node's direct children. This can be used to indicate which folder the user is dragging an item into.
 | isDragging | boolean | True if this node is being dragged.
-| isFirstOfSelected | boolean | True if this is the first of a contiguous group of selected rows. This can be used to tastefully style a group of selected items. Maybe a different border radius on the first and last rows?
-| isLastOfSelected | boolean | True if this is the last of a contiguous group of selected rows.
+| isSelectedStart | boolean | True if this is the first of a contiguous group of selected rows. This can be used to tastefully style a group of selected items. Maybe a different border radius on the first and last rows?
+| isSelectedEnd | boolean | True if this is the last of a contiguous group of selected rows.
 | isEditing | boolean | True if this row is being edited. When true, the renderer should return some type of form input.
 
 

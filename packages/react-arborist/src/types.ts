@@ -53,15 +53,15 @@ export type NodeState = {
   isSelected: boolean;
   isHoveringOverChild: boolean;
   isDragging: boolean;
-  isFirstOfSelected: boolean;
-  isLastOfSelected: boolean;
+  isSelectedStart: boolean;
+  isSelectedEnd: boolean;
   isEditing: boolean;
 };
 
 export type NodeHandlers = {
   toggle: MouseEventHandler;
-  select: (e: MouseEvent, selectOnClick?: boolean) => void;
-  edit: () => void;
+  select: (e: MouseEvent, args: { selectOnClick: boolean }) => void;
+  edit: () => Promise<EditResult>;
   submit: (name: string) => void;
   reset: () => void;
 };
@@ -145,3 +145,7 @@ export type StaticContext<T> = TreeProviderProps<T> & {
   api: TreeApi<T>;
   list: MutableRefObject<FixedSizeList | undefined>;
 };
+
+export type EditResult =
+  | { cancelled: true }
+  | { cancelled: false; value: string };

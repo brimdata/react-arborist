@@ -101,12 +101,12 @@ main {
   color: white;
 }
 
-.isFirstOfSelected .row-contents {
+.isSelectedStart .row-contents {
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
 }
 
-.isLastOfSelected .row-contents {
+.isSelectedEnd .row-contents {
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
 }

@@ -4,9 +4,12 @@ import { FixedSizeList } from "react-window";
 import { flattenTree } from "./data/flatten-tree";
 import { Cursor } from "./dnd/compute-drop";
 import { Action, actions } from "./reducer";
-import { Node, StateContext, TreeProviderProps } from "./types";
+import { Node, StateContext, TreeProviderProps, EditResult } from "./types";
+import ReactDOM from "react-dom";
 
 export class TreeApi<T = unknown> {
+  private edits = new Map<string, (args: EditResult) => void>();
+
   constructor(
     public dispatch: Dispatch<Action>,
     public state: StateContext,
@@ -36,12 +39,40 @@ export class TreeApi<T = unknown> {
     return this.state.selection.ids;
   }
 
-  edit(id: string | number | null) {
-    this.dispatch(actions.edit(id ? id.toString() : null));
+  edit(id: string | number): Promise<EditResult> {
+    const sid = id.toString();
+    this.resolveEdit(sid, { cancelled: true });
+    this.scrollToId(sid);
+    this.dispatch(actions.edit(sid));
+    return new Promise((resolve) => this.edits.set(sid, resolve));
   }
 
-  select(index: number | null, meta: boolean, shift: boolean) {
+  submit(id: string | number, value: string) {
+    const sid = id.toString();
+    this.props.onEdit(sid, value);
+    this.dispatch(actions.edit(null));
+    this.resolveEdit(sid, { cancelled: false, value });
+  }
+
+  reset(id: string | number) {
+    const sid = id.toString();
+    this.dispatch(actions.edit(null));
+    this.resolveEdit(sid, { cancelled: true });
+  }
+
+  private resolveEdit(id: string, value: EditResult) {
+    const resolve = this.edits.get(id.toString());
+    if (resolve) resolve(value);
+    this.edits.delete(id);
+  }
+
+  select(index: number | null, meta = false, shift = false) {
     this.dispatch(actions.select(index, meta, shift));
+  }
+
+  selectById(id: string | number, meta = false, shift = false) {
+    const index = this.idToIndex[id];
+    this.select(index, meta, shift);
   }
 
   selectUpwards(shiftKey: boolean) {
@@ -67,11 +98,7 @@ export class TreeApi<T = unknown> {
       this.list.scrollToItem(index, "start");
     } else {
       this.openParents(id);
-      // This appears to be synchronous
-      // But I've only tested it in the console and
-      // not in an event handler which will be batched...
-      // We may need to wrap this in a timeout or trigger an effect somehow
-      setTimeout(() => {
+      ReactDOM.flushSync(() => {
         const index = this.idToIndex[id];
         if (index) {
           this.list?.scrollToItem(index, "start");

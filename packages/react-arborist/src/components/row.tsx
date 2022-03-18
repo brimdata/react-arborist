@@ -37,8 +37,8 @@ export const Row = React.memo(function Row({ index, style }: Props) {
     return {
       isEditing,
       isDragging,
-      isFirstOfSelected: isSelected && !prevSelected,
-      isLastOfSelected: isSelected && !nextSelected,
+      isSelectedStart: isSelected && !prevSelected,
+      isSelectedEnd: isSelected && !nextSelected,
       isSelected,
       isHoveringOverChild,
       isOpen,
@@ -54,9 +54,6 @@ export const Row = React.memo(function Row({ index, style }: Props) {
     isDragging,
     isOverFolder,
   ]);
-  if (isSelected) {
-    console.log({id: node.id, state})
-  }
 
   const ref = useCallback(
     (n: HTMLDivElement | null) => {
@@ -76,9 +73,12 @@ export const Row = React.memo(function Row({ index, style }: Props) {
 
   const handlers = useMemo(() => {
     return {
-      select: (e: React.MouseEvent, selectOnClick: boolean = true) => {
+      select: (
+        e: React.MouseEvent,
+        args: { selectOnClick: boolean } = { selectOnClick: true }
+      ) => {
         if (node.rowIndex === null) return;
-        if (selectOnClick || e.metaKey || e.shiftKey) {
+        if (args.selectOnClick || e.metaKey || e.shiftKey) {
           tree.api.select(node.rowIndex, e.metaKey, e.shiftKey);
         } else {
           tree.api.select(null, false, false);
@@ -88,16 +88,11 @@ export const Row = React.memo(function Row({ index, style }: Props) {
         e.stopPropagation();
         tree.onToggle(node.id, !node.isOpen);
       },
-      edit: () => {
-        tree.api.edit(node.id);
-      },
+      edit: () => tree.api.edit(node.id),
       submit: (name: string) => {
-        if (name.trim()) tree.onEdit(node.id, name);
-        tree.api.edit(null);
+        name.trim() ? tree.api.submit(node.id, name) : tree.api.reset(node.id);
       },
-      reset: () => {
-        tree.api.edit(null);
-      },
+      reset: () => tree.api.reset(node.id),
     };
   }, [tree, node]);
 

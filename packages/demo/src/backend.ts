@@ -21,6 +21,7 @@ export function useBackend() {
   const root = useMemo(() => new TreeModel().parse(data), [data]);
   const find = useCallback((id) => findById(root, id), [root]);
   const update = () => setData({ ...root.model });
+
   return {
     data,
     onMove: (
