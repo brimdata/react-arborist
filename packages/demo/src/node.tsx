@@ -1,8 +1,7 @@
 import classNames from "classnames";
 import React, { FocusEvent, KeyboardEvent } from "react";
 import { ChevronDown, ChevronRight, FileText, Folder } from "react-feather";
-import { NodeHandlers } from "../lib";
-import { NodeRendererProps } from "../lib/types";
+import { NodeHandlers, NodeRendererProps } from "react-arborist";
 import { MyData } from "./backend";
 
 const size = 16;
@@ -62,7 +61,7 @@ export const Node = ({
       ref={innerRef}
       style={styles.row}
       className={classNames("row", state)}
-      onClick={(e) => handlers.select(e, false)}
+      onClick={(e) => handlers.select(e)}
     >
       <div className="row-contents" style={styles.indent}>
         <MaybeToggleButton

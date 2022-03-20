@@ -51,4 +51,4 @@ House Martell
  Oberyn
   Sand Snakes`;
 
-export default makeTree(gotLineage, false);
+export default makeTree(gotLineage, true);
