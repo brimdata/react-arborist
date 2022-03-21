@@ -2,9 +2,13 @@
 
 A full-featured tree component for React. 
 
+Demo: https://react-arborist.netlify.app/
+
 The tree UI is ubiquitous in software applications. There are many tree component libraries for React, but none were full-featured enough to stand on their own.
 
 This library provides all the common features expected in a tree. You can select one or many nodes to drag and drop into new positions, open and close folders, render an inline form for renaming, efficiently show thousands of items, and provide your own node renderer to control the style.
+
+
 
 ![Demo](https://user-images.githubusercontent.com/3460638/131920177-c47c34e5-d3e3-4826-937d-b366f527cdfe.gif)
 
