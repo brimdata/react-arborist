@@ -7,7 +7,7 @@
   "module": "dist/module.js",
   "types": "dist/index.d.ts",
   "repository": "github:brimdata/react-arborist",
-  "homepage": "https://github.com/brimdata/react-arborist",
+  "homepage": "https://react-arborist.netlify.app",
   "dependencies": {
     "memoize-one": "^6.0.0",
     "react-dnd": "^14.0.3",
