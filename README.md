@@ -185,7 +185,7 @@ These are the properties on the handlers object passed to the NodeRenderer.
 
 ### Tree Prop
 
-The tree monitor provides methods to get the tree's internal state. A use case might be in a right click menu. 
+The tree monitor provides methods to get and change the tree's internal state. A use case might be in a right click menu. 
 
 ```jsx
 // In your node renderer
@@ -198,4 +198,11 @@ onContextMenu={() => {
 | Methods | Returns | Description |
 | ---- | ---- | ----------- |
 | `getSelectedIds()` | `string[]` | Get the the ids of all currently selected nodes.
-| `edit(id: string)` | `void` | Edit a node programatically.
+| `edit(id: string)` | `Promise<{cancelled: boolean, value: string \| undefined}>` | Edit a node programatically. Resolves when the edit is finished or cancelled.
+| `submit(id: string, value: string)` | void | Submit the edit.
+| `reset(id: string)` | void | Cancel the edit.
+| `select(index: number, meta = false, shift = false)` | `void` | Select a node by it's visible index in the tree. The meta flag, when true, will allow multiple items to be selected. The shift flag, when true, will select all nodes between the last one selected, and this one.
+| `selectById(id: string, meta = false, shift = false)` | `void` | Same as above but selects by id. If the id is not present (in a collapsed folder), nothing will happen. First use the `scrollToId` function which will open all the parents and scroll to the id.
+| `scrollToId(id: string)` | void | Scroll to the id opening all it's parents if needed.
+
+[Full Tree API Implementation](https://github.com/brimdata/react-arborist/blob/main/packages/react-arborist/src/tree-api.ts)
