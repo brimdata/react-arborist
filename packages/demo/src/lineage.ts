@@ -16,7 +16,7 @@ House Stark
    Sansa
    Arya
    Brandon
-   Rckon
+   Rickon
   Benjen
   Lyanna
 House Targaryen
