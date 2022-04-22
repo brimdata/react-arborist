@@ -208,3 +208,6 @@ onContextMenu={() => {
 | `scrollToId(id: string)` | void | Scroll to the id opening all it's parents if needed.
 
 [Full Tree API Implementation](https://github.com/brimdata/react-arborist/blob/main/packages/react-arborist/src/tree-api.ts)
+
+
+Authored by [James Kerr](https://twitter.com/specialCaseDev)
