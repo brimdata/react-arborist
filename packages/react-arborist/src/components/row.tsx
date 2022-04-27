@@ -1,7 +1,8 @@
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import {
   useCursorParentId,
   useEditingId,
+  useFocusId,
   useIsCursorOverFolder,
   useIsSelected,
   useStaticContext,
@@ -17,6 +18,7 @@ type Props = {
 export const Row = React.memo(function Row({ index, style }: Props) {
   const tree = useStaticContext();
   const selected = useIsSelected();
+
   const node = tree.api.visibleNodes[index];
   const next = tree.api.visibleNodes[index + 1] || null;
   const prev = tree.api.visibleNodes[index - 1] || null;
@@ -26,6 +28,7 @@ export const Row = React.memo(function Row({ index, style }: Props) {
   const [{ isDragging }, dragRef] = useDragHook(node);
   const [, dropRef] = useDropHook(el, node, prev, next);
   const isEditing = node.id === useEditingId();
+  const isFocused = node.id === useFocusId();
   const isSelected = selected(index);
   const nextSelected = next && selected(index + 1);
   const prevSelected = prev && selected(index - 1);
@@ -43,6 +46,7 @@ export const Row = React.memo(function Row({ index, style }: Props) {
       isHoveringOverChild,
       isOpen,
       isOverFolder,
+      isFocused,
     };
   }, [
     isEditing,
@@ -53,6 +57,7 @@ export const Row = React.memo(function Row({ index, style }: Props) {
     isOpen,
     isDragging,
     isOverFolder,
+    isFocused,
   ]);
 
   const ref = useCallback(
@@ -100,9 +105,16 @@ export const Row = React.memo(function Row({ index, style }: Props) {
     return React.memo(tree.renderer);
   }, [tree.renderer]);
 
+  useEffect(() => {
+    if (isFocused) {
+      console.log("trying to focus", node.id);
+      el.current.focus();
+    }
+  }, [isFocused]);
+
   return (
     <Renderer
-      innerRef={ref}
+      innerRef={el}
       data={node.model}
       styles={styles}
       state={state}

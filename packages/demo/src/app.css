@@ -58,6 +58,10 @@ main {
   display: flex;
 }
 
+.row:focus {
+  outline: 3px solid cornflowerblue;
+}
+
 .row i {
   margin-right: 6px;
   display: flex;

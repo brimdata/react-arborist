@@ -99,6 +99,7 @@ export type SelectionState = {
 export type StateContext = {
   cursor: Cursor;
   editingId: string | null;
+  focusId: string | null;
   selection: SelectionState;
   visibleIds: string[];
 };

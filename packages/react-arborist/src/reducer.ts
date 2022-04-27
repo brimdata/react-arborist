@@ -6,6 +6,7 @@ export const initState = (): StateContext => ({
   visibleIds: [],
   cursor: { type: "none" } as Cursor,
   editingId: null,
+  focusId: null,
   selection: {
     data: null,
     ids: [],
@@ -52,6 +53,11 @@ export const actions = {
   stepDown: (shift: boolean, ids: string[]) => ({
     type: "STEP_DOWN" as "STEP_DOWN",
     shift,
+  }),
+
+  focus: (id: string | null) => ({
+    type: "FOCUS" as "FOCUS",
+    id,
   }),
 };
 
@@ -149,6 +155,11 @@ export function reducer(state: StateContext, action: Action): StateContext {
           ids,
           data: s2.serialize(),
         },
+      };
+    case "FOCUS":
+      return {
+        ...state,
+        focusId: action.id,
       };
     default:
       return state;
