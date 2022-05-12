@@ -58,6 +58,7 @@ function Node({ ref, styles, data }) {
   - [State Prop](#state-prop)
   - [Handlers Prop](#handlers-prop)
   - [Tree Prop](#tree-prop)
+- [Accessing the Tree Api from the Parent](#accessing-the-tree-api-from-the-parent)
 
 ## Expected Data Structure
 
