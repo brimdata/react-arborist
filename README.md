@@ -28,10 +28,11 @@ Render the tree data structure.
 
 ```jsx
 const data = {
-  id: "The Root",
+  id: "A",
+  name: "Root"
   children: [
-    { id: "A", name: "Node A" },
-    { id: "B", name: "Node B" },
+    { id: "B", name: "Node 1" },
+    { id: "C", name: "Node 2" },
   ],
 };
 
