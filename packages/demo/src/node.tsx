@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { FocusEvent, KeyboardEvent } from "react";
+import React, { FocusEvent, KeyboardEvent, useEffect, useRef } from "react";
 import { ChevronDown, ChevronRight, FileText, Folder } from "react-feather";
 import { NodeHandlers, NodeRendererProps } from "react-arborist";
 import { MyData } from "./backend";
@@ -62,6 +62,10 @@ export const Node = ({
       style={styles.row}
       className={classNames("row", state)}
       onClick={(e) => handlers.select(e)}
+      tabIndex={-1}
+      onFocus={() => {
+        console.log(data.id, "focused");
+      }}
     >
       <div className="row-contents" style={styles.indent}>
         <MaybeToggleButton

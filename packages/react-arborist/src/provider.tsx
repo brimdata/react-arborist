@@ -4,6 +4,7 @@ import {
   CursorLocationContext,
   CursorParentId,
   EditingIdContext,
+  FocusId,
   IsCursorOverFolder,
   SelectionContext,
   Static,
@@ -16,6 +17,7 @@ import { StateContext, StaticContext, TreeProviderProps } from "./types";
 
 export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
   const [state, dispatch] = useReducer(reducer, initState());
+  console.log("<Provider />", state);
   const list = useRef<FixedSizeList>();
   const api = useTreeApi<T>(state, dispatch, props, list.current);
 
@@ -37,7 +39,9 @@ export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
           <CursorParentId.Provider value={getParentId(state.cursor)}>
             <IsCursorOverFolder.Provider value={isOverFolder(state)}>
               <CursorLocationContext.Provider value={state.cursor}>
-                {props.children}
+                <FocusId.Provider value={state.focusId}>
+                  {props.children}
+                </FocusId.Provider>
               </CursorLocationContext.Provider>
             </IsCursorOverFolder.Provider>
           </CursorParentId.Provider>

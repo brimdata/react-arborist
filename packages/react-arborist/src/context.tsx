@@ -3,6 +3,11 @@ import { Cursor } from "./dnd/compute-drop";
 import { Selection } from "./selection/selection";
 import { IdObj, SelectionState, StaticContext } from "./types";
 
+export const FocusId = createContext<string | null>(null);
+export function useFocusId() {
+  return useContext(FocusId);
+}
+
 export const CursorParentId = createContext<string | null>(null);
 export function useCursorParentId() {
   return useContext(CursorParentId);

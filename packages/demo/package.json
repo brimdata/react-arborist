@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "source": "src/index.html",
   "scripts": {
-    "start": "parcel",
+    "start": "parcel --no-hmr",
     "build": "parcel build",
     "check": "tsc --noEmit"
   },
