@@ -1,7 +1,7 @@
 import { MutableRefObject, useEffect } from "react";
 import { TreeApi } from "../tree-api";
 
-export function useSelectionKeys<T>(
+export function useKeys<T>(
   ref: MutableRefObject<HTMLDivElement | null>,
   api: TreeApi<T>
 ) {
@@ -10,10 +10,10 @@ export function useSelectionKeys<T>(
     const cb = (e: KeyboardEvent) => {
       if (e.code === "ArrowDown") {
         e.preventDefault();
-        api.selectDownwards(e.shiftKey);
+        api.focusNext(e.shiftKey);
       } else if (e.code === "ArrowUp") {
         e.preventDefault();
-        api.selectUpwards(e.shiftKey);
+        api.focusPrev(e.shiftKey);
       }
     };
     el?.addEventListener("keydown", cb);

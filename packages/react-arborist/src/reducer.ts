@@ -35,24 +35,9 @@ export const actions = {
     shift,
   }),
 
-  selectId: (id: string) => ({
-    type: "SELECT_ID" as "SELECT_ID",
-    id,
-  }),
-
   edit: (id: string | null) => ({
     type: "EDIT" as "EDIT",
     id,
-  }),
-
-  stepUp: (shift: boolean, ids: string[]) => ({
-    type: "STEP_UP" as "STEP_UP",
-    shift,
-  }),
-
-  stepDown: (shift: boolean, ids: string[]) => ({
-    type: "STEP_DOWN" as "STEP_DOWN",
-    shift,
   }),
 
   focus: (id: string | null) => ({
@@ -80,7 +65,11 @@ export function reducer(state: StateContext, action: Action): StateContext {
         return { ...state, cursor: action.cursor };
       }
     case "SELECT":
-      var s = Selection.parse(state.selection.data, state.visibleIds);
+      var s = Selection.parse(
+        state.selection.data,
+        state.focusId,
+        state.visibleIds
+      );
       if (action.index === null) {
         s.clear();
       } else if (action.meta) {
@@ -101,49 +90,12 @@ export function reducer(state: StateContext, action: Action): StateContext {
           ids: s.getSelectedItems(),
         },
       };
-    case "SELECT_ID":
-      return {
-        ...state,
-        selection: {
-          ...state.selection,
-          ids: [action.id],
-        },
-      };
-    case "STEP_UP":
-      var s3 = Selection.parse(state.selection.data, state.visibleIds);
-      var f = s3.getFocus();
-      if (action.shift) {
-        s3.extend(f - 1);
-      } else {
-        s3.select(f - 1);
-      }
-      return {
-        ...state,
-        selection: {
-          data: s3.serialize(),
-          ids: s3.getSelectedItems(),
-        },
-      };
-    case "STEP_DOWN":
-      var s6 = Selection.parse(state.selection.data, state.visibleIds);
-      var f2 = s6.getFocus();
-      if (action.shift) {
-        s6.extend(f2 + 1);
-      } else {
-        s6.select(f2 + 1);
-      }
-      return {
-        ...state,
-        selection: {
-          data: s6.serialize(),
-          ids: s6.getSelectedItems(),
-        },
-      };
+
     case "SET_VISIBLE_IDS":
       // The visible ids changed
       var ids = state.selection.ids;
       // Start with a blank selection
-      var s2 = new Selection([], null, "none", state.visibleIds);
+      var s2 = new Selection([], null, "none", null, state.visibleIds);
       // Add each of the old selected ids to this new selection
       for (let id of ids) {
         if (id in action.idMap) s2.multiSelect(action.idMap[id]);

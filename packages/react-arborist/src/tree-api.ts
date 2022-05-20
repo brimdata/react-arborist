@@ -6,6 +6,7 @@ import { Cursor } from "./dnd/compute-drop";
 import { Action, actions } from "./reducer";
 import { Node, StateContext, TreeProviderProps, EditResult } from "./types";
 import ReactDOM from "react-dom";
+import { first, last } from "./utils";
 
 export class TreeApi<T = unknown> {
   private edits = new Map<string, (args: EditResult) => void>();
@@ -66,21 +67,46 @@ export class TreeApi<T = unknown> {
     this.edits.delete(id);
   }
 
+  // Make this use an id
   select(index: number | null, meta = false, shift = false) {
     this.dispatch(actions.select(index, meta, shift));
   }
 
+  // Change this to selectIndex
   selectById(id: string | number, meta = false, shift = false) {
     const index = this.idToIndex[id];
     this.select(index, meta, shift);
   }
 
-  selectUpwards(shiftKey: boolean) {
-    this.dispatch(actions.stepUp(shiftKey, this.visibleIds));
+  focus(id: string | null, shiftKey: boolean = false) {
+    if (id === null) return;
+    const selectionFollowsFocus = false;
+    this.dispatch(actions.focus(id));
+    if (shiftKey || selectionFollowsFocus) {
+      this.selectById(id, false, shiftKey);
+    }
   }
 
-  selectDownwards(shiftKey: boolean) {
-    this.dispatch(actions.stepDown(shiftKey, this.visibleIds));
+  focusNext(shiftKey: boolean) {
+    const id = this.state.focusId;
+    const nextId = id && this.getNextId(id);
+    if (!id) this.focusFirst();
+    else if (nextId) this.focus(nextId, shiftKey);
+  }
+
+  focusPrev(shiftKey: boolean) {
+    const id = this.state.focusId;
+    const prevId = id && this.getPrevId(id);
+    if (!id) this.focusLast();
+    else if (prevId) this.focus(prevId, shiftKey);
+  }
+
+  focusFirst(shiftKey: boolean = false) {
+    this.focus(first(this.visibleIds), shiftKey);
+  }
+
+  focusLast(shiftKey: boolean = false) {
+    this.focus(last(this.visibleIds), shiftKey);
   }
 
   hideCursor() {
@@ -95,13 +121,13 @@ export class TreeApi<T = unknown> {
     if (!this.list) return;
     const index = this.idToIndex[id];
     if (index) {
-      this.list.scrollToItem(index, "start");
+      this.list.scrollToItem(index);
     } else {
       this.openParents(id);
       ReactDOM.flushSync(() => {
         const index = this.idToIndex[id];
         if (index) {
-          this.list?.scrollToItem(index, "start");
+          this.list?.scrollToItem(index);
         }
       });
     }
@@ -109,6 +135,10 @@ export class TreeApi<T = unknown> {
 
   open(id: string) {
     this.props.onToggle(id, true);
+  }
+
+  close(id: string) {
+    this.props.onToggle(id, false);
   }
 
   openParents(id: string) {
@@ -121,6 +151,11 @@ export class TreeApi<T = unknown> {
     }
   }
 
+  openLevel(level: number) {
+    const nodes = this.visibleNodes.filter((n) => n.level === level);
+    for (let node of nodes) this.open(node.id);
+  }
+
   get visibleIds() {
     return getIds(this.visibleNodes);
   }
@@ -131,6 +166,23 @@ export class TreeApi<T = unknown> {
 
   get visibleNodes() {
     return createList(this.props.root);
+  }
+
+  private getId(index: number) {
+    if (index >= this.visibleIds.length) return null;
+    return this.visibleIds[index] || null;
+  }
+
+  private getNextId(id: string) {
+    if (!(id in this.idToIndex)) return null;
+    const index = this.idToIndex[id];
+    return this.getId(index + 1);
+  }
+
+  private getPrevId(id: string) {
+    if (!(id in this.idToIndex)) return null;
+    const index = this.idToIndex[id];
+    return this.getId(index - 1);
   }
 }
 

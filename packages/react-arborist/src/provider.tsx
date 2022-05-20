@@ -1,4 +1,10 @@
-import { useImperativeHandle, useMemo, useReducer, useRef } from "react";
+import {
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useReducer,
+  useRef,
+} from "react";
 import { FixedSizeList } from "react-window";
 import {
   CursorLocationContext,
@@ -11,18 +17,17 @@ import {
 } from "./context";
 import { Cursor } from "./dnd/compute-drop";
 import { initState, reducer } from "./reducer";
-import { useSelectionKeys } from "./selection/selection-hook";
+import { useKeys } from "./selection/keys-hook";
 import { useTreeApi } from "./tree-api-hook";
 import { StateContext, StaticContext, TreeProviderProps } from "./types";
 
 export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
   const [state, dispatch] = useReducer(reducer, initState());
-  console.log("<Provider />", state);
   const list = useRef<FixedSizeList>();
   const api = useTreeApi<T>(state, dispatch, props, list.current);
 
   useImperativeHandle(props.imperativeHandle, () => api);
-  useSelectionKeys(props.listEl, api);
+  useKeys(props.listEl, api);
   const staticValue = useMemo<StaticContext<T>>(
     () => ({ ...props, api, list }),
     [props, api, list]
@@ -32,7 +37,6 @@ export function TreeViewProvider<T>(props: TreeProviderProps<T>) {
    * This context pattern is ridiculous, next time use redux.
    */
   return (
-    // @ts-ignore
     <Static.Provider value={staticValue}>
       <EditingIdContext.Provider value={state.editingId}>
         <SelectionContext.Provider value={state.selection}>

@@ -1,5 +1,9 @@
 {
   "name": "react-arborist-monorepo",
+  "scripts": {
+    "demo": "yarn workspace demo start",
+    "watch": "yarn workspace react-arborist watch"
+  },
   "workspaces": [
     "./packages/*"
   ],

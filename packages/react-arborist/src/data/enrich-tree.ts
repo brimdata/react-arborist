@@ -1,26 +1,5 @@
 import { TreeProps, IdObj, Node } from "../types";
-
-function createNode<T extends IdObj>(
-  model: T,
-  level: number,
-  parent: Node<T> | null,
-  children: Node<T>[] | null,
-  isOpen: boolean,
-  isDraggable: boolean,
-  isDroppable: boolean
-): Node<T> {
-  return {
-    id: model.id,
-    level,
-    parent,
-    children,
-    isOpen,
-    isDraggable,
-    isDroppable,
-    model,
-    rowIndex: null,
-  };
-}
+import { withDefault } from "../utils";
 
 function access(obj: any, accessor: string | boolean | Function) {
   if (typeof accessor === "boolean") {
@@ -48,25 +27,32 @@ export function enrichTree<T extends IdObj>(
     level: number,
     parent: Node<T> | null
   ) {
-    const open = access(model, isOpen) as boolean;
-    const draggable = !access(model, disableDrag) as boolean;
-    const droppable = !access(model, disableDrop) as boolean;
-    const node = createNode<T>(
+    const isDraggable = !access(model, disableDrag) as boolean;
+    const isDroppable = !access(model, disableDrop) as boolean;
+    const children = access(model, getChildren) as T[];
+    const open = access(model, isOpen);
+    const isFolder = !!children;
+
+    const node: Node<T> = {
+      id: model.id,
       model,
       level,
       parent,
-      null,
-      open === undefined ? openByDefault : open,
-      draggable,
-      droppable
-    );
-    const children = access(model, getChildren) as T[];
+      children: null,
+      isFolder: !!children,
+      isRoot: parent === null,
+      isOpen: isFolder && withDefault(open, openByDefault),
+      isDraggable,
+      isDroppable,
+      rowIndex: null,
+    };
 
     if (children) {
       node.children = children.map((child: T) =>
         visitSelfAndChildren(child, level + 1, node)
       );
     }
+
     return node;
   }
 

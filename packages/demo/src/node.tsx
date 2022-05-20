@@ -45,28 +45,18 @@ function Icon({ isFolder, isSelected }: any) {
 }
 
 export const Node = ({
-  innerRef,
   data,
   styles,
   state,
   handlers,
-  tree,
+  attrs,
 }: NodeRendererProps<MyData>) => {
   const folder = Array.isArray(data.children);
   const open = state.isOpen;
   const name = data.name;
 
   return (
-    <div
-      ref={innerRef}
-      style={styles.row}
-      className={classNames("row", state)}
-      onClick={(e) => handlers.select(e)}
-      tabIndex={-1}
-      onFocus={() => {
-        console.log(data.id, "focused");
-      }}
-    >
+    <div {...attrs} className={classNames("row", state)}>
       <div className="row-contents" style={styles.indent}>
         <MaybeToggleButton
           toggle={handlers.toggle}
@@ -106,6 +96,7 @@ function RenameForm({ defaultValue, submit, reset }: FormProps) {
     onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => {
       switch (e.key) {
         case "Enter":
+          e.stopPropagation();
           submit(e.currentTarget.value);
           break;
         case "Escape":

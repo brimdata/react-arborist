@@ -26,6 +26,8 @@ export type Node<T = unknown> = {
   level: number;
   children: Node<T>[] | null;
   parent: Node<T> | null;
+  isRoot: boolean;
+  isFolder: boolean;
   isOpen: boolean;
   isDraggable: boolean;
   isDroppable: boolean;
@@ -136,6 +138,7 @@ export type TreeProviderProps<T> = {
   onEdit: EditHandler;
   onClick?: MouseEventHandler;
   onContextMenu?: MouseEventHandler;
+  onSelect: (data: T) => void;
   renderer: NodeRenderer<any>;
   rowHeight: number;
   root: Node<T>;

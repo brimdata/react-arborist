@@ -1,4 +1,10 @@
-import { forwardRef, MouseEventHandler, ReactElement, useMemo, useRef } from "react";
+import {
+  forwardRef,
+  MouseEventHandler,
+  ReactElement,
+  useMemo,
+  useRef,
+} from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FixedSizeList } from "react-window";
@@ -20,8 +26,28 @@ const OuterElement = forwardRef(function Outer(
   const { children, ...rest } = props;
   const tree = useStaticContext();
   return (
-    // @ts-ignore
-    <div ref={ref} {...rest} onClick={tree.onClick} onContextMenu={tree.onContextMenu}>
+    <div
+      tabIndex={0}
+      // @ts-ignore
+      ref={ref}
+      {...rest}
+      onClick={tree.onClick}
+      onContextMenu={tree.onContextMenu}
+      onFocus={(e) => {
+        if (e.target !== e.currentTarget) return;
+        const focusId = tree.api.getSelectedIds()[0];
+        if (focusId) tree.api.focus(focusId);
+        else tree.api.focusFirst();
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Home") {
+          tree.api.focusFirst(e.shiftKey);
+        }
+        if (e.key === "End") {
+          tree.api.focusLast(e.shiftKey);
+        }
+      }}
+    >
       <div
         style={{
           height: tree.api.visibleNodes.length * tree.rowHeight,
@@ -39,7 +65,7 @@ const OuterElement = forwardRef(function Outer(
   );
 });
 
-function List(props: { className?: string}) {
+function List(props: { className?: string }) {
   const tree = useStaticContext();
   return (
     <div style={{ height: tree.height, width: tree.width, overflow: "hidden" }}>
@@ -106,10 +132,11 @@ export const Tree = forwardRef(function Tree<T extends IdObj>(
       onEdit={props.onEdit || noop}
       onClick={props.onClick}
       onContextMenu={props.onContextMenu}
+      onSelect={props.onSelect || noop}
     >
       <DndProvider backend={HTML5Backend}>
         <OuterDrop>
-          <List className={props.className}/>
+          <List className={props.className} />
         </OuterDrop>
         <Preview />
       </DndProvider>

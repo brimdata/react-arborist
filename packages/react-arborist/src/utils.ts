@@ -14,6 +14,10 @@ export function isClosed(node: Node | null) {
   return node && isFolder(node) && !node.isOpen;
 }
 
+export function hasParent(node: Node | null) {
+  return node && node.parent && node.parent.level >= 0;
+}
+
 /**
  * Is first param a decendent of the second param
  */
@@ -33,3 +37,16 @@ export const indexOf = (node: Node) => {
 };
 
 export function noop() {}
+
+export function withDefault(value: unknown, defaultValue: unknown) {
+  if (value === undefined) return defaultValue;
+  else return value;
+}
+
+export function first<T>(array: T[]) {
+  return array[0];
+}
+
+export function last<T>(array: T[]) {
+  return array[array.length - 1];
+}

@@ -13,13 +13,20 @@ export class Selection {
   currentIndex: number | null;
   direction: SelectionDirection = "none";
   items: any[];
+  focusId: string | null;
 
-  static parse(data: SelectionData | null, items: any[]) {
+  // This needs to not exist, just pass an object to the constructor.
+  static parse(
+    data: SelectionData | null,
+    focusId: string | null,
+    items: any[]
+  ) {
     if (data) {
       return new Selection(
         data.ranges,
         data.currentIndex,
         data.direction,
+        focusId,
         items
       );
     } else {
@@ -31,10 +38,12 @@ export class Selection {
     ranges: [number, number][] = [],
     currentIndex: number | null = ranges.length ? ranges.length - 1 : null,
     direction: SelectionDirection = "none",
+    focusId: string | null = null,
     items: any[] = []
   ) {
     ranges.forEach(([s, e]) => this.addRange(s, e));
     this.currentIndex = currentIndex;
+    this.focusId = focusId;
     this.direction = direction;
     this.items = items;
   }
@@ -160,10 +169,7 @@ export class Selection {
   }
 
   getFocus() {
-    if (!this.current) return -1;
-    return this.direction === "backward"
-      ? this.current.start
-      : this.current.end;
+    return this.items.indexOf(this.focusId);
   }
 
   private compact(focus: number) {

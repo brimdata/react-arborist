@@ -28,8 +28,9 @@ export function GotLineage() {
           rowHeight={22}
           width={props.width}
           height={props.height}
-          onClick={() => console.log("clicked the tree")}
-          onContextMenu={() => console.log("context menu the tree")}
+          onSelect={(data) => {
+            console.log("An item was selected", data.name);
+          }}
         >
           {Node}
         </Tree>

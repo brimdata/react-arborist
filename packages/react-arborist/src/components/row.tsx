@@ -1,4 +1,12 @@
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, {
+  KeyboardEvent,
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
+import ReactDOM from "react-dom";
 import {
   useCursorParentId,
   useEditingId,
@@ -9,6 +17,7 @@ import {
 } from "../context";
 import { useDragHook } from "../dnd/drag-hook";
 import { useDropHook } from "../dnd/drop-hook";
+import { hasParent, isFolder } from "../utils";
 
 type Props = {
   style: React.CSSProperties;
@@ -106,15 +115,74 @@ export const Row = React.memo(function Row({ index, style }: Props) {
   }, [tree.renderer]);
 
   useEffect(() => {
+    if (isEditing) return;
     if (isFocused) {
-      console.log("trying to focus", node.id);
-      el.current.focus();
+      el.current?.focus();
     }
-  }, [isFocused]);
+  }, [isFocused, isEditing]);
+
+  useEffect(() => {
+    if (isSelected) {
+      if (tree.api.getSelectedIds().length === 1) {
+        tree.api.props.onSelect(node.model);
+      }
+    }
+  }, [isSelected]);
+
+  const attrs = useMemo(() => {
+    return {
+      onClick: (e: MouseEvent) => {
+        if (!node.rowIndex) return;
+        if (e.metaKey || e.shiftKey) {
+          tree.api.select(node.rowIndex, e.metaKey, e.shiftKey);
+        } else {
+          tree.api.focus(node.id);
+          tree.api.selectById(node.id);
+        }
+      },
+      onKeyDown: (e: KeyboardEvent) => {
+        if (e.key === "Enter") {
+          tree.api.edit(node.id);
+        }
+        if (e.key === "ArrowRight") {
+          if (node.isOpen) {
+            tree.api.focusNext(false);
+          } else if (node.isFolder) {
+            tree.api.open(node.id);
+          }
+        }
+        if (e.key === "ArrowLeft") {
+          if (node.isOpen) {
+            tree.api.close(node.id);
+          } else if (hasParent(node)) {
+            tree.api.focus(node.parent!.id);
+          }
+        }
+        if (e.key === "*") {
+          tree.api.openLevel(node.level);
+          ReactDOM.flushSync(() => {
+            tree.api.scrollToId(node.id);
+          });
+        }
+        if (e.key === " ") {
+          // This needs to be the "Default Action"
+          e.preventDefault();
+          if (node.isFolder && !e.shiftKey) {
+            tree.api.props.onToggle(node.id, !node.isOpen);
+          } else {
+            tree.api.selectById(node.id, e.metaKey, e.shiftKey);
+          }
+        }
+      },
+      ref: el,
+      style: styles.row,
+      tabIndex: -1,
+    };
+  }, [tree.api, node, el, styles]);
 
   return (
     <Renderer
-      innerRef={el}
+      attrs={attrs}
       data={node.model}
       styles={styles}
       state={state}
