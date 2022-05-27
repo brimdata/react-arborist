@@ -95,13 +95,13 @@ export class TreeApi<T = unknown> {
     if (!this.list) return;
     const index = this.idToIndex[id];
     if (index) {
-      this.list.scrollToItem(index, "start");
+      this.list.scrollToItem(index);
     } else {
       this.openParents(id);
       ReactDOM.flushSync(() => {
         const index = this.idToIndex[id];
         if (index) {
-          this.list?.scrollToItem(index, "start");
+          this.list?.scrollToItem(index);
         }
       });
     }
