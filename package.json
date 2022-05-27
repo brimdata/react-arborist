@@ -3,6 +3,9 @@
   "workspaces": [
     "./packages/*"
   ],
+  "scripts": {
+    "bump": "yarn workspace react-arborist version"
+  },
   "private": true,
   "packageManager": "yarn@3.2.0",
   "devDependencies": {
