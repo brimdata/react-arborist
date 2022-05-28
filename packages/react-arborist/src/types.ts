@@ -102,26 +102,30 @@ export type StateContext = {
   selection: SelectionState;
   visibleIds: string[];
 };
+
+type BoolFunc<T> = (data: T) => boolean;
+
 export interface TreeProps<T> {
   children: NodeRenderer<T>;
-  data: T;
-  height?: number;
-  width?: number;
-  rowHeight?: number;
-  indent?: number;
-  hideRoot?: boolean;
-  onToggle?: ToggleHandler;
-  onMove?: MoveHandler;
-  onEdit?: EditHandler;
-  getChildren?: string | ((d: T) => T[]);
-  isOpen?: string | ((d: T) => boolean);
-  disableDrag?: string | boolean | ((d: T) => boolean);
-  disableDrop?: string | boolean | ((d: T) => boolean);
-  openByDefault?: boolean;
   className?: string | undefined;
-  handle?: Ref<TreeApi<T>>;
+  data: T;
+  disableDrag?: string | boolean | BoolFunc<T>;
+  disableDrop?: string | boolean | BoolFunc<T>;
+  dndRootElement?: globalThis.Node | null;
+  getChildren?: string | ((d: T) => T[]);
+  handle?: Ref<TreeApi<T>>; // Deprecated
+  height?: number;
+  hideRoot?: boolean;
+  indent?: number;
+  isOpen?: string | BoolFunc<T>;
   onClick?: MouseEventHandler;
   onContextMenu?: MouseEventHandler;
+  onEdit?: EditHandler;
+  onMove?: MoveHandler;
+  onToggle?: ToggleHandler;
+  openByDefault?: boolean;
+  rowHeight?: number;
+  width?: number;
 }
 
 export type TreeProviderProps<T> = {

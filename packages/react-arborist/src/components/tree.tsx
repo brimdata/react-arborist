@@ -1,4 +1,10 @@
-import { forwardRef, MouseEventHandler, ReactElement, useMemo, useRef } from "react";
+import {
+  forwardRef,
+  MouseEventHandler,
+  ReactElement,
+  useMemo,
+  useRef,
+} from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { FixedSizeList } from "react-window";
@@ -20,8 +26,13 @@ const OuterElement = forwardRef(function Outer(
   const { children, ...rest } = props;
   const tree = useStaticContext();
   return (
-    // @ts-ignore
-    <div ref={ref} {...rest} onClick={tree.onClick} onContextMenu={tree.onContextMenu}>
+    <div
+      // @ts-ignore
+      ref={ref}
+      {...rest}
+      onClick={tree.onClick}
+      onContextMenu={tree.onContextMenu}
+    >
       <div
         style={{
           height: tree.api.visibleNodes.length * tree.rowHeight,
@@ -39,7 +50,7 @@ const OuterElement = forwardRef(function Outer(
   );
 });
 
-function List(props: { className?: string}) {
+function List(props: { className?: string }) {
   const tree = useStaticContext();
   return (
     <div style={{ height: tree.height, width: tree.width, overflow: "hidden" }}>
@@ -91,6 +102,7 @@ export const Tree = forwardRef(function Tree<T extends IdObj>(
       props.openByDefault,
     ]
   );
+
   return (
     <TreeViewProvider
       imperativeHandle={ref}
@@ -107,9 +119,12 @@ export const Tree = forwardRef(function Tree<T extends IdObj>(
       onClick={props.onClick}
       onContextMenu={props.onContextMenu}
     >
-      <DndProvider backend={HTML5Backend}>
+      <DndProvider
+        backend={HTML5Backend}
+        options={{ rootElement: props.dndRootElement || undefined }}
+      >
         <OuterDrop>
-          <List className={props.className}/>
+          <List className={props.className} />
         </OuterDrop>
         <Preview />
       </DndProvider>

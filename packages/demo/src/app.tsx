@@ -31,7 +31,7 @@ export default function App() {
   return (
     <div className="example">
       <main>
-        <h1>React Arborist</h1>
+        <h1 draggable>React Arborist</h1>
         <p>
           In this demo, we have the Game of Thrones family tree rendered with
           the <code>Tree</code> component. You can drag and drop the items in
