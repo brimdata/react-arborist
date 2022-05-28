@@ -4,7 +4,8 @@
     "./packages/*"
   ],
   "scripts": {
-    "bump": "yarn workspace react-arborist version"
+    "bump": "yarn workspace react-arborist version",
+    "dev": "yarn workspace demo start"
   },
   "private": true,
   "packageManager": "yarn@3.2.0",
