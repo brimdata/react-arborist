@@ -129,20 +129,10 @@ export interface TreeProps<T> {
 }
 
 export type TreeProviderProps<T> = {
+  treeProps: TreeProps<T>;
   imperativeHandle: React.Ref<TreeApi<T>> | undefined;
   children: ReactElement;
-  height: number;
-  indent: number;
-  listEl: MutableRefObject<HTMLDivElement | null>;
-  onToggle: ToggleHandler;
-  onMove: MoveHandler;
-  onEdit: EditHandler;
-  onClick?: MouseEventHandler;
-  onContextMenu?: MouseEventHandler;
-  renderer: NodeRenderer<any>;
-  rowHeight: number;
   root: Node<T>;
-  width: number;
 };
 
 export type StaticContext<T> = TreeProviderProps<T> & {

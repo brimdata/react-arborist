@@ -14,6 +14,7 @@ export const Tree = forwardRef(function Tree<T extends IdObj>(
   props: TreeProps<T>,
   ref: React.Ref<TreeApi<T>>
 ) {
+  console.log(props.height);
   const root = useMemo<Node<T>>(
     () =>
       enrichTree<T>(
@@ -37,21 +38,7 @@ export const Tree = forwardRef(function Tree<T extends IdObj>(
   );
 
   return (
-    <TreeViewProvider
-      imperativeHandle={ref}
-      root={root}
-      listEl={useRef<HTMLDivElement | null>(null)}
-      renderer={props.children}
-      width={props.width === undefined ? 300 : props.width}
-      height={props.height === undefined ? 500 : props.height}
-      indent={props.indent === undefined ? 24 : props.indent}
-      rowHeight={props.rowHeight === undefined ? 24 : props.rowHeight}
-      onMove={props.onMove || noop}
-      onToggle={props.onToggle || noop}
-      onEdit={props.onEdit || noop}
-      onClick={props.onClick}
-      onContextMenu={props.onContextMenu}
-    >
+    <TreeViewProvider treeProps={props} imperativeHandle={ref} root={root}>
       <DndProvider
         backend={HTML5Backend}
         options={{ rootElement: props.dndRootElement || undefined }}

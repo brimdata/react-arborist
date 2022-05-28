@@ -1,6 +1,6 @@
 import React, { CSSProperties, memo } from "react";
 import { useDragLayer, XYCoord } from "react-dnd";
-import { useStaticContext } from "../context";
+import { useTreeApi } from "../context";
 import { DragItem } from "../types";
 
 const layerStyles: CSSProperties = {
@@ -73,9 +73,9 @@ function Count(props: { item: DragItem; mouse: XYCoord | null }) {
 const PreviewNode = memo(function PreviewNode(props: {
   item: DragItem | null;
 }) {
-  const tree = useStaticContext();
+  const tree = useTreeApi();
   if (!props.item) return null;
-  const node = tree.api.getNode(props.item.id);
+  const node = tree.getNode(props.item.id);
   if (!node) return null;
   return (
     <tree.renderer
@@ -86,7 +86,7 @@ const PreviewNode = memo(function PreviewNode(props: {
         row: {},
         indent: { paddingLeft: node.level * tree.indent },
       }}
-      tree={tree.api}
+      tree={tree}
       state={{
         isDragging: false,
         isEditing: false,

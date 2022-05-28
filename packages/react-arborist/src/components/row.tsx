@@ -4,7 +4,7 @@ import {
   useEditingId,
   useIsCursorOverFolder,
   useIsSelected,
-  useStaticContext,
+  useTreeApi,
 } from "../context";
 import { useDragHook } from "../dnd/drag-hook";
 import { useDropHook } from "../dnd/drop-hook";
@@ -15,11 +15,11 @@ type Props = {
 };
 
 export const Row = React.memo(function Row({ index, style }: Props) {
-  const tree = useStaticContext();
+  const tree = useTreeApi();
   const selected = useIsSelected();
-  const node = tree.api.visibleNodes[index];
-  const next = tree.api.visibleNodes[index + 1] || null;
-  const prev = tree.api.visibleNodes[index - 1] || null;
+  const node = tree.visibleNodes[index];
+  const next = tree.visibleNodes[index + 1] || null;
+  const prev = tree.visibleNodes[index - 1] || null;
   const cursorParentId = useCursorParentId();
   const cursorOverFolder = useIsCursorOverFolder();
   const el = useRef<HTMLDivElement | null>(null);
@@ -79,20 +79,20 @@ export const Row = React.memo(function Row({ index, style }: Props) {
       ) => {
         if (node.rowIndex === null) return;
         if (args.selectOnClick || e.metaKey || e.shiftKey) {
-          tree.api.select(node.rowIndex, e.metaKey, e.shiftKey);
+          tree.select(node.rowIndex, e.metaKey, e.shiftKey);
         } else {
-          tree.api.select(null, false, false);
+          tree.select(null, false, false);
         }
       },
       toggle: (e: React.MouseEvent) => {
         e.stopPropagation();
         tree.onToggle(node.id, !node.isOpen);
       },
-      edit: () => tree.api.edit(node.id),
+      edit: () => tree.edit(node.id),
       submit: (name: string) => {
-        name.trim() ? tree.api.submit(node.id, name) : tree.api.reset(node.id);
+        name.trim() ? tree.submit(node.id, name) : tree.reset(node.id);
       },
-      reset: () => tree.api.reset(node.id),
+      reset: () => tree.reset(node.id),
     };
   }, [tree, node]);
 
@@ -108,7 +108,7 @@ export const Row = React.memo(function Row({ index, style }: Props) {
       state={state}
       handlers={handlers}
       preview={false}
-      tree={tree.api}
+      tree={tree}
     />
   );
 });

@@ -1,11 +1,12 @@
 import memoizeOne from "memoize-one";
-import { Dispatch } from "react";
+import { Dispatch, MutableRefObject } from "react";
 import { FixedSizeList } from "react-window";
 import { flattenTree } from "./data/flatten-tree";
 import { Cursor } from "./dnd/compute-drop";
 import { Action, actions } from "./reducer";
 import { Node, StateContext, TreeProviderProps, EditResult } from "./types";
 import ReactDOM from "react-dom";
+import { noop } from "./utils";
 
 export class TreeApi<T = unknown> {
   private edits = new Map<string, (args: EditResult) => void>();
@@ -14,20 +15,9 @@ export class TreeApi<T = unknown> {
     public dispatch: Dispatch<Action>,
     public state: StateContext,
     public props: TreeProviderProps<T>,
-    public list: FixedSizeList | undefined
+    public list: MutableRefObject<FixedSizeList | null>,
+    public listEl: MutableRefObject<HTMLDivElement | null>
   ) {}
-
-  assign(
-    dispatch: Dispatch<Action>,
-    state: StateContext,
-    props: TreeProviderProps<T>,
-    list: FixedSizeList | undefined
-  ) {
-    this.dispatch = dispatch;
-    this.state = state;
-    this.props = props;
-    this.list = list;
-  }
 
   getNode(id: string): Node<unknown> | null {
     if (id in this.idToIndex)
@@ -49,7 +39,7 @@ export class TreeApi<T = unknown> {
 
   submit(id: string | number, value: string) {
     const sid = id.toString();
-    this.props.onEdit(sid, value);
+    this.onEdit(sid, value);
     this.dispatch(actions.edit(null));
     this.resolveEdit(sid, { cancelled: false, value });
   }
@@ -95,20 +85,20 @@ export class TreeApi<T = unknown> {
     if (!this.list) return;
     const index = this.idToIndex[id];
     if (index) {
-      this.list.scrollToItem(index);
+      this.list.current?.scrollToItem(index);
     } else {
       this.openParents(id);
       ReactDOM.flushSync(() => {
         const index = this.idToIndex[id];
         if (index) {
-          this.list?.scrollToItem(index);
+          this.list.current?.scrollToItem(index);
         }
       });
     }
   }
 
   open(id: string) {
-    this.props.onToggle(id, true);
+    this.onToggle(id, true);
   }
 
   openParents(id: string) {
@@ -131,6 +121,46 @@ export class TreeApi<T = unknown> {
 
   get visibleNodes() {
     return createList(this.props.root);
+  }
+
+  get width() {
+    return this.props.treeProps.width || 300;
+  }
+
+  get height() {
+    return this.props.treeProps.height || 500;
+  }
+
+  get indent() {
+    return this.props.treeProps.indent || 24;
+  }
+
+  get renderer() {
+    return this.props.treeProps.children;
+  }
+
+  get onToggle() {
+    return this.props.treeProps.onToggle || noop;
+  }
+
+  get rowHeight() {
+    return this.props.treeProps.rowHeight || 24;
+  }
+
+  get onClick() {
+    return this.props.treeProps.onClick || noop;
+  }
+
+  get onContextMenu() {
+    return this.props.treeProps.onContextMenu || noop;
+  }
+
+  get onMove() {
+    return this.props.treeProps.onMove || noop;
+  }
+
+  get onEdit() {
+    return this.props.treeProps.onEdit || noop;
   }
 }
 

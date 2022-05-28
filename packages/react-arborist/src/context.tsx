@@ -1,6 +1,7 @@
 import { createContext, useContext, useMemo } from "react";
 import { Cursor } from "./dnd/compute-drop";
 import { Selection } from "./selection/selection";
+import { TreeApi } from "./tree-api";
 import { IdObj, SelectionState, StaticContext } from "./types";
 
 export const CursorParentId = createContext<string | null>(null);
@@ -16,13 +17,6 @@ export function useIsCursorOverFolder() {
 export const CursorLocationContext = createContext<Cursor | null>(null);
 export function useCursorLocation() {
   return useContext(CursorLocationContext);
-}
-
-export const Static = createContext<StaticContext<IdObj> | null>(null);
-export function useStaticContext() {
-  const value = useContext(Static);
-  if (!value) throw new Error("Context must be in a provider");
-  return value;
 }
 
 export const DispatchContext = createContext(null);
@@ -49,4 +43,11 @@ export function useIsSelected(): (index: number | null) => boolean {
 export const EditingIdContext = createContext<string | null>(null);
 export function useEditingId(): string | null {
   return useContext(EditingIdContext);
+}
+
+export const TreeApiContext = createContext<TreeApi | null>(null);
+export function useTreeApi() {
+  const value = useContext(TreeApiContext);
+  if (value === null) throw new Error("No Tree Api Provided");
+  return value;
 }

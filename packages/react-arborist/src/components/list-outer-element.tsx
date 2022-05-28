@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { useStaticContext } from "../context";
+import { useTreeApi } from "../context";
 import { DropCursor } from "./drop-cursor";
 
 export const ListOuterElement = forwardRef(function Outer(
@@ -7,7 +7,7 @@ export const ListOuterElement = forwardRef(function Outer(
   ref
 ) {
   const { children, ...rest } = props;
-  const tree = useStaticContext();
+  const tree = useTreeApi();
   return (
     <div
       // @ts-ignore
@@ -18,7 +18,7 @@ export const ListOuterElement = forwardRef(function Outer(
     >
       <div
         style={{
-          height: tree.api.visibleNodes.length * tree.rowHeight,
+          height: tree.visibleNodes.length * tree.rowHeight,
           width: "100%",
           overflow: "hidden",
           position: "absolute",
