@@ -100,6 +100,7 @@ Unlike other Tree Components, react-arborist is designed as a [controlled compon
 | isOpenAccessor   | "isOpen"   | Used to get a node's openness state if it exists on a property other than "isOpen".                                                                                                                                                                    |
 | openByDefault    | true       | Choose if the node should be open or closed when it has an undefined openness state.                                                                                                                                                                   |
 | className        | undefined  | Adds a class to the containing div.                                                                                                                                                                                                                    |
+| dndRootElement   | undefined  | The element for react-dnd to bind it's events to. Defaults to window. See https://github.com/brimdata/react-arborist/pull/33                                                                                                                           |
 
 The only child of the Tree Component must be a NodeRenderer function as described below.
 
