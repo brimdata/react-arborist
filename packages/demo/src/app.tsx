@@ -1,10 +1,6 @@
 import "./app.css";
 import { GotLineage } from "./got";
 
-document.ondragstart = (e) => {
-  console.log(e);
-};
-
 export default function App() {
   const code = `
 <Tree

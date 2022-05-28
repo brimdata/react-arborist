@@ -32,7 +32,7 @@ export function GotLineage() {
             height={props.height}
             onClick={() => console.log("clicked the tree")}
             onContextMenu={() => console.log("context menu the tree")}
-            dndRootElement={rootElement.current || undefined}
+            dndRootElement={undefined}
           >
             {Node}
           </Tree>
