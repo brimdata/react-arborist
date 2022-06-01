@@ -1,11 +1,11 @@
 import { useDrop } from "react-dnd";
-import { useStaticContext } from "../context";
+import { useTreeApi } from "../context";
 import { DragItem } from "../types";
 import { computeDrop } from "./compute-drop";
 import { DropResult } from "./drop-hook";
 
 export function useOuterDrop() {
-  const tree = useStaticContext();
+  const tree = useTreeApi();
 
   // In case we drop an item at the bottom of the list
   const [, drop] = useDrop<DragItem, DropResult | null, { isOver: boolean }>(
@@ -20,10 +20,10 @@ export function useOuterDrop() {
           offset: offset,
           indent: tree.indent,
           node: null,
-          prevNode: tree.api.visibleNodes[tree.api.visibleNodes.length - 1],
+          prevNode: tree.visibleNodes[tree.visibleNodes.length - 1],
           nextNode: null,
         });
-        if (cursor) tree.api.showCursor(cursor);
+        if (cursor) tree.showCursor(cursor);
       },
       canDrop: (item, m) => {
         return m.isOver({ shallow: true });
@@ -37,7 +37,7 @@ export function useOuterDrop() {
           offset: offset,
           indent: tree.indent,
           node: null,
-          prevNode: tree.api.visibleNodes[tree.api.visibleNodes.length - 1],
+          prevNode: tree.visibleNodes[tree.visibleNodes.length - 1],
           nextNode: null,
         });
         return drop;

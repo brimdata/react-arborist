@@ -38,7 +38,7 @@ export interface IdObj {
   id: string;
 }
 
-export type NodeRendererProps<T> = {
+export type NodeRendererProps<T extends IdObj> = {
   innerRef: (el: HTMLDivElement | null) => void;
   styles: { row: CSSProperties; indent: CSSProperties };
   data: T;
@@ -66,7 +66,7 @@ export type NodeHandlers = {
   reset: () => void;
 };
 
-export type NodeRenderer<T> = ComponentType<NodeRendererProps<T>>;
+export type NodeRenderer<T extends IdObj> = ComponentType<NodeRendererProps<T>>;
 
 export type MoveHandler = (
   dragIds: string[],
@@ -105,7 +105,7 @@ export type StateContext = {
 
 type BoolFunc<T> = (data: T) => boolean;
 
-export interface TreeProps<T> {
+export interface TreeProps<T extends IdObj> {
   children: NodeRenderer<T>;
   className?: string | undefined;
   data: T;
@@ -128,26 +128,11 @@ export interface TreeProps<T> {
   width?: number;
 }
 
-export type TreeProviderProps<T> = {
+export type TreeProviderProps<T extends IdObj> = {
+  treeProps: TreeProps<T>;
   imperativeHandle: React.Ref<TreeApi<T>> | undefined;
   children: ReactElement;
-  height: number;
-  indent: number;
-  listEl: MutableRefObject<HTMLDivElement | null>;
-  onToggle: ToggleHandler;
-  onMove: MoveHandler;
-  onEdit: EditHandler;
-  onClick?: MouseEventHandler;
-  onContextMenu?: MouseEventHandler;
-  renderer: NodeRenderer<any>;
-  rowHeight: number;
   root: Node<T>;
-  width: number;
-};
-
-export type StaticContext<T> = TreeProviderProps<T> & {
-  api: TreeApi<T>;
-  list: MutableRefObject<FixedSizeList | undefined>;
 };
 
 export type EditResult =

@@ -1,6 +1,6 @@
 import { RefObject } from "react";
 import { ConnectDropTarget, useDrop } from "react-dnd";
-import { useStaticContext } from "../context";
+import { useTreeApi } from "../context";
 import { DragItem, Node } from "../types";
 import { isDecendent, isFolder } from "../utils";
 import { computeDrop } from "./compute-drop";
@@ -18,13 +18,13 @@ export function useDropHook(
   prev: Node | null,
   next: Node | null
 ): [CollectedProps, ConnectDropTarget] {
-  const tree = useStaticContext();
+  const tree = useTreeApi();
   return useDrop<DragItem, DropResult | null, CollectedProps>(
     () => ({
       accept: "NODE",
       canDrop: (item) => {
         for (let id of item.dragIds) {
-          const drag = tree.api.getNode(id);
+          const drag = tree.getNode(id);
           if (!drag) return false;
           if (isFolder(drag) && isDecendent(node, drag)) return false;
         }
@@ -42,9 +42,9 @@ export function useDropHook(
             prevNode: prev,
             nextNode: next,
           });
-          if (cursor) tree.api.showCursor(cursor);
+          if (cursor) tree.showCursor(cursor);
         } else {
-          tree.api.hideCursor();
+          tree.hideCursor();
         }
       },
       drop: (item, m): DropResult | undefined | null => {

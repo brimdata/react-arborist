@@ -1,18 +1,18 @@
 import React, { CSSProperties } from "react";
-import { useCursorLocation, useStaticContext } from "../context";
+import { useTreeApi } from "../context";
 
 export function DropCursor() {
-  const treeView = useStaticContext();
-  const cursor = useCursorLocation();
+  const tree = useTreeApi();
+  const cursor = tree.state.cursor;
   if (!cursor || cursor.type !== "line") return null;
-  const top = treeView.rowHeight * cursor.index;
-  const left = treeView.indent * cursor.level;
+  const top = tree.rowHeight * cursor.index;
+  const left = tree.indent * cursor.level;
   const style: CSSProperties = {
     position: "absolute",
     pointerEvents: "none",
     top: top - 2 + "px",
-    left: treeView.indent + left + "px",
-    right: treeView.indent + "px",
+    left: tree.indent + left + "px",
+    right: tree.indent + "px",
   };
 
   return <DefaultCursor style={style} />;

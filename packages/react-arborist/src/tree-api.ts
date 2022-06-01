@@ -1,35 +1,39 @@
 import memoizeOne from "memoize-one";
-import { Dispatch } from "react";
+import { Dispatch, MutableRefObject } from "react";
 import { FixedSizeList } from "react-window";
 import { flattenTree } from "./data/flatten-tree";
 import { Cursor } from "./dnd/compute-drop";
 import { Action, actions } from "./reducer";
-import { Node, StateContext, TreeProviderProps, EditResult } from "./types";
+import {
+  Node,
+  StateContext,
+  TreeProviderProps,
+  EditResult,
+  IdObj,
+} from "./types";
 import ReactDOM from "react-dom";
-
-export class TreeApi<T = unknown> {
+import { noop } from "./utils";
+import { Selection } from "./selection/selection";
+export class TreeApi<T extends IdObj> {
   private edits = new Map<string, (args: EditResult) => void>();
 
   constructor(
     public dispatch: Dispatch<Action>,
     public state: StateContext,
     public props: TreeProviderProps<T>,
-    public list: FixedSizeList | undefined
+    public list: MutableRefObject<FixedSizeList | null>,
+    public listEl: MutableRefObject<HTMLDivElement | null>
   ) {}
 
-  assign(
-    dispatch: Dispatch<Action>,
-    state: StateContext,
-    props: TreeProviderProps<T>,
-    list: FixedSizeList | undefined
-  ) {
-    this.dispatch = dispatch;
-    this.state = state;
-    this.props = props;
-    this.list = list;
+  sync(other: TreeApi<T>) {
+    this.dispatch = other.dispatch;
+    this.state = other.state;
+    this.props = other.props;
+    this.list = other.list;
+    this.listEl = other.listEl;
   }
 
-  getNode(id: string): Node<unknown> | null {
+  getNode(id: string): Node<T> | null {
     if (id in this.idToIndex)
       return this.visibleNodes[this.idToIndex[id]] || null;
     else return null;
@@ -49,7 +53,7 @@ export class TreeApi<T = unknown> {
 
   submit(id: string | number, value: string) {
     const sid = id.toString();
-    this.props.onEdit(sid, value);
+    this.onEdit(sid, value);
     this.dispatch(actions.edit(null));
     this.resolveEdit(sid, { cancelled: false, value });
   }
@@ -95,20 +99,20 @@ export class TreeApi<T = unknown> {
     if (!this.list) return;
     const index = this.idToIndex[id];
     if (index) {
-      this.list.scrollToItem(index);
+      this.list.current?.scrollToItem(index);
     } else {
       this.openParents(id);
       ReactDOM.flushSync(() => {
         const index = this.idToIndex[id];
         if (index) {
-          this.list?.scrollToItem(index);
+          this.list.current?.scrollToItem(index);
         }
       });
     }
   }
 
   open(id: string) {
-    this.props.onToggle(id, true);
+    this.onToggle(id, true);
   }
 
   openParents(id: string) {
@@ -130,7 +134,70 @@ export class TreeApi<T = unknown> {
   }
 
   get visibleNodes() {
-    return createList(this.props.root);
+    return createList(this.props.root) as Node<T>[];
+  }
+
+  get width() {
+    return this.props.treeProps.width || 300;
+  }
+
+  get height() {
+    return this.props.treeProps.height || 500;
+  }
+
+  get indent() {
+    return this.props.treeProps.indent || 24;
+  }
+
+  get renderer() {
+    return this.props.treeProps.children;
+  }
+
+  get onToggle() {
+    return this.props.treeProps.onToggle || noop;
+  }
+
+  get rowHeight() {
+    return this.props.treeProps.rowHeight || 24;
+  }
+
+  get onClick() {
+    return this.props.treeProps.onClick || noop;
+  }
+
+  get onContextMenu() {
+    return this.props.treeProps.onContextMenu || noop;
+  }
+
+  get onMove() {
+    return this.props.treeProps.onMove || noop;
+  }
+
+  get onEdit() {
+    return this.props.treeProps.onEdit || noop;
+  }
+
+  get cursorParentId() {
+    const { cursor } = this.state;
+    switch (cursor.type) {
+      case "highlight":
+        return cursor.id;
+      default:
+        return null;
+    }
+  }
+
+  get cursorOverFolder() {
+    return this.state.cursor.type === "highlight";
+  }
+
+  get editingId() {
+    return this.state.editingId;
+  }
+
+  isSelected(index: number | null) {
+    const selection = Selection.parse(this.state.selection.data, []);
+    return selection.contains(index);
   }
 }
 
