@@ -14,7 +14,6 @@ export const Tree = forwardRef(function Tree<T extends IdObj>(
   props: TreeProps<T>,
   ref: React.Ref<TreeApi<T>>
 ) {
-  console.log(props.height);
   const root = useMemo<Node<T>>(
     () =>
       enrichTree<T>(

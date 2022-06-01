@@ -195,16 +195,10 @@ export class TreeApi<T extends IdObj> {
     return this.state.editingId;
   }
 
-  // selected ids
-  // return value.ids;
-
   isSelected(index: number | null) {
     const selection = Selection.parse(this.state.selection.data, []);
     return selection.contains(index);
   }
-  // isselected
-  // const s = useMemo(() => Selection.parse(value.data, []), [value.data]);
-  // return (i) => s.contains(i);
 }
 
 const getIds = memoizeOne((nodes: Node[]) => nodes.map((n) => n.id));
