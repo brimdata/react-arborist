@@ -52,6 +52,7 @@ export const Node = ({
   handlers,
   tree,
 }: NodeRendererProps<MyData>) => {
+  console.log("<NODE>");
   const folder = Array.isArray(data.children);
   const open = state.isOpen;
   const name = data.name;

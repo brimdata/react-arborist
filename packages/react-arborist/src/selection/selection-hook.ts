@@ -1,7 +1,8 @@
 import { MutableRefObject, useEffect } from "react";
 import { TreeApi } from "../tree-api";
+import { IdObj } from "../types";
 
-export function useSelectionKeys<T>(
+export function useSelectionKeys<T extends IdObj>(
   ref: MutableRefObject<HTMLDivElement | null>,
   api: TreeApi<T>
 ) {

@@ -1,36 +1,34 @@
 import React, { useCallback, useMemo, useRef } from "react";
-import {
-  useCursorParentId,
-  useEditingId,
-  useIsCursorOverFolder,
-  useIsSelected,
-  useTreeApi,
-} from "../context";
+import { useTreeApi } from "../context";
 import { useDragHook } from "../dnd/drag-hook";
 import { useDropHook } from "../dnd/drop-hook";
+import { IdObj } from "../types";
 
 type Props = {
   style: React.CSSProperties;
   index: number;
 };
 
-export const Row = React.memo(function Row({ index, style }: Props) {
-  const tree = useTreeApi();
-  const selected = useIsSelected();
+export const Row = React.memo(function Row<T extends IdObj>({
+  index,
+  style,
+}: Props) {
+  const realTree = useTreeApi<T>();
+  const tree = useMemo(() => realTree, []);
+  tree.sync(realTree);
+
   const node = tree.visibleNodes[index];
   const next = tree.visibleNodes[index + 1] || null;
   const prev = tree.visibleNodes[index - 1] || null;
-  const cursorParentId = useCursorParentId();
-  const cursorOverFolder = useIsCursorOverFolder();
   const el = useRef<HTMLDivElement | null>(null);
   const [{ isDragging }, dragRef] = useDragHook(node);
   const [, dropRef] = useDropHook(el, node, prev, next);
-  const isEditing = node.id === useEditingId();
-  const isSelected = selected(index);
-  const nextSelected = next && selected(index + 1);
-  const prevSelected = prev && selected(index - 1);
-  const isHoveringOverChild = node.id === cursorParentId;
-  const isOverFolder = node.id === cursorParentId && cursorOverFolder;
+  const isEditing = node.id === tree.editingId;
+  const isSelected = tree.isSelected(index);
+  const nextSelected = next && tree.isSelected(index + 1);
+  const prevSelected = prev && tree.isSelected(index - 1);
+  const isHoveringOverChild = node.id === tree.cursorParentId;
+  const isOverFolder = node.id === tree.cursorParentId && tree.cursorOverFolder;
   const isOpen = node.isOpen;
   const indent = tree.indent * node.level;
   const state = useMemo(() => {
@@ -94,7 +92,7 @@ export const Row = React.memo(function Row({ index, style }: Props) {
       },
       reset: () => tree.reset(node.id),
     };
-  }, [tree, node]);
+  }, [node, tree]);
 
   const Renderer = useMemo(() => {
     return React.memo(tree.renderer);

@@ -1,7 +1,7 @@
 import React, { CSSProperties, memo } from "react";
 import { useDragLayer, XYCoord } from "react-dnd";
 import { useTreeApi } from "../context";
-import { DragItem } from "../types";
+import { DragItem, IdObj } from "../types";
 
 const layerStyles: CSSProperties = {
   position: "fixed",
@@ -70,10 +70,10 @@ function Count(props: { item: DragItem; mouse: XYCoord | null }) {
   else return null;
 }
 
-const PreviewNode = memo(function PreviewNode(props: {
+const PreviewNode = memo(function PreviewNode<T extends IdObj>(props: {
   item: DragItem | null;
 }) {
-  const tree = useTreeApi();
+  const tree = useTreeApi<T>();
   if (!props.item) return null;
   const node = tree.getNode(props.item.id);
   if (!node) return null;

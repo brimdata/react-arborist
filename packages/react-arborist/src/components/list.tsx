@@ -16,7 +16,6 @@ export function List(props: { className?: string }) {
         itemSize={tree.rowHeight}
         itemKey={(index) => tree.visibleNodes[index]?.id || index}
         outerElementType={ListOuterElement}
-        // @ts-ignore
         ref={tree.list}
       >
         {Row}

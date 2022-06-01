@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { ConnectDragSource, useDrag } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
-import { useIsSelected, useSelectedIds, useTreeApi } from "../context";
+import { useTreeApi } from "../context";
 import { DragItem, Node } from "../types";
 import { DropResult } from "./drop-hook";
 
@@ -11,8 +11,7 @@ export function useDragHook(
   node: Node
 ): [{ isDragging: boolean }, ConnectDragSource] {
   const tree = useTreeApi();
-  const isSelected = useIsSelected();
-  const ids = useSelectedIds();
+  const ids = tree.getSelectedIds();
   const [{ isDragging }, ref, preview] = useDrag<
     DragItem,
     DropResult,
@@ -23,7 +22,7 @@ export function useDragHook(
       type: "NODE",
       item: () => ({
         id: node.id,
-        dragIds: isSelected(node.rowIndex) ? ids : [node.id],
+        dragIds: tree.isSelected(node.rowIndex) ? ids : [node.id],
       }),
       collect: (m) => ({
         isDragging: m.isDragging(),

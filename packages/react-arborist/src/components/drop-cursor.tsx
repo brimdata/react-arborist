@@ -1,9 +1,9 @@
 import React, { CSSProperties } from "react";
-import { useCursorLocation, useTreeApi } from "../context";
+import { useTreeApi } from "../context";
 
 export function DropCursor() {
   const tree = useTreeApi();
-  const cursor = useCursorLocation();
+  const cursor = tree.state.cursor;
   if (!cursor || cursor.type !== "line") return null;
   const top = tree.rowHeight * cursor.index;
   const left = tree.indent * cursor.level;

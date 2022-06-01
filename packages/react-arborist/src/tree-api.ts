@@ -4,11 +4,17 @@ import { FixedSizeList } from "react-window";
 import { flattenTree } from "./data/flatten-tree";
 import { Cursor } from "./dnd/compute-drop";
 import { Action, actions } from "./reducer";
-import { Node, StateContext, TreeProviderProps, EditResult } from "./types";
+import {
+  Node,
+  StateContext,
+  TreeProviderProps,
+  EditResult,
+  IdObj,
+} from "./types";
 import ReactDOM from "react-dom";
 import { noop } from "./utils";
-
-export class TreeApi<T = unknown> {
+import { Selection } from "./selection/selection";
+export class TreeApi<T extends IdObj> {
   private edits = new Map<string, (args: EditResult) => void>();
 
   constructor(
@@ -19,7 +25,15 @@ export class TreeApi<T = unknown> {
     public listEl: MutableRefObject<HTMLDivElement | null>
   ) {}
 
-  getNode(id: string): Node<unknown> | null {
+  sync(other: TreeApi<T>) {
+    this.dispatch = other.dispatch;
+    this.state = other.state;
+    this.props = other.props;
+    this.list = other.list;
+    this.listEl = other.listEl;
+  }
+
+  getNode(id: string): Node<T> | null {
     if (id in this.idToIndex)
       return this.visibleNodes[this.idToIndex[id]] || null;
     else return null;
@@ -120,7 +134,7 @@ export class TreeApi<T = unknown> {
   }
 
   get visibleNodes() {
-    return createList(this.props.root);
+    return createList(this.props.root) as Node<T>[];
   }
 
   get width() {
@@ -162,6 +176,35 @@ export class TreeApi<T = unknown> {
   get onEdit() {
     return this.props.treeProps.onEdit || noop;
   }
+
+  get cursorParentId() {
+    const { cursor } = this.state;
+    switch (cursor.type) {
+      case "highlight":
+        return cursor.id;
+      default:
+        return null;
+    }
+  }
+
+  get cursorOverFolder() {
+    return this.state.cursor.type === "highlight";
+  }
+
+  get editingId() {
+    return this.state.editingId;
+  }
+
+  // selected ids
+  // return value.ids;
+
+  isSelected(index: number | null) {
+    const selection = Selection.parse(this.state.selection.data, []);
+    return selection.contains(index);
+  }
+  // isselected
+  // const s = useMemo(() => Selection.parse(value.data, []), [value.data]);
+  // return (i) => s.contains(i);
 }
 
 const getIds = memoizeOne((nodes: Node[]) => nodes.map((n) => n.id));
