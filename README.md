@@ -29,7 +29,7 @@ Render the tree data structure.
 ```jsx
 const data = {
   id: "A",
-  name: "Root"
+  name: "Root",
   children: [
     { id: "B", name: "Node 1" },
     { id: "C", name: "Node 2" },
