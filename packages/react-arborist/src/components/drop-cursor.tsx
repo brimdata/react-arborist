@@ -39,9 +39,9 @@ const circleStyle = {
 
 function DefaultCursor({ style }: { style: CSSProperties }) {
   return (
-    <div style={{ ...placeholderStyle, ...style }}>
-      <div style={{ ...circleStyle }}></div>
-      <div style={{ ...lineStyle }}></div>
+    <div id="arborist-drop-cursor-wrapper" style={{ ...placeholderStyle, ...style }}>
+      <div id="arborist-drop-cursor-circle" style={{ ...circleStyle }}></div>
+      <div id="arborist-drop-cursor-line" style={{ ...lineStyle }}></div>
     </div>
   );
 }
