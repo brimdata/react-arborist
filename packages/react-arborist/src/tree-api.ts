@@ -10,10 +10,12 @@ import {
   TreeProviderProps,
   EditResult,
   IdObj,
+  DropCursorProps,
 } from "./types";
 import ReactDOM from "react-dom";
 import { noop } from "./utils";
 import { Selection } from "./selection/selection";
+import { defaultDropCursor } from "./components/drop-cursor";
 export class TreeApi<T extends IdObj> {
   private edits = new Map<string, (args: EditResult) => void>();
 
@@ -198,6 +200,11 @@ export class TreeApi<T extends IdObj> {
   isSelected(index: number | null) {
     const selection = Selection.parse(this.state.selection.data, []);
     return selection.contains(index);
+  }
+
+  renderDropCursor(props: DropCursorProps) {
+    const render = this.props.treeProps.dropCursor || defaultDropCursor;
+    return render(props);
   }
 }
 

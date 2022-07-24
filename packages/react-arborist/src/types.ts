@@ -5,6 +5,7 @@ import React, {
   MouseEventHandler,
   MutableRefObject,
   ReactElement,
+  ReactNode,
   Ref,
 } from "react";
 import { FixedSizeList } from "react-window";
@@ -126,6 +127,7 @@ export interface TreeProps<T extends IdObj> {
   openByDefault?: boolean;
   rowHeight?: number;
   width?: number;
+  dropCursor?: (props: DropCursorProps) => ReactElement;
 }
 
 export type TreeProviderProps<T extends IdObj> = {
@@ -138,3 +140,9 @@ export type TreeProviderProps<T extends IdObj> = {
 export type EditResult =
   | { cancelled: true }
   | { cancelled: false; value: string };
+
+export type DropCursorProps = {
+  top: number;
+  left: number;
+  indent: number;
+};
