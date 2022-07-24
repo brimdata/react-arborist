@@ -5,6 +5,7 @@ import type {
   NodeState,
   NodeHandlers,
   NodeRendererProps,
+  DropCursorProps,
 } from "./types";
 
 export {
@@ -14,4 +15,5 @@ export {
   NodeState,
   NodeHandlers,
   NodeRendererProps,
+  DropCursorProps,
 };

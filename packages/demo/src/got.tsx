@@ -4,6 +4,7 @@ import AutoSize from "react-virtualized-auto-sizer";
 import { Tree, TreeApi } from "react-arborist";
 import { Node } from "./node";
 import { MyData, useBackend } from "./backend";
+import { CustomCursor } from "./custom-cursor";
 
 export function GotLineage() {
   const backend = useBackend();
@@ -33,6 +34,7 @@ export function GotLineage() {
             onClick={() => console.log("clicked the tree")}
             onContextMenu={() => console.log("context menu the tree")}
             dndRootElement={undefined}
+            dropCursor={(props) => <CustomCursor {...props} />}
           >
             {Node}
           </Tree>

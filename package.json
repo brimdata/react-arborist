@@ -5,7 +5,9 @@
   ],
   "scripts": {
     "bump": "yarn workspace react-arborist version",
-    "dev": "yarn workspace demo start"
+    "dev": "yarn workspace demo start",
+    "build": "yarn workspace react-arborist build",
+    "watch": "yarn workspace react-arborist watch"
   },
   "private": true,
   "packageManager": "yarn@3.2.0",
