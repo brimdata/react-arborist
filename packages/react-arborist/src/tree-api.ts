@@ -15,7 +15,7 @@ import {
 import ReactDOM from "react-dom";
 import { noop } from "./utils";
 import { Selection } from "./selection/selection";
-import { defaultDropCursor } from "./components/drop-cursor";
+import { defaultDropCursor } from "./components/default-drop-cursor";
 export class TreeApi<T extends IdObj> {
   private edits = new Map<string, (args: EditResult) => void>();
 
