@@ -1,5 +1,5 @@
 import { XYCoord } from "react-dnd";
-import { NodeInterface } from "../node-interface";
+import { NodeApi } from "../interfaces/node-api";
 import { bound, indexOf, isClosed, isFolder, isItem } from "../utils";
 import { DropResult } from "./drop-hook";
 
@@ -20,11 +20,11 @@ function measureHover(el: HTMLElement, offset: XYCoord) {
 type HoverData = ReturnType<typeof measureHover>;
 
 function getNodesAroundCursor(
-  node: NodeInterface | null,
-  prev: NodeInterface | null,
-  next: NodeInterface | null,
+  node: NodeApi | null,
+  prev: NodeApi | null,
+  next: NodeApi | null,
   hover: HoverData
-): [NodeInterface | null, NodeInterface | null] {
+): [NodeApi | null, NodeApi | null] {
   if (!node) {
     // We're hoving over the empty part of the list, not over an item,
     // Put the cursor below the last item which is "prev"
@@ -51,15 +51,15 @@ type Args = {
   element: HTMLElement;
   offset: XYCoord;
   indent: number;
-  node: NodeInterface | null;
-  prevNode: NodeInterface | null;
-  nextNode: NodeInterface | null;
+  node: NodeApi | null;
+  prevNode: NodeApi | null;
+  nextNode: NodeApi | null;
 };
 
 function getDropLevel(
   hovering: HoverData,
-  aboveCursor: NodeInterface | null,
-  belowCursor: NodeInterface | null,
+  aboveCursor: NodeApi | null,
+  belowCursor: NodeApi | null,
   indent: number
 ) {
   const hoverLevel = Math.round(Math.max(0, hovering.x - indent) / indent);
@@ -78,12 +78,12 @@ function getDropLevel(
   return bound(hoverLevel, min, max);
 }
 
-function canDrop(above: NodeInterface | null, below: NodeInterface | null) {
+function canDrop(above: NodeApi | null, below: NodeApi | null) {
   if (!above) {
     return true;
   }
 
-  let n: NodeInterface | null = above;
+  let n: NodeApi | null = above;
   if (isClosed(above) && above !== below) n = above.parent;
 
   while (n) {
@@ -123,7 +123,7 @@ function highlightCursor(id: string) {
   };
 }
 
-function walkUpFrom(node: NodeInterface, level: number) {
+function walkUpFrom(node: NodeApi, level: number) {
   let drop = node;
   while (drop.parent && drop.level > level) {
     drop = drop.parent;

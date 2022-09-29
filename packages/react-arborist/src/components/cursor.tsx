@@ -8,5 +8,6 @@ export function DropCursor() {
   const top = tree.rowHeight * cursor.index;
   const left = indent * cursor.level;
 
-  return tree.renderDropCursor({ top, left, indent });
+  const Cursor = tree.renderCursor;
+  return <Cursor {...{ top, left, indent }} />;
 }

@@ -1,7 +1,7 @@
 import React, { CSSProperties, memo } from "react";
 import { useDragLayer, XYCoord } from "react-dnd";
 import { useTreeApi } from "../context";
-import { DragItem, IdObj } from "../types";
+import { DragItem, DragPreviewProps, IdObj } from "../types";
 
 const layerStyles: CSSProperties = {
   position: "fixed",
@@ -25,20 +25,19 @@ const getCountStyle = (offset: XYCoord | null) => {
   return { transform: `translate(${x + 10}px, ${y + 10}px)` };
 };
 
-export function Preview() {
-  const { offset, mouse, item, isDragging } = useDragLayer((m) => ({
-    offset: m.getSourceClientOffset(),
-    mouse: m.getClientOffset(),
-    item: m.getItem(),
-    isDragging: m.isDragging(),
-  }));
-
+export function DefaultDragPreview({
+  offset,
+  mouse,
+  id,
+  dragIds,
+  isDragging,
+}: DragPreviewProps) {
   return (
     <Overlay isDragging={isDragging}>
       <Position offset={offset}>
-        <PreviewNode item={item} />
+        <PreviewNode id={id} dragIds={dragIds} />
       </Position>
-      <Count mouse={mouse} item={item} />
+      <Count mouse={mouse} count={dragIds.length} />
     </Overlay>
   );
 }
@@ -59,12 +58,12 @@ function Position(props: { children: JSX.Element; offset: XYCoord | null }) {
   );
 }
 
-function Count(props: { item: DragItem; mouse: XYCoord | null }) {
-  const { item, mouse } = props;
-  if (item?.dragIds?.length > 1)
+function Count(props: { count: number; mouse: XYCoord | null }) {
+  const { count, mouse } = props;
+  if (count > 1)
     return (
       <div className="selected-count" style={getCountStyle(mouse)}>
-        {item.dragIds.length}
+        {count}
       </div>
     );
   else return null;
@@ -72,11 +71,11 @@ function Count(props: { item: DragItem; mouse: XYCoord | null }) {
 
 // Expose this for people to implement as well
 const PreviewNode = memo(function PreviewNode<T extends IdObj>(props: {
-  item: DragItem | null;
+  id: string | null;
+  dragIds: string[];
 }) {
   const tree = useTreeApi<T>();
-  if (!props.item) return null;
-  const node = tree.get(props.item.id);
+  const node = tree.get(props.id);
   if (!node) return null;
   return (
     <tree.renderer

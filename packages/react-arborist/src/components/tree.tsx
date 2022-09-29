@@ -1,28 +1,21 @@
-import { forwardRef, ReactElement, useMemo, useRef } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { TreeViewProvider } from "../provider";
-import { TreeApi } from "../tree-api";
+import { forwardRef } from "react";
+import { TreeProvider } from "./provider";
+import { TreeApi } from "../interfaces/tree-api";
 import { IdObj, TreeProps } from "../types";
-import { Preview } from "./preview";
 import { OuterDrop } from "./outer-drop";
-import { List } from "./list";
+import { TreeContainer } from "./tree-container";
+import { DragPreviewContainer } from "./drag-preview-container";
 
 export const Tree = forwardRef(function Tree<T extends IdObj>(
   props: TreeProps<T>,
   ref: React.Ref<TreeApi<T>>
 ) {
   return (
-    <TreeViewProvider treeProps={props} imperativeHandle={ref}>
-      <DndProvider
-        backend={HTML5Backend}
-        options={{ rootElement: props.dndRootElement || undefined }}
-      >
-        <OuterDrop>
-          <List className={props.className} />
-        </OuterDrop>
-        <Preview />
-      </DndProvider>
-    </TreeViewProvider>
+    <TreeProvider treeProps={props} imperativeHandle={ref}>
+      <OuterDrop>
+        <TreeContainer />
+      </OuterDrop>
+      <DragPreviewContainer />
+    </TreeProvider>
   );
 });

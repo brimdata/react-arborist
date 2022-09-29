@@ -1,28 +1,3 @@
-// const handlers = useMemo(() => {
-//   return {
-//     select: (
-//       e: React.MouseEvent,
-//       args: { selectOnClick: boolean } = { selectOnClick: true }
-//     ) => {
-//       if (node.rowIndex === null) return;
-//       if (args.selectOnClick || e.metaKey || e.shiftKey) {
-//         tree.select(node.id, { multi: e.metaKey, contiguous: e.shiftKey });
-//       } else {
-//         tree.select(null);
-//       }
-//     },
-//     toggle: (e: React.MouseEvent) => {
-//       e.stopPropagation();
-//       tree.onToggle(node.id, !node.isOpen);
-//     },
-//     edit: () => tree.edit(node.id),
-//     submit: (name: string) => {
-//       name.trim() ? tree.submit(node.id, name) : tree.reset(node.id);
-//     },
-//     reset: () => tree.reset(node.id),
-//   };
-// }, [node, tree]);
-
 // const state = useMemo(() => {
 //   return {
 //     isEditing,
@@ -34,39 +9,29 @@
 //     isOpen,
 //     isOverFolder,
 //   };
-// }, [
-//   isEditing,
-//   isSelected,
-//   prevSelected,
-//   nextSelected,
-//   isHoveringOverChild,
-//   isOpen,
-//   isDragging,
-//   isOverFolder,
-// ]);
 
 import { TreeApi } from "./tree-api";
-import { IdObj } from "./types";
+import { IdObj } from "../types";
 
 type Params<T extends IdObj> = {
   id: string;
   data: T;
   level: number;
-  children: NodeInterface<T>[] | null;
-  parent: NodeInterface<T> | null;
+  children: NodeApi<T>[] | null;
+  parent: NodeApi<T> | null;
   isDraggable: boolean;
   isDroppable: boolean;
   rowIndex: number | null;
   tree: TreeApi<T>;
 };
 
-export class NodeInterface<T extends IdObj = IdObj> {
+export class NodeApi<T extends IdObj = IdObj> {
   tree: TreeApi<T>;
   id: string;
   data: T;
   level: number;
-  children: NodeInterface<T>[] | null;
-  parent: NodeInterface<T> | null;
+  children: NodeApi<T>[] | null;
+  parent: NodeApi<T> | null;
   isDraggable: boolean;
   isDroppable: boolean;
   rowIndex: number | null;

@@ -1,12 +1,10 @@
-import { NodeInterface } from "../node-interface";
+import { NodeApi } from "../interfaces/node-api";
 import { IdObj } from "../types";
 
-export function flattenTree<T extends IdObj>(
-  root: NodeInterface<T>
-): NodeInterface<T>[] {
-  const list: NodeInterface<T>[] = [];
+export function flattenTree<T extends IdObj>(root: NodeApi<T>): NodeApi<T>[] {
+  const list: NodeApi<T>[] = [];
   let index = 0;
-  function collect(node: NodeInterface<T>) {
+  function collect(node: NodeApi<T>) {
     if (node.level >= 0) {
       node.rowIndex = index++;
       list.push(node);

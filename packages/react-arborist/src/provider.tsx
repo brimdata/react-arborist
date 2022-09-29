@@ -1,7 +1,7 @@
-import { useImperativeHandle, useMemo, useReducer, useRef } from "react";
+import React, { useImperativeHandle, useMemo, useReducer, useRef } from "react";
 import { FixedSizeList } from "react-window";
 import { TreeApiContext } from "./context";
-import { TreeApi } from "./tree-api";
+import { TreeApi } from "./interfaces/tree-api";
 import { IdObj, TreeProviderProps } from "./types";
 import { initialState } from "./state/initial";
 import { rootReducer } from "./state/root-reducer";

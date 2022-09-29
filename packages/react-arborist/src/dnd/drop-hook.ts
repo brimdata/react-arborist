@@ -1,7 +1,7 @@
 import { RefObject } from "react";
 import { ConnectDropTarget, useDrop } from "react-dnd";
 import { useTreeApi } from "../context";
-import { NodeInterface } from "../node-interface";
+import { NodeApi } from "../interfaces/node-api";
 import { DragItem } from "../types";
 import { isDecendent, isFolder } from "../utils";
 import { computeDrop } from "./compute-drop";
@@ -15,9 +15,9 @@ export type CollectedProps = undefined;
 
 export function useDropHook(
   el: RefObject<HTMLElement | null>,
-  node: NodeInterface<any>,
-  prev: NodeInterface<any> | null,
-  next: NodeInterface<any> | null
+  node: NodeApi<any>,
+  prev: NodeApi<any> | null,
+  next: NodeApi<any> | null
 ): [CollectedProps, ConnectDropTarget] {
   const tree = useTreeApi();
   return useDrop<DragItem, DropResult | null, CollectedProps>(

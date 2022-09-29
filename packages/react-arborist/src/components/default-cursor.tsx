@@ -20,7 +20,7 @@ const circleStyle = {
   borderRadius: "50%",
 };
 
-function DefaultCursor({ top, left, indent }: DropCursorProps) {
+export function DefaultCursor({ top, left, indent }: DropCursorProps) {
   const style: CSSProperties = {
     position: "absolute",
     pointerEvents: "none",
@@ -34,8 +34,4 @@ function DefaultCursor({ top, left, indent }: DropCursorProps) {
       <div style={{ ...lineStyle }}></div>
     </div>
   );
-}
-
-export function defaultDropCursor(props: DropCursorProps) {
-  return <DefaultCursor {...props} />;
 }

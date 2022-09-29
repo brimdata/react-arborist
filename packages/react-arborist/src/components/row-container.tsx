@@ -44,7 +44,7 @@ export const RowContainer = React.memo(function RowContainer<T extends IdObj>({
     [tree.renderer]
   );
 
-  const Row = useMemo(() => React.memo(tree.rowRenderer), [tree.rowRenderer]);
+  const Row = useMemo(() => React.memo(tree.renderRow), [tree.renderRow]);
 
   const rowAttrs: React.HTMLAttributes<any> = {
     role: "treeitem",

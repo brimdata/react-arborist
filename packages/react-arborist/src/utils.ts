@@ -1,27 +1,27 @@
 import memoizeOne from "memoize-one";
 import { flattenTree } from "./data/flatten-tree";
-import { NodeInterface } from "./node-interface";
+import { NodeApi } from "./interfaces/node-api";
 import { IdObj } from "./types";
 
 export function bound(n: number, min: number, max: number) {
   return Math.max(Math.min(n, max), min);
 }
 
-export const isFolder = (node: NodeInterface<any>) => !!node.children;
+export const isFolder = (node: NodeApi<any>) => !!node.children;
 
-export function isItem(node: NodeInterface<any> | null) {
+export function isItem(node: NodeApi<any> | null) {
   return node && !isFolder(node);
 }
 
-export function isClosed(node: NodeInterface<any> | null) {
+export function isClosed(node: NodeApi<any> | null) {
   return node && isFolder(node) && !node.isOpen;
 }
 
 /**
  * Is first param a decendent of the second param
  */
-export const isDecendent = (a: NodeInterface<any>, b: NodeInterface<any>) => {
-  let n: NodeInterface<any> | null = a;
+export const isDecendent = (a: NodeApi<any>, b: NodeApi<any>) => {
+  let n: NodeApi<any> | null = a;
   while (n) {
     if (n.id === b.id) return true;
     n = n.parent;
@@ -29,7 +29,7 @@ export const isDecendent = (a: NodeInterface<any>, b: NodeInterface<any>) => {
   return false;
 };
 
-export const indexOf = (node: NodeInterface<any>) => {
+export const indexOf = (node: NodeApi<any>) => {
   // This should probably not throw an error, but instead return null
   if (!node.parent) throw Error("Node does not have a parent");
   return node.parent.children!.findIndex((c) => c.id === node.id);
@@ -37,12 +37,12 @@ export const indexOf = (node: NodeInterface<any>) => {
 
 export function noop() {}
 
-export const getIds = memoizeOne((nodes: NodeInterface<any>[]) =>
+export const getIds = memoizeOne((nodes: NodeApi<any>[]) =>
   nodes.map((n) => n.id)
 );
 
 export const createIndex = memoizeOne(
-  <T extends IdObj>(nodes: NodeInterface<T>[]) => {
+  <T extends IdObj>(nodes: NodeApi<T>[]) => {
     return nodes.reduce<{ [id: string]: number }>((map, node, index) => {
       map[node.id] = index;
       return map;
@@ -52,10 +52,7 @@ export const createIndex = memoizeOne(
 
 export const createList = memoizeOne(flattenTree);
 
-export function dfs(
-  node: NodeInterface<any>,
-  id: string
-): NodeInterface<any> | null {
+export function dfs(node: NodeApi<any>, id: string): NodeApi<any> | null {
   if (!node) return null;
   if (node.id === id) return node;
   if (node.children) {

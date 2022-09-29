@@ -4,14 +4,16 @@ import React, {
   HTMLAttributes,
   MouseEvent,
   MouseEventHandler,
+  ReactChildren,
   ReactElement,
+  ReactNode,
   Ref,
 } from "react";
+import { XYCoord } from "react-dnd";
 import { AnyAction } from "redux";
 import { Cursor } from "./dnd/compute-drop";
-import { NodeInterface } from "./node-interface";
-import { SelectionData } from "./selection/selection";
-import { TreeApi } from "./tree-api";
+import { NodeApi } from "./interfaces/node-api";
+import { TreeApi } from "./interfaces/tree-api";
 
 // Forward ref can't forward generics without this little re-declare
 // https://fettblog.eu/typescript-react-generic-forward-refs/
@@ -21,7 +23,7 @@ declare module "react" {
   ): (props: P & React.RefAttributes<T>) => React.ReactElement | null;
 }
 
-export type NodesById<T extends IdObj> = { [id: string]: NodeInterface<T> };
+export type NodesById<T extends IdObj> = { [id: string]: NodeApi<T> };
 
 export interface IdObj {
   id: string;
@@ -29,7 +31,7 @@ export interface IdObj {
 
 export type NodeRendererProps<T extends IdObj> = {
   style: CSSProperties;
-  node: NodeInterface<T>;
+  node: NodeApi<T>;
   tree: TreeApi<T>;
   preview?: boolean;
 };
@@ -64,7 +66,7 @@ export type ToggleHandler = (id: string, isOpen: boolean) => void;
 export type EditHandler = (id: string, name: string) => void;
 export type NodeClickHandler<T extends IdObj> = (
   e: MouseEvent,
-  n: NodeInterface<T>
+  n: NodeApi<T>
 ) => void;
 export type IndexClickHandler = (e: MouseEvent, index: number) => void;
 export type SelectedCheck = (index: number) => boolean;
@@ -80,25 +82,21 @@ export type DragItem = {
   id: string;
 };
 
-export type SelectionState = {
-  data: SelectionData | null;
-  ids: string[];
-};
-
-export type StateContext = {
-  cursor: Cursor;
-  editingId: string | null;
-  selection: SelectionState;
-  visibleIds: string[];
-};
-
 type BoolFunc<T> = (data: T) => boolean;
 
 export type RowRendererProps<T extends IdObj> = {
-  node: NodeInterface<T>;
+  node: NodeApi<T>;
   innerRef: (el: HTMLDivElement | null) => void;
   attrs: HTMLAttributes<any>;
   children: ReactElement;
+};
+
+export type DragPreviewProps = {
+  offset: XYCoord | null;
+  mouse: XYCoord | null;
+  id: string | null;
+  dragIds: string[];
+  isDragging: boolean;
 };
 
 export interface TreeProps<T extends IdObj> {
@@ -106,9 +104,10 @@ export interface TreeProps<T extends IdObj> {
 
   /* Renderers*/
   children?: NodeRenderer<T>;
-  rowRenderer?: ComponentType<RowRendererProps<T>>;
-  previewRenderer?: NodeRenderer<T>;
-  dropCursor?: (props: DropCursorProps) => ReactElement;
+  renderRow?: ComponentType<RowRendererProps<T>>;
+  renderDragPreview?: ComponentType<DragPreviewProps>;
+  renderCursor?: (props: DropCursorProps) => ReactElement;
+  renderContainer?: () => ReactElement;
 
   /* Sizes */
   rowHeight?: number;
@@ -120,13 +119,14 @@ export interface TreeProps<T extends IdObj> {
   disableDrag?: string | boolean | BoolFunc<T>;
   disableDrop?: string | boolean | BoolFunc<T>;
   getChildren?: string | ((d: T) => T[]);
+  match?: (data: T, term: string) => boolean;
   isOpen?: string | BoolFunc<T>;
   hideRoot?: boolean;
   openByDefault?: boolean;
-  match?: (data: T, term: string) => boolean;
+  selectionFollowsFocus?: boolean;
 
   /* Data Handlers */
-  onActivate?: (node: NodeInterface<T>) => void;
+  onActivate?: (node: NodeApi<T>) => void;
   onEdit?: EditHandler;
   onMove?: MoveHandler;
   onToggle?: ToggleHandler;
@@ -147,7 +147,7 @@ export interface TreeProps<T extends IdObj> {
 export type TreeProviderProps<T extends IdObj> = {
   treeProps: TreeProps<T>;
   imperativeHandle: React.Ref<TreeApi<T>> | undefined;
-  children: ReactElement;
+  children: ReactNode;
 };
 
 export type EditResult =

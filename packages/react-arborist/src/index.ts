@@ -1,5 +1,5 @@
 import { Tree } from "./components/tree";
-import { TreeApi } from "./tree-api";
+import { TreeApi } from "./interfaces/tree-api";
 import type {
   NodeRenderer,
   NodeState,

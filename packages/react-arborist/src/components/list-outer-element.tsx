@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { useTreeApi } from "../context";
-import { DropCursor } from "./drop-cursor";
+import { DropCursor } from "./cursor";
 
 export const ListOuterElement = forwardRef(function Outer(
   props: React.HTMLProps<HTMLDivElement>,

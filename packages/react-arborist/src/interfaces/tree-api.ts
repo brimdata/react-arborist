@@ -1,7 +1,7 @@
 import { Dispatch, MutableRefObject } from "react";
 import { FixedSizeList } from "react-window";
-import { Cursor } from "./dnd/compute-drop";
-import { EditResult, IdObj, DropCursorProps, TreeProps } from "./types";
+import { Cursor } from "../dnd/compute-drop";
+import { EditResult, IdObj, DropCursorProps, TreeProps } from "../types";
 import ReactDOM from "react-dom";
 import {
   access,
@@ -12,19 +12,22 @@ import {
   identify,
   identifyNull,
   noop,
-} from "./utils";
-import { defaultDropCursor } from "./components/default-drop-cursor";
-import { DefaultRow } from "./components/default-row";
-import { DefaultNode } from "./components/default-node";
-import { NodeInterface } from "./node-interface";
-import { edit } from "./state/edit-slice";
-import { Actions, RootState } from "./state/root-reducer";
-import { focus, treeBlur } from "./state/focus-slice";
-import { createRoot } from "./data/create-root";
-import { open, close } from "./state/open-slice";
-import { actions as selection } from "./state/selection-slice";
+} from "../utils";
+import { DefaultCursor } from "../components/default-cursor";
+import { DefaultRow } from "../components/default-row";
+import { DefaultNode } from "../components/default-node";
+import { NodeApi } from "./node-api";
+import { edit } from "../state/edit-slice";
+import { Actions, RootState } from "../state/root-reducer";
+import { focus, treeBlur } from "../state/focus-slice";
+import { createRoot } from "../data/create-root";
+import { open, close } from "../state/open-slice";
+import { actions as selection } from "../state/selection-slice";
+import { DefaultDragPreview } from "../components/default-drag-preview";
+import { DefaultContainer } from "../components/default-container";
+
 export class TreeApi<T extends IdObj> {
-  root: NodeInterface<T>;
+  root: NodeApi<T>;
   private edits = new Map<string, (args: EditResult) => void>();
 
   constructor(
@@ -45,14 +48,14 @@ export class TreeApi<T extends IdObj> {
     this.listEl = other.listEl;
   }
 
-  get(id: string | null): NodeInterface<T> | null {
+  get(id: string | null): NodeApi<T> | null {
     if (!id) return null;
     if (id in this.idToIndex)
       return this.visibleNodes[this.idToIndex[id]] || null;
     else return null;
   }
 
-  at(index: number): NodeInterface<T> | null {
+  at(index: number): NodeApi<T> | null {
     return this.visibleNodes[index] || null;
   }
 
@@ -137,7 +140,7 @@ export class TreeApi<T extends IdObj> {
     this.dispatch(selection.mostRecent(this.lastNode));
   }
 
-  activate(node: NodeInterface<T>) {
+  activate(node: NodeApi<T>) {
     const fn = this.props.onActivate;
     if (fn) fn(node);
   }
@@ -158,6 +161,7 @@ export class TreeApi<T extends IdObj> {
     } else {
       this.openParents(id);
       ReactDOM.flushSync(() => {
+        // need to remove this
         const index = this.idToIndex[id];
         if (index) {
           this.list.current?.scrollToItem(index);
@@ -191,7 +195,7 @@ export class TreeApi<T extends IdObj> {
     }
   }
 
-  openSiblings(node: NodeInterface<T>) {
+  openSiblings(node: NodeApi<T>) {
     const parent = node.parent;
     if (!parent) {
       this.toggle(node.id);
@@ -213,7 +217,7 @@ export class TreeApi<T extends IdObj> {
     return createIndex(this.visibleNodes);
   }
 
-  get visibleNodes(): NodeInterface<T>[] {
+  get visibleNodes(): NodeApi<T>[] {
     // @ts-ignore
     return createList(this.root);
   }
@@ -235,7 +239,7 @@ export class TreeApi<T extends IdObj> {
   }
 
   get rowRenderer() {
-    return this.props.rowRenderer || DefaultRow;
+    return this.props.renderRow || DefaultRow;
   }
 
   get onToggle() {
@@ -307,47 +311,17 @@ export class TreeApi<T extends IdObj> {
     return access<T[] | undefined>(data, get) ?? null;
   }
 
-  renderDropCursor(props: DropCursorProps) {
-    const render = this.props.dropCursor || defaultDropCursor;
-    return render(props);
-  }
-
   /* Focus Methods */
-
-  get focusedId() {
-    return this.state.focus.id;
-  }
 
   focus(id?: string | IdObj | null) {
     if (!id) return;
-    else this.dispatch(focus(identify(id)));
-  }
-
-  focusNext() {
-    if (!this.focusedId) {
-      this.focus(this.firstNode?.id);
-    } else {
-      const index = this.visibleIds.indexOf(this.focusedId);
-      const id = this.visibleIds[index + 1];
-      if (!id) return null;
-      this.focus(id);
-    }
-  }
-
-  focusPrev() {
-    if (!this.focusedId) {
-      this.focus(this.lastNode?.id);
-    } else {
-      const index = this.visibleIds.indexOf(this.focusedId);
-      const id = this.visibleIds[index - 1];
-      if (!id) return;
-      this.focus(id);
-    }
+    this.dispatch(focus(identify(id)));
   }
 
   onFocus() {
-    const node = this.get(this.focusedId) || this.firstNode;
-    this.focus(node?.id);
+    const node = this.focusedNode || this.firstNode;
+    this.focus(node);
+    if (this.props.selectionFollowsFocus) this.select(node);
   }
 
   onBlur() {
@@ -388,6 +362,28 @@ export class TreeApi<T extends IdObj> {
 
   /* Node State Checks */
   isFocused(id: string) {
-    return this.state.focus.treeFocused && this.focusedId === id;
+    return this.state.focus.treeFocused && this.state.focus.id === id;
+  }
+
+  /* Get Renderers */
+
+  get renderContainer() {
+    return this.props.renderContainer || DefaultContainer;
+  }
+
+  get renderRow() {
+    return this.props.renderRow || DefaultRow;
+  }
+
+  get renderNode() {
+    return this.props.children || DefaultNode;
+  }
+
+  get renderDragPreview() {
+    return this.props.renderDragPreview || DefaultDragPreview;
+  }
+
+  get renderCursor() {
+    return this.props.renderCursor || DefaultCursor;
   }
 }

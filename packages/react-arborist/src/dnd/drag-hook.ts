@@ -2,14 +2,14 @@ import { useEffect } from "react";
 import { ConnectDragSource, useDrag } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { useTreeApi } from "../context";
-import { NodeInterface } from "../node-interface";
+import { NodeApi } from "../interfaces/node-api";
 import { DragItem, IdObj } from "../types";
 import { DropResult } from "./drop-hook";
 
 type CollectedProps = { isDragging: boolean };
 
 export function useDragHook<T extends IdObj>(
-  node: NodeInterface<T>
+  node: NodeApi<T>
 ): [{ isDragging: boolean }, ConnectDragSource] {
   const tree = useTreeApi();
   const ids = tree.getSelectedIds();

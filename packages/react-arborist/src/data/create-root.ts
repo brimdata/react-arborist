@@ -1,16 +1,14 @@
 import { IdObj } from "../types";
-import { NodeInterface } from "../node-interface";
-import { TreeApi } from "../tree-api";
+import { NodeApi } from "../interfaces/node-api";
+import { TreeApi } from "../interfaces/tree-api";
 
-export function createRoot<T extends IdObj>(
-  tree: TreeApi<T>
-): NodeInterface<T> {
+export function createRoot<T extends IdObj>(tree: TreeApi<T>): NodeApi<T> {
   function visitSelfAndChildren(
     data: T,
     level: number,
-    parent: NodeInterface<T> | null
+    parent: NodeApi<T> | null
   ) {
-    const node = new NodeInterface<T>({
+    const node = new NodeApi<T>({
       tree,
       data,
       level,

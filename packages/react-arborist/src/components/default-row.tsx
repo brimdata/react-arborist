@@ -12,8 +12,11 @@ export function DefaultRow<T extends IdObj>({
     <div
       {...attrs}
       ref={innerRef}
-      onClick={(e) => {
+      onFocus={(e) => {
+        e.stopPropagation();
         node.focus();
+      }}
+      onClick={(e) => {
         node.select({ multi: e.metaKey, contiguous: e.shiftKey });
         node.activate();
       }}

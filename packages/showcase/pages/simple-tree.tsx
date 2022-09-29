@@ -84,7 +84,7 @@ export default function SimpleTree() {
     <div className={styles.layout}>
       <h1>Simple Tree</h1>
       <input type="text" />
-      <Tree className={styles.tree} data={data}>
+      <Tree className={styles.tree} data={data} selectionFollowsFocus>
         {MyNode}
       </Tree>
       <input type="text" />
