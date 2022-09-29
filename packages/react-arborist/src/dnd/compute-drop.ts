@@ -1,5 +1,5 @@
 import { XYCoord } from "react-dnd";
-import { Node } from "../types";
+import { NodeInterface } from "../node-interface";
 import { bound, indexOf, isClosed, isFolder, isItem } from "../utils";
 import { DropResult } from "./drop-hook";
 
@@ -20,11 +20,11 @@ function measureHover(el: HTMLElement, offset: XYCoord) {
 type HoverData = ReturnType<typeof measureHover>;
 
 function getNodesAroundCursor(
-  node: Node | null,
-  prev: Node | null,
-  next: Node | null,
+  node: NodeInterface | null,
+  prev: NodeInterface | null,
+  next: NodeInterface | null,
   hover: HoverData
-): [Node | null, Node | null] {
+): [NodeInterface | null, NodeInterface | null] {
   if (!node) {
     // We're hoving over the empty part of the list, not over an item,
     // Put the cursor below the last item which is "prev"
@@ -51,15 +51,15 @@ type Args = {
   element: HTMLElement;
   offset: XYCoord;
   indent: number;
-  node: Node | null;
-  prevNode: Node | null;
-  nextNode: Node | null;
+  node: NodeInterface | null;
+  prevNode: NodeInterface | null;
+  nextNode: NodeInterface | null;
 };
 
 function getDropLevel(
   hovering: HoverData,
-  aboveCursor: Node | null,
-  belowCursor: Node | null,
+  aboveCursor: NodeInterface | null,
+  belowCursor: NodeInterface | null,
   indent: number
 ) {
   const hoverLevel = Math.round(Math.max(0, hovering.x - indent) / indent);
@@ -78,12 +78,12 @@ function getDropLevel(
   return bound(hoverLevel, min, max);
 }
 
-function canDrop(above: Node | null, below: Node | null) {
+function canDrop(above: NodeInterface | null, below: NodeInterface | null) {
   if (!above) {
     return true;
   }
 
-  let n: Node | null = above;
+  let n: NodeInterface | null = above;
   if (isClosed(above) && above !== below) n = above.parent;
 
   while (n) {
@@ -123,7 +123,7 @@ function highlightCursor(id: string) {
   };
 }
 
-function walkUpFrom(node: Node, level: number) {
+function walkUpFrom(node: NodeInterface, level: number) {
   let drop = node;
   while (drop.parent && drop.level > level) {
     drop = drop.parent;

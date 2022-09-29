@@ -1,15 +1,15 @@
 import React, {
   ComponentType,
   CSSProperties,
+  HTMLAttributes,
   MouseEvent,
   MouseEventHandler,
-  MutableRefObject,
   ReactElement,
-  ReactNode,
   Ref,
 } from "react";
-import { FixedSizeList } from "react-window";
+import { AnyAction } from "redux";
 import { Cursor } from "./dnd/compute-drop";
+import { NodeInterface } from "./node-interface";
 import { SelectionData } from "./selection/selection";
 import { TreeApi } from "./tree-api";
 
@@ -21,32 +21,17 @@ declare module "react" {
   ): (props: P & React.RefAttributes<T>) => React.ReactElement | null;
 }
 
-export type Node<T = unknown> = {
-  id: string;
-  model: T;
-  level: number;
-  children: Node<T>[] | null;
-  parent: Node<T> | null;
-  isOpen: boolean;
-  isDraggable: boolean;
-  isDroppable: boolean;
-  rowIndex: number | null;
-};
-
-export type NodesById<T> = { [id: string]: Node<T> };
+export type NodesById<T extends IdObj> = { [id: string]: NodeInterface<T> };
 
 export interface IdObj {
   id: string;
 }
 
 export type NodeRendererProps<T extends IdObj> = {
-  innerRef: (el: HTMLDivElement | null) => void;
-  styles: { row: CSSProperties; indent: CSSProperties };
-  data: T;
-  state: NodeState;
-  handlers: NodeHandlers;
+  style: CSSProperties;
+  node: NodeInterface<T>;
   tree: TreeApi<T>;
-  preview: boolean;
+  preview?: boolean;
 };
 
 export type NodeState = {
@@ -77,7 +62,10 @@ export type MoveHandler = (
 
 export type ToggleHandler = (id: string, isOpen: boolean) => void;
 export type EditHandler = (id: string, name: string) => void;
-export type NodeClickHandler<T> = (e: MouseEvent, n: Node<T>) => void;
+export type NodeClickHandler<T extends IdObj> = (
+  e: MouseEvent,
+  n: NodeInterface<T>
+) => void;
 export type IndexClickHandler = (e: MouseEvent, index: number) => void;
 export type SelectedCheck = (index: number) => boolean;
 
@@ -106,35 +94,60 @@ export type StateContext = {
 
 type BoolFunc<T> = (data: T) => boolean;
 
+export type RowRendererProps<T extends IdObj> = {
+  node: NodeInterface<T>;
+  innerRef: (el: HTMLDivElement | null) => void;
+  attrs: HTMLAttributes<any>;
+  children: ReactElement;
+};
+
 export interface TreeProps<T extends IdObj> {
-  children: NodeRenderer<T>;
-  className?: string | undefined;
   data: T;
+
+  /* Renderers*/
+  children?: NodeRenderer<T>;
+  rowRenderer?: ComponentType<RowRendererProps<T>>;
+  previewRenderer?: NodeRenderer<T>;
+  dropCursor?: (props: DropCursorProps) => ReactElement;
+
+  /* Sizes */
+  rowHeight?: number;
+  width?: number;
+  height?: number;
+  indent?: number;
+
+  /* Config */
   disableDrag?: string | boolean | BoolFunc<T>;
   disableDrop?: string | boolean | BoolFunc<T>;
-  dndRootElement?: globalThis.Node | null;
   getChildren?: string | ((d: T) => T[]);
-  handle?: Ref<TreeApi<T>>; // Deprecated
-  height?: number;
-  hideRoot?: boolean;
-  indent?: number;
   isOpen?: string | BoolFunc<T>;
-  onClick?: MouseEventHandler;
-  onContextMenu?: MouseEventHandler;
+  hideRoot?: boolean;
+  openByDefault?: boolean;
+  match?: (data: T, term: string) => boolean;
+
+  /* Data Handlers */
+  onActivate?: (node: NodeInterface<T>) => void;
   onEdit?: EditHandler;
   onMove?: MoveHandler;
   onToggle?: ToggleHandler;
-  openByDefault?: boolean;
-  rowHeight?: number;
-  width?: number;
-  dropCursor?: (props: DropCursorProps) => ReactElement;
+
+  /* Event Handlers */
+  // On Scroll
+  // On Select
+  // On Focus
+
+  /* Extra */
+  handle?: Ref<TreeApi<T>>; // Deprecated
+  className?: string | undefined;
+  dndRootElement?: globalThis.Node | null;
+  onClick?: MouseEventHandler;
+  onContextMenu?: MouseEventHandler;
 }
 
 export type TreeProviderProps<T extends IdObj> = {
   treeProps: TreeProps<T>;
   imperativeHandle: React.Ref<TreeApi<T>> | undefined;
   children: ReactElement;
-  root: Node<T>;
 };
 
 export type EditResult =
@@ -146,3 +159,9 @@ export type DropCursorProps = {
   left: number;
   indent: number;
 };
+
+export type SelectOptions = { multi?: boolean; contiguous?: boolean };
+
+export type ActionTypes<
+  Actions extends { [name: string]: (...args: any[]) => AnyAction }
+> = ReturnType<Actions[keyof Actions]>;

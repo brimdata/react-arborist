@@ -12,13 +12,16 @@
     "memoize-one": "^6.0.0",
     "react-dnd": "^14.0.3",
     "react-dnd-html5-backend": "^14.0.1",
-    "react-window": "^1.8.6"
+    "react-window": "^1.8.6",
+    "redux": "^4.1.1"
   },
   "scripts": {
     "build": "run-p 'build:**'",
     "build:js": "parcel build --target main --target module",
     "build:types": "tsc --outDir dist",
-    "watch": "yarn build:types --watch"
+    "watch:js": "parcel watch --target main --target module --no-hmr",
+    "watch:types": "tsc --outDir dist --watch",
+    "watch": "run-p 'watch:**'"
   },
   "peerDependencies": {
     "react": ">= 16.14",

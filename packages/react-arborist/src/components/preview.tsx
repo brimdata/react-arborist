@@ -70,39 +70,20 @@ function Count(props: { item: DragItem; mouse: XYCoord | null }) {
   else return null;
 }
 
+// Expose this for people to implement as well
 const PreviewNode = memo(function PreviewNode<T extends IdObj>(props: {
   item: DragItem | null;
 }) {
   const tree = useTreeApi<T>();
   if (!props.item) return null;
-  const node = tree.getNode(props.item.id);
+  const node = tree.get(props.item.id);
   if (!node) return null;
   return (
     <tree.renderer
       preview
-      innerRef={() => {}}
-      data={node.model}
-      styles={{
-        row: {},
-        indent: { paddingLeft: node.level * tree.indent },
-      }}
+      node={node}
+      style={{ paddingLeft: node.level * tree.indent }}
       tree={tree}
-      state={{
-        isDragging: false,
-        isEditing: false,
-        isSelected: false,
-        isSelectedStart: false,
-        isSelectedEnd: false,
-        isHoveringOverChild: false,
-        isOpen: node.isOpen,
-      }}
-      handlers={{
-        edit: () => Promise.resolve({ cancelled: true }),
-        select: () => {},
-        toggle: () => {},
-        submit: () => {},
-        reset: () => {},
-      }}
     />
   );
 });
