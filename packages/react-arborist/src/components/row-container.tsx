@@ -1,8 +1,15 @@
-import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import React, {
+  ComponentType,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
 import { useTreeApi } from "../context";
 import { useDragHook } from "../dnd/drag-hook";
 import { useDropHook } from "../dnd/drop-hook";
-import { IdObj, NodeRenderer } from "../types";
+import { NodeRendererProps } from "../types/renderers";
+import { IdObj } from "../types/utils";
 
 type Props = {
   style: React.CSSProperties;
@@ -39,9 +46,9 @@ export const RowContainer = React.memo(function RowContainer<T extends IdObj>({
 
   const nodeStyle = useMemo(() => ({ paddingLeft: indent }), [indent]);
 
-  const Node = useMemo<NodeRenderer<T>>(
-    () => React.memo(tree.renderer),
-    [tree.renderer]
+  const Node = useMemo<ComponentType<NodeRendererProps<T>>>(
+    () => React.memo(tree.renderNode),
+    [tree.renderNode]
   );
 
   const Row = useMemo(() => React.memo(tree.renderRow), [tree.renderRow]);

@@ -1,7 +1,14 @@
+import {
+  MoveHandler,
+  RenameHandler,
+  CreateHandler,
+  EditResult,
+} from "../types/handlers";
+import { IdObj } from "../types/utils";
+import { TreeProps } from "../types/tree-props";
 import { Dispatch, MutableRefObject } from "react";
 import { FixedSizeList } from "react-window";
 import { Cursor } from "../dnd/compute-drop";
-import { EditResult, IdObj, DropCursorProps, TreeProps } from "../types";
 import ReactDOM from "react-dom";
 import {
   access,
@@ -23,6 +30,7 @@ import { focus, treeBlur } from "../state/focus-slice";
 import { createRoot } from "../data/create-root";
 import { open, close } from "../state/open-slice";
 import { actions as selection } from "../state/selection-slice";
+import { actions as dnd } from "../state/dnd-slice";
 import { DefaultDragPreview } from "../components/default-drag-preview";
 import { DefaultContainer } from "../components/default-container";
 
@@ -69,6 +77,37 @@ export class TreeApi<T extends IdObj> {
     return this.state.selection.ids;
   }
 
+  /* Data Operations */
+
+  async newLeafNode() {
+    let index;
+    let parentId;
+    if (this.focusedNode && this.focusedNode.parent) {
+      index = this.focusedNode.childIndex + 1;
+      parentId = this.focusedNode.parent.id;
+    } else {
+      index = this.root?.children?.length || -1;
+      parentId = this.root.id;
+    }
+    const data = await this.onCreate({ parentId, index });
+    if (data) this.select(data);
+  }
+
+  onCreate(...args: Parameters<CreateHandler>) {
+    const fn = this.props.onCreate || noop;
+    return fn(...args);
+  }
+
+  move(...args: Parameters<MoveHandler>) {
+    const fn = this.props.onMove || noop;
+    return fn(...args);
+  }
+
+  rename(...args: Parameters<RenameHandler>) {
+    const fn = this.props.onRename || noop;
+    return fn(...args);
+  }
+
   edit(id: string): Promise<EditResult> {
     this.resolveEdit(id, { cancelled: true });
     this.scrollToId(id);
@@ -77,7 +116,7 @@ export class TreeApi<T extends IdObj> {
   }
 
   submit(id: string, value: string) {
-    this.onEdit(id, value);
+    this.rename({ id, name: value });
     this.dispatch(edit(null));
     this.resolveEdit(id, { cancelled: false, value });
     setTimeout(() => this.onFocus()); // Return focus to element;
@@ -141,16 +180,16 @@ export class TreeApi<T extends IdObj> {
   }
 
   activate(node: NodeApi<T>) {
-    const fn = this.props.onActivate;
-    if (fn) fn(node);
+    // const fn = this.props.onActivate;
+    // if (fn) fn(node);
   }
 
   hideCursor() {
-    // this.dispatch(actions.setCursorLocation({ type: "none" }));
+    this.dispatch(dnd.cursor({ type: "none" }));
   }
 
   showCursor(cursor: Cursor) {
-    // this.dispatch(actions.setCursorLocation(cursor));
+    this.dispatch(dnd.cursor(cursor));
   }
 
   scrollToId(id: string) {
@@ -234,18 +273,6 @@ export class TreeApi<T extends IdObj> {
     return this.props.indent || 24;
   }
 
-  get renderer() {
-    return this.props.children || DefaultNode;
-  }
-
-  get rowRenderer() {
-    return this.props.renderRow || DefaultRow;
-  }
-
-  get onToggle() {
-    return this.props.onToggle || noop;
-  }
-
   get rowHeight() {
     return this.props.rowHeight || 24;
   }
@@ -256,14 +283,6 @@ export class TreeApi<T extends IdObj> {
 
   get onContextMenu() {
     return this.props.onContextMenu || noop;
-  }
-
-  get onMove() {
-    return this.props.onMove || noop;
-  }
-
-  get onEdit() {
-    return this.props.onEdit || noop;
   }
 
   get cursorParentId() {

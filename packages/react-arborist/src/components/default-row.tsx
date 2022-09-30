@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { IdObj, RowRendererProps } from "../types";
-import { Tree } from "./tree";
+import { RowRendererProps } from "../types/renderers";
+import { IdObj } from "../types/utils";
 
 export function DefaultRow<T extends IdObj>({
   node,

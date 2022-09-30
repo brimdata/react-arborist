@@ -20,7 +20,6 @@ export const ListOuterElement = forwardRef(function Outer(
         style={{
           height: tree.visibleNodes.length * tree.rowHeight,
           width: "100%",
-          overflow: "hidden",
           position: "absolute",
           left: "0",
           right: "0",

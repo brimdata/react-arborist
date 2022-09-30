@@ -87,6 +87,9 @@ export function DefaultContainer() {
           e.preventDefault();
           tree.selectAll();
         }
+        if (e.key === "a" && !e.metaKey) {
+          tree.newLeafNode();
+        }
         if (e.key === "Home") {
           if (tree.firstNode) tree.focus(tree.firstNode.id);
         }

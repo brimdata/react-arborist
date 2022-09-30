@@ -1,5 +1,5 @@
 import { NodeApi } from "../interfaces/node-api";
-import { IdObj } from "../types";
+import { IdObj } from "../types/utils";
 
 export function flattenTree<T extends IdObj>(root: NodeApi<T>): NodeApi<T>[] {
   const list: NodeApi<T>[] = [];

@@ -3670,6 +3670,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"find-insert-index@npm:0.0.1":
+  version: 0.0.1
+  resolution: "find-insert-index@npm:0.0.1"
+  checksum: a77d17cfeb258c8b0618f92ec177baa2aa0ab5ef9525c27422d2b82828ab61ac1452000df0fbcabe75b2de4787133daefda573c9cab2efb15b2f517b29e79929
+  languageName: node
+  linkType: hard
+
 "find-up@npm:^4.0.0, find-up@npm:^4.1.0":
   version: 4.1.0
   resolution: "find-up@npm:4.1.0"
@@ -5425,6 +5432,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"mergesort@npm:0.0.1":
+  version: 0.0.1
+  resolution: "mergesort@npm:0.0.1"
+  checksum: f174d414944950b8d504ca7392790de74c8c6064398742a46ac3a90d993be5b1157476b14d34aa909277a939085997eb9941654efa5c4dc38aa145a7f64df7e7
+  languageName: node
+  linkType: hard
+
 "micromatch@npm:^4.0.4":
   version: 4.0.4
   resolution: "micromatch@npm:4.0.4"
@@ -6707,6 +6721,7 @@ __metadata:
     "@parcel/packager-ts": 2.3.2
     "@parcel/transformer-typescript-types": 2.3.2
     npm-run-all: ^4.1.5
+    tree-model-improved: ^2.0.1
     typescript: ">=3.0.0"
   languageName: unknown
   linkType: soft
@@ -6728,6 +6743,7 @@ __metadata:
     react-dom: ^17.0.2
     react-window: ^1.8.6
     redux: ^4.1.1
+    tree-model-improved: ^2.0.1
     typescript: ^4.6.2
   peerDependencies:
     react: ">= 16.14"
@@ -7212,6 +7228,7 @@ __metadata:
     react: 18.2.0
     react-arborist: "workspace:^"
     react-dom: 18.2.0
+    tree-model-improved: ^2.0.1
     typescript: 4.8.3
   languageName: unknown
   linkType: soft
@@ -7720,6 +7737,16 @@ __metadata:
   dependencies:
     punycode: ^2.1.1
   checksum: ffe6049b9dca3ae329b059aada7f515b0f0064c611b39b51ff6b53897e954650f6f63d9319c6c008d36ead477c7b55e5f64c9dc60588ddc91ff720d64eb710b3
+  languageName: node
+  linkType: hard
+
+"tree-model-improved@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "tree-model-improved@npm:2.0.1"
+  dependencies:
+    find-insert-index: 0.0.1
+    mergesort: 0.0.1
+  checksum: 21013a33e815bc72cf2a465940ea968fdfe3dd08d884942cc191e4ec54d9a55ac9896d88500e1877a636b32eccc459bce7f2469a22e63e3bc9cbf400c96e9978
   languageName: node
   linkType: hard
 

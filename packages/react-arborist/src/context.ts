@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useMemo } from "react";
 import { TreeApi } from "./interfaces/tree-api";
-import { IdObj } from "./types";
+import { IdObj } from "./types/utils";
 
 export const TreeApiContext = createContext<TreeApi<any> | null>(null);
 

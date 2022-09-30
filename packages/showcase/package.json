@@ -13,7 +13,8 @@
     "next": "12.3.1",
     "react": "18.2.0",
     "react-arborist": "workspace:^",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "tree-model-improved": "^2.0.1"
   },
   "devDependencies": {
     "@types/node": "18.7.19",

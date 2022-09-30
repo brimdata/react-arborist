@@ -3,7 +3,8 @@ import { ConnectDragSource, useDrag } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { useTreeApi } from "../context";
 import { NodeApi } from "../interfaces/node-api";
-import { DragItem, IdObj } from "../types";
+import { DragItem } from "../types/dnd";
+import { IdObj } from "../types/utils";
 import { DropResult } from "./drop-hook";
 
 type CollectedProps = { isDragging: boolean };
@@ -31,9 +32,15 @@ export function useDragHook<T extends IdObj>(
       end: (item, monitor) => {
         tree.hideCursor();
         const drop = monitor.getDropResult();
+        // If they held down meta, we need to create a copy
+        // if (drop.dropEffect === "copy")
         if (drop && drop.parentId) {
-          tree.onMove(item.dragIds, drop.parentId, drop.index);
-          tree.onToggle(drop.parentId, true);
+          tree.move({
+            dragIds: item.dragIds,
+            parentId: drop.parentId,
+            index: drop.index,
+          });
+          tree.open(drop.parentId);
         }
       },
     }),

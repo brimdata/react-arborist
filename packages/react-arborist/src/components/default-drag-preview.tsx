@@ -1,7 +1,8 @@
 import React, { CSSProperties, memo } from "react";
-import { useDragLayer, XYCoord } from "react-dnd";
+import { XYCoord } from "react-dnd";
 import { useTreeApi } from "../context";
-import { DragItem, DragPreviewProps, IdObj } from "../types";
+import { DragPreviewProps } from "../types/renderers";
+import { IdObj } from "../types/utils";
 
 const layerStyles: CSSProperties = {
   position: "fixed",
@@ -78,10 +79,14 @@ const PreviewNode = memo(function PreviewNode<T extends IdObj>(props: {
   const node = tree.get(props.id);
   if (!node) return null;
   return (
-    <tree.renderer
+    <tree.renderNode
       preview
       node={node}
-      style={{ paddingLeft: node.level * tree.indent }}
+      style={{
+        paddingLeft: node.level * tree.indent,
+        opacity: 0.2,
+        background: "transparent",
+      }}
       tree={tree}
     />
   );

@@ -1,7 +1,7 @@
 import memoizeOne from "memoize-one";
 import { flattenTree } from "./data/flatten-tree";
 import { NodeApi } from "./interfaces/node-api";
-import { IdObj } from "./types";
+import { IdObj } from "./types/utils";
 
 export function bound(n: number, min: number, max: number) {
   return Math.max(Math.min(n, max), min);
@@ -30,7 +30,6 @@ export const isDecendent = (a: NodeApi<any>, b: NodeApi<any>) => {
 };
 
 export const indexOf = (node: NodeApi<any>) => {
-  // This should probably not throw an error, but instead return null
   if (!node.parent) throw Error("Node does not have a parent");
   return node.parent.children!.findIndex((c) => c.id === node.id);
 };

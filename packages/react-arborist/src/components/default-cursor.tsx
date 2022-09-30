@@ -1,9 +1,10 @@
 import React, { CSSProperties } from "react";
-import { DropCursorProps } from "../types";
+import { DropCursorProps } from "../types/renderers";
 
 const placeholderStyle = {
   display: "flex",
   alignItems: "center",
+  zIndex: 1,
 };
 
 const lineStyle = {
@@ -25,7 +26,7 @@ export function DefaultCursor({ top, left, indent }: DropCursorProps) {
     position: "absolute",
     pointerEvents: "none",
     top: top - 2 + "px",
-    left: indent + left + "px",
+    left: left + "px",
     right: indent + "px",
   };
   return (

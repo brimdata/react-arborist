@@ -13,7 +13,8 @@
     "react-dnd": "^14.0.3",
     "react-dnd-html5-backend": "^14.0.1",
     "react-window": "^1.8.6",
-    "redux": "^4.1.1"
+    "redux": "^4.1.1",
+    "tree-model-improved": "^2.0.1"
   },
   "scripts": {
     "build": "run-p 'build:**'",

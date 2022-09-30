@@ -1,6 +1,8 @@
-import { IdObj } from "../types";
+import { IdObj } from "../types/utils";
 import { NodeApi } from "../interfaces/node-api";
 import { TreeApi } from "../interfaces/tree-api";
+
+export const ROOT_ID = "__REACT_ARBORIST_INTERNAL_ROOT__";
 
 export function createRoot<T extends IdObj>(tree: TreeApi<T>): NodeApi<T> {
   function visitSelfAndChildren(
@@ -28,9 +30,26 @@ export function createRoot<T extends IdObj>(tree: TreeApi<T>): NodeApi<T> {
     return node;
   }
 
-  return visitSelfAndChildren(
-    tree.props.data,
-    tree.props.hideRoot ? -1 : 0,
-    null
-  );
+  const root = new NodeApi<T>({
+    tree,
+    id: ROOT_ID,
+    // @ts-ignore
+    data: { id: ROOT_ID },
+    level: -1,
+    parent: null,
+    children: null,
+    isDraggable: true,
+    isDroppable: true,
+    rowIndex: null,
+  });
+
+  const data: T[] = Array.isArray(tree.props.data)
+    ? tree.props.data
+    : [tree.props.data];
+
+  root.children = data.map((child) => {
+    return visitSelfAndChildren(child, 0, root);
+  });
+
+  return root;
 }

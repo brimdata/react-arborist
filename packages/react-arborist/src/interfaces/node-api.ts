@@ -11,7 +11,7 @@
 //   };
 
 import { TreeApi } from "./tree-api";
-import { IdObj } from "../types";
+import { IdObj } from "../types/utils";
 
 type Params<T extends IdObj> = {
   id: string;
@@ -66,6 +66,14 @@ export class NodeApi<T extends IdObj = IdObj> {
 
   get isSelected() {
     return this.tree.isSelected(this.id);
+  }
+
+  get childIndex() {
+    if (this.parent && this.parent.children) {
+      return this.parent.children.indexOf(this);
+    } else {
+      return -1;
+    }
   }
 
   select(opts: { multi?: boolean; contiguous?: boolean }) {

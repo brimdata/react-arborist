@@ -1,4 +1,4 @@
-import { ActionTypes, IdObj } from "../types";
+import { ActionTypes, IdObj } from "../types/utils";
 import { identify } from "../utils";
 import { initialState } from "./initial";
 
