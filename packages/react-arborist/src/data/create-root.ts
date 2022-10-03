@@ -45,6 +45,8 @@ export function createRoot<T extends IdObj>(tree: TreeApi<T>): NodeApi<T> {
 
   const data: T[] = Array.isArray(tree.props.data)
     ? tree.props.data
+    : tree.props.data === undefined
+    ? []
     : [tree.props.data];
 
   root.children = data.map((child) => {

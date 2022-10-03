@@ -21,7 +21,12 @@ const circleStyle = {
   borderRadius: "50%",
 };
 
-export function DefaultCursor({ top, left, indent }: DropCursorProps) {
+export const DefaultCursor = React.memo(function DefaultCursor({
+  top,
+  left,
+  indent,
+}: DropCursorProps) {
+  console.log("render <DefaultCursor />");
   const style: CSSProperties = {
     position: "absolute",
     pointerEvents: "none",
@@ -35,4 +40,4 @@ export function DefaultCursor({ top, left, indent }: DropCursorProps) {
       <div style={{ ...lineStyle }}></div>
     </div>
   );
-}
+});

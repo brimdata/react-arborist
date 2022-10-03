@@ -5645,6 +5645,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nanoid@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "nanoid@npm:4.0.0"
+  bin:
+    nanoid: bin/nanoid.js
+  checksum: 7d5946df5c6d383694195b781ae7b5067c149d164ec71e910d6b06676309c3459b68af570b944fb5ecd5065d19df464f05700d141d70bb712ff8ca06642fd8df
+  languageName: node
+  linkType: hard
+
 "natural-compare@npm:^1.4.0":
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
@@ -7224,6 +7233,7 @@ __metadata:
     clsx: ^1.2.1
     eslint: 8.23.1
     eslint-config-next: 12.3.1
+    nanoid: ^4.0.0
     next: 12.3.1
     react: 18.2.0
     react-arborist: "workspace:^"

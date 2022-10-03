@@ -5,35 +5,48 @@ import styles from "styles/Tree.module.css";
 import { useTreeController } from "./use-tree-controller";
 
 type Data = { id: string; name: string; children?: Data[] };
-const data: Data[] = [
-  { id: "1", name: "Philosophy" },
-  {
-    id: "2",
-    name: "Stoics",
-    children: [
-      { id: "3", name: "Creative Work" },
-      { id: "4", name: "Trees", children: [{ id: "5", name: "Water" }] },
-    ],
-  },
-  {
-    id: "6",
-    name: "Mystics",
-    children: [
-      { id: "7", name: "RR" },
-      { id: "8", name: "Tom", children: [{ id: "9", name: "Walter" }] },
-    ],
-  },
-];
+const data: Data[] = {
+  //@ts-ignore
+  id: "ROOT",
+  name: "root",
+  children: [
+    { id: "1", name: "Philosophy" },
+    {
+      id: "2",
+      name: "Stoics",
+      children: [
+        { id: "3", name: "Creative Work" },
+        { id: "4", name: "Trees", children: [{ id: "5", name: "Water" }] },
+      ],
+    },
+    {
+      id: "6",
+      name: "Mystics",
+      children: [
+        { id: "7", name: "RR" },
+        { id: "8", name: "Tom", children: [{ id: "9", name: "Walter" }] },
+      ],
+    },
+  ],
+};
 
 function MyNode(props: NodeRendererProps<Data>) {
   return (
     <div
+      ref={props.dragHandle}
       style={props.style}
       className={clsx(styles.node, {
         [styles.isSelected]: props.node.isSelected,
       })}
     >
-      <p>{props.node.isLeaf ? "🌲" : props.node.isOpen ? "🗁" : "🗀"}</p>
+      <p
+        onClick={(e) => {
+          e.stopPropagation();
+          props.node.toggle();
+        }}
+      >
+        {props.node.isLeaf ? "🌲" : props.node.isOpen ? "🗁" : "🗀"}
+      </p>
       {props.node.isEditing ? <Edit {...props} /> : <Show {...props} />}
     </div>
   );
@@ -84,6 +97,8 @@ export default function SimpleTree() {
         className={styles.tree}
         data={theData}
         onCreate={controller.create}
+        onRename={controller.rename}
+        onMove={controller.move}
         selectionFollowsFocus
       >
         {MyNode}

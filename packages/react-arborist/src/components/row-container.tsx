@@ -1,15 +1,9 @@
-import React, {
-  ComponentType,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-} from "react";
-import { useTreeApi } from "../context";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import { useNodesContext, useTreeApi } from "../context";
 import { useDragHook } from "../dnd/drag-hook";
 import { useDropHook } from "../dnd/drop-hook";
-import { NodeRendererProps } from "../types/renderers";
 import { IdObj } from "../types/utils";
+import { useFreshNode } from "../hooks/use-fresh-node";
 
 type Props = {
   style: React.CSSProperties;
@@ -20,38 +14,40 @@ export const RowContainer = React.memo(function RowContainer<T extends IdObj>({
   index,
   style,
 }: Props) {
-  const tree = useTreeApi<T>();
-  const node = tree.visibleNodes[index];
-  const next = tree.visibleNodes[index + 1] || null;
-  const prev = tree.visibleNodes[index - 1] || null;
+  /* When will the <Row> will re-render.
+   *
+   * The row component is memo'd so it will only render
+   * when a new instance of the NodeApi class is passed
+   * to it.
+   *
+   * The TreeApi instance is mostly-stable. It does not
+   * change when the internal state changes, only when
+   * the props change.
+   *
+   * The TreeApi has all the references to the nodes.
+   * We need to clone the nodes when their state
+   * changes. The node class contains no state itself,
+   * It always checks the tree for state. The tree's
+   * state will always be up to date.
+   */
+
+  const _ = useNodesContext(); // So that we re-render appropriately
+  const tree = useTreeApi<T>(); // Tree already has the fresh state
+  const node = useFreshNode<T>(index);
+
   const el = useRef<HTMLDivElement | null>(null);
-  const [{ isDragging }, dragRef] = useDragHook<T>(node);
-  const [, dropRef] = useDropHook(el, node, prev, next);
-  const isSelected = tree.isSelected(node.id);
-  const nextSelected = next && tree.isSelected(tree.at(index + 1)?.id);
-  const prevSelected = prev && tree.isSelected(tree.at(index - 1)?.id);
-  const isHoveringOverChild = node.id === tree.cursorParentId;
-  const isOverFolder = node.id === tree.cursorParentId && tree.cursorOverFolder;
-  const isOpen = node.isOpen;
-  const indent = tree.indent * node.level;
-  const isFocused = tree.isFocused(node.id);
-
-  const ref = useCallback(
-    (n: HTMLDivElement | null) => {
+  const dragRef = useDragHook<T>(node);
+  const dropRef = useDropHook(el, node);
+  const innerRef = useCallback(
+    (n) => {
       el.current = n;
-      dragRef(dropRef(n));
+      dropRef(n);
     },
-    [dragRef, dropRef]
+    [dropRef]
   );
 
+  const indent = tree.indent * node.level;
   const nodeStyle = useMemo(() => ({ paddingLeft: indent }), [indent]);
-
-  const Node = useMemo<ComponentType<NodeRendererProps<T>>>(
-    () => React.memo(tree.renderNode),
-    [tree.renderNode]
-  );
-
-  const Row = useMemo(() => React.memo(tree.renderRow), [tree.renderRow]);
 
   const rowAttrs: React.HTMLAttributes<any> = {
     role: "treeitem",
@@ -61,14 +57,17 @@ export const RowContainer = React.memo(function RowContainer<T extends IdObj>({
   };
 
   useEffect(() => {
-    if (!node.isEditing && isFocused) {
+    if (!node.isEditing && node.isFocused) {
       el.current?.focus();
     }
-  }, [node.isEditing, isFocused, el.current]);
+  }, [node.isEditing, node.isFocused, el.current]);
+
+  const Node = tree.renderNode;
+  const Row = tree.renderRow;
 
   return (
-    <Row node={node} innerRef={ref} attrs={rowAttrs}>
-      <Node node={node} tree={tree} style={nodeStyle} />
+    <Row node={node} innerRef={innerRef} attrs={rowAttrs}>
+      <Node node={node} tree={tree} style={nodeStyle} dragHandle={dragRef} />
     </Row>
   );
 });

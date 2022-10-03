@@ -46,7 +46,7 @@ export const actions = {
 
 /* Reducer */
 export function reducer(
-  state: SelectionState = initialState()["selection"],
+  state: SelectionState = initialState()["nodes"]["selection"],
   action: ActionTypes<typeof actions>
 ): SelectionState {
   const ids = state.ids;

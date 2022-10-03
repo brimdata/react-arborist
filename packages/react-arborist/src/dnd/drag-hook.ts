@@ -6,19 +6,14 @@ import { NodeApi } from "../interfaces/node-api";
 import { DragItem } from "../types/dnd";
 import { IdObj } from "../types/utils";
 import { DropResult } from "./drop-hook";
-
-type CollectedProps = { isDragging: boolean };
+import { actions as dnd } from "../state/dnd-slice";
 
 export function useDragHook<T extends IdObj>(
   node: NodeApi<T>
-): [{ isDragging: boolean }, ConnectDragSource] {
+): ConnectDragSource {
   const tree = useTreeApi();
   const ids = tree.getSelectedIds();
-  const [{ isDragging }, ref, preview] = useDrag<
-    DragItem,
-    DropResult,
-    CollectedProps
-  >(
+  const [_, ref, preview] = useDrag<DragItem, DropResult, void>(
     () => ({
       canDrag: () => node.isDraggable,
       type: "NODE",
@@ -26,10 +21,11 @@ export function useDragHook<T extends IdObj>(
         id: node.id,
         dragIds: tree.isSelected(node.id) ? Array.from(ids) : [node.id],
       }),
-      collect: (m) => ({
-        isDragging: m.isDragging(),
-      }),
+      start: () => {
+        tree.dispatch(dnd.dragStart(node.id));
+      },
       end: (item, monitor) => {
+        tree.dispatch(dnd.dragEnd());
         tree.hideCursor();
         const drop = monitor.getDropResult();
         // If they held down meta, we need to create a copy
@@ -51,5 +47,5 @@ export function useDragHook<T extends IdObj>(
     preview(getEmptyImage());
   }, [preview]);
 
-  return [{ isDragging }, ref];
+  return ref;
 }

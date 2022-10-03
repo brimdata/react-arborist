@@ -35,11 +35,13 @@ export function DefaultContainer() {
         }
         if (e.key === "ArrowDown" && !e.shiftKey) {
           const next = tree.nextNode;
+          if (!next) return;
           tree.focus(next);
           if (tree.props.selectionFollowsFocus) tree.select(next);
         }
         if (e.key === "ArrowDown" && e.shiftKey) {
           const next = tree.nextNode;
+          if (!next) return;
           const current = tree.focusedNode;
           if (!current) {
             tree.focus(tree.firstNode);
@@ -54,12 +56,14 @@ export function DefaultContainer() {
         }
         if (e.key === "ArrowUp" && !e.shiftKey) {
           const prev = tree.prevNode;
+          if (!prev) return;
           tree.focus(prev);
           if (tree.props.selectionFollowsFocus) tree.select(prev);
         }
         if (e.key === "ArrowUp" && e.shiftKey) {
           const prev = tree.prevNode;
           const current = tree.focusedNode;
+          if (!prev) return;
           if (!current) {
             tree.focus(tree.lastNode);
             if (tree.props.selectionFollowsFocus) tree.select(prev);
@@ -74,14 +78,19 @@ export function DefaultContainer() {
         if (e.key === "ArrowRight") {
           const node = tree.focusedNode;
           if (!node) return;
-          if (node.isInternal && node.isOpen) tree.focus(tree.nextNode);
-          else if (node.isInternal) tree.open(node.id);
+          if (node.isInternal && node.isOpen) {
+            tree.focus(tree.nextNode);
+            if (tree.props.selectionFollowsFocus) tree.select(tree.nextNode);
+          } else if (node.isInternal) tree.open(node.id);
         }
         if (e.key === "ArrowLeft") {
           const node = tree.focusedNode;
           if (!node) return;
           if (node.isInternal && node.isOpen) tree.close(node.id);
-          else tree.focus(node.parent);
+          else {
+            tree.focus(node.parent);
+            if (tree.props.selectionFollowsFocus) tree.select(node.parent);
+          }
         }
         if (e.key === "a" && e.metaKey) {
           e.preventDefault();

@@ -6,8 +6,8 @@ import { TreeApi } from "../interfaces/tree-api";
 
 export interface TreeProps<T extends IdObj> {
   /* Data Options */
-  data: T | T[];
-  defaultData: T | T[];
+  data?: T | T[];
+  defaultData?: T | T[];
 
   /* Data Handlers */
   onCreate?: handlers.CreateHandler;

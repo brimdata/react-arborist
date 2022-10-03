@@ -1,15 +1,3 @@
-// const state = useMemo(() => {
-//   return {
-//     isEditing,
-//     isDragging,
-//     isSelectedStart: isSelected && !prevSelected,
-//     isSelectedEnd: isSelected && !nextSelected,
-//     isSelected,
-//     isHoveringOverChild,
-//     isOpen,
-//     isOverFolder,
-//   };
-
 import { TreeApi } from "./tree-api";
 import { IdObj } from "../types/utils";
 
@@ -48,6 +36,16 @@ export class NodeApi<T extends IdObj = IdObj> {
     this.rowIndex = params.rowIndex;
   }
 
+  get next(): NodeApi<T> | null {
+    if (this.rowIndex === null) return null;
+    return this.tree.at(this.rowIndex + 1);
+  }
+
+  get prev(): NodeApi<T> | null {
+    if (this.rowIndex === null) return null;
+    return this.tree.at(this.rowIndex - 1);
+  }
+
   get isLeaf() {
     return !Array.isArray(this.children);
   }
@@ -68,12 +66,45 @@ export class NodeApi<T extends IdObj = IdObj> {
     return this.tree.isSelected(this.id);
   }
 
+  get isSelectedStart() {
+    return this.isSelected && !this.prev?.isSelected;
+  }
+
+  get isSelectedEnd() {
+    return this.isSelected && !this.next?.isSelected;
+  }
+
+  get isFocused() {
+    return this.tree.isFocused(this.id);
+  }
+
   get childIndex() {
     if (this.parent && this.parent.children) {
-      return this.parent.children.indexOf(this);
+      return this.parent.children.findIndex((child) => child.id === this.id);
     } else {
       return -1;
     }
+  }
+
+  get isDragging() {
+    return this.tree.isDragging(this.id);
+  }
+
+  get willReceiveDrop() {
+    return this.tree.willReceiveDrop(this.id);
+  }
+
+  get state() {
+    return {
+      isEditing: this.isEditing,
+      isDragging: this.isDragging,
+      isSelected: this.isSelected,
+      isSelectedStart: this.isSelectedStart,
+      isSelectedEnd: this.isSelectedEnd,
+      isFocused: this.isFocused,
+      isOpen: this.isOpen,
+      willReceiveDrop: this.willReceiveDrop,
+    };
   }
 
   select(opts: { multi?: boolean; contiguous?: boolean }) {
@@ -98,5 +129,9 @@ export class NodeApi<T extends IdObj = IdObj> {
 
   reset() {
     this.tree.reset(this.id);
+  }
+
+  clone() {
+    return new NodeApi<T>({ ...this });
   }
 }

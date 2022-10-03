@@ -11,16 +11,12 @@ export type DropResult = {
   index: number;
 };
 
-export type CollectedProps = undefined;
-
 export function useDropHook(
   el: RefObject<HTMLElement | null>,
-  node: NodeApi<any>,
-  prev: NodeApi<any> | null,
-  next: NodeApi<any> | null
-): [CollectedProps, ConnectDropTarget] {
+  node: NodeApi<any>
+): ConnectDropTarget {
   const tree = useTreeApi();
-  return useDrop<DragItem, DropResult | null, CollectedProps>(
+  const [_, dropRef] = useDrop<DragItem, DropResult | null, void>(
     () => ({
       accept: "NODE",
       canDrop: (item) => {
@@ -40,8 +36,8 @@ export function useDropHook(
             offset: offset,
             indent: tree.indent,
             node: node,
-            prevNode: prev,
-            nextNode: next,
+            prevNode: node.prev,
+            nextNode: node.next,
           });
           if (cursor) tree.showCursor(cursor);
         } else {
@@ -56,12 +52,14 @@ export function useDropHook(
           offset: offset,
           indent: tree.indent,
           node: node,
-          prevNode: prev,
-          nextNode: next,
+          prevNode: node.prev,
+          nextNode: node.next,
         });
         return drop;
       },
     }),
-    [node, prev, el, tree]
+    [node, el.current, tree.props]
   );
+
+  return dropRef;
 }

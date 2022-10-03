@@ -6,7 +6,7 @@ import {
   useRef,
 } from "react";
 import { FixedSizeList } from "react-window";
-import { TreeApiContext } from "../context";
+import { DndContext, NodesContext, TreeApiContext } from "../context";
 import { TreeApi } from "../interfaces/tree-api";
 import { IdObj } from "../types/utils";
 import { initialState } from "../state/initial";
@@ -25,21 +25,29 @@ export function TreeProvider<T extends IdObj>(props: Props<T>) {
   const list = useRef<FixedSizeList | null>(null);
   const listEl = useRef<HTMLDivElement | null>(null);
 
-  const api = useMemo(
-    () => new TreeApi<T>(dispatch, state, props.treeProps, list, listEl),
-    [dispatch, state, props.treeProps, list, listEl]
-  );
+  /* The tree api only changes it's identity when the props change. */
+  const api = useMemo(() => {
+    return new TreeApi<T>(dispatch, state, props.treeProps, list, listEl);
+  }, [props.treeProps, state.nodes.open]);
+  /* In order to correctly re-render, each component needs to listen to
+   * the relevant pieces of state.
+   */
+  api.sync(state);
 
   useImperativeHandle(props.imperativeHandle, () => api);
 
   return (
     <TreeApiContext.Provider value={api}>
-      <DndProvider
-        backend={HTML5Backend}
-        options={{ rootElement: api.props.dndRootElement || undefined }}
-      >
-        {props.children}
-      </DndProvider>
+      <NodesContext.Provider value={state.nodes}>
+        <DndContext.Provider value={state.dnd}>
+          <DndProvider
+            backend={HTML5Backend}
+            options={{ rootElement: api.props.dndRootElement || undefined }}
+          >
+            {props.children}
+          </DndProvider>
+        </DndContext.Provider>
+      </NodesContext.Provider>
     </TreeApiContext.Provider>
   );
 }

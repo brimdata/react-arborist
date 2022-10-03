@@ -134,3 +134,15 @@ export function identifyNull(obj: string | IdObj | null) {
 export function identify(obj: string | IdObj) {
   return typeof obj === "string" ? obj : obj.id;
 }
+
+export function mergeRefs(...refs: any) {
+  return (instance: any) => {
+    refs.forEach((ref: any) => {
+      if (typeof ref === "function") {
+        ref(instance);
+      } else if (ref != null) {
+        ref.current = instance;
+      }
+    });
+  };
+}

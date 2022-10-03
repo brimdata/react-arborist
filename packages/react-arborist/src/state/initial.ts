@@ -1,9 +1,13 @@
 import { RootState } from "./root-reducer";
 
 export const initialState = (): RootState => ({
-  open: {},
-  focus: { id: null, treeFocused: false },
-  edit: { id: null },
-  dnd: { cursor: { type: "none" } },
-  selection: { ids: new Set(), anchor: null, mostRecent: null },
+  nodes: {
+    // Changes together
+    open: {},
+    focus: { id: null, treeFocused: false },
+    edit: { id: null },
+    drag: { id: null },
+    selection: { ids: new Set(), anchor: null, mostRecent: null },
+  },
+  dnd: { cursor: { type: "none" }, dragId: null },
 });

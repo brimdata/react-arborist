@@ -48,12 +48,8 @@ export class TreeApi<T extends IdObj> {
     this.root = createRoot<T>(this);
   }
 
-  sync(other: TreeApi<T>) {
-    this.dispatch = other.dispatch;
-    this.state = other.state;
-    this.props = other.props;
-    this.list = other.list;
-    this.listEl = other.listEl;
+  sync(state: TreeApi<T>["state"]) {
+    this.state = state;
   }
 
   get(id: string | null): NodeApi<T> | null {
@@ -74,7 +70,7 @@ export class TreeApi<T extends IdObj> {
   }
 
   getSelectedIds() {
-    return this.state.selection.ids;
+    return this.state.nodes.selection.ids;
   }
 
   /* Data Operations */
@@ -90,7 +86,12 @@ export class TreeApi<T extends IdObj> {
       parentId = this.root.id;
     }
     const data = await this.onCreate({ parentId, index });
-    if (data) this.select(data);
+    if (data) {
+      // At this point, the data has changed
+      this.select(data);
+      this.focus(data);
+      setTimeout(() => this.edit(data));
+    }
   }
 
   onCreate(...args: Parameters<CreateHandler>) {
@@ -108,7 +109,8 @@ export class TreeApi<T extends IdObj> {
     return fn(...args);
   }
 
-  edit(id: string): Promise<EditResult> {
+  edit(node: string | IdObj): Promise<EditResult> {
+    const id = identify(node);
     this.resolveEdit(id, { cancelled: true });
     this.scrollToId(id);
     this.dispatch(edit(id));
@@ -145,29 +147,29 @@ export class TreeApi<T extends IdObj> {
   }
 
   select(
-    id: string | null | IdObj,
+    node: string | null | IdObj,
     opts: { multi?: boolean; contiguous?: boolean } = {}
   ) {
-    const node = this.get(identifyNull(id));
-    const { anchor, mostRecent } = this.state.selection;
-
-    if (node === null) {
+    const id = identifyNull(node);
+    const { anchor, mostRecent } = this.state.nodes.selection;
+    if (id === null) {
       this.dispatch(selection.clear());
       this.dispatch(selection.anchor(null));
     } else if (opts.contiguous) {
       this.dispatch(selection.remove(this.nodesBetween(anchor, mostRecent)));
       this.dispatch(selection.add(this.nodesBetween(anchor, identifyNull(id))));
     } else if (opts.multi) {
-      if (node.isSelected) {
-        this.dispatch(selection.remove(node));
+      const node = this.get(id);
+      if (node?.isSelected) {
+        this.dispatch(selection.remove(id));
         // Maybe change the anchor (Finder does this)
       } else {
-        this.dispatch(selection.add(node));
-        this.dispatch(selection.anchor(node));
+        this.dispatch(selection.add(id));
+        this.dispatch(selection.anchor(id));
       }
     } else {
-      this.dispatch(selection.only(node));
-      this.dispatch(selection.anchor(node));
+      this.dispatch(selection.only(id));
+      this.dispatch(selection.anchor(id));
     }
     this.dispatch(selection.mostRecent(id));
   }
@@ -300,19 +302,19 @@ export class TreeApi<T extends IdObj> {
   }
 
   get editingId() {
-    return this.state.edit.id;
+    return this.state.nodes.edit.id;
   }
 
   /* State Checks */
 
   isSelected(id?: string) {
     if (!id) return false;
-    return this.state.selection.ids.has(id);
+    return this.state.nodes.selection.ids.has(id);
   }
 
   isOpen(id?: string) {
     if (!id) return false;
-    return this.state.open[id] ?? this.props.openByDefault ?? true;
+    return this.state.nodes.open[id] ?? this.props.openByDefault ?? true;
   }
 
   isDraggable(data: T) {
@@ -323,6 +325,19 @@ export class TreeApi<T extends IdObj> {
   isDroppable(data: T) {
     const check = this.props.disableDrop || (() => false);
     return !access(data, check) ?? true;
+  }
+
+  isDragging(node: string | IdObj | null) {
+    const id = identifyNull(node);
+    if (!id) return false;
+    return this.state.nodes.drag.id === id;
+  }
+
+  willReceiveDrop(node: string | IdObj | null) {
+    const id = identifyNull(node);
+    if (!id) return false;
+    const cursor = this.state.dnd.cursor;
+    return cursor.type === "highlight" && cursor.id === id;
   }
 
   getChildren(data: T) {
@@ -358,7 +373,7 @@ export class TreeApi<T extends IdObj> {
   }
 
   get focusedNode() {
-    return this.get(this.state.focus.id) ?? null;
+    return this.get(this.state.nodes.focus.id) ?? null;
   }
 
   get nextNode() {
@@ -376,12 +391,14 @@ export class TreeApi<T extends IdObj> {
   /* Tree State Checks */
 
   get isEditing() {
-    return this.state.edit.id !== null;
+    return this.state.nodes.edit.id !== null;
   }
 
   /* Node State Checks */
   isFocused(id: string) {
-    return this.state.focus.treeFocused && this.state.focus.id === id;
+    return (
+      this.state.nodes.focus.treeFocused && this.state.nodes.focus.id === id
+    );
   }
 
   /* Get Renderers */

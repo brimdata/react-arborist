@@ -5,6 +5,11 @@ import { IdObj } from "../types/utils";
 export function DefaultNode<T extends IdObj>({
   style,
   node,
+  dragHandle,
 }: NodeRendererProps<T>) {
-  return <div style={style}>ID: {node.data.id}</div>;
+  return (
+    <div style={style} ref={dragHandle}>
+      ID: {node.data.id}
+    </div>
+  );
 }

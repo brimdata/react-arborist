@@ -1,6 +1,7 @@
-import React, { FC } from "react";
+import React from "react";
 import { RowRendererProps } from "../types/renderers";
 import { IdObj } from "../types/utils";
+import { mergeRefs } from "../utils";
 
 export function DefaultRow<T extends IdObj>({
   node,
@@ -13,7 +14,7 @@ export function DefaultRow<T extends IdObj>({
       {...attrs}
       ref={innerRef}
       onFocus={(e) => {
-        e.stopPropagation();
+        e.stopPropagation(); // To prevent the tree from receiving focus
         node.focus();
       }}
       onClick={(e) => {

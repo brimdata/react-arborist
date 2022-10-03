@@ -8,6 +8,7 @@ export type NodeRendererProps<T extends IdObj> = {
   style: CSSProperties;
   node: NodeApi<T>;
   tree: TreeApi<T>;
+  dragHandle?: (el: HTMLDivElement | null) => void;
   preview?: boolean;
 };
 
