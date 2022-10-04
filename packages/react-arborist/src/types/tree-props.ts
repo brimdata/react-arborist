@@ -2,6 +2,7 @@ import { BoolFunc, IdObj } from "./utils";
 import * as handlers from "./handlers";
 import * as renderers from "./renderers";
 import { ComponentType, MouseEventHandler } from "react";
+import { ListOnScrollProps } from "react-window";
 
 export interface TreeProps<T extends IdObj> {
   /* Data Options */
@@ -37,6 +38,7 @@ export interface TreeProps<T extends IdObj> {
   isOpen?: string | BoolFunc<T>;
 
   /* Event Handlers */
+  onScroll?: (props: ListOnScrollProps) => void;
   // On Scroll
   // On Select
   // On Focus

@@ -90,6 +90,7 @@ export default function SimpleTree() {
         onRename={controller.rename}
         onMove={controller.move}
         onDelete={controller.drop}
+        onScroll={(p) => console.log(p)}
         selectionFollowsFocus
       >
         {MyNode}

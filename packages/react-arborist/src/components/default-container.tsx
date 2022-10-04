@@ -155,6 +155,7 @@ export function DefaultContainer() {
         itemSize={tree.rowHeight}
         itemKey={(index) => tree.visibleNodes[index]?.id || index}
         outerElementType={ListOuterElement}
+        onScroll={tree.props.onScroll}
         ref={tree.list}
       >
         {RowContainer}
