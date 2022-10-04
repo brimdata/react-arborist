@@ -104,9 +104,11 @@ export function DefaultContainer() {
           tree.newLeafNode();
         }
         if (e.key === "Home") {
+          e.preventDefault();
           tree.focus(tree.firstNode);
         }
         if (e.key === "End") {
+          e.preventDefault();
           tree.focus(tree.lastNode);
         }
         if (e.key === "Enter") {
