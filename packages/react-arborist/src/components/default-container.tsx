@@ -54,21 +54,17 @@ export function DefaultContainer() {
           const current = tree.focusedNode;
           if (!current) {
             tree.focus(tree.firstNode);
-            if (tree.props.selectionFollowsFocus) tree.select(tree.firstNode);
           } else if (current.isSelected) {
-            tree.focus(next);
+            tree.focus(next, { select: false });
             tree.select(next, { contiguous: true });
           } else {
-            tree.focus(next);
+            tree.focus(next, { select: false });
             tree.select(next, { multi: true });
           }
         }
         if (e.key === "ArrowUp" && !e.shiftKey) {
           e.preventDefault();
-          const prev = tree.prevNode;
-          if (!prev) return;
-          tree.focus(prev);
-          if (tree.props.selectionFollowsFocus) tree.select(prev);
+          tree.focus(tree.prevNode);
         }
         if (e.key === "ArrowUp" && e.shiftKey) {
           e.preventDefault();
@@ -77,12 +73,11 @@ export function DefaultContainer() {
           if (!prev) return;
           if (!current) {
             tree.focus(tree.lastNode);
-            if (tree.props.selectionFollowsFocus) tree.select(prev);
           } else if (current.isSelected) {
-            tree.focus(prev);
+            tree.focus(prev, { select: false });
             tree.select(prev, { contiguous: true });
           } else {
-            tree.focus(prev);
+            tree.focus(prev, { select: false });
             tree.select(prev, { multi: true });
           }
         }
@@ -91,7 +86,6 @@ export function DefaultContainer() {
           if (!node) return;
           if (node.isInternal && node.isOpen) {
             tree.focus(tree.nextNode);
-            if (tree.props.selectionFollowsFocus) tree.select(tree.nextNode);
           } else if (node.isInternal) tree.open(node.id);
         }
         if (e.key === "ArrowLeft") {
@@ -100,7 +94,6 @@ export function DefaultContainer() {
           if (node.isInternal && node.isOpen) tree.close(node.id);
           else {
             tree.focus(node.parent);
-            if (tree.props.selectionFollowsFocus) tree.select(node.parent);
           }
         }
         if (e.key === "a" && e.metaKey) {
@@ -111,16 +104,10 @@ export function DefaultContainer() {
           tree.newLeafNode();
         }
         if (e.key === "Home") {
-          if (tree.firstNode) {
-            tree.focus(tree.firstNode);
-            if (tree.props.selectionFollowsFocus) tree.select(tree.firstNode);
-          }
+          tree.focus(tree.firstNode);
         }
         if (e.key === "End") {
-          if (tree.lastNode) {
-            tree.focus(tree.lastNode);
-            if (tree.props.selectionFollowsFocus) tree.select(tree.lastNode);
-          }
+          tree.focus(tree.lastNode);
         }
         if (e.key === "Enter") {
           setTimeout(() => {

@@ -375,7 +375,6 @@ export class TreeApi<T extends IdObj> {
   onFocus() {
     const node = this.focusedNode || this.firstNode;
     this.focus(node);
-    if (this.props.selectionFollowsFocus) this.select(node);
   }
 
   onBlur() {
