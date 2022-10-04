@@ -25,6 +25,13 @@ export function DefaultContainer() {
       }}
       onKeyDown={(e) => {
         if (tree.isEditing) return;
+        if (e.key === "Backspace") {
+          const next = tree.nextNode;
+          tree.delete(tree.focusedNode);
+          if (!next) return;
+          tree.focus(next);
+          if (tree.props.selectionFollowsFocus) tree.select(next);
+        }
         if (e.key === "Tab" && !e.shiftKey) {
           e.preventDefault();
           focusNextElement(e.currentTarget);

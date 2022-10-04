@@ -1,7 +1,6 @@
 import React from "react";
 import { RowRendererProps } from "../types/renderers";
 import { IdObj } from "../types/utils";
-import { mergeRefs } from "../utils";
 
 export function DefaultRow<T extends IdObj>({
   node,

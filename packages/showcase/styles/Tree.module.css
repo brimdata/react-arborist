@@ -29,10 +29,6 @@
     color: white;
 }
 
-div:has(.node):focus {
-    background: lightblue;
-}
-
 .content {
     margin: 0;
     padding-left: 5px;

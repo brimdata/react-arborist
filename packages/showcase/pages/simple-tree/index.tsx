@@ -2,34 +2,10 @@ import clsx from "clsx";
 import { useEffect, useRef } from "react";
 import { NodeRendererProps, Tree, useUncontrolledTree } from "react-arborist";
 import styles from "styles/Tree.module.css";
+import { cities } from "../../data/cities";
 import { useTreeController } from "./use-tree-controller";
 
 type Data = { id: string; name: string; children?: Data[] };
-const data: Data[] = {
-  //@ts-ignore
-  id: "ROOT",
-  name: "root",
-  children: [
-    { id: "1", name: "Philosophy" },
-    {
-      id: "2",
-      name: "Stoics",
-      children: [
-        { id: "3", name: "Creative Work" },
-        { id: "4", name: "Trees", children: [{ id: "5", name: "Water" }] },
-      ],
-    },
-    {
-      id: "6",
-      name: "Mystics",
-      children: [
-        { id: "7", name: "RR" },
-        { id: "8", name: "Tom", children: [{ id: "9", name: "Walter" }] },
-      ],
-    },
-  ],
-};
-
 function MyNode(props: NodeRendererProps<Data>) {
   return (
     <div
@@ -88,7 +64,8 @@ function Edit({ node }: NodeRendererProps<Data>) {
 }
 
 export default function SimpleTree() {
-  const [theData, controller] = useTreeController(data);
+  const [theData, controller] = useTreeController(cities);
+
   return (
     <div className={styles.layout}>
       <h1>Simple Tree</h1>
@@ -99,6 +76,7 @@ export default function SimpleTree() {
         onCreate={controller.create}
         onRename={controller.rename}
         onMove={controller.move}
+        onDelete={controller.drop}
         selectionFollowsFocus
       >
         {MyNode}

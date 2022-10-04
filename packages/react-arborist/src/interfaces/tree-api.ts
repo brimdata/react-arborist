@@ -3,6 +3,7 @@ import {
   RenameHandler,
   CreateHandler,
   EditResult,
+  DeleteHandler,
 } from "../types/handlers";
 import { IdObj } from "../types/utils";
 import { TreeProps } from "../types/tree-props";
@@ -92,6 +93,17 @@ export class TreeApi<T extends IdObj> {
       this.focus(data);
       setTimeout(() => this.edit(data));
     }
+  }
+
+  async delete(node: string | IdObj | null) {
+    if (!node) return;
+    const id = identify(node);
+    await this.onDelete({ id });
+  }
+
+  onDelete(...args: Parameters<DeleteHandler>) {
+    const fn = this.props.onDelete || noop;
+    return fn(...args);
   }
 
   onCreate(...args: Parameters<CreateHandler>) {

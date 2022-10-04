@@ -26,7 +26,6 @@ export const DefaultCursor = React.memo(function DefaultCursor({
   left,
   indent,
 }: DropCursorProps) {
-  console.log("render <DefaultCursor />");
   const style: CSSProperties = {
     position: "absolute",
     pointerEvents: "none",
