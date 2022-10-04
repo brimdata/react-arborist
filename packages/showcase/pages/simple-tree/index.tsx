@@ -1,6 +1,11 @@
 import clsx from "clsx";
 import { useEffect, useRef } from "react";
-import { NodeRendererProps, Tree, useUncontrolledTree } from "react-arborist";
+import {
+  NodeRendererProps,
+  Tree,
+  TreeApi,
+  useUncontrolledTree,
+} from "react-arborist";
 import styles from "styles/Tree.module.css";
 import { cities } from "../../data/cities";
 import { useTreeController } from "./use-tree-controller";
@@ -66,11 +71,19 @@ function Edit({ node }: NodeRendererProps<Data>) {
 export default function SimpleTree() {
   const [theData, controller] = useTreeController(cities);
 
+  const tree = useRef<TreeApi<any>>();
+
+  useEffect(() => {
+    // @ts-ignore
+    global.tree = tree.current;
+  });
+
   return (
     <div className={styles.layout}>
       <h1>Simple Tree</h1>
       <input type="text" />
       <Tree
+        ref={tree}
         className={styles.tree}
         data={theData}
         onCreate={controller.create}

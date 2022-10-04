@@ -35,7 +35,6 @@ export class SimpleTree<T extends IdObj> {
   }
 
   find(id: string, node: SimpleNode<T> = this.root): SimpleNode<T> | null {
-    console.log(id, node);
     if (!node) return null;
     if (node.id === id) return node as SimpleNode<T>;
     if (node.children) {

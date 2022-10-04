@@ -26,11 +26,13 @@ export function DefaultContainer() {
       onKeyDown={(e) => {
         if (tree.isEditing) return;
         if (e.key === "Backspace") {
-          const next = tree.nextNode;
-          tree.delete(tree.focusedNode);
-          if (!next) return;
-          tree.focus(next);
-          if (tree.props.selectionFollowsFocus) tree.select(next);
+          const node = tree.focusedNode;
+          if (node) {
+            const sib = node.nextSibling;
+            const parent = node.parent;
+            tree.focus(sib || parent, { scroll: false });
+            tree.delete(node);
+          }
         }
         if (e.key === "Tab" && !e.shiftKey) {
           e.preventDefault();
@@ -41,12 +43,12 @@ export function DefaultContainer() {
           focusPrevElement(e.currentTarget);
         }
         if (e.key === "ArrowDown" && !e.shiftKey) {
+          e.preventDefault();
           const next = tree.nextNode;
-          if (!next) return;
           tree.focus(next);
-          if (tree.props.selectionFollowsFocus) tree.select(next);
         }
         if (e.key === "ArrowDown" && e.shiftKey) {
+          e.preventDefault();
           const next = tree.nextNode;
           if (!next) return;
           const current = tree.focusedNode;
@@ -62,12 +64,14 @@ export function DefaultContainer() {
           }
         }
         if (e.key === "ArrowUp" && !e.shiftKey) {
+          e.preventDefault();
           const prev = tree.prevNode;
           if (!prev) return;
           tree.focus(prev);
           if (tree.props.selectionFollowsFocus) tree.select(prev);
         }
         if (e.key === "ArrowUp" && e.shiftKey) {
+          e.preventDefault();
           const prev = tree.prevNode;
           const current = tree.focusedNode;
           if (!prev) return;
@@ -107,14 +111,20 @@ export function DefaultContainer() {
           tree.newLeafNode();
         }
         if (e.key === "Home") {
-          if (tree.firstNode) tree.focus(tree.firstNode.id);
+          if (tree.firstNode) {
+            tree.focus(tree.firstNode);
+            if (tree.props.selectionFollowsFocus) tree.select(tree.firstNode);
+          }
         }
         if (e.key === "End") {
-          if (tree.lastNode) tree.focus(tree.lastNode.id);
+          if (tree.lastNode) {
+            tree.focus(tree.lastNode);
+            if (tree.props.selectionFollowsFocus) tree.select(tree.lastNode);
+          }
         }
         if (e.key === "Enter") {
           setTimeout(() => {
-            if (tree.focusedNode) tree.edit(tree.focusedNode.id);
+            if (tree.focusedNode) tree.edit(tree.focusedNode);
           });
         }
         if (e.key === " ") {

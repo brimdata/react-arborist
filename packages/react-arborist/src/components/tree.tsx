@@ -9,7 +9,7 @@ import { IdObj } from "../types/utils";
 
 export const Tree = forwardRef(function Tree<T extends IdObj>(
   props: TreeProps<T>,
-  ref: React.Ref<TreeApi<T>>
+  ref: React.Ref<TreeApi<T> | undefined>
 ) {
   return (
     <TreeProvider treeProps={props} imperativeHandle={ref}>

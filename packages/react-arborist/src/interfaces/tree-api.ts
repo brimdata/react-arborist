@@ -359,9 +359,17 @@ export class TreeApi<T extends IdObj> {
 
   /* Focus Methods */
 
-  focus(id?: string | IdObj | null) {
-    if (!id) return;
-    this.dispatch(focus(identify(id)));
+  focus(
+    node?: string | IdObj | null,
+    opts: { select?: boolean; scroll?: boolean } = {}
+  ) {
+    if (!node) return;
+    const select = opts.select || this.props.selectionFollowsFocus;
+    const scroll = opts.scroll || true;
+    const id = identify(node);
+    this.dispatch(focus(id));
+    if (select) this.select(id);
+    if (scroll) this.list.current?.scrollToItem(this.idToIndex[id]);
   }
 
   onFocus() {

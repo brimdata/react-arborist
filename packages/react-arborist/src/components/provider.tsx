@@ -17,7 +17,7 @@ import { TreeProps } from "../types/tree-props";
 
 type Props<T extends IdObj> = {
   treeProps: TreeProps<T>;
-  imperativeHandle: React.Ref<TreeApi<T>> | undefined;
+  imperativeHandle: React.Ref<TreeApi<T> | undefined>;
   children: ReactNode;
 };
 export function TreeProvider<T extends IdObj>(props: Props<T>) {

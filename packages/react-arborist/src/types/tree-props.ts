@@ -1,8 +1,7 @@
 import { BoolFunc, IdObj } from "./utils";
 import * as handlers from "./handlers";
 import * as renderers from "./renderers";
-import { ComponentType, MouseEventHandler, Ref } from "react";
-import { TreeApi } from "../interfaces/tree-api";
+import { ComponentType, MouseEventHandler } from "react";
 
 export interface TreeProps<T extends IdObj> {
   /* Data Options */
@@ -44,7 +43,6 @@ export interface TreeProps<T extends IdObj> {
   // onActivate?: (node: NodeApi<T>) => void;
 
   /* Extra */
-  handle?: Ref<TreeApi<T>>; // Deprecated
   className?: string | undefined;
   dndRootElement?: globalThis.Node | null;
   onClick?: MouseEventHandler;

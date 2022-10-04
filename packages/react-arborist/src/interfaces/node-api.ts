@@ -46,6 +46,11 @@ export class NodeApi<T extends IdObj = IdObj> {
     return this.tree.at(this.rowIndex - 1);
   }
 
+  get nextSibling(): NodeApi<T> | null {
+    const i = this.childIndex;
+    return this.parent?.children![i + 1] ?? null;
+  }
+
   get isLeaf() {
     return !Array.isArray(this.children);
   }
