@@ -1,14 +1,17 @@
 import clsx from "clsx";
 import { useEffect, useRef } from "react";
-import {
-  NodeRendererProps,
-  Tree,
-  TreeApi,
-  useUncontrolledTree,
-} from "react-arborist";
+import { NodeRendererProps, Tree, TreeApi } from "react-arborist";
 import styles from "styles/Tree.module.css";
 import { cities } from "../../data/cities";
 import { useTreeController } from "./use-tree-controller";
+
+const smallData = [
+  { id: "1", name: "1" },
+  { id: "2", name: "2" },
+  { id: "3", name: "3`" },
+  { id: "4", name: "4" },
+  { id: "5", name: "5" },
+];
 
 type Data = { id: string; name: string; children?: Data[] };
 function MyNode(props: NodeRendererProps<Data>) {
@@ -90,8 +93,6 @@ export default function SimpleTree() {
         onRename={controller.rename}
         onMove={controller.move}
         onDelete={controller.drop}
-        onScroll={(p) => console.log(p)}
-        selectionFollowsFocus
       >
         {MyNode}
       </Tree>

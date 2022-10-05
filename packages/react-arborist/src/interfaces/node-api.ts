@@ -113,7 +113,13 @@ export class NodeApi<T extends IdObj = IdObj> {
   }
 
   select(opts: { multi?: boolean; contiguous?: boolean }) {
-    this.tree.select(this.id, opts);
+    if (opts.multi) this.tree.selectMulti(this);
+    else if (opts.contiguous) this.tree.selectContiguous(this);
+    else this.tree.selectOne(this);
+  }
+
+  preview() {
+    return this.tree.preview(this);
   }
 
   activate() {
@@ -138,5 +144,9 @@ export class NodeApi<T extends IdObj = IdObj> {
 
   clone() {
     return new NodeApi<T>({ ...this });
+  }
+
+  edit() {
+    return this.tree.edit(this);
   }
 }

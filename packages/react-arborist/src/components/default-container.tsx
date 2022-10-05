@@ -55,11 +55,9 @@ export function DefaultContainer() {
           if (!current) {
             tree.focus(tree.firstNode);
           } else if (current.isSelected) {
-            tree.focus(next, { select: false });
-            tree.select(next, { contiguous: true });
+            tree.selectContiguous(next);
           } else {
-            tree.focus(next, { select: false });
-            tree.select(next, { multi: true });
+            tree.selectMulti(next);
           }
         }
         if (e.key === "ArrowUp" && !e.shiftKey) {
@@ -72,13 +70,11 @@ export function DefaultContainer() {
           const current = tree.focusedNode;
           if (!prev) return;
           if (!current) {
-            tree.focus(tree.lastNode);
+            tree.focus(tree.lastNode); // ?
           } else if (current.isSelected) {
-            tree.focus(prev, { select: false });
-            tree.select(prev, { contiguous: true });
+            tree.selectContiguous(prev);
           } else {
-            tree.focus(prev, { select: false });
-            tree.select(prev, { multi: true });
+            tree.selectMulti(prev);
           }
         }
         if (e.key === "ArrowRight") {
@@ -90,7 +86,7 @@ export function DefaultContainer() {
         }
         if (e.key === "ArrowLeft") {
           const node = tree.focusedNode;
-          if (!node) return;
+          if (!node || node.level === 0) return; // Don't close the root node
           if (node.isInternal && node.isOpen) tree.close(node.id);
           else {
             tree.focus(node.parent);
@@ -101,13 +97,15 @@ export function DefaultContainer() {
           tree.selectAll();
         }
         if (e.key === "a" && !e.metaKey) {
-          tree.newLeafNode();
+          tree.createLeaf();
         }
         if (e.key === "Home") {
+          // add shift keys
           e.preventDefault();
           tree.focus(tree.firstNode);
         }
         if (e.key === "End") {
+          // add shift keys
           e.preventDefault();
           tree.focus(tree.lastNode);
         }
@@ -117,6 +115,7 @@ export function DefaultContainer() {
           });
         }
         if (e.key === " ") {
+          e.preventDefault();
           const node = tree.focusedNode;
           if (!node) return;
           node.isLeaf ? node.activate() : node.toggle();
@@ -125,6 +124,9 @@ export function DefaultContainer() {
           const node = tree.focusedNode;
           if (!node) return;
           tree.openSiblings(node);
+        }
+        if (e.key === "ArrowDown" && e.metaKey) {
+          tree.selectOne(tree.focusedNode);
         }
 
         // If they type a sequence of characters

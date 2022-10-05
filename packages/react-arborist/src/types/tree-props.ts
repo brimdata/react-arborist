@@ -39,10 +39,13 @@ export interface TreeProps<T extends IdObj> {
 
   /* Event Handlers */
   onScroll?: (props: ListOnScrollProps) => void;
-  // On Scroll
-  // On Select
+  onActivate?: (data: T) => void;
+  onPreview?: (data: T) => void;
+  onSelect?: (data: T[]) => void;
   // On Focus
-  // onActivate?: (node: NodeApi<T>) => void;
+
+  /* Selection */
+  selection?: string;
 
   /* Extra */
   className?: string | undefined;

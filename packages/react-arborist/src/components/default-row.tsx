@@ -18,7 +18,6 @@ export function DefaultRow<T extends IdObj>({
       }}
       onClick={(e) => {
         node.select({ multi: e.metaKey, contiguous: e.shiftKey });
-        node.activate();
       }}
     >
       {children}

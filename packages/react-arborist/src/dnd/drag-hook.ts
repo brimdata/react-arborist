@@ -7,12 +7,13 @@ import { DragItem } from "../types/dnd";
 import { IdObj } from "../types/utils";
 import { DropResult } from "./drop-hook";
 import { actions as dnd } from "../state/dnd-slice";
+import { safeRun } from "../utils";
 
 export function useDragHook<T extends IdObj>(
   node: NodeApi<T>
 ): ConnectDragSource {
   const tree = useTreeApi();
-  const ids = tree.getSelectedIds();
+  const ids = tree.selectedIds;
   const [_, ref, preview] = useDrag<DragItem, DropResult, void>(
     () => ({
       canDrag: () => node.isDraggable,
@@ -31,7 +32,7 @@ export function useDragHook<T extends IdObj>(
         // If they held down meta, we need to create a copy
         // if (drop.dropEffect === "copy")
         if (drop && drop.parentId) {
-          tree.move({
+          safeRun(tree.props.onMove, {
             dragIds: item.dragIds,
             parentId: drop.parentId,
             index: drop.index,

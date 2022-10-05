@@ -1,5 +1,6 @@
 import { forwardRef } from "react";
 import { useTreeApi } from "../context";
+import { safeRun } from "../utils";
 import { DropCursor } from "./cursor";
 
 export const ListOuterElement = forwardRef(function Outer(
@@ -13,8 +14,8 @@ export const ListOuterElement = forwardRef(function Outer(
       // @ts-ignore
       ref={ref}
       {...rest}
-      onClick={tree.onClick}
-      onContextMenu={tree.onContextMenu}
+      onClick={(e) => safeRun(tree.props.onContextMenu, e)}
+      onContextMenu={(e) => safeRun(tree.props.onContextMenu, e)}
     >
       <div
         style={{

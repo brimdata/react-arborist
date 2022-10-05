@@ -49,7 +49,9 @@ export const createIndex = memoizeOne(
   }
 );
 
-export const createList = memoizeOne(flattenTree);
+export const createList = memoizeOne(<T extends IdObj>(root: NodeApi<T>) => {
+  return flattenTree<T>(root);
+});
 
 export function dfs(node: NodeApi<any>, id: string): NodeApi<any> | null {
   if (!node) return null;
@@ -145,4 +147,11 @@ export function mergeRefs(...refs: any) {
       }
     });
   };
+}
+
+export function safeRun<T extends (...args: any[]) => any>(
+  fn: T | undefined,
+  ...args: Parameters<T>
+) {
+  if (fn) return fn(...args);
 }

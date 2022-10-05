@@ -5,6 +5,8 @@ export interface IdObj {
   id: string;
 }
 
+export type Identity = string | IdObj | null;
+
 // Forward ref can't forward generics without this little re-declare
 // https://fettblog.eu/typescript-react-generic-forward-refs/
 declare module "react" {

@@ -22,7 +22,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# react-tree-list
+# react-arborist
 *dist*
 
 .pnp.*
