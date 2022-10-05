@@ -18,7 +18,6 @@ import { actions as dnd } from "../state/dnd-slice";
 import { DefaultDragPreview } from "../components/default-drag-preview";
 import { DefaultContainer } from "../components/default-container";
 import { Cursor } from "../dnd/compute-drop";
-import { flushSync } from "react-dom";
 import { Store } from "redux";
 
 const { safeRun, identify, identifyNull } = utils;
@@ -238,9 +237,7 @@ export class TreeApi<T extends IdObj> {
     this.dispatch(selection.only(id));
     this.dispatch(selection.anchor(id));
     this.dispatch(selection.mostRecent(id));
-    flushSync(() => {
-      safeRun(this.props.onSelect, this.selectedData);
-    });
+    safeRun(this.props.onSelect, this.selectedData);
   }
 
   selectMulti(identity: Identity) {
