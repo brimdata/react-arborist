@@ -255,9 +255,7 @@ export class TreeApi<T extends IdObj> {
       this.dispatch(selection.anchor(node.id));
     }
     this.dispatch(selection.mostRecent(node.id));
-    setTimeout(() => {
-      safeRun(this.props.onSelect, this.selectedData);
-    });
+    safeRun(this.props.onSelect, this.selectedData);
   }
 
   selectContiguous(identity: Identity) {
@@ -268,18 +266,14 @@ export class TreeApi<T extends IdObj> {
     this.scrollTo(id);
     this.dispatch(selection.remove(this.nodesBetween(anchor, mostRecent)));
     this.dispatch(selection.add(this.nodesBetween(anchor, identifyNull(id))));
-    setTimeout(() => {
-      safeRun(this.props.onSelect, this.selectedData);
-    });
+    safeRun(this.props.onSelect, this.selectedData);
   }
 
   selectNone() {
     this.dispatch(selection.clear());
     this.dispatch(selection.anchor(null));
     this.dispatch(selection.mostRecent(null));
-    setTimeout(() => {
-      safeRun(this.props.onSelect, this.selectedData);
-    });
+    safeRun(this.props.onSelect, this.selectedData);
   }
 
   selectAll() {
@@ -287,9 +281,7 @@ export class TreeApi<T extends IdObj> {
     this.dispatch(focus(this.lastNode?.id));
     this.dispatch(selection.anchor(this.firstNode));
     this.dispatch(selection.mostRecent(this.lastNode));
-    setTimeout(() => {
-      safeRun(this.props.onSelect, this.selectedData);
-    });
+    safeRun(this.props.onSelect, this.selectedData);
   }
 
   /* Drag and Drop */
