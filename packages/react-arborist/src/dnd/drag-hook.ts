@@ -8,6 +8,7 @@ import { IdObj } from "../types/utils";
 import { DropResult } from "./drop-hook";
 import { actions as dnd } from "../state/dnd-slice";
 import { safeRun } from "../utils";
+import { ROOT_ID } from "../data/create-root";
 
 export function useDragHook<T extends IdObj>(
   node: NodeApi<T>
@@ -34,7 +35,7 @@ export function useDragHook<T extends IdObj>(
         if (drop && drop.parentId) {
           safeRun(tree.props.onMove, {
             dragIds: item.dragIds,
-            parentId: drop.parentId,
+            parentId: drop.parentId === ROOT_ID ? null : drop.parentId,
             index: drop.index,
           });
           tree.open(drop.parentId);

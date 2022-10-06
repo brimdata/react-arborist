@@ -12,12 +12,14 @@ export function DefaultRow<T extends IdObj>({
     <div
       {...attrs}
       ref={innerRef}
-      onFocus={(e) => {
-        e.stopPropagation(); // To prevent the tree from receiving focus
-        node.focus();
-      }}
       onClick={(e) => {
-        node.select({ multi: e.metaKey, contiguous: e.shiftKey });
+        if (e.metaKey) {
+          node.isSelected ? node.deselect() : node.selectMulti();
+        } else if (e.shiftKey) {
+          node.selectContiguous();
+        } else {
+          node.select();
+        }
       }}
     >
       {children}

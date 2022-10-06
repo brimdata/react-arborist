@@ -7,7 +7,7 @@ export type CreateHandler = (args: {
 
 export type MoveHandler = (args: {
   dragIds: string[];
-  parentId: string;
+  parentId: string | null;
   index: number;
 }) => void | Promise<void>;
 

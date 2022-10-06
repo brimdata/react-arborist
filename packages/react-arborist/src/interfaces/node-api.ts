@@ -112,10 +112,20 @@ export class NodeApi<T extends IdObj = IdObj> {
     };
   }
 
-  select(opts: { multi?: boolean; contiguous?: boolean }) {
-    if (opts.multi) this.tree.selectMulti(this);
-    else if (opts.contiguous) this.tree.selectContiguous(this);
-    else this.tree.selectOne(this);
+  select() {
+    this.tree.select(this);
+  }
+
+  deselect() {
+    this.tree.deselect(this);
+  }
+
+  selectMulti() {
+    this.tree.selectMulti(this);
+  }
+
+  selectContiguous() {
+    this.tree.selectContiguous(this);
   }
 
   preview() {
@@ -127,19 +137,19 @@ export class NodeApi<T extends IdObj = IdObj> {
   }
 
   focus() {
-    this.tree.focus(this.id);
+    this.tree.focus(this);
   }
 
   toggle() {
-    this.tree.toggle(this.id);
+    this.tree.toggle(this);
   }
 
   submit(value: string) {
-    this.tree.submit(this.id, value);
+    this.tree.submit(this, value);
   }
 
   reset() {
-    this.tree.reset(this.id);
+    this.tree.reset(this);
   }
 
   clone() {

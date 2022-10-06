@@ -72,7 +72,7 @@ function Edit({ node }: NodeRendererProps<Data>) {
 }
 
 export default function SimpleTree() {
-  const [theData, controller] = useTreeController(cities);
+  const [theData, controller] = useTreeController(smallData);
 
   const tree = useRef<TreeApi<any>>();
 

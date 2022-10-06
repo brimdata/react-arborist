@@ -33,6 +33,7 @@ export function DefaultContainer() {
             tree.focus(sib || parent, { scroll: false });
             tree.delete(node);
           }
+          return;
         }
         if (e.key === "Tab" && !e.shiftKey) {
           e.preventDefault();
@@ -42,7 +43,7 @@ export function DefaultContainer() {
           e.preventDefault();
           focusPrevElement(e.currentTarget);
         }
-        if (e.key === "ArrowDown" && !e.shiftKey) {
+        if (e.key === "ArrowDown" && !e.shiftKey && !e.metaKey) {
           e.preventDefault();
           const next = tree.nextNode;
           tree.focus(next);
@@ -126,7 +127,7 @@ export function DefaultContainer() {
           tree.openSiblings(node);
         }
         if (e.key === "ArrowDown" && e.metaKey) {
-          tree.selectOne(tree.focusedNode);
+          tree.select(tree.focusedNode);
         }
 
         // If they type a sequence of characters

@@ -1,7 +1,7 @@
 import { EditResult } from "../types/handlers";
 import { Identity, IdObj } from "../types/utils";
 import { TreeProps } from "../types/tree-props";
-import { Dispatch, MutableRefObject } from "react";
+import { MutableRefObject } from "react";
 import { FixedSizeList } from "react-window";
 import * as utils from "../utils";
 import { DefaultCursor } from "../components/default-cursor";
@@ -153,7 +153,7 @@ export class TreeApi<T extends IdObj> {
     const data = await safeRun(this.props.onCreate, { parentId, index });
     if (data) {
       // At this point, the data has changed
-      this.selectOne(data);
+      this.select(data);
       setTimeout(() => this.edit(data));
     }
   }
@@ -172,14 +172,18 @@ export class TreeApi<T extends IdObj> {
     return new Promise((resolve) => this.edits.set(id, resolve));
   }
 
-  async submit(id: string, value: string) {
+  async submit(node: Identity, value: string) {
+    if (!node) return;
+    const id = identify(node);
     await safeRun(this.props.onRename, { id, name: value });
     this.dispatch(edit(null));
     this.resolveEdit(id, { cancelled: false, value });
     setTimeout(() => this.onFocus()); // Return focus to element;
   }
 
-  reset(id: string) {
+  reset(node: Identity) {
+    if (!node) return;
+    const id = identify(node);
     this.dispatch(edit(null));
     this.resolveEdit(id, { cancelled: true });
     setTimeout(() => this.onFocus()); // Return focus to element;
@@ -221,15 +225,14 @@ export class TreeApi<T extends IdObj> {
      * responsible for focus. If selectionFollowsFocus, then
      * just select it. */
     if (this.props.selectionFollowsFocus) {
-      this.selectOne(node);
+      this.select(node);
     } else {
       this.dispatch(focus(identify(node)));
       if (opts.scroll !== false) this.scrollTo(node);
     }
   }
 
-  selectOne(node: Identity) {
-    console.log("Select One");
+  select(node: Identity) {
     if (!node) return;
     const id = identify(node);
     this.dispatch(focus(id));
@@ -240,17 +243,19 @@ export class TreeApi<T extends IdObj> {
     safeRun(this.props.onSelect, this.selectedData);
   }
 
+  deselect(node: Identity) {
+    if (!node) return;
+    const id = identify(node);
+    this.dispatch(selection.remove(id));
+  }
+
   selectMulti(identity: Identity) {
     const node = this.get(identifyNull(identity));
     if (!node) return;
     this.dispatch(focus(node.id));
     this.scrollTo(node);
-    if (node.isSelected) {
-      this.dispatch(selection.remove(node.id));
-    } else {
-      this.dispatch(selection.add(node.id));
-      this.dispatch(selection.anchor(node.id));
-    }
+    this.dispatch(selection.add(node.id));
+    this.dispatch(selection.anchor(node.id));
     this.dispatch(selection.mostRecent(node.id));
     safeRun(this.props.onSelect, this.selectedData);
   }
@@ -263,6 +268,7 @@ export class TreeApi<T extends IdObj> {
     this.scrollTo(id);
     this.dispatch(selection.remove(this.nodesBetween(anchor, mostRecent)));
     this.dispatch(selection.add(this.nodesBetween(anchor, identifyNull(id))));
+    this.dispatch(selection.mostRecent(id));
     safeRun(this.props.onSelect, this.selectedData);
   }
 
@@ -317,7 +323,8 @@ export class TreeApi<T extends IdObj> {
     this.dispatch(close(id));
   }
 
-  toggle(id: string | null) {
+  toggle(identity: Identity) {
+    const id = identifyNull(identity);
     if (!id) return;
     return this.isOpen(id) ? this.close(id) : this.open(id);
   }

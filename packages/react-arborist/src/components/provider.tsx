@@ -44,7 +44,7 @@ export function TreeProvider<T extends IdObj>(props: Props<T>) {
   useEffect(() => {
     if (api.props.selection) {
       console.log(api.props.selection);
-      api.selectOne(api.props.selection);
+      api.select(api.props.selection);
     } else {
       api.selectNone();
     }
