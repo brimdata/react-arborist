@@ -39,7 +39,7 @@ export const RowContainer = React.memo(function RowContainer<T extends IdObj>({
   const dragRef = useDragHook<T>(node);
   const dropRef = useDropHook(el, node);
   const innerRef = useCallback(
-    (n) => {
+    (n: any) => {
       el.current = n;
       dropRef(n);
     },

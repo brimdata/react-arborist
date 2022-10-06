@@ -1,7 +1,7 @@
 import { BoolFunc, IdObj } from "./utils";
 import * as handlers from "./handlers";
 import * as renderers from "./renderers";
-import { ComponentType, MouseEventHandler } from "react";
+import { ComponentType, ElementType, MouseEventHandler } from "react";
 import { ListOnScrollProps } from "react-window";
 
 export interface TreeProps<T extends IdObj> {
@@ -16,11 +16,11 @@ export interface TreeProps<T extends IdObj> {
   onDelete?: handlers.DeleteHandler;
 
   /* Renderers*/
-  children?: ComponentType<renderers.NodeRendererProps<T>>;
-  renderRow?: ComponentType<renderers.RowRendererProps<T>>;
-  renderDragPreview?: ComponentType<renderers.DragPreviewProps>;
-  renderCursor?: ComponentType<renderers.DropCursorProps>;
-  renderContainer?: ComponentType<{}>;
+  children?: ElementType<renderers.NodeRendererProps<T>>;
+  renderRow?: ElementType<renderers.RowRendererProps<T>>;
+  renderDragPreview?: ElementType<renderers.DragPreviewProps>;
+  renderCursor?: ElementType<renderers.DropCursorProps>;
+  renderContainer?: ElementType<{}>;
 
   /* Sizes */
   rowHeight?: number;

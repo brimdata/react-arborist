@@ -2168,7 +2168,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:18.0.21":
+"@types/react@npm:*, @types/react@npm:18.0.21, @types/react@npm:^18.0.0":
   version: 18.0.21
   resolution: "@types/react@npm:18.0.21"
   dependencies:
@@ -2176,17 +2176,6 @@ __metadata:
     "@types/scheduler": "*"
     csstype: ^3.0.2
   checksum: 36c1a7c9d507e81e2e629c1ad3db51d7b84d8b010c2d5008da411874286c6a5ccc711ae1d4c470efc0bdc77153cc8804a40e927e929e5164c669ca41b84b846d
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^17.0.40":
-  version: 17.0.50
-  resolution: "@types/react@npm:17.0.50"
-  dependencies:
-    "@types/prop-types": "*"
-    "@types/scheduler": "*"
-    csstype: ^3.0.2
-  checksum: b5629dff7c2f3e9fcba95a19b2b3bfd78d7cacc33ba5fc26413dba653d34afcac3b93ddabe563e8062382688a1eac7db68e93739bb8e712d27637a03aaafbbb8
   languageName: node
   linkType: hard
 
@@ -6718,7 +6707,7 @@ __metadata:
   resolution: "react-arborist@workspace:packages/react-arborist"
   dependencies:
     "@types/jest": ^27.4.1
-    "@types/react": ^17.0.40
+    "@types/react": ^18.0.0
     "@types/react-window": ^1.8.5
     "@types/use-sync-external-store": ^0.0.3
     jest: ^27.5.1
