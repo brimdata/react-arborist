@@ -1,8 +1,9 @@
 import { useMemo, useState } from "react";
-import { nanoid } from "nanoid";
 import { SimpleTree } from "../data/simple-tree";
 
 type Data = { id: string; name: string; children?: Data[] };
+
+let nextId = 0;
 
 export function useSimpleTree(initialData: Data[]) {
   const [data, setData] = useState(initialData);
@@ -21,7 +22,7 @@ export function useSimpleTree(initialData: Data[]) {
   }
 
   function create({ parentId, index }: { parentId: string; index: number }) {
-    const data: Data = { id: nanoid(), name: "" };
+    const data: Data = { id: `simple-tree-id-${nextId++}`, name: "" };
     tree.create({ parentId, index, data });
     setData(tree.data);
     return data;

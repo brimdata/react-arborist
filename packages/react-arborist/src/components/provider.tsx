@@ -2,11 +2,11 @@ import {
   ReactNode,
   useEffect,
   useImperativeHandle,
-  useLayoutEffect,
   useMemo,
   useReducer,
   useRef,
 } from "react";
+import { useSyncExternalStore } from "use-sync-external-store/shim";
 import { FixedSizeList } from "react-window";
 import { DndContext, NodesContext, TreeApiContext } from "../context";
 import { TreeApi } from "../interfaces/tree-api";
@@ -23,27 +23,27 @@ type Props<T extends IdObj> = {
   imperativeHandle: React.Ref<TreeApi<T> | undefined>;
   children: ReactNode;
 };
+
+const SERVER_STATE = initialState();
+
 export function TreeProvider<T extends IdObj>(props: Props<T>) {
   const list = useRef<FixedSizeList | null>(null);
   const listEl = useRef<HTMLDivElement | null>(null);
   const store = useRef<Store>(createStore(rootReducer));
-  const state = store.current.getState();
+  const state = useSyncExternalStore(
+    store.current.subscribe,
+    store.current.getState,
+    () => SERVER_STATE
+  );
 
   /* The tree api only changes it's identity when the props change. */
   const api = useMemo(() => {
     return new TreeApi<T>(store.current, props.treeProps, list, listEl);
   }, [props.treeProps, state.nodes.open]);
-
-  const [_, rerender] = useReducer((state) => state + 1, 0);
-  useLayoutEffect(() => {
-    return store.current.subscribe(rerender);
-  }, []);
-
   useImperativeHandle(props.imperativeHandle, () => api);
 
   useEffect(() => {
     if (api.props.selection) {
-      console.log(api.props.selection);
       api.select(api.props.selection);
     } else {
       api.selectNone();

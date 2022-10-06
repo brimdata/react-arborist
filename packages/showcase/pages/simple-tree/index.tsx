@@ -1,9 +1,13 @@
 import clsx from "clsx";
 import { useEffect, useRef } from "react";
-import { NodeRendererProps, Tree, TreeApi } from "react-arborist";
+import {
+  NodeRendererProps,
+  Tree,
+  TreeApi,
+  useSimpleTree,
+} from "react-arborist";
 import styles from "styles/Tree.module.css";
 import { cities } from "../../data/cities";
-import { useTreeController } from "./use-tree-controller";
 
 const smallData = [
   { id: "1", name: "1" },
@@ -72,7 +76,7 @@ function Edit({ node }: NodeRendererProps<Data>) {
 }
 
 export default function SimpleTree() {
-  const [theData, controller] = useTreeController(smallData);
+  const [theData, controller] = useSimpleTree(smallData);
 
   const tree = useRef<TreeApi<any>>();
 
