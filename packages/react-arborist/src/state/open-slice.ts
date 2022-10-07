@@ -1,35 +1,53 @@
+import { ActionTypes } from "../types/utils";
+
 /* Types */
-export type OpenSlice = { [id: string]: boolean };
+type OpenMap = { [id: string]: boolean };
+export type OpenSlice = { unfiltered: OpenMap; filtered: OpenMap };
 
 /* Actions */
-export function open(id: string) {
-  return { type: "OPEN" as const, id };
-}
-
-export function close(id: string) {
-  return { type: "CLOSE" as const, id };
-}
-
-export function toggle(id: string) {
-  return { type: "TOGGLE" as const, id };
-}
+export const actions = {
+  open(id: string, filtered: boolean) {
+    return { type: "VISIBILITY_OPEN" as const, id, filtered };
+  },
+  close(id: string, filtered: boolean) {
+    return { type: "VISIBILITY_CLOSE" as const, id, filtered };
+  },
+  toggle(id: string, filtered: boolean) {
+    return { type: "VISIBILITY_TOGGLE" as const, id, filtered };
+  },
+  clear(filtered: boolean) {
+    return { type: "VISIBILITY_CLEAR" as const, filtered };
+  },
+};
 
 /* Reducer */
-export function reducer(
-  state: OpenSlice = {},
-  action:
-    | ReturnType<typeof open>
-    | ReturnType<typeof close>
-    | ReturnType<typeof toggle>
+
+function openMapReducer(
+  state: OpenMap = {},
+  action: ActionTypes<typeof actions>
 ) {
-  if (action.type === "OPEN") {
+  if (action.type === "VISIBILITY_OPEN") {
     return { ...state, [action.id]: true };
-  } else if (action.type === "CLOSE") {
+  } else if (action.type === "VISIBILITY_CLOSE") {
     return { ...state, [action.id]: false };
-  } else if (action.type === "TOGGLE") {
+  } else if (action.type === "VISIBILITY_TOGGLE") {
     const prev = state[action.id];
     return { ...state, [action.id]: !prev };
+  } else if (action.type === "VISIBILITY_CLEAR") {
+    return {};
   } else {
     return state;
+  }
+}
+
+export function reducer(
+  state: OpenSlice = { filtered: {}, unfiltered: {} },
+  action: ActionTypes<typeof actions>
+): OpenSlice {
+  if (!action.type.startsWith("VISIBILITY")) return state;
+  if (action.filtered) {
+    return { ...state, filtered: openMapReducer(state.filtered, action) };
+  } else {
+    return { ...state, unfiltered: openMapReducer(state.unfiltered, action) };
   }
 }

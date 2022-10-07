@@ -47,6 +47,10 @@ export interface TreeProps<T extends IdObj> {
   /* Selection */
   selection?: string;
 
+  /* Search */
+  searchTerm?: string;
+  searchMatch?: (data: T, searchTerm: string) => boolean;
+
   /* Extra */
   className?: string | undefined;
   dndRootElement?: globalThis.Node | null;

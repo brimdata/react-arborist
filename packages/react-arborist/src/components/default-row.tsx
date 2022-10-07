@@ -12,6 +12,7 @@ export function DefaultRow<T extends IdObj>({
     <div
       {...attrs}
       ref={innerRef}
+      onFocus={(e) => e.stopPropagation()}
       onClick={(e) => {
         if (e.metaKey) {
           node.isSelected ? node.deselect() : node.selectMulti();

@@ -2,7 +2,7 @@ import { EditResult } from "../types/handlers";
 import { Identity, IdObj } from "../types/utils";
 import { TreeProps } from "../types/tree-props";
 import { MutableRefObject } from "react";
-import { FixedSizeList } from "react-window";
+import { Align, FixedSizeList } from "react-window";
 import * as utils from "../utils";
 import { DefaultCursor } from "../components/default-cursor";
 import { DefaultRow } from "../components/default-row";
@@ -11,14 +11,15 @@ import { NodeApi } from "./node-api";
 import { edit } from "../state/edit-slice";
 import { Actions, RootState } from "../state/root-reducer";
 import { focus, treeBlur } from "../state/focus-slice";
-import { createRoot } from "../data/create-root";
-import { open, close } from "../state/open-slice";
+import { createRoot, ROOT_ID } from "../data/create-root";
+import { actions as visibility } from "../state/open-slice";
 import { actions as selection } from "../state/selection-slice";
 import { actions as dnd } from "../state/dnd-slice";
 import { DefaultDragPreview } from "../components/default-drag-preview";
 import { DefaultContainer } from "../components/default-container";
 import { Cursor } from "../dnd/compute-drop";
 import { Store } from "redux";
+import { filterTree } from "../data/flatten-tree";
 
 const { safeRun, identify, identifyNull } = utils;
 export class TreeApi<T extends IdObj> {
@@ -74,9 +75,18 @@ export class TreeApi<T extends IdObj> {
   }
 
   get visibleNodes(): NodeApi<T>[] {
-    return utils.createList(
-      this.root as unknown as NodeApi<IdObj>
-    ) as unknown as NodeApi<T>[];
+    const root = this.root as unknown as NodeApi<IdObj>;
+    const term = this.props.searchTerm || "";
+    const match = this.props.searchMatch ?? (() => true);
+    const matchFn = (node: NodeApi<T>) => match(node.data, term);
+    if (term === "") {
+      return utils.createList(root) as unknown as NodeApi<T>[];
+    } else {
+      return utils.createFilteredList(
+        root,
+        matchFn as any
+      ) as unknown as NodeApi<T>[];
+    }
   }
 
   get visibleIds() {
@@ -250,6 +260,7 @@ export class TreeApi<T extends IdObj> {
   }
 
   selectMulti(identity: Identity) {
+    console.log("MULTI");
     const node = this.get(identifyNull(identity));
     if (!node) return;
     this.dispatch(focus(node.id));
@@ -315,12 +326,12 @@ export class TreeApi<T extends IdObj> {
 
   open(id: string | null) {
     if (!id) return;
-    this.dispatch(open(id));
+    this.dispatch(visibility.open(id, this.isFiltered));
   }
 
   close(id: string | null) {
     if (!id) return;
-    this.dispatch(close(id));
+    this.dispatch(visibility.close(id, this.isFiltered));
   }
 
   toggle(identity: Identity) {
@@ -354,18 +365,22 @@ export class TreeApi<T extends IdObj> {
 
   /* Scrolling */
 
-  scrollTo(identity: Identity) {
+  scrollTo(identity: Identity, align?: Align) {
     if (!identity) return;
     const id = identify(identity);
     const index = this.idToIndex[id];
     if (index === undefined) return;
-    this.list.current?.scrollToItem(index);
+    this.list.current?.scrollToItem(index, align);
   }
 
   /* State Checks */
 
   get isEditing() {
     return this.state.nodes.edit.id !== null;
+  }
+
+  get isFiltered() {
+    return !!this.props.searchTerm?.trim();
   }
 
   isSelected(id?: string) {
@@ -375,7 +390,13 @@ export class TreeApi<T extends IdObj> {
 
   isOpen(id?: string) {
     if (!id) return false;
-    return this.state.nodes.open[id] ?? this.props.openByDefault ?? true;
+    if (id === ROOT_ID) return true;
+    const def = this.props.openByDefault ?? true;
+    if (this.isFiltered) {
+      return this.state.nodes.open.filtered[id] ?? true; // Filtered folders are always opened by default
+    } else {
+      return this.state.nodes.open.unfiltered[id] ?? def;
+    }
   }
 
   isDraggable(data: T) {
@@ -411,7 +432,7 @@ export class TreeApi<T extends IdObj> {
 
   onFocus() {
     const node = this.focusedNode || this.firstNode;
-    this.focus(node);
+    if (node) this.dispatch(focus(node.id));
   }
 
   onBlur() {

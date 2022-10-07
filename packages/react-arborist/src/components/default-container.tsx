@@ -87,9 +87,9 @@ export function DefaultContainer() {
         }
         if (e.key === "ArrowLeft") {
           const node = tree.focusedNode;
-          if (!node || node.level === 0) return; // Don't close the root node
+          if (!node || node.isRoot) return;
           if (node.isInternal && node.isOpen) tree.close(node.id);
-          else {
+          else if (!node.parent?.isRoot) {
             tree.focus(node.parent);
           }
         }

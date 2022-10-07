@@ -3,7 +3,6 @@ import {
   useEffect,
   useImperativeHandle,
   useMemo,
-  useReducer,
   useRef,
 } from "react";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
@@ -17,6 +16,7 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { TreeProps } from "../types/tree-props";
 import { createStore, Store } from "redux";
+import { actions as visibility } from "../state/open-slice";
 
 type Props<T extends IdObj> = {
   treeProps: TreeProps<T>;
@@ -49,6 +49,12 @@ export function TreeProvider<T extends IdObj>(props: Props<T>) {
       api.selectNone();
     }
   }, [api.props.selection]);
+
+  useEffect(() => {
+    if (!api.props.searchTerm) {
+      store.current.dispatch(visibility.clear(true));
+    }
+  }, [api.props.searchTerm]);
 
   return (
     <TreeApiContext.Provider value={api}>

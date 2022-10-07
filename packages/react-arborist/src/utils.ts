@@ -1,5 +1,5 @@
 import memoizeOne from "memoize-one";
-import { flattenTree } from "./data/flatten-tree";
+import { filterTree, flattenTree } from "./data/flatten-tree";
 import { NodeApi } from "./interfaces/node-api";
 import { IdObj } from "./types/utils";
 
@@ -49,9 +49,8 @@ export const createIndex = memoizeOne(
   }
 );
 
-export const createList = memoizeOne(<T extends IdObj>(root: NodeApi<T>) => {
-  return flattenTree<T>(root);
-});
+export const createList = memoizeOne(flattenTree);
+export const createFilteredList = memoizeOne(filterTree);
 
 export function dfs(node: NodeApi<any>, id: string): NodeApi<any> | null {
   if (!node) return null;

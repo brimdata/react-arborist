@@ -1,5 +1,6 @@
 import { TreeApi } from "./tree-api";
 import { IdObj } from "../types/utils";
+import { ROOT_ID } from "../data/create-root";
 
 type Params<T extends IdObj> = {
   id: string;
@@ -49,6 +50,10 @@ export class NodeApi<T extends IdObj = IdObj> {
   get nextSibling(): NodeApi<T> | null {
     const i = this.childIndex;
     return this.parent?.children![i + 1] ?? null;
+  }
+
+  get isRoot() {
+    return this.id === ROOT_ID;
   }
 
   get isLeaf() {

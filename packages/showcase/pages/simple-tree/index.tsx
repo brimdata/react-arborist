@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   NodeRendererProps,
   Tree,
@@ -76,7 +76,7 @@ function Edit({ node }: NodeRendererProps<Data>) {
 }
 
 export default function SimpleTree() {
-  const [theData, controller] = useSimpleTree(smallData);
+  const [theData, controller] = useSimpleTree(cities);
 
   const tree = useRef<TreeApi<any>>();
 
@@ -85,21 +85,41 @@ export default function SimpleTree() {
     global.tree = tree.current;
   });
 
+  const [current, setCurrent] = useState("1");
+  const [filter, setFilter] = useState("");
   return (
     <div className={styles.layout}>
       <h1>Simple Tree</h1>
-      <input type="text" />
+
+      <label>Filter</label>
+      <input
+        type="text"
+        value={filter}
+        onChange={(e) => setFilter(e.currentTarget.value)}
+      />
+      <p>Filter: {filter || "None"}</p>
       <Tree
         ref={tree}
+        openByDefault={false}
+        searchTerm={filter}
+        searchMatch={(data, searchTerm) => {
+          return data.name.toLowerCase().includes(searchTerm);
+        }}
+        selection={current}
         className={styles.tree}
         data={theData}
         onCreate={controller.create}
         onRename={controller.rename}
         onMove={controller.move}
         onDelete={controller.drop}
+        onSelect={(items) => {
+          if (items.length === 1) setCurrent(items[0].id);
+        }}
+        selectionFollowsFocus
       >
         {MyNode}
       </Tree>
+      <label>Another place to focus</label>
       <input type="text" />
     </div>
   );

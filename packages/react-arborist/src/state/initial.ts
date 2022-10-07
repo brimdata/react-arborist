@@ -3,7 +3,7 @@ import { RootState } from "./root-reducer";
 export const initialState = (): RootState => ({
   nodes: {
     // Changes together
-    open: {},
+    open: { filtered: {}, unfiltered: {} },
     focus: { id: null, treeFocused: false },
     edit: { id: null },
     drag: { id: null },

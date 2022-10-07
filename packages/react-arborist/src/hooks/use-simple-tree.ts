@@ -9,7 +9,11 @@ export function useSimpleTree(initialData: Data[]) {
   const [data, setData] = useState(initialData);
   const tree = useMemo(() => new SimpleTree<Data>(data), [data]);
 
-  function move(args: { dragIds: string[]; parentId: string; index: number }) {
+  function move(args: {
+    dragIds: string[];
+    parentId: null | string;
+    index: number;
+  }) {
     for (const id of args.dragIds) {
       tree.move({ id, parentId: args.parentId, index: args.index });
     }
