@@ -20,6 +20,10 @@
     align-items: center;
 }
 
+.node:global(.willReceiveDrop) {
+    background: orange;
+}
+
 .node p {
     margin: 0;
 }

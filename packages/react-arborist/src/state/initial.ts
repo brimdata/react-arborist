@@ -6,7 +6,7 @@ export const initialState = (): RootState => ({
     open: { filtered: {}, unfiltered: {} },
     focus: { id: null, treeFocused: false },
     edit: { id: null },
-    drag: { id: null },
+    drag: { id: null, idWillReceiveDrop: null },
     selection: { ids: new Set(), anchor: null, mostRecent: null },
   },
   dnd: { cursor: { type: "none" }, dragId: null },

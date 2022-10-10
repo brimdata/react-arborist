@@ -1,3 +1,4 @@
+import React from "react";
 import { TreeApi } from "./tree-api";
 import { IdObj } from "../types/utils";
 import { ROOT_ID } from "../data/create-root";
@@ -164,4 +165,14 @@ export class NodeApi<T extends IdObj = IdObj> {
   edit() {
     return this.tree.edit(this);
   }
+
+  handleClick = (e: React.MouseEvent) => {
+    if (e.metaKey) {
+      this.isSelected ? this.deselect() : this.selectMulti();
+    } else if (e.shiftKey) {
+      this.selectContiguous();
+    } else {
+      this.select();
+    }
+  };
 }

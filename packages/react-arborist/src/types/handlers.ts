@@ -3,6 +3,7 @@ import { IdObj } from "./utils";
 export type CreateHandler = (args: {
   parentId: string;
   index: number;
+  type: "internal" | "leaf";
 }) => (IdObj | null) | Promise<IdObj | null>;
 
 export type MoveHandler = (args: {

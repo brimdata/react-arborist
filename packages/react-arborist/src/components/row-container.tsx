@@ -53,7 +53,7 @@ export const RowContainer = React.memo(function RowContainer<T extends IdObj>({
     role: "treeitem",
     "aria-level": node.level,
     style,
-    tabIndex: 0,
+    tabIndex: -1,
   };
 
   useEffect(() => {

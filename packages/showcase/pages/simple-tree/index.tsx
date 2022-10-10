@@ -12,7 +12,7 @@ import { cities } from "../../data/cities";
 const smallData = [
   { id: "1", name: "1" },
   { id: "2", name: "2" },
-  { id: "3", name: "3`" },
+  { id: "3", name: "3", children: [{ id: "child", name: "child" }] },
   { id: "4", name: "4" },
   { id: "5", name: "5" },
 ];
@@ -23,9 +23,7 @@ function MyNode(props: NodeRendererProps<Data>) {
     <div
       ref={props.dragHandle}
       style={props.style}
-      className={clsx(styles.node, {
-        [styles.isSelected]: props.node.isSelected,
-      })}
+      className={clsx(styles.node, props.node.state)}
     >
       <p
         onClick={(e) => {
@@ -76,7 +74,7 @@ function Edit({ node }: NodeRendererProps<Data>) {
 }
 
 export default function SimpleTree() {
-  const [theData, controller] = useSimpleTree(cities);
+  const [theData, controller] = useSimpleTree(smallData);
 
   const tree = useRef<TreeApi<any>>();
 

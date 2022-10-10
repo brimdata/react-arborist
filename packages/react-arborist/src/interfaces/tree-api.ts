@@ -150,7 +150,7 @@ export class TreeApi<T extends IdObj> {
     return this.state.nodes.edit.id;
   }
 
-  async createLeaf() {
+  async create(type: "internal" | "leaf") {
     let index;
     let parentId;
     if (this.focusedNode && this.focusedNode.parent) {
@@ -160,7 +160,11 @@ export class TreeApi<T extends IdObj> {
       index = this.root?.children?.length || -1;
       parentId = this.root.id;
     }
-    const data = await safeRun(this.props.onCreate, { parentId, index });
+    const data = await safeRun(this.props.onCreate, {
+      parentId,
+      index,
+      type,
+    });
     if (data) {
       // At this point, the data has changed
       this.select(data);
@@ -260,7 +264,6 @@ export class TreeApi<T extends IdObj> {
   }
 
   selectMulti(identity: Identity) {
-    console.log("MULTI");
     const node = this.get(identifyNull(identity));
     if (!node) return;
     this.dispatch(focus(node.id));
@@ -424,8 +427,7 @@ export class TreeApi<T extends IdObj> {
   willReceiveDrop(node: string | IdObj | null) {
     const id = identifyNull(node);
     if (!id) return false;
-    const cursor = this.state.dnd.cursor;
-    return cursor.type === "highlight" && cursor.id === id;
+    return id === this.state.nodes.drag.idWillReceiveDrop;
   }
 
   /* Tree Event Handlers */

@@ -19,11 +19,26 @@ export function useDropHook(
   const [_, dropRef] = useDrop<DragItem, DropResult | null, void>(
     () => ({
       accept: "NODE",
-      canDrop: (item) => {
+      canDrop: (item, m) => {
+        if (node.tree.isFiltered) return false;
+        const offset = m.getClientOffset();
+        if (!el.current || !offset) return false;
+        const { drop } = computeDrop({
+          element: el.current,
+          offset: offset,
+          indent: tree.indent,
+          node: node,
+          prevNode: node.prev,
+          nextNode: node.next,
+        });
+        if (!drop) return false;
+        const dropParent = tree.get(drop.parentId) ?? tree.root;
+
         for (let id of item.dragIds) {
           const drag = tree.get(id);
           if (!drag) return false;
-          if (isFolder(drag) && isDecendent(node, drag)) return false;
+          if (!dropParent) return false;
+          if (isFolder(drag) && isDecendent(dropParent, drag)) return false;
         }
         return true;
       },

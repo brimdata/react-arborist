@@ -13,15 +13,7 @@ export function DefaultRow<T extends IdObj>({
       {...attrs}
       ref={innerRef}
       onFocus={(e) => e.stopPropagation()}
-      onClick={(e) => {
-        if (e.metaKey) {
-          node.isSelected ? node.deselect() : node.selectMulti();
-        } else if (e.shiftKey) {
-          node.selectContiguous();
-        } else {
-          node.select();
-        }
-      }}
+      onClick={node.handleClick}
     >
       {children}
     </div>
