@@ -20,9 +20,8 @@ export const RowContainer = React.memo(function RowContainer<T extends IdObj>({
    * when a new instance of the NodeApi class is passed
    * to it.
    *
-   * The TreeApi instance is mostly-stable. It does not
-   * change when the internal state changes, only when
-   * the props change.
+   * The TreeApi instance is stable. It does not
+   * change when the internal state changes.
    *
    * The TreeApi has all the references to the nodes.
    * We need to clone the nodes when their state

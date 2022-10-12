@@ -12,5 +12,5 @@ export function useFreshNode<T extends IdObj>(index: number) {
     tree.visibleNodes[index] = fresh; // sneaky
     return fresh;
     // Return a fresh instance if the state values change
-  }, [...Object.values(original.state), original, tree]);
+  }, [...Object.values(original.state), original]);
 }
