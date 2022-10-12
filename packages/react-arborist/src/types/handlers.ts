@@ -1,7 +1,7 @@
 import { IdObj } from "./utils";
 
 export type CreateHandler = (args: {
-  parentId: string;
+  parentId: string | null;
   index: number;
   type: "internal" | "leaf";
 }) => (IdObj | null) | Promise<IdObj | null>;
@@ -17,7 +17,7 @@ export type RenameHandler = (args: {
   name: string;
 }) => void | Promise<void>;
 
-export type DeleteHandler = (args: { id: string }) => void | Promise<void>;
+export type DeleteHandler = (args: { ids: string[] }) => void | Promise<void>;
 
 export type EditResult =
   | { cancelled: true }

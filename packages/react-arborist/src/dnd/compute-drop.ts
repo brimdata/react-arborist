@@ -1,6 +1,6 @@
 import { XYCoord } from "react-dnd";
 import { NodeApi } from "../interfaces/node-api";
-import { bound, indexOf, isClosed, isFolder, isItem } from "../utils";
+import { bound, indexOf, isClosed, isItem } from "../utils";
 import { DropResult } from "./drop-hook";
 
 function measureHover(el: HTMLElement, offset: XYCoord) {
@@ -30,7 +30,7 @@ function getNodesAroundCursor(
     // Put the cursor below the last item which is "prev"
     return [prev, null];
   }
-  if (isFolder(node)) {
+  if (node.isInternal) {
     if (hover.atTop) {
       return [prev, node];
     } else if (hover.inMiddle) {
@@ -152,7 +152,7 @@ export function computeDrop(args: Args): ComputedDrop {
   }
 
   /* Hovering over the middle of a folder */
-  if (node && isFolder(node) && hover.inMiddle) {
+  if (node && node.isInternal && hover.inMiddle) {
     return {
       drop: dropAt(node.id, 0),
       cursor: highlightCursor(node.id),

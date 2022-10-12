@@ -19,12 +19,15 @@ import { DefaultDragPreview } from "../components/default-drag-preview";
 import { DefaultContainer } from "../components/default-container";
 import { Cursor } from "../dnd/compute-drop";
 import { Store } from "redux";
-import { filterTree } from "../data/flatten-tree";
+import { createList } from "../data/create-list";
+import { createIndex } from "../data/create-index";
 
 const { safeRun, identify, identifyNull } = utils;
 export class TreeApi<T extends IdObj> {
+  static editPromise: null | ((args: EditResult) => void);
   root: NodeApi<T>;
-  private edits = new Map<string, (args: EditResult) => void>();
+  visibleNodes: NodeApi<T>[];
+  idToIndex: { [id: string]: number };
 
   constructor(
     public store: Store<RootState, Actions>,
@@ -32,7 +35,18 @@ export class TreeApi<T extends IdObj> {
     public list: MutableRefObject<FixedSizeList | null>,
     public listEl: MutableRefObject<HTMLDivElement | null>
   ) {
+    /* Changes here must also be made in update() */
     this.root = createRoot<T>(this);
+    this.visibleNodes = createList<T>(this);
+    this.idToIndex = createIndex(this.visibleNodes);
+  }
+
+  /* Changes here must also be made in constructor() */
+  update(props: TreeProps<T>) {
+    this.props = props;
+    this.root = createRoot<T>(this);
+    this.visibleNodes = createList<T>(this);
+    this.idToIndex = createIndex(this.visibleNodes);
   }
 
   /* Store helpers */
@@ -63,35 +77,21 @@ export class TreeApi<T extends IdObj> {
     return this.props.rowHeight || 24;
   }
 
+  get searchTerm() {
+    return (this.props.searchTerm || "").trim();
+  }
+
+  get matchFn() {
+    const match = this.props.searchMatch ?? (() => true);
+    return (node: NodeApi<T>) => match(node.data, this.searchTerm);
+  }
+
   getChildren(data: T) {
     const get = this.props.getChildren || "children";
     return utils.access<T[] | undefined>(data, get) ?? null;
   }
 
   /* Node Access */
-
-  get idToIndex(): { [id: string]: number } {
-    return utils.createIndex(this.visibleNodes as unknown as NodeApi<IdObj>[]);
-  }
-
-  get visibleNodes(): NodeApi<T>[] {
-    const root = this.root as unknown as NodeApi<IdObj>;
-    const term = this.props.searchTerm || "";
-    const match = this.props.searchMatch ?? (() => true);
-    const matchFn = (node: NodeApi<T>) => match(node.data, term);
-    if (term === "") {
-      return utils.createList(root) as unknown as NodeApi<T>[];
-    } else {
-      return utils.createFilteredList(
-        root,
-        matchFn as any
-      ) as unknown as NodeApi<T>[];
-    }
-  }
-
-  get visibleIds() {
-    return utils.getIds(this.visibleNodes);
-  }
 
   get firstNode() {
     return this.visibleNodes[0] ?? null;
@@ -103,6 +103,10 @@ export class TreeApi<T extends IdObj> {
 
   get focusedNode() {
     return this.get(this.state.nodes.focus.id) ?? null;
+  }
+
+  get mostRecentNode() {
+    return this.get(this.state.nodes.selection.mostRecent) ?? null;
   }
 
   get nextNode() {
@@ -150,15 +154,29 @@ export class TreeApi<T extends IdObj> {
     return this.state.nodes.edit.id;
   }
 
-  async create(type: "internal" | "leaf") {
+  createInternal() {
+    return this.create("internal");
+  }
+
+  createLeaf() {
+    return this.create("leaf");
+  }
+
+  private async create(type: "internal" | "leaf") {
     let index;
     let parentId;
-    if (this.focusedNode && this.focusedNode.parent) {
-      index = this.focusedNode.childIndex + 1;
-      parentId = this.focusedNode.parent.id;
+    const focus = this.focusedNode;
+    if (focus && focus.parent) {
+      if (focus.isInternal && focus.isOpen) {
+        parentId = focus.id;
+        index = 0;
+      } else {
+        index = focus.childIndex + 1;
+        parentId = focus.parent.isRoot ? null : focus.parent.id;
+      }
     } else {
       index = this.root?.children?.length || -1;
-      parentId = this.root.id;
+      parentId = null;
     }
     const data = await safeRun(this.props.onCreate, {
       parentId,
@@ -166,24 +184,30 @@ export class TreeApi<T extends IdObj> {
       type,
     });
     if (data) {
-      // At this point, the data has changed
-      this.select(data);
-      setTimeout(() => this.edit(data));
+      this.focus(data);
+      setTimeout(() => {
+        this.edit(data).then(() => {
+          this.select(data);
+        });
+      });
     }
   }
 
-  async delete(node: string | IdObj | null) {
+  async delete(node: string | IdObj | null | string[] | IdObj[]) {
     if (!node) return;
-    const id = identify(node);
-    await safeRun(this.props.onDelete, { id });
+    const nodes = Array.isArray(node) ? node : [node];
+    const ids = nodes.map(identify);
+    await safeRun(this.props.onDelete, { ids });
   }
 
   edit(node: string | IdObj): Promise<EditResult> {
     const id = identify(node);
-    this.resolveEdit(id, { cancelled: true });
+    this.resolveEdit({ cancelled: true });
     this.scrollTo(id);
     this.dispatch(edit(id));
-    return new Promise((resolve) => this.edits.set(id, resolve));
+    return new Promise((resolve) => {
+      TreeApi.editPromise = resolve;
+    });
   }
 
   async submit(node: Identity, value: string) {
@@ -191,15 +215,13 @@ export class TreeApi<T extends IdObj> {
     const id = identify(node);
     await safeRun(this.props.onRename, { id, name: value });
     this.dispatch(edit(null));
-    this.resolveEdit(id, { cancelled: false, value });
+    this.resolveEdit({ cancelled: false, value });
     setTimeout(() => this.onFocus()); // Return focus to element;
   }
 
-  reset(node: Identity) {
-    if (!node) return;
-    const id = identify(node);
+  reset() {
     this.dispatch(edit(null));
-    this.resolveEdit(id, { cancelled: true });
+    this.resolveEdit({ cancelled: true });
     setTimeout(() => this.onFocus()); // Return focus to element;
   }
 
@@ -215,10 +237,10 @@ export class TreeApi<T extends IdObj> {
     safeRun(this.props.onPreview, node.data);
   }
 
-  private resolveEdit(id: string, value: EditResult) {
-    const resolve = this.edits.get(id.toString());
+  private resolveEdit(value: EditResult) {
+    const resolve = TreeApi.editPromise;
     if (resolve) resolve(value);
-    this.edits.delete(id);
+    TreeApi.editPromise = null;
   }
 
   /* Focus and Selection */
@@ -422,6 +444,10 @@ export class TreeApi<T extends IdObj> {
     return (
       this.state.nodes.focus.treeFocused && this.state.nodes.focus.id === id
     );
+  }
+
+  isMatch(node: NodeApi<T>) {
+    return this.matchFn(node);
   }
 
   willReceiveDrop(node: string | IdObj | null) {

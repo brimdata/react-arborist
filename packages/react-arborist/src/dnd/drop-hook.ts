@@ -3,7 +3,7 @@ import { ConnectDropTarget, useDrop } from "react-dnd";
 import { useTreeApi } from "../context";
 import { NodeApi } from "../interfaces/node-api";
 import { DragItem } from "../types/dnd";
-import { isDecendent, isFolder } from "../utils";
+import { isDecendent } from "../utils";
 import { computeDrop } from "./compute-drop";
 
 export type DropResult = {
@@ -38,7 +38,7 @@ export function useDropHook(
           const drag = tree.get(id);
           if (!drag) return false;
           if (!dropParent) return false;
-          if (isFolder(drag) && isDecendent(dropParent, drag)) return false;
+          if (drag.isInternal && isDecendent(dropParent, drag)) return false;
         }
         return true;
       },

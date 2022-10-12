@@ -28,7 +28,7 @@
     margin: 0;
 }
 
-.node.isSelected {
+.node:global(.isSelected) {
     background: blue;
     color: white;
 }

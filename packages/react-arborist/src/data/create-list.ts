@@ -1,12 +1,19 @@
 import { NodeApi } from "../interfaces/node-api";
+import { TreeApi } from "../interfaces/tree-api";
 import { IdObj } from "../types/utils";
 
-export function flattenTree<T extends IdObj>(root: NodeApi<T>): NodeApi<T>[] {
+export function createList<T extends IdObj>(tree: TreeApi<T>) {
+  if (tree.isFiltered) {
+    return flattenAndFilterTree(tree.root, tree.isMatch);
+  } else {
+    return flattenTree(tree.root);
+  }
+}
+
+function flattenTree<T extends IdObj>(root: NodeApi<T>): NodeApi<T>[] {
   const list: NodeApi<T>[] = [];
-  let index = 0;
   function collect(node: NodeApi<T>) {
     if (node.level >= 0) {
-      node.rowIndex = index++;
       list.push(node);
     }
     if (node.isOpen) {
@@ -14,10 +21,11 @@ export function flattenTree<T extends IdObj>(root: NodeApi<T>): NodeApi<T>[] {
     }
   }
   collect(root);
+  list.forEach(assignRowIndex);
   return list;
 }
 
-export function filterTree<T extends IdObj>(
+function flattenAndFilterTree<T extends IdObj>(
   root: NodeApi<T>,
   isMatch: (n: NodeApi<T>) => boolean
 ): NodeApi<T>[] {
@@ -38,5 +46,11 @@ export function filterTree<T extends IdObj>(
     else return [];
   }
 
-  return collect(root).filter((n) => n.parent?.isOpen);
+  const list = collect(root).filter((n) => n.parent?.isOpen);
+  list.forEach(assignRowIndex);
+  return list;
+}
+
+function assignRowIndex(node: NodeApi<any>, index: number) {
+  node.rowIndex = index;
 }

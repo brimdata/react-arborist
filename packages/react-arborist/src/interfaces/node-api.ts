@@ -155,7 +155,7 @@ export class NodeApi<T extends IdObj = IdObj> {
   }
 
   reset() {
-    this.tree.reset(this);
+    this.tree.reset();
   }
 
   clone() {

@@ -28,3 +28,9 @@ export function useDndContext() {
   if (value === null) throw new Error("Provide a DnDContext");
   return value;
 }
+
+export const DataUpdatesContext = createContext<number>(0);
+
+export function useDataUpdates() {
+  useContext(DataUpdatesContext);
+}

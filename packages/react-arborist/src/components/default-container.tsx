@@ -1,5 +1,5 @@
 import { FixedSizeList } from "react-window";
-import { useTreeApi } from "../context";
+import { useDataUpdates, useTreeApi } from "../context";
 import { focusNextElement, focusPrevElement } from "../utils";
 import { ListOuterElement } from "./list-outer-element";
 import { RowContainer } from "./row-container";
@@ -8,10 +8,13 @@ let focusSearchTerm = "";
 let timeoutId: any = null;
 
 export function DefaultContainer() {
+  useDataUpdates();
   const tree = useTreeApi();
   return (
     <div
       style={{ height: tree.height, width: tree.width }}
+      onContextMenu={tree.props.onContextMenu}
+      onClick={tree.props.onClick}
       tabIndex={0}
       onFocus={(e) => {
         if (!e.currentTarget.contains(e.relatedTarget)) {
@@ -24,14 +27,27 @@ export function DefaultContainer() {
         }
       }}
       onKeyDown={(e) => {
-        if (tree.isEditing) return;
+        if (tree.isEditing) {
+          return;
+        }
         if (e.key === "Backspace") {
-          const node = tree.focusedNode;
-          if (node) {
-            const sib = node.nextSibling;
-            const parent = node.parent;
-            tree.focus(sib || parent, { scroll: false });
-            tree.delete(node);
+          const ids = Array.from(tree.selectedIds);
+          if (ids.length > 1) {
+            let nextFocus = tree.mostRecentNode;
+            while (nextFocus && nextFocus.isSelected) {
+              nextFocus = nextFocus.nextSibling;
+            }
+            if (!nextFocus) nextFocus = tree.lastNode;
+            tree.focus(nextFocus, { scroll: false });
+            tree.delete(Array.from(ids));
+          } else {
+            const node = tree.focusedNode;
+            if (node) {
+              const sib = node.nextSibling;
+              const parent = node.parent;
+              tree.focus(sib || parent, { scroll: false });
+              tree.delete(node);
+            }
           }
           return;
         }
@@ -107,13 +123,14 @@ export function DefaultContainer() {
           return;
         }
         if (e.key === "a" && !e.metaKey) {
-          tree.create("leaf");
+          tree.createLeaf();
           return;
         }
         if (e.key === "A" && !e.metaKey) {
-          tree.create("internal");
+          tree.createInternal();
           return;
         }
+
         if (e.key === "Home") {
           // add shift keys
           e.preventDefault();

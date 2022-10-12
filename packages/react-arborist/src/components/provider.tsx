@@ -7,11 +7,16 @@ import {
 } from "react";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
 import { FixedSizeList } from "react-window";
-import { DndContext, NodesContext, TreeApiContext } from "../context";
+import {
+  DataUpdatesContext,
+  DndContext,
+  NodesContext,
+  TreeApiContext,
+} from "../context";
 import { TreeApi } from "../interfaces/tree-api";
 import { IdObj } from "../types/utils";
 import { initialState } from "../state/initial";
-import { rootReducer } from "../state/root-reducer";
+import { rootReducer, RootState } from "../state/root-reducer";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { TreeProps } from "../types/tree-props";
@@ -30,18 +35,28 @@ export function TreeProvider<T extends IdObj>(props: Props<T>) {
   const list = useRef<FixedSizeList | null>(null);
   const listEl = useRef<HTMLDivElement | null>(null);
   const store = useRef<Store>(createStore(rootReducer));
-  const state = useSyncExternalStore(
+  const state = useSyncExternalStore<RootState>(
     store.current.subscribe,
     store.current.getState,
     () => SERVER_STATE
   );
 
-  /* The tree api only changes it's identity when the props change. */
+  /* The tree api object is stable. */
   const api = useMemo(() => {
     return new TreeApi<T>(store.current, props.treeProps, list, listEl);
-  }, [props.treeProps, state.nodes.open]);
+  }, []);
+
+  /* Make sure the tree instance stays in sync */
+  const updateCount = useRef(0);
+  useMemo(() => {
+    updateCount.current += 1;
+    api.update(props.treeProps);
+  }, [props.treeProps.data, state.nodes.open]);
+
+  /* Expose the tree api */
   useImperativeHandle(props.imperativeHandle, () => api);
 
+  /* Change selection based on props */
   useEffect(() => {
     if (api.props.selection) {
       api.select(api.props.selection);
@@ -50,6 +65,7 @@ export function TreeProvider<T extends IdObj>(props: Props<T>) {
     }
   }, [api.props.selection]);
 
+  /* Clear visability for filtered nodes */
   useEffect(() => {
     if (!api.props.searchTerm) {
       store.current.dispatch(visibility.clear(true));
@@ -58,16 +74,18 @@ export function TreeProvider<T extends IdObj>(props: Props<T>) {
 
   return (
     <TreeApiContext.Provider value={api}>
-      <NodesContext.Provider value={state.nodes}>
-        <DndContext.Provider value={state.dnd}>
-          <DndProvider
-            backend={HTML5Backend}
-            options={{ rootElement: api.props.dndRootElement || undefined }}
-          >
-            {props.children}
-          </DndProvider>
-        </DndContext.Provider>
-      </NodesContext.Provider>
+      <DataUpdatesContext.Provider value={updateCount.current}>
+        <NodesContext.Provider value={state.nodes}>
+          <DndContext.Provider value={state.dnd}>
+            <DndProvider
+              backend={HTML5Backend}
+              options={{ rootElement: api.props.dndRootElement || undefined }}
+            >
+              {props.children}
+            </DndProvider>
+          </DndContext.Provider>
+        </NodesContext.Provider>
+      </DataUpdatesContext.Provider>
     </TreeApiContext.Provider>
   );
 }

@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { SimpleTree } from "../data/simple-tree";
+import { isDecendent } from "../utils";
 
 type Data = { id: string; name: string; children?: Data[] };
 
@@ -25,15 +26,21 @@ export function useSimpleTree(initialData: Data[]) {
     setData(tree.data);
   }
 
-  function create({ parentId, index }: { parentId: string; index: number }) {
+  function create({
+    parentId,
+    index,
+  }: {
+    parentId: string | null;
+    index: number;
+  }) {
     const data: Data = { id: `simple-tree-id-${nextId++}`, name: "" };
     tree.create({ parentId, index, data });
     setData(tree.data);
     return data;
   }
 
-  function drop(args: { id: string }) {
-    tree.drop(args);
+  function drop(args: { ids: string[] }) {
+    args.ids.forEach((id) => tree.drop({ id }));
     setData(tree.data);
   }
 

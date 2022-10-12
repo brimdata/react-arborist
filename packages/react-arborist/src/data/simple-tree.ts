@@ -10,8 +10,8 @@ export class SimpleTree<T extends IdObj> {
     return this.root.children?.map((node) => node.data) ?? [];
   }
 
-  create(args: { parentId: string; index: number; data: T }) {
-    const parent = this.find(args.parentId);
+  create(args: { parentId: string | null; index: number; data: T }) {
+    const parent = args.parentId ? this.find(args.parentId) : this.root;
     if (!parent) return null;
     parent.addChild(args.data, args.index);
   }

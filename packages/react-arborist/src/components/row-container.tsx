@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { useNodesContext, useTreeApi } from "../context";
+import { useDataUpdates, useNodesContext, useTreeApi } from "../context";
 import { useDragHook } from "../dnd/drag-hook";
 import { useDropHook } from "../dnd/drop-hook";
 import { IdObj } from "../types/utils";
@@ -31,6 +31,7 @@ export const RowContainer = React.memo(function RowContainer<T extends IdObj>({
    * state will always be up to date.
    */
 
+  useDataUpdates(); // Re-render when tree props or visability changes
   const _ = useNodesContext(); // So that we re-render appropriately
   const tree = useTreeApi<T>(); // Tree already has the fresh state
   const node = useFreshNode<T>(index);

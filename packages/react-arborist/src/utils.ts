@@ -1,5 +1,3 @@
-import memoizeOne from "memoize-one";
-import { filterTree, flattenTree } from "./data/flatten-tree";
 import { NodeApi } from "./interfaces/node-api";
 import { IdObj } from "./types/utils";
 
@@ -7,14 +5,12 @@ export function bound(n: number, min: number, max: number) {
   return Math.max(Math.min(n, max), min);
 }
 
-export const isFolder = (node: NodeApi<any>) => !!node.children;
-
 export function isItem(node: NodeApi<any> | null) {
-  return node && !isFolder(node);
+  return node && node.isLeaf;
 }
 
 export function isClosed(node: NodeApi<any> | null) {
-  return node && isFolder(node) && !node.isOpen;
+  return node && node.isInternal && !node.isOpen;
 }
 
 /**
@@ -35,22 +31,6 @@ export const indexOf = (node: NodeApi<any>) => {
 };
 
 export function noop() {}
-
-export const getIds = memoizeOne((nodes: NodeApi<any>[]) =>
-  nodes.map((n) => n.id)
-);
-
-export const createIndex = memoizeOne(
-  <T extends IdObj>(nodes: NodeApi<T>[]) => {
-    return nodes.reduce<{ [id: string]: number }>((map, node, index) => {
-      map[node.id] = index;
-      return map;
-    }, {});
-  }
-);
-
-export const createList = memoizeOne(flattenTree);
-export const createFilteredList = memoizeOne(filterTree);
 
 export function dfs(node: NodeApi<any>, id: string): NodeApi<any> | null {
   if (!node) return null;
