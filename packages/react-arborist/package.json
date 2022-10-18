@@ -21,7 +21,8 @@
     "build:types": "tsc --outDir dist",
     "watch:js": "parcel watch --target main --target module --no-hmr --no-cache",
     "watch:types": "tsc --outDir dist --watch",
-    "watch": "run-p 'watch:**'"
+    "watch": "run-p 'watch:**'",
+    "prepack": "yarn build"
   },
   "peerDependencies": {
     "react": ">= 16.14",
