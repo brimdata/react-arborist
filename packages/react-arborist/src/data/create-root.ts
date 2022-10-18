@@ -43,11 +43,7 @@ export function createRoot<T extends IdObj>(tree: TreeApi<T>): NodeApi<T> {
     rowIndex: null,
   });
 
-  const data: T[] = Array.isArray(tree.props.data)
-    ? tree.props.data
-    : tree.props.data === undefined
-    ? []
-    : [tree.props.data];
+  const data: T[] = tree.props.data ?? [];
 
   root.children = data.map((child) => {
     return visitSelfAndChildren(child, 0, root);

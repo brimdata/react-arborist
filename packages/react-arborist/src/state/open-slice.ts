@@ -1,7 +1,7 @@
 import { ActionTypes } from "../types/utils";
 
 /* Types */
-type OpenMap = { [id: string]: boolean };
+export type OpenMap = { [id: string]: boolean };
 export type OpenSlice = { unfiltered: OpenMap; filtered: OpenMap };
 
 /* Actions */

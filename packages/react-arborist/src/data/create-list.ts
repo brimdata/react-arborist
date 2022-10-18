@@ -4,7 +4,7 @@ import { IdObj } from "../types/utils";
 
 export function createList<T extends IdObj>(tree: TreeApi<T>) {
   if (tree.isFiltered) {
-    return flattenAndFilterTree(tree.root, tree.isMatch);
+    return flattenAndFilterTree(tree.root, tree.isMatch.bind(tree));
   } else {
     return flattenTree(tree.root);
   }

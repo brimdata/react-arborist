@@ -1,50 +1,55 @@
 import { useMemo, useState } from "react";
 import { SimpleTree } from "../data/simple-tree";
-import { isDecendent } from "../utils";
+import {
+  CreateHandler,
+  DeleteHandler,
+  MoveHandler,
+  RenameHandler,
+} from "../types/handlers";
+import { IdObj } from "../types/utils";
 
-type Data = { id: string; name: string; children?: Data[] };
+export type SimpleTreeData = {
+  id: string;
+  name: string;
+  children?: SimpleTreeData[];
+};
 
 let nextId = 0;
 
-export function useSimpleTree(initialData: Data[]) {
+export function useSimpleTree<T extends IdObj>(initialData: T[]) {
   const [data, setData] = useState(initialData);
-  const tree = useMemo(() => new SimpleTree<Data>(data), [data]);
+  const tree = useMemo(() => new SimpleTree<T>(data), [data]);
 
-  function move(args: {
+  const onMove: MoveHandler = (args: {
     dragIds: string[];
     parentId: null | string;
     index: number;
-  }) {
+  }) => {
     for (const id of args.dragIds) {
       tree.move({ id, parentId: args.parentId, index: args.index });
     }
     setData(tree.data);
-  }
+  };
 
-  function rename(args: { id: string; name: string }) {
-    tree.update({ id: args.id, changes: { name: args.name } });
+  const onRename: RenameHandler = ({ name, id }) => {
+    tree.update({ id, changes: { name } as any });
     setData(tree.data);
-  }
+  };
 
-  function create({
-    parentId,
-    index,
-  }: {
-    parentId: string | null;
-    index: number;
-  }) {
-    const data: Data = { id: `simple-tree-id-${nextId++}`, name: "" };
+  const onCreate: CreateHandler = ({ parentId, index, type }) => {
+    const data = { id: `simple-tree-id-${nextId++}`, name: "" } as any;
+    if (type === "internal") data.children = [];
     tree.create({ parentId, index, data });
     setData(tree.data);
     return data;
-  }
+  };
 
-  function drop(args: { ids: string[] }) {
+  const onDelete: DeleteHandler = (args: { ids: string[] }) => {
     args.ids.forEach((id) => tree.drop({ id }));
     setData(tree.data);
-  }
+  };
 
-  const controller = { move, rename, create, drop };
+  const controller = { onMove, onRename, onCreate, onDelete };
 
   return [data, controller] as const;
 }

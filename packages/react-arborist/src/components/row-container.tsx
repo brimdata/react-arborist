@@ -48,11 +48,20 @@ export const RowContainer = React.memo(function RowContainer<T extends IdObj>({
 
   const indent = tree.indent * node.level;
   const nodeStyle = useMemo(() => ({ paddingLeft: indent }), [indent]);
-
+  const rowStyle = useMemo(
+    () => ({
+      ...style,
+      top:
+        parseFloat(style.top as string) +
+        (tree.props.padding ?? tree.props.paddingTop ?? 0),
+    }),
+    [style, tree.props.padding, tree.props.paddingTop]
+  );
   const rowAttrs: React.HTMLAttributes<any> = {
     role: "treeitem",
     "aria-level": node.level,
-    style,
+    "aria-selected": node.isSelected,
+    style: rowStyle,
     tabIndex: -1,
   };
 

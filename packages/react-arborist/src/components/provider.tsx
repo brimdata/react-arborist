@@ -31,10 +31,16 @@ type Props<T extends IdObj> = {
 
 const SERVER_STATE = initialState();
 
-export function TreeProvider<T extends IdObj>(props: Props<T>) {
+export function TreeProvider<T extends IdObj>({
+  treeProps,
+  imperativeHandle,
+  children,
+}: Props<T>) {
   const list = useRef<FixedSizeList | null>(null);
   const listEl = useRef<HTMLDivElement | null>(null);
-  const store = useRef<Store>(createStore(rootReducer));
+  const store = useRef<Store>(
+    createStore(rootReducer, initialState(treeProps))
+  );
   const state = useSyncExternalStore<RootState>(
     store.current.subscribe,
     store.current.getState,
@@ -43,18 +49,18 @@ export function TreeProvider<T extends IdObj>(props: Props<T>) {
 
   /* The tree api object is stable. */
   const api = useMemo(() => {
-    return new TreeApi<T>(store.current, props.treeProps, list, listEl);
+    return new TreeApi<T>(store.current, treeProps, list, listEl);
   }, []);
 
   /* Make sure the tree instance stays in sync */
   const updateCount = useRef(0);
   useMemo(() => {
     updateCount.current += 1;
-    api.update(props.treeProps);
-  }, [props.treeProps.data, state.nodes.open]);
+    api.update(treeProps);
+  }, [...Object.values(treeProps), state.nodes.open]);
 
   /* Expose the tree api */
-  useImperativeHandle(props.imperativeHandle, () => api);
+  useImperativeHandle(imperativeHandle, () => api);
 
   /* Change selection based on props */
   useEffect(() => {
@@ -81,7 +87,7 @@ export function TreeProvider<T extends IdObj>(props: Props<T>) {
               backend={HTML5Backend}
               options={{ rootElement: api.props.dndRootElement || undefined }}
             >
-              {props.children}
+              {children}
             </DndProvider>
           </DndContext.Provider>
         </NodesContext.Provider>

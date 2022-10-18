@@ -1,11 +1,6 @@
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
-import {
-  NodeRendererProps,
-  Tree,
-  TreeApi,
-  useSimpleTree,
-} from "react-arborist";
+import { NodeRendererProps, Tree, TreeApi } from "react-arborist";
 import styles from "styles/Tree.module.css";
 import { cities } from "../../data/cities";
 
@@ -31,7 +26,7 @@ function MyNode(props: NodeRendererProps<Data>) {
           props.node.toggle();
         }}
       >
-        {props.node.isLeaf ? "🌲" : props.node.isOpen ? "🗁" : "🗀"}
+        {props.node.isLeaf ? "🌳" : props.node.isOpen ? "🗁" : "🗀"}
       </p>
       {props.node.isEditing ? <Edit {...props} /> : <Show {...props} />}
     </div>
@@ -74,21 +69,18 @@ function Edit({ node }: NodeRendererProps<Data>) {
 }
 
 export default function SimpleTree() {
-  const [theData, controller] = useSimpleTree(smallData);
-
   const tree = useRef<TreeApi<any>>();
-
-  useEffect(() => {
-    // @ts-ignore
-    global.tree = tree.current;
-  });
-
   const [current, setCurrent] = useState("1");
   const [filter, setFilter] = useState("");
+  const [active, setActive] = useState("");
+  const [selected, setSelected] = useState("");
+
   return (
     <div className={styles.layout}>
       <h1>Simple Tree</h1>
-
+      <button onClick={() => setCurrent("Se5Bsthr5cPLoKGR2pv-e")}>
+        Select Erie, Pennsylvania
+      </button>
       <label>Filter</label>
       <input
         type="text"
@@ -96,24 +88,24 @@ export default function SimpleTree() {
         onChange={(e) => setFilter(e.currentTarget.value)}
       />
       <p>Filter: {filter || "None"}</p>
+      <p>Active: {active || "None"}</p>
+      <p>Current: {current || "None"}</p>
+      <p>Selected: {selected || "None"}</p>
       <Tree
         ref={tree}
         openByDefault={false}
         searchTerm={filter}
-        searchMatch={(data, searchTerm) => {
-          return data.name.toLowerCase().includes(searchTerm);
-        }}
         selection={current}
         className={styles.tree}
-        data={theData}
-        onCreate={controller.create}
-        onRename={controller.rename}
-        onMove={controller.move}
-        onDelete={controller.drop}
-        onSelect={(items) => {
-          if (items.length === 1) setCurrent(items[0].id);
+        padding={20}
+        initialData={cities as Data[]}
+        onSelect={(selected) =>
+          setSelected(selected.map((n) => n.data.name).join(", "))
+        }
+        onActivate={(node) => {
+          setCurrent(node.id);
+          setActive(node.data.name);
         }}
-        selectionFollowsFocus
       >
         {MyNode}
       </Tree>

@@ -134,10 +134,6 @@ export class NodeApi<T extends IdObj = IdObj> {
     this.tree.selectContiguous(this);
   }
 
-  preview() {
-    return this.tree.preview(this);
-  }
-
   activate() {
     this.tree.activate(this);
   }
@@ -148,6 +144,18 @@ export class NodeApi<T extends IdObj = IdObj> {
 
   toggle() {
     this.tree.toggle(this);
+  }
+
+  open() {
+    this.tree.open(this);
+  }
+
+  openParents() {
+    this.tree.openParents(this);
+  }
+
+  close() {
+    this.tree.close(this);
   }
 
   submit(value: string) {
@@ -173,6 +181,7 @@ export class NodeApi<T extends IdObj = IdObj> {
       this.selectContiguous();
     } else {
       this.select();
+      this.activate();
     }
   };
 }

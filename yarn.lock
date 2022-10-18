@@ -5691,13 +5691,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"memoize-one@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "memoize-one@npm:6.0.0"
-  checksum: f185ea69f7cceae5d1cb596266dcffccf545e8e7b4106ec6aa93b71ab9d16460dd118ac8b12982c55f6d6322fcc1485de139df07eacffaae94888b9b3ad7675f
-  languageName: node
-  linkType: hard
-
 "memorystream@npm:^0.3.1":
   version: 0.3.1
   resolution: "memorystream@npm:0.3.1"
@@ -6711,7 +6704,6 @@ __metadata:
     "@types/react-window": ^1.8.5
     "@types/use-sync-external-store": ^0.0.3
     jest: ^27.5.1
-    memoize-one: ^6.0.0
     npm-run-all: ^4.1.5
     parcel: ^2.3.2
     react-dnd: ^14.0.3

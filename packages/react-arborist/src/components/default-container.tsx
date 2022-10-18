@@ -2,6 +2,7 @@ import { FixedSizeList } from "react-window";
 import { useDataUpdates, useTreeApi } from "../context";
 import { focusNextElement, focusPrevElement } from "../utils";
 import { ListOuterElement } from "./list-outer-element";
+import { ListInnerElement } from "./list-inner-element";
 import { RowContainer } from "./row-container";
 
 let focusSearchTerm = "";
@@ -12,7 +13,12 @@ export function DefaultContainer() {
   const tree = useTreeApi();
   return (
     <div
-      style={{ height: tree.height, width: tree.width }}
+      style={{
+        height: tree.height,
+        width: tree.width,
+        minHeight: 0,
+        minWidth: 0,
+      }}
       onContextMenu={tree.props.onContextMenu}
       onClick={tree.props.onClick}
       tabIndex={0}
@@ -153,7 +159,12 @@ export function DefaultContainer() {
           e.preventDefault();
           const node = tree.focusedNode;
           if (!node) return;
-          node.isLeaf ? node.activate() : node.toggle();
+          if (node.isLeaf) {
+            node.select();
+            node.activate();
+          } else {
+            node.toggle();
+          }
           return;
         }
         if (e.key === "*") {
@@ -163,8 +174,19 @@ export function DefaultContainer() {
           return;
         }
         if (e.key === "ArrowDown" && e.metaKey) {
+          e.preventDefault();
           tree.select(tree.focusedNode);
+          tree.activate(tree.focusedNode);
           return;
+        }
+        if (e.key === "PageUp") {
+          e.preventDefault();
+          tree.pageUp();
+          return;
+        }
+        if (e.key === "PageDown") {
+          e.preventDefault();
+          tree.pageDown();
         }
 
         // If they type a sequence of characters
@@ -195,7 +217,9 @@ export function DefaultContainer() {
         itemSize={tree.rowHeight}
         itemKey={(index) => tree.visibleNodes[index]?.id || index}
         outerElementType={ListOuterElement}
+        innerElementType={ListInnerElement}
         onScroll={tree.props.onScroll}
+        onItemsRendered={tree.onItemsRendered.bind(tree)}
         ref={tree.list}
       >
         {RowContainer}
