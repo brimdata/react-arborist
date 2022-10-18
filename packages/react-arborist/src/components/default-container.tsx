@@ -37,6 +37,7 @@ export function DefaultContainer() {
           return;
         }
         if (e.key === "Backspace") {
+          if (!tree.props.onDelete) return;
           const ids = Array.from(tree.selectedIds);
           if (ids.length > 1) {
             let nextFocus = tree.mostRecentNode;
