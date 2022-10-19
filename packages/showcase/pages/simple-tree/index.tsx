@@ -106,9 +106,7 @@ export default function SimpleTree() {
           setCurrent(node.id);
           setActive(node.data.name);
         }}
-      >
-        {MyNode}
-      </Tree>
+      ></Tree>
       <label>Another place to focus</label>
       <input type="text" />
     </div>

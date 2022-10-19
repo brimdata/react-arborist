@@ -130,10 +130,12 @@ export function DefaultContainer() {
           return;
         }
         if (e.key === "a" && !e.metaKey) {
+          if (!tree.props.onCreate) return;
           tree.createLeaf();
           return;
         }
         if (e.key === "A" && !e.metaKey) {
+          if (!tree.props.onCreate) return;
           tree.createInternal();
           return;
         }
@@ -151,6 +153,7 @@ export function DefaultContainer() {
           return;
         }
         if (e.key === "Enter") {
+          if (!tree.props.onRename) return;
           setTimeout(() => {
             if (tree.focusedNode) tree.edit(tree.focusedNode);
           });
