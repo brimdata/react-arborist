@@ -38,21 +38,6 @@ export class NodeApi<T extends IdObj = IdObj> {
     this.rowIndex = params.rowIndex;
   }
 
-  get next(): NodeApi<T> | null {
-    if (this.rowIndex === null) return null;
-    return this.tree.at(this.rowIndex + 1);
-  }
-
-  get prev(): NodeApi<T> | null {
-    if (this.rowIndex === null) return null;
-    return this.tree.at(this.rowIndex - 1);
-  }
-
-  get nextSibling(): NodeApi<T> | null {
-    const i = this.childIndex;
-    return this.parent?.children![i + 1] ?? null;
-  }
-
   get isRoot() {
     return this.id === ROOT_ID;
   }
@@ -89,14 +74,6 @@ export class NodeApi<T extends IdObj = IdObj> {
     return this.tree.isFocused(this.id);
   }
 
-  get childIndex() {
-    if (this.parent && this.parent.children) {
-      return this.parent.children.findIndex((child) => child.id === this.id);
-    } else {
-      return -1;
-    }
-  }
-
   get isDragging() {
     return this.tree.isDragging(this.id);
   }
@@ -116,6 +93,29 @@ export class NodeApi<T extends IdObj = IdObj> {
       isOpen: this.isOpen,
       willReceiveDrop: this.willReceiveDrop,
     };
+  }
+
+  get childIndex() {
+    if (this.parent && this.parent.children) {
+      return this.parent.children.findIndex((child) => child.id === this.id);
+    } else {
+      return -1;
+    }
+  }
+
+  get next(): NodeApi<T> | null {
+    if (this.rowIndex === null) return null;
+    return this.tree.at(this.rowIndex + 1);
+  }
+
+  get prev(): NodeApi<T> | null {
+    if (this.rowIndex === null) return null;
+    return this.tree.at(this.rowIndex - 1);
+  }
+
+  get nextSibling(): NodeApi<T> | null {
+    const i = this.childIndex;
+    return this.parent?.children![i + 1] ?? null;
   }
 
   select() {

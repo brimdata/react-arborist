@@ -10,18 +10,19 @@ export function createRoot<T extends IdObj>(tree: TreeApi<T>): NodeApi<T> {
     level: number,
     parent: NodeApi<T> | null
   ) {
+    const id = tree.accessId(data);
     const node = new NodeApi<T>({
       tree,
       data,
       level,
       parent,
-      id: data.id,
+      id,
       children: null,
       isDraggable: tree.isDraggable(data),
       isDroppable: tree.isDroppable(data),
       rowIndex: null,
     });
-    const children = tree.getChildren(data);
+    const children = tree.accessChildren(data);
     if (children) {
       node.children = children.map((child: T) =>
         visitSelfAndChildren(child, level + 1, node)

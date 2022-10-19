@@ -67,7 +67,7 @@ export function TreeProvider<T extends IdObj>({
     if (api.props.selection) {
       api.select(api.props.selection);
     } else {
-      api.selectNone();
+      api.deselectAll();
     }
   }, [api.props.selection]);
 

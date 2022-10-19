@@ -2,12 +2,7 @@ import { EditResult } from "../types/handlers";
 import { Identity, IdObj } from "../types/utils";
 import { TreeProps } from "../types/tree-props";
 import { MutableRefObject } from "react";
-import {
-  Align,
-  FixedSizeList,
-  ListOnItemsRenderedProps,
-  ListOnScrollProps,
-} from "react-window";
+import { Align, FixedSizeList, ListOnItemsRenderedProps } from "react-window";
 import * as utils from "../utils";
 import { DefaultCursor } from "../components/default-cursor";
 import { DefaultRow } from "../components/default-row";
@@ -102,9 +97,19 @@ export class TreeApi<T extends IdObj> {
     return (node: NodeApi<T>) => match(node, this.searchTerm);
   }
 
-  getChildren(data: T) {
-    const get = this.props.getChildren || "children";
+  accessChildren(data: T) {
+    const get = this.props.childrenAccessor || "children";
     return utils.access<T[] | undefined>(data, get) ?? null;
+  }
+
+  accessId(data: T) {
+    const get = this.props.idAccessor || "id";
+    const id = utils.access<string>(data, get);
+    if (!id)
+      throw new Error(
+        "Data must contain an 'id' property or props.idAccessor must return a string"
+      );
+    return id;
   }
 
   /* Node Access */
@@ -348,7 +353,7 @@ export class TreeApi<T extends IdObj> {
     safeRun(this.props.onSelect, this.selectedNodes);
   }
 
-  selectNone() {
+  deselectAll() {
     this.dispatch(selection.clear());
     this.dispatch(selection.anchor(null));
     this.dispatch(selection.mostRecent(null));

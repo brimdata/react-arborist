@@ -38,7 +38,8 @@ export interface TreeProps<T extends IdObj> {
   selectionFollowsFocus?: boolean;
   disableDrag?: string | boolean | BoolFunc<T>;
   disableDrop?: string | boolean | BoolFunc<T>;
-  getChildren?: string | ((d: T) => T[]);
+  childrenAccessor?: string | ((d: T) => T[]);
+  idAccessor?: string | ((d: T) => string);
 
   /* Event Handlers */
   onActivate?: (node: NodeApi<T>) => void;
