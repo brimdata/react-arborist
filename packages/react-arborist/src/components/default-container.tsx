@@ -8,6 +8,11 @@ import { RowContainer } from "./row-container";
 let focusSearchTerm = "";
 let timeoutId: any = null;
 
+/**
+ * All these keyboard shortcuts seem like they should be configurable.
+ * Each operation should be a given a name and separated from
+ * the event handler. Future clean up welcome.
+ */
 export function DefaultContainer() {
   useDataUpdates();
   const tree = useTreeApi();
