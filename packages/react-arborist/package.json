@@ -29,6 +29,7 @@
     "react-dom": ">= 16.14"
   },
   "devDependencies": {
+    "@parcel/core": "^2.3.2",
     "@types/jest": "^27.4.1",
     "@types/react": "^18.0.0",
     "@types/react-window": "^1.8.5",
