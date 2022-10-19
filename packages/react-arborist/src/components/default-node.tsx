@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { NodeRendererProps } from "../types/renderers";
 import { IdObj } from "../types/utils";
 
-export function DefaultNode(props: NodeRendererProps<IdObj>) {
+export function DefaultNode<T extends IdObj>(props: NodeRendererProps<T>) {
   return (
     <div ref={props.dragHandle} style={props.style}>
       <span
@@ -18,7 +18,7 @@ export function DefaultNode(props: NodeRendererProps<IdObj>) {
   );
 }
 
-function Show(props: NodeRendererProps<IdObj>) {
+function Show<T extends IdObj>(props: NodeRendererProps<T>) {
   return (
     <>
       {/* @ts-ignore */}
@@ -27,7 +27,7 @@ function Show(props: NodeRendererProps<IdObj>) {
   );
 }
 
-function Edit({ node }: NodeRendererProps<IdObj>) {
+function Edit<T extends IdObj>({ node }: NodeRendererProps<T>) {
   const input = useRef<any>();
 
   useEffect(() => {
