@@ -2,7 +2,7 @@
 
 <h1>React Arborist</h1>
 
-The tree view is ubiquitous in software applications. This library provides the React ecosystem with complete solution to build the equivalent of the VSCode sidebar, the Mac Finder, the Windows Explorer, or the Sketch/Figma layers panel.
+The tree view is ubiquitous in software applications. This library provides the React ecosystem with a complete solution to build the equivalent of a VSCode sidebar, Mac Finder, Windows Explorer, or Sketch/Figma layers panel.
 
 _New Link To Demo_
 
@@ -327,7 +327,7 @@ type RowRendererProps<T extends IdObj> = {
 
 The _\<NodeRenderer\>_ is responsible for attaching the drag ref, the node style (padding for indentation), the visual look of the node, the edit input of the node, and anything else you can dream up.
 
-There is a default renderer, but it's only there as a placeholder to get started. You'll wan't to create your own component for this. It is passed as the _\<Tree\>_ components only child.
+There is a default renderer, but it's only there as a placeholder to get started. You'll want to create your own component for this. It is passed as the _\<Tree\>_ components only child.
 
 ```ts
 export type NodeRendererProps<T extends IdObj> = {

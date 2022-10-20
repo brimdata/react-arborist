@@ -8,6 +8,17 @@
   "types": "dist/index.d.ts",
   "repository": "github:brimdata/react-arborist",
   "homepage": "https://react-arborist.netlify.app",
+  "keywords": [
+    "react",
+    "arborist",
+    "react-arborist",
+    "treeview",
+    "tree",
+    "vitualized",
+    "dnd",
+    "multiselection",
+    "filterable"
+  ],
   "dependencies": {
     "react-dnd": "^14.0.3",
     "react-dnd-html5-backend": "^14.0.1",
