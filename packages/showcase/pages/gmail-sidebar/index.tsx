@@ -60,7 +60,7 @@ export default function GmailSidebar() {
             <li>Create a new item (press A)</li>
             <li>Create a new folder (press shift+A)</li>
             <li>Delete items (press delete)</li>
-            <li>Select multiple items with shift of meta</li>
+            <li>Select multiple items with shift or meta</li>
             <li>
               Filter the tree by typing in this text box:{" "}
               <input

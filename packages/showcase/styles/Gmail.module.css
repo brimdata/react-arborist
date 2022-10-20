@@ -159,6 +159,8 @@
     display: flex;
     align-items: flex-start;
     height: calc(100% - 48px);
+    gap: 8px;
+    padding-right: 16px;
 }
 
 .content {
@@ -171,5 +173,4 @@
     margin: 0 auto;
     margin-top: 80px;
     max-width: 600px;
-
 }
