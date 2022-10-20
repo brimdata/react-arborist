@@ -755,6 +755,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@juggle/resize-observer@npm:^3.3.1":
+  version: 3.4.0
+  resolution: "@juggle/resize-observer@npm:3.4.0"
+  checksum: 2505028c05cc2e17639fcad06218b1c4b60f932a4ebb4b41ab546ef8c157031ae377e3f560903801f6d01706dbefd4943b6c4704bf19ed86dfa1c62f1473a570
+  languageName: node
+  linkType: hard
+
 "@lezer/common@npm:^0.15.0, @lezer/common@npm:^0.15.7":
   version: 0.15.12
   resolution: "@lezer/common@npm:0.15.12"
@@ -6486,6 +6493,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-icons@npm:^4.6.0":
+  version: 4.6.0
+  resolution: "react-icons@npm:4.6.0"
+  peerDependencies:
+    react: "*"
+  checksum: a08375d4563e381e156d826a8d551dd26c1bf7c424a79139173bf4c8df71e884badd7d4f5fe9faa0d73d18ace265bcc89891b65fd8f808812b1011b612ebbc53
+  languageName: node
+  linkType: hard
+
 "react-is@npm:^16.13.1, react-is@npm:^16.7.0":
   version: 16.13.1
   resolution: "react-is@npm:16.13.1"
@@ -6848,8 +6864,10 @@ __metadata:
     react: 18.2.0
     react-arborist: "workspace:^"
     react-dom: 18.2.0
+    react-icons: ^4.6.0
     tree-model-improved: ^2.0.1
     typescript: 4.8.3
+    use-resize-observer: ^9.0.2
   languageName: unknown
   linkType: soft
 
@@ -7531,6 +7549,18 @@ __metadata:
     querystringify: ^2.1.1
     requires-port: ^1.0.0
   checksum: fbdba6b1d83336aca2216bbdc38ba658d9cfb8fc7f665eb8b17852de638ff7d1a162c198a8e4ed66001ddbf6c9888d41e4798912c62b4fd777a31657989f7bdf
+  languageName: node
+  linkType: hard
+
+"use-resize-observer@npm:^9.0.2":
+  version: 9.0.2
+  resolution: "use-resize-observer@npm:9.0.2"
+  dependencies:
+    "@juggle/resize-observer": ^3.3.1
+  peerDependencies:
+    react: 16.8.0 - 18
+    react-dom: 16.8.0 - 18
+  checksum: a79f9f4027ebfc44305ba29bd479a8e72c94e5a9b4feced7ef2cd2e3ead92f89e06ade5beeb8977c30b7e20cfce31e49c99390f8baa5bd7fa331905dace0ef96
   languageName: node
   linkType: hard
 

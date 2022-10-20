@@ -15,7 +15,9 @@
     "react": "18.2.0",
     "react-arborist": "workspace:^",
     "react-dom": "18.2.0",
-    "tree-model-improved": "^2.0.1"
+    "react-icons": "^4.6.0",
+    "tree-model-improved": "^2.0.1",
+    "use-resize-observer": "^9.0.2"
   },
   "devDependencies": {
     "@types/node": "18.7.19",
