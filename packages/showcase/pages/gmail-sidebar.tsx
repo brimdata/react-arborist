@@ -5,10 +5,10 @@ import {
   NodeRendererProps,
   Tree,
 } from "react-arborist";
-import { gmailData, GmailItem } from "../../data/gmail";
+import { gmailData, GmailItem } from "../data/gmail";
 import * as icons from "react-icons/md";
-import styles from "../../styles/Gmail.module.css";
-import { FillFlexParent } from "../../components/fill-flex-parent";
+import styles from "../styles/Gmail.module.css";
+import { FillFlexParent } from "../components/fill-flex-parent";
 import { SiGmail } from "react-icons/si";
 import { BsTree } from "react-icons/bs";
 import { useState } from "react";

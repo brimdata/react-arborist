@@ -1655,6 +1655,33 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@parcel/transformer-typescript-types@npm:2.7.0":
+  version: 2.7.0
+  resolution: "@parcel/transformer-typescript-types@npm:2.7.0"
+  dependencies:
+    "@parcel/diagnostic": 2.7.0
+    "@parcel/plugin": 2.7.0
+    "@parcel/source-map": ^2.0.0
+    "@parcel/ts-utils": 2.7.0
+    "@parcel/utils": 2.7.0
+    nullthrows: ^1.1.1
+  peerDependencies:
+    typescript: ">=3.0.0"
+  checksum: 4d44916cb98e48a4132a5ba1b5ecc2097c5b0f468611009fc89815213bceae44957bc92fdc02876546da5c184727d0c600bece07a0963d3cae85ad5166d5053a
+  languageName: node
+  linkType: hard
+
+"@parcel/ts-utils@npm:2.7.0":
+  version: 2.7.0
+  resolution: "@parcel/ts-utils@npm:2.7.0"
+  dependencies:
+    nullthrows: ^1.1.1
+  peerDependencies:
+    typescript: ">=3.0.0"
+  checksum: 0a5712c858c24559d9ed45f7db16a78657297084c36fead95abe740c37096f84541e2c05a60dc836ccec82a00fd764e5a76f4ef5bc915bd4d5eb74b78a703c6e
+  languageName: node
+  linkType: hard
+
 "@parcel/types@npm:2.7.0":
   version: 2.7.0
   resolution: "@parcel/types@npm:2.7.0"
@@ -5676,7 +5703,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"next@npm:12.3.1":
+"next@npm:^12.3.1":
   version: 12.3.1
   resolution: "next@npm:12.3.1"
   dependencies:
@@ -6411,6 +6438,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "react-arborist-monorepo@workspace:."
   dependencies:
+    "@parcel/transformer-typescript-types": 2.7.0
     npm-run-all: ^4.1.5
     typescript: ">=3.0.0"
   languageName: unknown
@@ -6474,7 +6502,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-dom@npm:18.2.0":
+"react-dom@npm:^18.2.0":
   version: 18.2.0
   resolution: "react-dom@npm:18.2.0"
   dependencies:
@@ -6536,7 +6564,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react@npm:18.2.0":
+"react@npm:^18.2.0":
   version: 18.2.0
   resolution: "react@npm:18.2.0"
   dependencies:
@@ -6860,10 +6888,10 @@ __metadata:
     eslint: 8.23.1
     eslint-config-next: 12.3.1
     nanoid: ^4.0.0
-    next: 12.3.1
-    react: 18.2.0
+    next: ^12.3.1
+    react: ^18.2.0
     react-arborist: "workspace:^"
-    react-dom: 18.2.0
+    react-dom: ^18.2.0
     react-icons: ^4.6.0
     tree-model-improved: ^2.0.1
     typescript: 4.8.3

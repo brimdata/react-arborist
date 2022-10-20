@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
 import { NodeRendererProps, Tree, TreeApi } from "react-arborist";
 import styles from "styles/Tree.module.css";
-import { cities } from "../../data/cities";
+import { cities } from "../data/cities";
 
 const smallData = [
   { id: "1", name: "1" },
@@ -106,7 +106,7 @@ export default function SimpleTree() {
           setCurrent(node.id);
           setActive(node.data.name);
         }}
-      ></Tree>
+      />
       <label>Another place to focus</label>
       <input type="text" />
     </div>
