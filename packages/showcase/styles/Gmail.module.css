@@ -1,0 +1,176 @@
+.page {
+    background: rgba(0,0,0,0.4) url(/img/golden-gate-bridge.jpeg);
+    background-blend-mode: multiply;
+    background-size: cover;;
+    height: 100vh;
+    color: white;
+}
+
+.page a {
+    color: #d24239;
+}
+
+.header {
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    font-size: 32px;
+    gap: 24px;
+}
+
+.header svg {
+    filter: drop-shadow(0 1px 2px rgb(0 0 0 / 65%))
+}
+
+.header h1 {
+    font-size: 24px;
+    margin: 0;
+    font-weight: 300;
+    text-shadow: 0 1px 2px rgb(0 0 0 / 65%);
+}
+
+.header svg:nth-child(2) {
+    color: #d24239;
+    filter: drop-shadow(0 1px 2px rgb(0 0 0 / 65%))
+}
+
+.sidebar {
+    display: flex;
+    height: 100%;
+    width: 270px;
+    flex-direction: column;
+    font-family: Roboto, system-ui;
+}
+
+.composeButton {
+    cursor: pointer;
+    background: white;
+    border-radius: 16px;
+    color: #5f6368;
+    height: 56px;
+    min-width: 96px;
+    border: 0;
+    font-weight: 500;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+    font-size: 14px;
+    width: max-content;
+    display: flex;
+    padding-right: 24px;
+    margin: 16px 0 16px 8px;
+}
+
+.composeButton svg {
+    font-size: 18px;
+    margin: 0 12px;
+}
+
+.composeButton:hover {
+    box-shadow: 0 1px 3px 0 rgb(60 64 67 / 30%), 0 4px 8px 3px rgb(60 64 67 / 15%);
+}
+
+
+[role="treeitem"]:has(.node) {
+    color: white;
+    border-radius: 0 16px 16px 0;
+    cursor: pointer;
+    text-shadow: 0 1px 2px rgb(0 0 0 / 65%);
+    font-weight: 400;
+    font-size: 14px;
+    user-select: none;border: 1px dashed transparent;
+}
+
+[role="treeitem"]:has(.node):focus-visible {
+    background-color: rgba(255,255,255,.2);
+    outline: none;
+}
+
+[role="treeitem"][aria-selected="true"]:has(.node):focus-visible {
+    background-color: rgba(255,255,255,.4);
+    outline: none;
+}
+
+[role="treeitem"]:has(.node):hover {
+    background-color: rgba(255,255,255,.2);
+}
+
+[role="treeitem"][aria-selected="true"]:has(.node) {
+    background-color: rgba(255,255,255,.3);
+    font-weight: 700;
+}
+
+[role="treeitem"]:has(.node:global(.willReceiveDrop)) {
+    background-color: rgba(255,255,255,.4);
+    border: 1px dashed white;
+}
+
+.node {
+    color: #efefef;
+}
+
+[role="treeitem"][aria-selected="true"] .node {
+    color: white;
+}
+
+.node {
+    display: flex;
+    align-items: center;
+    margin: 0 12px 0 2px;
+    height: 100%;
+    line-height: 20px;
+    white-space: nowrap;
+}
+
+
+
+/* Dropdown arrow */
+.node span:nth-child(1) {
+    width: 20px;
+    display: flex;
+    font-size: 20px;
+}
+
+/* Icon */
+.node span:nth-child(2) {
+    margin-right: 18px;
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+}
+
+/* Name */
+.node span:nth-child(3) {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+
+.dropCursor {
+    width: 100%;
+    height: 0px;
+    border-top: 2px dotted white;
+    position: absolute;
+}
+
+.mainContent {
+    display: flex;
+    align-items: flex-start;
+    height: calc(100% - 48px);
+    gap: 8px;
+    padding-right: 16px;
+}
+
+.content {
+    background-color: rgb( 255 255 255 / 0.9);
+    border-radius: 16px;
+    color: black;
+    width: 100%;
+    padding: 32px;
+    margin: 8px;
+    margin: 0 auto;
+    margin-top: 80px;
+    max-width: 600px;
+}

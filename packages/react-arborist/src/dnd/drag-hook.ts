@@ -2,37 +2,43 @@ import { useEffect } from "react";
 import { ConnectDragSource, useDrag } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { useTreeApi } from "../context";
-import { DragItem, Node } from "../types";
+import { NodeApi } from "../interfaces/node-api";
+import { DragItem } from "../types/dnd";
+import { IdObj } from "../types/utils";
 import { DropResult } from "./drop-hook";
+import { actions as dnd } from "../state/dnd-slice";
+import { safeRun } from "../utils";
+import { ROOT_ID } from "../data/create-root";
 
-type CollectedProps = { isDragging: boolean };
-
-export function useDragHook(
-  node: Node
-): [{ isDragging: boolean }, ConnectDragSource] {
+export function useDragHook<T extends IdObj>(
+  node: NodeApi<T>
+): ConnectDragSource {
   const tree = useTreeApi();
-  const ids = tree.getSelectedIds();
-  const [{ isDragging }, ref, preview] = useDrag<
-    DragItem,
-    DropResult,
-    CollectedProps
-  >(
+  const ids = tree.selectedIds;
+  const [_, ref, preview] = useDrag<DragItem, DropResult, void>(
     () => ({
       canDrag: () => node.isDraggable,
       type: "NODE",
       item: () => ({
         id: node.id,
-        dragIds: tree.isSelected(node.rowIndex) ? ids : [node.id],
+        dragIds: tree.isSelected(node.id) ? Array.from(ids) : [node.id],
       }),
-      collect: (m) => ({
-        isDragging: m.isDragging(),
-      }),
+      start: () => {
+        tree.dispatch(dnd.dragStart(node.id));
+      },
       end: (item, monitor) => {
+        tree.dispatch(dnd.dragEnd());
         tree.hideCursor();
         const drop = monitor.getDropResult();
+        // If they held down meta, we need to create a copy
+        // if (drop.dropEffect === "copy")
         if (drop && drop.parentId) {
-          tree.onMove(item.dragIds, drop.parentId, drop.index);
-          tree.onToggle(drop.parentId, true);
+          safeRun(tree.props.onMove, {
+            dragIds: item.dragIds,
+            parentId: drop.parentId === ROOT_ID ? null : drop.parentId,
+            index: drop.index,
+          });
+          tree.open(drop.parentId);
         }
       },
     }),
@@ -43,5 +49,5 @@ export function useDragHook(
     preview(getEmptyImage());
   }, [preview]);
 
-  return [{ isDragging }, ref];
+  return ref;
 }

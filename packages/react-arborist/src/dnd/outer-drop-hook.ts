@@ -1,6 +1,6 @@
 import { useDrop } from "react-dnd";
 import { useTreeApi } from "../context";
-import { DragItem } from "../types";
+import { DragItem } from "../types/dnd";
 import { computeDrop } from "./compute-drop";
 import { DropResult } from "./drop-hook";
 

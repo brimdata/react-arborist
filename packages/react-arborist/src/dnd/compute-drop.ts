@@ -1,6 +1,6 @@
 import { XYCoord } from "react-dnd";
-import { Node } from "../types";
-import { bound, indexOf, isClosed, isFolder, isItem } from "../utils";
+import { NodeApi } from "../interfaces/node-api";
+import { bound, indexOf, isClosed, isItem } from "../utils";
 import { DropResult } from "./drop-hook";
 
 function measureHover(el: HTMLElement, offset: XYCoord) {
@@ -20,17 +20,17 @@ function measureHover(el: HTMLElement, offset: XYCoord) {
 type HoverData = ReturnType<typeof measureHover>;
 
 function getNodesAroundCursor(
-  node: Node | null,
-  prev: Node | null,
-  next: Node | null,
+  node: NodeApi | null,
+  prev: NodeApi | null,
+  next: NodeApi | null,
   hover: HoverData
-): [Node | null, Node | null] {
+): [NodeApi | null, NodeApi | null] {
   if (!node) {
     // We're hoving over the empty part of the list, not over an item,
     // Put the cursor below the last item which is "prev"
     return [prev, null];
   }
-  if (isFolder(node)) {
+  if (node.isInternal) {
     if (hover.atTop) {
       return [prev, node];
     } else if (hover.inMiddle) {
@@ -51,15 +51,15 @@ type Args = {
   element: HTMLElement;
   offset: XYCoord;
   indent: number;
-  node: Node | null;
-  prevNode: Node | null;
-  nextNode: Node | null;
+  node: NodeApi | null;
+  prevNode: NodeApi | null;
+  nextNode: NodeApi | null;
 };
 
 function getDropLevel(
   hovering: HoverData,
-  aboveCursor: Node | null,
-  belowCursor: Node | null,
+  aboveCursor: NodeApi | null,
+  belowCursor: NodeApi | null,
   indent: number
 ) {
   const hoverLevel = Math.round(Math.max(0, hovering.x - indent) / indent);
@@ -78,12 +78,12 @@ function getDropLevel(
   return bound(hoverLevel, min, max);
 }
 
-function canDrop(above: Node | null, below: Node | null) {
+function canDrop(above: NodeApi | null, below: NodeApi | null) {
   if (!above) {
     return true;
   }
 
-  let n: Node | null = above;
+  let n: NodeApi | null = above;
   if (isClosed(above) && above !== below) n = above.parent;
 
   while (n) {
@@ -123,7 +123,7 @@ function highlightCursor(id: string) {
   };
 }
 
-function walkUpFrom(node: Node, level: number) {
+function walkUpFrom(node: NodeApi, level: number) {
   let drop = node;
   while (drop.parent && drop.level > level) {
     drop = drop.parent;
@@ -152,7 +152,7 @@ export function computeDrop(args: Args): ComputedDrop {
   }
 
   /* Hovering over the middle of a folder */
-  if (node && isFolder(node) && hover.inMiddle) {
+  if (node && node.isInternal && hover.inMiddle) {
     return {
       drop: dropAt(node.id, 0),
       cursor: highlightCursor(node.id),

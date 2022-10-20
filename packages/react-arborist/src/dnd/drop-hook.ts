@@ -1,8 +1,9 @@
 import { RefObject } from "react";
 import { ConnectDropTarget, useDrop } from "react-dnd";
 import { useTreeApi } from "../context";
-import { DragItem, Node } from "../types";
-import { isDecendent, isFolder } from "../utils";
+import { NodeApi } from "../interfaces/node-api";
+import { DragItem } from "../types/dnd";
+import { isDecendent } from "../utils";
 import { computeDrop } from "./compute-drop";
 
 export type DropResult = {
@@ -10,23 +11,34 @@ export type DropResult = {
   index: number;
 };
 
-export type CollectedProps = undefined;
-
 export function useDropHook(
   el: RefObject<HTMLElement | null>,
-  node: Node,
-  prev: Node | null,
-  next: Node | null
-): [CollectedProps, ConnectDropTarget] {
+  node: NodeApi<any>
+): ConnectDropTarget {
   const tree = useTreeApi();
-  return useDrop<DragItem, DropResult | null, CollectedProps>(
+  const [_, dropRef] = useDrop<DragItem, DropResult | null, void>(
     () => ({
       accept: "NODE",
-      canDrop: (item) => {
+      canDrop: (item, m) => {
+        if (node.tree.isFiltered) return false;
+        const offset = m.getClientOffset();
+        if (!el.current || !offset) return false;
+        const { drop } = computeDrop({
+          element: el.current,
+          offset: offset,
+          indent: tree.indent,
+          node: node,
+          prevNode: node.prev,
+          nextNode: node.next,
+        });
+        if (!drop) return false;
+        const dropParent = tree.get(drop.parentId) ?? tree.root;
+
         for (let id of item.dragIds) {
-          const drag = tree.getNode(id);
+          const drag = tree.get(id);
           if (!drag) return false;
-          if (isFolder(drag) && isDecendent(node, drag)) return false;
+          if (!dropParent) return false;
+          if (drag.isInternal && isDecendent(dropParent, drag)) return false;
         }
         return true;
       },
@@ -39,8 +51,8 @@ export function useDropHook(
             offset: offset,
             indent: tree.indent,
             node: node,
-            prevNode: prev,
-            nextNode: next,
+            prevNode: node.prev,
+            nextNode: node.next,
           });
           if (cursor) tree.showCursor(cursor);
         } else {
@@ -55,12 +67,14 @@ export function useDropHook(
           offset: offset,
           indent: tree.indent,
           node: node,
-          prevNode: prev,
-          nextNode: next,
+          prevNode: node.prev,
+          nextNode: node.next,
         });
         return drop;
       },
     }),
-    [node, prev, el, tree]
+    [node, el.current, tree.props]
   );
+
+  return dropRef;
 }

@@ -1,0 +1,39 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10vh;
+}
+
+.tree {
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,0.3);
+}
+
+.row {
+    outline: 1px solid blue;
+}
+
+.node {
+    display: flex;
+    align-items: center;
+}
+
+.node:global(.willReceiveDrop) {
+    background: orange;
+}
+
+.node p {
+    margin: 0;
+}
+
+.node:global(.isSelected) {
+    background: blue;
+    color: white;
+}
+
+.content {
+    margin: 0;
+    padding-left: 5px;
+}

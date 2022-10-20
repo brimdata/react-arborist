@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { useTreeApi } from "../context";
-import { DropCursor } from "./drop-cursor";
+import { treeBlur } from "../state/focus-slice";
+import { DropCursor } from "./cursor";
 
 export const ListOuterElement = forwardRef(function Outer(
   props: React.HTMLProps<HTMLDivElement>,
@@ -13,22 +14,32 @@ export const ListOuterElement = forwardRef(function Outer(
       // @ts-ignore
       ref={ref}
       {...rest}
-      onClick={tree.onClick}
-      onContextMenu={tree.onContextMenu}
+      onClick={(e) => {
+        if (e.currentTarget === e.target) tree.deselectAll();
+      }}
     >
-      <div
-        style={{
-          height: tree.visibleNodes.length * tree.rowHeight,
-          width: "100%",
-          overflow: "hidden",
-          position: "absolute",
-          left: "0",
-          right: "0",
-        }}
-      >
-        <DropCursor />
-      </div>
+      <DropContainer />
       {children}
     </div>
   );
 });
+
+const DropContainer = () => {
+  const tree = useTreeApi();
+  return (
+    <div
+      style={{
+        height: tree.visibleNodes.length * tree.rowHeight,
+        width: "100%",
+        position: "absolute",
+        left: "0",
+        right: "0",
+      }}
+      onClick={(e) => {
+        console.log(e.currentTarget, e.target);
+      }}
+    >
+      <DropCursor />
+    </div>
+  );
+};
