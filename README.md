@@ -8,7 +8,7 @@ The tree view is ubiquitous in software applications. This library provides the 
 
 Here is a Gmail sidebar clone built with react-arborist.
 
-![gmail-demo](https://user-images.githubusercontent.com/3460638/197097436-9d49ca93-2725-4831-9156-6a69a1cbd2b5.gif)
+<img src="https://user-images.githubusercontent.com/3460638/197097436-9d49ca93-2725-4831-9156-6a69a1cbd2b5.gif" width="270px" alt="Gmail sidebar clone built with react-arborist" />
 
 _New Link To Demo_
 
