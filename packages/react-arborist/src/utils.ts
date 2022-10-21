@@ -44,6 +44,18 @@ export function dfs(node: NodeApi<any>, id: string): NodeApi<any> | null {
   return null;
 }
 
+export function walk(
+  node: NodeApi<any>,
+  fn: (node: NodeApi<any>) => void
+): void {
+  fn(node);
+  if (node.children) {
+    for (let child of node.children) {
+      walk(child, fn);
+    }
+  }
+}
+
 export function focusNextElement(target: HTMLElement) {
   const elements = getFocusable(target);
 

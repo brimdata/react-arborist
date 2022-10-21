@@ -63,6 +63,7 @@ export const RowContainer = React.memo(function RowContainer<T extends IdObj>({
     "aria-selected": node.isSelected,
     style: rowStyle,
     tabIndex: -1,
+    className: tree.props.rowClassName,
   };
 
   useEffect(() => {

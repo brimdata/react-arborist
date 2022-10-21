@@ -428,6 +428,9 @@ type NodeState = {
   isSelectedEnd: boolean;
   isFocused: boolean;
   isOpen: boolean;
+  isClosed: boolean;
+  isLeaf: boolean;
+  isInternal: boolean;
   willReceiveDrop: boolean;
 };
 ```

@@ -284,6 +284,7 @@ export class TreeApi<T extends IdObj> {
     } else {
       this.dispatch(focus(identify(node)));
       if (opts.scroll !== false) this.scrollTo(node);
+      if (this.focusedNode) safeRun(this.props.onFocus, this.focusedNode);
     }
   }
 
@@ -321,6 +322,7 @@ export class TreeApi<T extends IdObj> {
     this.dispatch(selection.anchor(id));
     this.dispatch(selection.mostRecent(id));
     this.scrollTo(id, opts.align);
+    if (this.focusedNode) safeRun(this.props.onFocus, this.focusedNode);
     safeRun(this.props.onSelect, this.selectedNodes);
   }
 
@@ -338,6 +340,7 @@ export class TreeApi<T extends IdObj> {
     this.dispatch(selection.anchor(node.id));
     this.dispatch(selection.mostRecent(node.id));
     this.scrollTo(node);
+    if (this.focusedNode) safeRun(this.props.onFocus, this.focusedNode);
     safeRun(this.props.onSelect, this.selectedNodes);
   }
 
@@ -350,6 +353,7 @@ export class TreeApi<T extends IdObj> {
     this.dispatch(selection.add(this.nodesBetween(anchor, identifyNull(id))));
     this.dispatch(selection.mostRecent(id));
     this.scrollTo(id);
+    if (this.focusedNode) safeRun(this.props.onFocus, this.focusedNode);
     safeRun(this.props.onSelect, this.selectedNodes);
   }
 
@@ -365,6 +369,7 @@ export class TreeApi<T extends IdObj> {
     this.dispatch(focus(this.lastNode?.id));
     this.dispatch(selection.anchor(this.firstNode));
     this.dispatch(selection.mostRecent(this.lastNode));
+    if (this.focusedNode) safeRun(this.props.onFocus, this.focusedNode);
     safeRun(this.props.onSelect, this.selectedNodes);
   }
 
@@ -397,13 +402,17 @@ export class TreeApi<T extends IdObj> {
   open(identity: Identity) {
     const id = identifyNull(identity);
     if (!id) return;
+    if (this.isOpen(id)) return;
     this.dispatch(visibility.open(id, this.isFiltered));
+    safeRun(this.props.onToggle, id);
   }
 
   close(identity: Identity) {
     const id = identifyNull(identity);
     if (!id) return;
+    if (!this.isOpen(id)) return;
     this.dispatch(visibility.close(id, this.isFiltered));
+    safeRun(this.props.onToggle, id);
   }
 
   toggle(identity: Identity) {
@@ -437,6 +446,18 @@ export class TreeApi<T extends IdObj> {
       }
       this.scrollTo(this.focusedNode);
     }
+  }
+
+  openAll() {
+    utils.walk(this.root, (node) => {
+      if (node.isInternal) node.open();
+    });
+  }
+
+  closeAll() {
+    utils.walk(this.root, (node) => {
+      if (node.isInternal) node.close();
+    });
   }
 
   /* Scrolling */

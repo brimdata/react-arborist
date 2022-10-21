@@ -2,11 +2,12 @@ import clsx from "clsx";
 import { CursorProps, NodeApi, NodeRendererProps, Tree } from "react-arborist";
 import { gmailData, GmailItem } from "../data/gmail";
 import * as icons from "react-icons/md";
-import styles from "../styles/Gmail.module.css";
+import styles from "../styles/gmail.module.css";
 import { FillFlexParent } from "../components/fill-flex-parent";
 import { SiGmail } from "react-icons/si";
 import { BsTree } from "react-icons/bs";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function GmailSidebar() {
   const [term, setTerm] = useState("");
@@ -72,6 +73,10 @@ export default function GmailSidebar() {
           <p>
             Follow updates on{" "}
             <a href="https://twitter.com/specialCaseDev">Twitter</a>.
+          </p>
+
+          <p>
+            <Link href="/">Back to Demos</Link>
           </p>
         </div>
       </div>
