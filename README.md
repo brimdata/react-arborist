@@ -10,7 +10,7 @@ Here is a Gmail sidebar clone built with react-arborist.
 
 <img src="https://user-images.githubusercontent.com/3460638/197306119-59fe59e6-50ae-4bc2-8cb9-3faa2bc52cd2.gif" width="270px" alt="Gmail sidebar clone built with react-arborist" />
 
-_New Link To Demo_
+[Demo Site](https://react-arborist.netlify.app/)
 
 ## Features
 
@@ -28,9 +28,6 @@ _New Link To Demo_
 - Selection synchronization
 - More callbacks (onScroll, onActivate, onSelect)
 - Controlled or uncontrolled trees
-
-
-
 
 > These docs are for version 2. It contains breaking changes. Here is the [v1.2.0 README](https://github.com/brimdata/react-arborist/tree/4fe9659d2c4cbd57582294330863d4fd7e7af74b).
 
