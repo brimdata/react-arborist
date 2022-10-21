@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "module": "dist/module.js",
   "types": "dist/index.d.ts",
-  "repository": "github:brimdata/react-arborist",
+  "repository": "https://github.com/brimdata/react-arborist",
   "homepage": "https://react-arborist.netlify.app",
   "keywords": [
     "react",

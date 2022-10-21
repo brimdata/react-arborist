@@ -367,7 +367,7 @@ export type DropCursorProps = {
 
 ## Node API Reference
 
-#### State Properties
+### State Properties
 
 All these properties on the node instance return booleans related to the state of the node.
 
@@ -432,7 +432,7 @@ type NodeState = {
 };
 ```
 
-#### Accessors
+### Accessors
 
 _node_.**childIndex**
 
@@ -450,7 +450,7 @@ _node_.**nextSibling**
 
 Returns the next sibling in the data of this node. Returns null if none exist.
 
-#### Selection Methods
+### Selection Methods
 
 _node_.**select**()
 
@@ -468,7 +468,7 @@ _node_.**selectContiguous**()
 
 Deselect all nodes from the anchor node to the last selected node, the select all nodes from the anchor node to this node. The anchor changes to the focused node after calling _select()_ or _selectMulti()_.
 
-#### Activation Methods
+### Activation Methods
 
 _node_.**activate**()
 
@@ -478,7 +478,7 @@ _node_.**focus**()
 
 Focus this node.
 
-#### Open/Close Methods
+### Open/Close Methods
 
 _node_.**open**()
 
@@ -508,7 +508,7 @@ _node_.**reset**()
 
 Moves this node out of the editing state without submitting a new name.
 
-#### Event Handlers
+### Event Handlers
 
 _node_.**handleClick**(_event_)
 
@@ -518,7 +518,7 @@ Useful for using the standard selection methods when a node is clicked. If the m
 
 The tree api reference is stable across re-renders. It always has the most recent state and props.
 
-#### Node Accessors
+### Node Accessors
 
 _tree_.**get**(_id_) : _NodeApi | null_
 
@@ -556,7 +556,7 @@ _tree_.**prevNode** : _NodeApi | null_
 
 The node directly before the _focusedNode_ in the _visibleNodes_ array.
 
-#### Focus Methods
+### Focus Methods
 
 _tree_.**hasFocus** : _boolean_
 
@@ -578,7 +578,7 @@ _tree_.**pageDown**()
 
 Move focus down one page.
 
-#### Selection Methods
+### Selection Methods
 
 _tree_.**selectedIds** : _Set\<string\>_
 
@@ -616,7 +616,7 @@ _tree_.**selectAll**()
 
 Select all nodes.
 
-#### Visibility
+### Visibility
 
 _tree_.**open**(_id_)
 
@@ -642,7 +642,7 @@ _tree_.**isOpen**(_id_) : _boolean_
 
 Returns true if the node with _id_ is open.
 
-#### Drag and Drop
+### Drag and Drop
 
 _tree_.**isDragging**(_id_) : _boolean_
 
@@ -652,13 +652,13 @@ _tree_.**willReceiveDrop**(_id_) : _boolean_
 
 Returns true if the node with _id_ is internal and is under the dragged node.
 
-#### Scrolling
+### Scrolling
 
 _tree_.**scrollTo**(_id_, _[align]_)
 
 Scroll to the node with _id_. If this node is not visible, this method will open all its parents. The align argument can be _"auto" | "smart" | "center" | "end" | "start"_.
 
-#### Properties
+### Properties
 
 _tree_.**isEditing** : _boolean_
 
