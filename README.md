@@ -2,7 +2,11 @@
 
 <h1>React Arborist</h1>
 
+
+
 The tree view is ubiquitous in software applications. This library provides the React ecosystem with complete solution to build the equivalent of the VSCode sidebar, the Mac Finder, the Windows Explorer, or the Sketch/Figma layers panel.
+
+![gmail-demo](https://user-images.githubusercontent.com/3460638/197096990-5fef3920-beaa-464a-b883-443e27d9766d.gif)
 
 _New Link To Demo_
 
@@ -23,7 +27,8 @@ _New Link To Demo_
 - More callbacks (onScroll, onActivate, onSelect)
 - Controlled or uncontrolled trees
 
-_NEW DEMO GIF HERE_
+
+
 
 > These docs are for version 2. It contains breaking changes. Here is the [v1.2.0 README](https://github.com/brimdata/react-arborist/tree/4fe9659d2c4cbd57582294330863d4fd7e7af74b).
 
