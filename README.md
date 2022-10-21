@@ -6,7 +6,9 @@
 
 The tree view is ubiquitous in software applications. This library provides the React ecosystem with complete solution to build the equivalent of the VSCode sidebar, the Mac Finder, the Windows Explorer, or the Sketch/Figma layers panel.
 
-![gmail-demo](https://user-images.githubusercontent.com/3460638/197096990-5fef3920-beaa-464a-b883-443e27d9766d.gif)
+Here is a Gmail sidebar clone built with react-arborist.
+
+![gmail-demo](https://user-images.githubusercontent.com/3460638/197097436-9d49ca93-2725-4831-9156-6a69a1cbd2b5.gif)
 
 _New Link To Demo_
 
