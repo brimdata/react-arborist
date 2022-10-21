@@ -27,7 +27,7 @@ export type DragPreviewProps = {
   isDragging: boolean;
 };
 
-export type DropCursorProps = {
+export type CursorProps = {
   top: number;
   left: number;
   indent: number;

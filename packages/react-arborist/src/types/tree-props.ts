@@ -21,7 +21,7 @@ export interface TreeProps<T extends IdObj> {
   children?: ElementType<renderers.NodeRendererProps<T>>;
   renderRow?: ElementType<renderers.RowRendererProps<T>>;
   renderDragPreview?: ElementType<renderers.DragPreviewProps>;
-  renderCursor?: ElementType<renderers.DropCursorProps>;
+  renderCursor?: ElementType<renderers.CursorProps>;
   renderContainer?: ElementType<{}>;
 
   /* Sizes */

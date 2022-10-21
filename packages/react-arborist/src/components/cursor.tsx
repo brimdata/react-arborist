@@ -1,6 +1,6 @@
 import { useDndContext, useTreeApi } from "../context";
 
-export function DropCursor() {
+export function Cursor() {
   const tree = useTreeApi();
   const state = useDndContext();
   const cursor = state.cursor;

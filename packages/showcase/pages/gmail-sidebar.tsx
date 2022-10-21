@@ -1,10 +1,5 @@
 import clsx from "clsx";
-import {
-  DropCursorProps,
-  NodeApi,
-  NodeRendererProps,
-  Tree,
-} from "react-arborist";
+import { CursorProps, NodeApi, NodeRendererProps, Tree } from "react-arborist";
 import { gmailData, GmailItem } from "../data/gmail";
 import * as icons from "react-icons/md";
 import styles from "../styles/Gmail.module.css";
@@ -36,7 +31,7 @@ export default function GmailSidebar() {
                   width={width}
                   height={height}
                   rowHeight={32}
-                  renderCursor={DropCursor}
+                  renderCursor={Cursor}
                   searchTerm={term}
                 >
                   {Node}
@@ -128,6 +123,6 @@ function FolderArrow({ node }: { node: NodeApi<GmailItem> }) {
   );
 }
 
-function DropCursor({ top, left }: DropCursorProps) {
+function Cursor({ top, left }: CursorProps) {
   return <div className={styles.dropCursor} style={{ top, left }}></div>;
 }

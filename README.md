@@ -267,7 +267,7 @@ interface TreeProps<T extends IdObj> {
   children?: ElementType<renderers.NodeRendererProps<T>>;
   renderRow?: ElementType<renderers.RowRendererProps<T>>;
   renderDragPreview?: ElementType<renderers.DragPreviewProps>;
-  renderCursor?: ElementType<renderers.DropCursorProps>;
+  renderCursor?: ElementType<renderers.CursorProps>;
   renderContainer?: ElementType<{}>;
 
   /* Sizes */
@@ -358,7 +358,7 @@ type DragPreviewProps = {
 The _\<Cursor\>_ is responsible for showing a line that indicates where the node will move to when it's dropped. The default is a blue line with circle on the left side. You may want to customize this. Pass your own component to the _renderCursor_ prop.
 
 ```ts
-export type DropCursorProps = {
+export type CursorProps = {
   top: number;
   left: number;
   indent: number;

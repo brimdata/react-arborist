@@ -1,5 +1,5 @@
 import React, { CSSProperties } from "react";
-import { DropCursorProps } from "../types/renderers";
+import { CursorProps } from "../types/renderers";
 
 const placeholderStyle = {
   display: "flex",
@@ -25,7 +25,7 @@ export const DefaultCursor = React.memo(function DefaultCursor({
   top,
   left,
   indent,
-}: DropCursorProps) {
+}: CursorProps) {
   const style: CSSProperties = {
     position: "absolute",
     pointerEvents: "none",
