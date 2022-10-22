@@ -46,7 +46,8 @@ const Home: NextPage = () => {
               <h2>Top Cities By Population</h2>
               <p>
                 In this demo, we populate the tree with US cities grouped by
-                state to demonstrate how the tree performs over 30,000 nodes.
+                state to demonstrate how the tree performs with over 30,000
+                nodes.
               </p>
               <Link href="/cities">View Demo</Link>
             </div>
