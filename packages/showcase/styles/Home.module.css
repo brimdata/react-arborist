@@ -2,6 +2,10 @@
   padding: 1rem;
   max-width: 900px;
   margin: 0 auto;
+} 
+
+.main p {
+  line-height: 1.6;
 }
 
 .demos {
