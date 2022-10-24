@@ -268,7 +268,6 @@ interface TreeProps<T extends IdObj> {
   renderRow?: ElementType<renderers.RowRendererProps<T>>;
   renderDragPreview?: ElementType<renderers.DragPreviewProps>;
   renderCursor?: ElementType<renderers.CursorProps>;
-  renderContainer?: ElementType<{}>;
 
   /* Sizes */
   rowHeight?: number;
