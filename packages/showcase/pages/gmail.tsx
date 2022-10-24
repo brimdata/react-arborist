@@ -13,13 +13,13 @@ export default function GmailSidebar() {
   const [term, setTerm] = useState("");
   return (
     <div className={styles.page}>
-      <div className={styles.header}>
-        <icons.MdMenu />
-        <SiGmail />
-        <h1>Gmail</h1>
-      </div>
       <div className={styles.mainContent}>
         <div className={styles.sidebar}>
+          <div className={styles.header}>
+            <icons.MdMenu />
+            <SiGmail />
+            <h1>Gmail</h1>
+          </div>
           <button className={styles.composeButton}>
             <icons.MdOutlineCreate />
             Compose
@@ -34,6 +34,7 @@ export default function GmailSidebar() {
                   rowHeight={32}
                   renderCursor={Cursor}
                   searchTerm={term}
+                  paddingBottom={32}
                 >
                   {Node}
                 </Tree>
@@ -43,6 +44,10 @@ export default function GmailSidebar() {
         </div>
         <div className={styles.content}>
           <h1>React Arborist Style Demo</h1>
+          <p className={styles.mobileWarning}>
+            Heads up! <br />
+            This site works best on a desktop screen.
+          </p>
           <p>
             React Arborist can be used to create something like the gmail
             sidebar.
