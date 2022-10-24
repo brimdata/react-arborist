@@ -192,7 +192,10 @@ export class TreeApi<T extends IdObj> {
   ) {
     const data = await safeRun(this.props.onCreate, {
       type: opts.type ?? "leaf",
-      parentId: opts.parentId ?? utils.getInsertParentId(this),
+      parentId:
+        opts.parentId === undefined
+          ? utils.getInsertParentId(this)
+          : opts.parentId,
       index: opts.index ?? utils.getInsertIndex(this),
     });
     if (data) {
