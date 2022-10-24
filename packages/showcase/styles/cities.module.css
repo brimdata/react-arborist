@@ -11,6 +11,7 @@
     display: flex;
     height: 100vh;
     flex: 1;
+    min-width: 0;
 }
 
 .contentContainer {
@@ -179,3 +180,38 @@
     display: flex;
     gap: 20px;
 }
+
+.mobileWarning {
+    background: var(--primaryColor);
+    color: white;
+    padding: 1em;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 4px;
+    display: none;
+}
+
+@media screen and (max-width: 720px) {
+    .split {
+        display: block;
+    }
+    .treeContainer {
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 40vh;
+        position: absolute;
+        display: flex;
+    }
+    .tree {
+        box-shadow: 0 -3px 6px rgb(0 0 0 / 0.15);
+    }
+    .contentContainer {
+        padding-bottom: 50vh;
+    }
+
+    .mobileWarning {
+        display: block;
+    }
+  }
+  

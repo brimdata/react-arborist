@@ -60,6 +60,10 @@ export default function Cities() {
         </div>
         <div className={styles.contentContainer}>
           <h1>React Arborist Cities Demo</h1>
+          <p className={styles.mobileWarning}>
+            Heads up! <br />
+            This site works best on a desktop screen.
+          </p>
           <p>
             In this demo, we hook into some callbacks, use the tree ref api, and
             render a large number of nodes.{" "}
