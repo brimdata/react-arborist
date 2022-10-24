@@ -68,19 +68,19 @@ export class TreeApi<T extends IdObj> {
   /* Tree Props */
 
   get width() {
-    return this.props.width || 300;
+    return this.props.width ?? 300;
   }
 
   get height() {
-    return this.props.height || 500;
+    return this.props.height ?? 500;
   }
 
   get indent() {
-    return this.props.indent || 24;
+    return this.props.indent ?? 24;
   }
 
   get rowHeight() {
-    return this.props.rowHeight || 24;
+    return this.props.rowHeight ?? 24;
   }
 
   get searchTerm() {
