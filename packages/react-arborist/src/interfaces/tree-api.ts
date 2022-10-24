@@ -176,33 +176,24 @@ export class TreeApi<T extends IdObj> {
   }
 
   createInternal() {
-    return this.create("internal");
+    return this.create({ type: "internal" });
   }
 
   createLeaf() {
-    return this.create("leaf");
+    return this.create({ type: "leaf" });
   }
 
-  private async create(type: "internal" | "leaf") {
-    let index;
-    let parentId;
-    const focus = this.focusedNode;
-    if (focus && focus.parent) {
-      if (focus.isInternal && focus.isOpen) {
-        parentId = focus.id;
-        index = 0;
-      } else {
-        index = focus.childIndex + 1;
-        parentId = focus.parent.isRoot ? null : focus.parent.id;
-      }
-    } else {
-      index = this.root?.children?.length || -1;
-      parentId = null;
-    }
+  async create(
+    opts: {
+      type?: "internal" | "leaf";
+      parentId?: null | string;
+      index?: null | number;
+    } = {}
+  ) {
     const data = await safeRun(this.props.onCreate, {
-      parentId,
-      index,
-      type,
+      type: opts.type ?? "leaf",
+      parentId: opts.parentId ?? utils.getInsertParentId(this),
+      index: opts.index ?? utils.getInsertIndex(this),
     });
     if (data) {
       this.focus(data);
