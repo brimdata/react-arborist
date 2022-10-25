@@ -608,8 +608,6 @@ _tree_.**hasMultipleSelections** : boolean
 
 Returns true if there is more than one selection.
 
-Returns true if there is only one selection.
-
 _tree_.**isSelected**(_id_) : _boolean_
 
 Returns true if the node with _id_ is selected.
