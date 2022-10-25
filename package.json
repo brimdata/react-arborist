@@ -9,7 +9,8 @@
     "dev:library": "yarn workspace react-arborist watch",
     "dev": "run-p 'dev:**'",
     "build": "yarn workspace react-arborist build",
-    "watch": "yarn workspace react-arborist watch"
+    "watch": "yarn workspace react-arborist watch",
+    "build:showcase": "yarn build && yarn workspace showcase build"
   },
   "private": true,
   "packageManager": "yarn@3.2.0",
