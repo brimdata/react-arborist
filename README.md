@@ -658,6 +658,14 @@ _tree_.**openSiblings**(_id_)
 
 Open all siblings of the node with _id_.
 
+_tree_.**openAll**()
+
+Open all internal nodes.
+
+_tree_.**closeAll**()
+
+Close all internal nodes.
+
 _tree_.**isOpen**(_id_) : _boolean_
 
 Returns true if the node with _id_ is open.
