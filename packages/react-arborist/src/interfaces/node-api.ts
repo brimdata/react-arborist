@@ -54,12 +54,20 @@ export class NodeApi<T extends IdObj = IdObj> {
     return this.isLeaf ? false : this.tree.isOpen(this.id);
   }
 
+  get isClosed() {
+    return this.isLeaf ? false : !this.tree.isOpen(this.id);
+  }
+
   get isEditing() {
     return this.tree.editingId === this.id;
   }
 
   get isSelected() {
     return this.tree.isSelected(this.id);
+  }
+
+  get isOnlySelection() {
+    return this.isSelected && this.tree.hasOneSelection;
   }
 
   get isSelectedStart() {
@@ -84,13 +92,16 @@ export class NodeApi<T extends IdObj = IdObj> {
 
   get state() {
     return {
-      isEditing: this.isEditing,
+      isClosed: this.isClosed,
       isDragging: this.isDragging,
-      isSelected: this.isSelected,
-      isSelectedStart: this.isSelectedStart,
-      isSelectedEnd: this.isSelectedEnd,
+      isEditing: this.isEditing,
       isFocused: this.isFocused,
+      isInternal: this.isInternal,
+      isLeaf: this.isLeaf,
       isOpen: this.isOpen,
+      isSelected: this.isSelected,
+      isSelectedEnd: this.isSelectedEnd,
+      isSelectedStart: this.isSelectedStart,
       willReceiveDrop: this.willReceiveDrop,
     };
   }

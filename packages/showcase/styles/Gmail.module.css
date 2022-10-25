@@ -1,13 +1,11 @@
 .page {
     background: rgba(0,0,0,0.4) url(/img/golden-gate-bridge.jpeg);
     background-blend-mode: multiply;
-    background-size: cover;;
-    height: 100vh;
+    background-size: cover;
+    min-height: 100vh;
     color: white;
-}
-
-.page a {
-    color: #d24239;
+    display:flex;
+    flex-direction: column;
 }
 
 .header {
@@ -36,7 +34,6 @@
 
 .sidebar {
     display: flex;
-    height: 100%;
     width: 270px;
     flex-direction: column;
     font-family: Roboto, system-ui;
@@ -146,8 +143,6 @@
     text-overflow: ellipsis;
 }
 
-
-
 .dropCursor {
     width: 100%;
     height: 0px;
@@ -156,21 +151,54 @@
 }
 
 .mainContent {
+    flex: 1;
     display: flex;
-    align-items: flex-start;
-    height: calc(100% - 48px);
+    min-height: 0;
     gap: 8px;
-    padding-right: 16px;
 }
 
 .content {
+    overflow: auto;
     background-color: rgb( 255 255 255 / 0.9);
     border-radius: 16px;
     color: black;
-    width: 100%;
     padding: 32px;
     margin: 8px;
     margin: 0 auto;
-    margin-top: 80px;
+    margin-top: 132px;
     max-width: 600px;
+    align-self: flex-start;
+}
+
+.mobileWarning {
+    background: var(--primaryColor);
+    color: white;
+    padding: 1em;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 4px;
+    display: none;
+}
+
+
+@media screen and (max-width: 600px) {
+    .mainContent {
+        flex-direction: column;
+        padding-right: 0;
+    }
+    .content {
+        order: 1;
+        margin-top: 16px;
+        margin-bottom: 16px;
+        margin: 6px;
+    }
+    .sidebar {
+        order: 2;
+        height: 80vh;
+        width: 100%;
+    }
+
+    .mobileWarning {
+        display: block;
+    }
 }

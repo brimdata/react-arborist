@@ -68,19 +68,19 @@ export class TreeApi<T extends IdObj> {
   /* Tree Props */
 
   get width() {
-    return this.props.width || 300;
+    return this.props.width ?? 300;
   }
 
   get height() {
-    return this.props.height || 500;
+    return this.props.height ?? 500;
   }
 
   get indent() {
-    return this.props.indent || 24;
+    return this.props.indent ?? 24;
   }
 
   get rowHeight() {
-    return this.props.rowHeight || 24;
+    return this.props.rowHeight ?? 24;
   }
 
   get searchTerm() {
@@ -176,33 +176,27 @@ export class TreeApi<T extends IdObj> {
   }
 
   createInternal() {
-    return this.create("internal");
+    return this.create({ type: "internal" });
   }
 
   createLeaf() {
-    return this.create("leaf");
+    return this.create({ type: "leaf" });
   }
 
-  private async create(type: "internal" | "leaf") {
-    let index;
-    let parentId;
-    const focus = this.focusedNode;
-    if (focus && focus.parent) {
-      if (focus.isInternal && focus.isOpen) {
-        parentId = focus.id;
-        index = 0;
-      } else {
-        index = focus.childIndex + 1;
-        parentId = focus.parent.isRoot ? null : focus.parent.id;
-      }
-    } else {
-      index = this.root?.children?.length || -1;
-      parentId = null;
-    }
+  async create(
+    opts: {
+      type?: "internal" | "leaf";
+      parentId?: null | string;
+      index?: null | number;
+    } = {}
+  ) {
     const data = await safeRun(this.props.onCreate, {
-      parentId,
-      index,
-      type,
+      type: opts.type ?? "leaf",
+      parentId:
+        opts.parentId === undefined
+          ? utils.getInsertParentId(this)
+          : opts.parentId,
+      index: opts.index ?? utils.getInsertIndex(this),
     });
     if (data) {
       this.focus(data);
@@ -284,6 +278,7 @@ export class TreeApi<T extends IdObj> {
     } else {
       this.dispatch(focus(identify(node)));
       if (opts.scroll !== false) this.scrollTo(node);
+      if (this.focusedNode) safeRun(this.props.onFocus, this.focusedNode);
     }
   }
 
@@ -321,6 +316,7 @@ export class TreeApi<T extends IdObj> {
     this.dispatch(selection.anchor(id));
     this.dispatch(selection.mostRecent(id));
     this.scrollTo(id, opts.align);
+    if (this.focusedNode) safeRun(this.props.onFocus, this.focusedNode);
     safeRun(this.props.onSelect, this.selectedNodes);
   }
 
@@ -338,6 +334,7 @@ export class TreeApi<T extends IdObj> {
     this.dispatch(selection.anchor(node.id));
     this.dispatch(selection.mostRecent(node.id));
     this.scrollTo(node);
+    if (this.focusedNode) safeRun(this.props.onFocus, this.focusedNode);
     safeRun(this.props.onSelect, this.selectedNodes);
   }
 
@@ -350,6 +347,7 @@ export class TreeApi<T extends IdObj> {
     this.dispatch(selection.add(this.nodesBetween(anchor, identifyNull(id))));
     this.dispatch(selection.mostRecent(id));
     this.scrollTo(id);
+    if (this.focusedNode) safeRun(this.props.onFocus, this.focusedNode);
     safeRun(this.props.onSelect, this.selectedNodes);
   }
 
@@ -365,6 +363,7 @@ export class TreeApi<T extends IdObj> {
     this.dispatch(focus(this.lastNode?.id));
     this.dispatch(selection.anchor(this.firstNode));
     this.dispatch(selection.mostRecent(this.lastNode));
+    if (this.focusedNode) safeRun(this.props.onFocus, this.focusedNode);
     safeRun(this.props.onSelect, this.selectedNodes);
   }
 
@@ -397,13 +396,17 @@ export class TreeApi<T extends IdObj> {
   open(identity: Identity) {
     const id = identifyNull(identity);
     if (!id) return;
+    if (this.isOpen(id)) return;
     this.dispatch(visibility.open(id, this.isFiltered));
+    safeRun(this.props.onToggle, id);
   }
 
   close(identity: Identity) {
     const id = identifyNull(identity);
     if (!id) return;
+    if (!this.isOpen(id)) return;
     this.dispatch(visibility.close(id, this.isFiltered));
+    safeRun(this.props.onToggle, id);
   }
 
   toggle(identity: Identity) {
@@ -439,6 +442,18 @@ export class TreeApi<T extends IdObj> {
     }
   }
 
+  openAll() {
+    utils.walk(this.root, (node) => {
+      if (node.isInternal) node.open();
+    });
+  }
+
+  closeAll() {
+    utils.walk(this.root, (node) => {
+      if (node.isInternal) node.close();
+    });
+  }
+
   /* Scrolling */
 
   scrollTo(identity: Identity, align: Align = "smart") {
@@ -469,6 +484,18 @@ export class TreeApi<T extends IdObj> {
 
   get hasFocus() {
     return this.state.nodes.focus.treeFocused;
+  }
+
+  get hasNoSelection() {
+    return this.state.nodes.selection.ids.size === 0;
+  }
+
+  get hasOneSelection() {
+    return this.state.nodes.selection.ids.size === 1;
+  }
+
+  get hasMultipleSelections() {
+    return this.state.nodes.selection.ids.size > 1;
   }
 
   isSelected(id?: string) {

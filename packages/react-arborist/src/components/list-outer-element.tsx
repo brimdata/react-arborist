@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import { useTreeApi } from "../context";
 import { treeBlur } from "../state/focus-slice";
-import { DropCursor } from "./cursor";
+import { Cursor } from "./cursor";
 
 export const ListOuterElement = forwardRef(function Outer(
   props: React.HTMLProps<HTMLDivElement>,
@@ -35,11 +35,8 @@ const DropContainer = () => {
         left: "0",
         right: "0",
       }}
-      onClick={(e) => {
-        console.log(e.currentTarget, e.target);
-      }}
     >
-      <DropCursor />
+      <Cursor />
     </div>
   );
 };

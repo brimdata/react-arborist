@@ -1,29 +1,25 @@
 import clsx from "clsx";
-import {
-  DropCursorProps,
-  NodeApi,
-  NodeRendererProps,
-  Tree,
-} from "react-arborist";
+import { CursorProps, NodeApi, NodeRendererProps, Tree } from "react-arborist";
 import { gmailData, GmailItem } from "../data/gmail";
 import * as icons from "react-icons/md";
-import styles from "../styles/Gmail.module.css";
+import styles from "../styles/gmail.module.css";
 import { FillFlexParent } from "../components/fill-flex-parent";
 import { SiGmail } from "react-icons/si";
 import { BsTree } from "react-icons/bs";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function GmailSidebar() {
   const [term, setTerm] = useState("");
   return (
     <div className={styles.page}>
-      <div className={styles.header}>
-        <icons.MdMenu />
-        <SiGmail />
-        <h1>Gmail</h1>
-      </div>
       <div className={styles.mainContent}>
         <div className={styles.sidebar}>
+          <div className={styles.header}>
+            <icons.MdMenu />
+            <SiGmail />
+            <h1>Gmail</h1>
+          </div>
           <button className={styles.composeButton}>
             <icons.MdOutlineCreate />
             Compose
@@ -36,8 +32,9 @@ export default function GmailSidebar() {
                   width={width}
                   height={height}
                   rowHeight={32}
-                  renderCursor={DropCursor}
+                  renderCursor={Cursor}
                   searchTerm={term}
+                  paddingBottom={32}
                 >
                   {Node}
                 </Tree>
@@ -47,6 +44,10 @@ export default function GmailSidebar() {
         </div>
         <div className={styles.content}>
           <h1>React Arborist Style Demo</h1>
+          <p className={styles.mobileWarning}>
+            Heads up! <br />
+            This site works best on a desktop screen.
+          </p>
           <p>
             React Arborist can be used to create something like the gmail
             sidebar.
@@ -77,6 +78,10 @@ export default function GmailSidebar() {
           <p>
             Follow updates on{" "}
             <a href="https://twitter.com/specialCaseDev">Twitter</a>.
+          </p>
+
+          <p>
+            <Link href="/">Back to Demos</Link>
           </p>
         </div>
       </div>
@@ -128,6 +133,6 @@ function FolderArrow({ node }: { node: NodeApi<GmailItem> }) {
   );
 }
 
-function DropCursor({ top, left }: DropCursorProps) {
+function Cursor({ top, left }: CursorProps) {
   return <div className={styles.dropCursor} style={{ top, left }}></div>;
 }

@@ -4,15 +4,11 @@
 
 [See the Demos](https://react-arborist.netlify.app/)
 
-The tree view is ubiquitous in software applications. This library provides the React ecosystem with complete solution to build the equivalent of the VSCode sidebar, the Mac Finder, the Windows Explorer, or the Sketch/Figma layers panel.
-
-
+The tree view is ubiquitous in software applications. This library provides the React ecosystem with a complete solution to build the equivalent of a VSCode sidebar, Mac Finder, Windows Explorer, or Sketch/Figma layers panel.
 
 Here is a Gmail sidebar clone built with react-arborist.
 
 <img src="https://user-images.githubusercontent.com/3460638/197306119-59fe59e6-50ae-4bc2-8cb9-3faa2bc52cd2.gif" width="270px" alt="Gmail sidebar clone built with react-arborist" />
-
-
 
 ## Features
 
@@ -273,8 +269,7 @@ interface TreeProps<T extends IdObj> {
   children?: ElementType<renderers.NodeRendererProps<T>>;
   renderRow?: ElementType<renderers.RowRendererProps<T>>;
   renderDragPreview?: ElementType<renderers.DragPreviewProps>;
-  renderCursor?: ElementType<renderers.DropCursorProps>;
-  renderContainer?: ElementType<{}>;
+  renderCursor?: ElementType<renderers.CursorProps>;
 
   /* Sizes */
   rowHeight?: number;
@@ -297,6 +292,8 @@ interface TreeProps<T extends IdObj> {
   onActivate?: (node: NodeApi<T>) => void;
   onSelect?: (nodes: NodeApi<T>[]) => void;
   onScroll?: (props: ListOnScrollProps) => void;
+  onToggle?: (id: string) => void;
+  onFocus?: (node: NodeApi<T>) => void;
 
   /* Selection */
   selection?: string;
@@ -310,6 +307,7 @@ interface TreeProps<T extends IdObj> {
 
   /* Extra */
   className?: string | undefined;
+  rowClassName?: string | undefined;
   dndRootElement?: globalThis.Node | null;
   onClick?: MouseEventHandler;
   onContextMenu?: MouseEventHandler;
@@ -333,7 +331,7 @@ type RowRendererProps<T extends IdObj> = {
 
 The _\<NodeRenderer\>_ is responsible for attaching the drag ref, the node style (padding for indentation), the visual look of the node, the edit input of the node, and anything else you can dream up.
 
-There is a default renderer, but it's only there as a placeholder to get started. You'll wan't to create your own component for this. It is passed as the _\<Tree\>_ components only child.
+There is a default renderer, but it's only there as a placeholder to get started. You'll want to create your own component for this. It is passed as the _\<Tree\>_ components only child.
 
 ```ts
 export type NodeRendererProps<T extends IdObj> = {
@@ -364,7 +362,7 @@ type DragPreviewProps = {
 The _\<Cursor\>_ is responsible for showing a line that indicates where the node will move to when it's dropped. The default is a blue line with circle on the left side. You may want to customize this. Pass your own component to the _renderCursor_ prop.
 
 ```ts
-export type DropCursorProps = {
+export type CursorProps = {
   top: number;
   left: number;
   indent: number;
@@ -373,7 +371,7 @@ export type DropCursorProps = {
 
 ## Node API Reference
 
-#### State Properties
+### State Properties
 
 All these properties on the node instance return booleans related to the state of the node.
 
@@ -409,6 +407,10 @@ _node_.**isSelectedEnd**
 
 Returns true if node is the last of a contiguous group of selected nodes. Useful for styling.
 
+_node_.**isOnlySelection**
+
+Returns true if node is the only node selected in the tree.
+
 _node_.**isFocused**
 
 Returns true if node is focused.
@@ -434,11 +436,14 @@ type NodeState = {
   isSelectedEnd: boolean;
   isFocused: boolean;
   isOpen: boolean;
+  isClosed: boolean;
+  isLeaf: boolean;
+  isInternal: boolean;
   willReceiveDrop: boolean;
 };
 ```
 
-#### Accessors
+### Accessors
 
 _node_.**childIndex**
 
@@ -456,7 +461,7 @@ _node_.**nextSibling**
 
 Returns the next sibling in the data of this node. Returns null if none exist.
 
-#### Selection Methods
+### Selection Methods
 
 _node_.**select**()
 
@@ -474,7 +479,7 @@ _node_.**selectContiguous**()
 
 Deselect all nodes from the anchor node to the last selected node, the select all nodes from the anchor node to this node. The anchor changes to the focused node after calling _select()_ or _selectMulti()_.
 
-#### Activation Methods
+### Activation Methods
 
 _node_.**activate**()
 
@@ -484,7 +489,7 @@ _node_.**focus**()
 
 Focus this node.
 
-#### Open/Close Methods
+### Open/Close Methods
 
 _node_.**open**()
 
@@ -514,7 +519,7 @@ _node_.**reset**()
 
 Moves this node out of the editing state without submitting a new name.
 
-#### Event Handlers
+### Event Handlers
 
 _node_.**handleClick**(_event_)
 
@@ -524,7 +529,7 @@ Useful for using the standard selection methods when a node is clicked. If the m
 
 The tree api reference is stable across re-renders. It always has the most recent state and props.
 
-#### Node Accessors
+### Node Accessors
 
 _tree_.**get**(_id_) : _NodeApi | null_
 
@@ -562,7 +567,7 @@ _tree_.**prevNode** : _NodeApi | null_
 
 The node directly before the _focusedNode_ in the _visibleNodes_ array.
 
-#### Focus Methods
+### Focus Methods
 
 _tree_.**hasFocus** : _boolean_
 
@@ -584,7 +589,7 @@ _tree_.**pageDown**()
 
 Move focus down one page.
 
-#### Selection Methods
+### Selection Methods
 
 _tree_.**selectedIds** : _Set\<string\>_
 
@@ -593,6 +598,18 @@ Returns a set of ids that are selected.
 _tree_.**selectedNodes** : _NodeApi[]_
 
 Returns an array of nodes that are selected.
+
+_tree_.**hasNoSelection** : boolean
+
+Returns true if nothing is selected in the tree.
+
+_tree_.**hasSingleSelection** : boolean
+
+Returns true if there is only one selection.
+
+_tree_.**hasMultipleSelections** : boolean
+
+Returns true if there is more than one selection.
 
 _tree_.**isSelected**(_id_) : _boolean_
 
@@ -622,7 +639,7 @@ _tree_.**selectAll**()
 
 Select all nodes.
 
-#### Visibility
+### Visibility
 
 _tree_.**open**(_id_)
 
@@ -644,11 +661,19 @@ _tree_.**openSiblings**(_id_)
 
 Open all siblings of the node with _id_.
 
+_tree_.**openAll**()
+
+Open all internal nodes.
+
+_tree_.**closeAll**()
+
+Close all internal nodes.
+
 _tree_.**isOpen**(_id_) : _boolean_
 
 Returns true if the node with _id_ is open.
 
-#### Drag and Drop
+### Drag and Drop
 
 _tree_.**isDragging**(_id_) : _boolean_
 
@@ -658,13 +683,13 @@ _tree_.**willReceiveDrop**(_id_) : _boolean_
 
 Returns true if the node with _id_ is internal and is under the dragged node.
 
-#### Scrolling
+### Scrolling
 
 _tree_.**scrollTo**(_id_, _[align]_)
 
 Scroll to the node with _id_. If this node is not visible, this method will open all its parents. The align argument can be _"auto" | "smart" | "center" | "end" | "start"_.
 
-#### Properties
+### Properties
 
 _tree_.**isEditing** : _boolean_
 

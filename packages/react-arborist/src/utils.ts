@@ -1,4 +1,5 @@
 import { NodeApi } from "./interfaces/node-api";
+import { TreeApi } from "./interfaces/tree-api";
 import { IdObj } from "./types/utils";
 
 export function bound(n: number, min: number, max: number) {
@@ -42,6 +43,18 @@ export function dfs(node: NodeApi<any>, id: string): NodeApi<any> | null {
     }
   }
   return null;
+}
+
+export function walk(
+  node: NodeApi<any>,
+  fn: (node: NodeApi<any>) => void
+): void {
+  fn(node);
+  if (node.children) {
+    for (let child of node.children) {
+      walk(child, fn);
+    }
+  }
 }
 
 export function focusNextElement(target: HTMLElement) {
@@ -146,4 +159,20 @@ export function waitFor(fn: () => boolean) {
     }
     check();
   });
+}
+
+export function getInsertIndex(tree: TreeApi<any>) {
+  const focus = tree.focusedNode;
+  if (!focus) return tree.root.children?.length ?? 0;
+  if (focus.isOpen) return 0;
+  if (focus.parent) return focus.childIndex + 1;
+  return 0;
+}
+
+export function getInsertParentId(tree: TreeApi<any>) {
+  const focus = tree.focusedNode;
+  if (!focus) return null;
+  if (focus.isOpen) return focus.id;
+  if (focus.parent) return focus.parent.id;
+  return null;
 }

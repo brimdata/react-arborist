@@ -21,7 +21,7 @@ export interface TreeProps<T extends IdObj> {
   children?: ElementType<renderers.NodeRendererProps<T>>;
   renderRow?: ElementType<renderers.RowRendererProps<T>>;
   renderDragPreview?: ElementType<renderers.DragPreviewProps>;
-  renderCursor?: ElementType<renderers.DropCursorProps>;
+  renderCursor?: ElementType<renderers.CursorProps>;
   renderContainer?: ElementType<{}>;
 
   /* Sizes */
@@ -45,6 +45,8 @@ export interface TreeProps<T extends IdObj> {
   onActivate?: (node: NodeApi<T>) => void;
   onSelect?: (nodes: NodeApi<T>[]) => void;
   onScroll?: (props: ListOnScrollProps) => void;
+  onToggle?: (id: string) => void;
+  onFocus?: (node: NodeApi<T>) => void;
 
   /* Selection */
   selection?: string;
@@ -58,6 +60,8 @@ export interface TreeProps<T extends IdObj> {
 
   /* Extra */
   className?: string | undefined;
+  rowClassName?: string | undefined;
+
   dndRootElement?: globalThis.Node | null;
   onClick?: MouseEventHandler;
   onContextMenu?: MouseEventHandler;
