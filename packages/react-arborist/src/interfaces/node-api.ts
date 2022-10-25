@@ -66,6 +66,10 @@ export class NodeApi<T extends IdObj = IdObj> {
     return this.tree.isSelected(this.id);
   }
 
+  get isOnlySelection() {
+    return this.isSelected && this.tree.hasOneSelection;
+  }
+
   get isSelectedStart() {
     return this.isSelected && !this.prev?.isSelected;
   }

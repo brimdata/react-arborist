@@ -402,6 +402,10 @@ _node_.**isSelectedEnd**
 
 Returns true if node is the last of a contiguous group of selected nodes. Useful for styling.
 
+_node_.**isOnlySelection**
+
+Returns true if node is the only node selected in the tree.
+
 _node_.**isFocused**
 
 Returns true if node is focused.
@@ -589,6 +593,20 @@ Returns a set of ids that are selected.
 _tree_.**selectedNodes** : _NodeApi[]_
 
 Returns an array of nodes that are selected.
+
+_tree_.**hasNoSelection** : boolean
+
+Returns true if nothing is selected in the tree.
+
+_tree_.**hasSingleSelection** : boolean
+
+Returns true if there is only one selection.
+
+_tree_.**hasMultipleSelections** : boolean
+
+Returns true if there is more than one selection.
+
+Returns true if there is only one selection.
 
 _tree_.**isSelected**(_id_) : _boolean_
 

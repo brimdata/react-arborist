@@ -14,17 +14,21 @@ export function useOuterDrop() {
       accept: "NODE",
       hover: (item, m) => {
         if (!m.isOver({ shallow: true })) return;
-        const offset = m.getClientOffset();
-        if (!tree.listEl.current || !offset) return;
-        const { cursor } = computeDrop({
-          element: tree.listEl.current,
-          offset: offset,
-          indent: tree.indent,
-          node: null,
-          prevNode: tree.visibleNodes[tree.visibleNodes.length - 1],
-          nextNode: null,
-        });
-        if (cursor) tree.showCursor(cursor);
+        if (m.canDrop()) {
+          const offset = m.getClientOffset();
+          if (!tree.listEl.current || !offset) return;
+          const { cursor } = computeDrop({
+            element: tree.listEl.current,
+            offset: offset,
+            indent: tree.indent,
+            node: null,
+            prevNode: tree.visibleNodes[tree.visibleNodes.length - 1],
+            nextNode: null,
+          });
+          if (cursor) tree.showCursor(cursor);
+        } else {
+          tree.hideCursor();
+        }
       },
       canDrop: (item, m) => {
         if (!m.isOver({ shallow: true })) return false;

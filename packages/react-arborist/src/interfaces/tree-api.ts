@@ -486,6 +486,18 @@ export class TreeApi<T extends IdObj> {
     return this.state.nodes.focus.treeFocused;
   }
 
+  get hasNoSelection() {
+    return this.state.nodes.selection.ids.size === 0;
+  }
+
+  get hasOneSelection() {
+    return this.state.nodes.selection.ids.size === 1;
+  }
+
+  get hasMultipleSelections() {
+    return this.state.nodes.selection.ids.size > 1;
+  }
+
   isSelected(id?: string) {
     if (!id) return false;
     return this.state.nodes.selection.ids.has(id);

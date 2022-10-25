@@ -35,9 +35,6 @@ const DropContainer = () => {
         left: "0",
         right: "0",
       }}
-      onClick={(e) => {
-        console.log(e.currentTarget, e.target);
-      }}
     >
       <Cursor />
     </div>
