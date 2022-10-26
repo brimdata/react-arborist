@@ -78,6 +78,10 @@ function App() {
 }
 ```
 
+<img width="214" alt="image" src="https://user-images.githubusercontent.com/3460638/198098015-d7dc6400-6391-4094-9f66-0f56a99433e9.png">
+
+[Demo](https://codesandbox.io/s/the-simplest-tree-7tbedw)
+
 ### Customize the Appearance
 
 We provide our own dimensions and our own `Node` component.
@@ -111,6 +115,10 @@ function Node({ node, style, dragHandle }) {
   );
 }
 ```
+
+<img width="166" alt="image" src="https://user-images.githubusercontent.com/3460638/198100281-594a492d-2ea0-4ff0-883d-1dd79dbb5acd.png">
+
+[Demo](https://codesandbox.io/s/customize-appearance-f4g15v?file=/src/App.tsx)
 
 ### Control the Tree data
 
