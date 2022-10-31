@@ -4,7 +4,7 @@ import { TreeApi } from "../interfaces/tree-api";
 
 export const ROOT_ID = "__REACT_ARBORIST_INTERNAL_ROOT__";
 
-export function createRoot<T extends IdObj>(tree: TreeApi<T>): NodeApi<T> {
+export function createRoot<T>(tree: TreeApi<T>): NodeApi<T> {
   function visitSelfAndChildren(
     data: T,
     level: number,

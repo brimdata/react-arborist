@@ -23,4 +23,4 @@ export type ActionTypes<
 
 export type SelectOptions = { multi?: boolean; contiguous?: boolean };
 
-export type NodesById<T extends IdObj> = { [id: string]: NodeApi<T> };
+export type NodesById<T> = { [id: string]: NodeApi<T> };

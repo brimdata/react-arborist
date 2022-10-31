@@ -23,7 +23,7 @@ import { TreeProps } from "../types/tree-props";
 import { createStore, Store } from "redux";
 import { actions as visibility } from "../state/open-slice";
 
-type Props<T extends IdObj> = {
+type Props<T> = {
   treeProps: TreeProps<T>;
   imperativeHandle: React.Ref<TreeApi<T> | undefined>;
   children: ReactNode;
@@ -31,7 +31,7 @@ type Props<T extends IdObj> = {
 
 const SERVER_STATE = initialState();
 
-export function TreeProvider<T extends IdObj>({
+export function TreeProvider<T>({
   treeProps,
   imperativeHandle,
   children,

@@ -3,7 +3,7 @@ import { TreeApi } from "./tree-api";
 import { IdObj } from "../types/utils";
 import { ROOT_ID } from "../data/create-root";
 
-type Params<T extends IdObj> = {
+type Params<T> = {
   id: string;
   data: T;
   level: number;
@@ -15,7 +15,7 @@ type Params<T extends IdObj> = {
   tree: TreeApi<T>;
 };
 
-export class NodeApi<T extends IdObj = IdObj> {
+export class NodeApi<T = any> {
   tree: TreeApi<T>;
   id: string;
   data: T;

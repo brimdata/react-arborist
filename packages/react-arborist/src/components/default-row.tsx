@@ -2,7 +2,7 @@ import React from "react";
 import { RowRendererProps } from "../types/renderers";
 import { IdObj } from "../types/utils";
 
-export function DefaultRow<T extends IdObj>({
+export function DefaultRow<T>({
   node,
   attrs,
   innerRef,

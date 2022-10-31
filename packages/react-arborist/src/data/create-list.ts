@@ -2,7 +2,7 @@ import { NodeApi } from "../interfaces/node-api";
 import { TreeApi } from "../interfaces/tree-api";
 import { IdObj } from "../types/utils";
 
-export function createList<T extends IdObj>(tree: TreeApi<T>) {
+export function createList<T>(tree: TreeApi<T>) {
   if (tree.isFiltered) {
     return flattenAndFilterTree(tree.root, tree.isMatch.bind(tree));
   } else {
@@ -10,7 +10,7 @@ export function createList<T extends IdObj>(tree: TreeApi<T>) {
   }
 }
 
-function flattenTree<T extends IdObj>(root: NodeApi<T>): NodeApi<T>[] {
+function flattenTree<T>(root: NodeApi<T>): NodeApi<T>[] {
   const list: NodeApi<T>[] = [];
   function collect(node: NodeApi<T>) {
     if (node.level >= 0) {
@@ -25,7 +25,7 @@ function flattenTree<T extends IdObj>(root: NodeApi<T>): NodeApi<T>[] {
   return list;
 }
 
-function flattenAndFilterTree<T extends IdObj>(
+function flattenAndFilterTree<T>(
   root: NodeApi<T>,
   isMatch: (n: NodeApi<T>) => boolean
 ): NodeApi<T>[] {

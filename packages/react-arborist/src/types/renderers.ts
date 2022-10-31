@@ -4,7 +4,7 @@ import { NodeApi } from "../interfaces/node-api";
 import { TreeApi } from "../interfaces/tree-api";
 import { XYCoord } from "react-dnd";
 
-export type NodeRendererProps<T extends IdObj> = {
+export type NodeRendererProps<T> = {
   style: CSSProperties;
   node: NodeApi<T>;
   tree: TreeApi<T>;
@@ -12,7 +12,7 @@ export type NodeRendererProps<T extends IdObj> = {
   preview?: boolean;
 };
 
-export type RowRendererProps<T extends IdObj> = {
+export type RowRendererProps<T> = {
   node: NodeApi<T>;
   innerRef: (el: HTMLDivElement | null) => void;
   attrs: HTMLAttributes<any>;

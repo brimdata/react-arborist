@@ -1,4 +1,4 @@
-import { BoolFunc, IdObj } from "./utils";
+import { BoolFunc } from "./utils";
 import * as handlers from "./handlers";
 import * as renderers from "./renderers";
 import { ElementType, MouseEventHandler } from "react";
@@ -6,16 +6,16 @@ import { ListOnScrollProps } from "react-window";
 import { NodeApi } from "../interfaces/node-api";
 import { OpenMap, OpenSlice } from "../state/open-slice";
 
-export interface TreeProps<T extends IdObj> {
+export interface TreeProps<T> {
   /* Data Options */
   data?: T[];
   initialData?: T[];
 
   /* Data Handlers */
-  onCreate?: handlers.CreateHandler;
-  onMove?: handlers.MoveHandler;
-  onRename?: handlers.RenameHandler;
-  onDelete?: handlers.DeleteHandler;
+  onCreate?: handlers.CreateHandler<T>;
+  onMove?: handlers.MoveHandler<T>;
+  onRename?: handlers.RenameHandler<T>;
+  onDelete?: handlers.DeleteHandler<T>;
 
   /* Renderers*/
   children?: ElementType<renderers.NodeRendererProps<T>>;
