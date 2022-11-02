@@ -6444,23 +6444,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-arborist@npm:2.0.0":
-  version: 2.0.0
-  resolution: "react-arborist@npm:2.0.0"
-  dependencies:
-    react-dnd: ^14.0.3
-    react-dnd-html5-backend: ^14.0.1
-    react-window: ^1.8.6
-    redux: ^4.1.1
-    use-sync-external-store: ^1.2.0
-  peerDependencies:
-    react: ">= 16.14"
-    react-dom: ">= 16.14"
-  checksum: 9c67f211e108dd21795239d5d9a4dddc3e0c8a98dc685ae81c5590170ec5a84b0ba89d63961059755a68b0bf8b526ec74da1e7bf179ab883fba271b4b6bb449d
-  languageName: node
-  linkType: hard
-
-"react-arborist@workspace:packages/react-arborist":
+"react-arborist@workspace:^, react-arborist@workspace:packages/react-arborist":
   version: 0.0.0-use.local
   resolution: "react-arborist@workspace:packages/react-arborist"
   dependencies:
@@ -6906,7 +6890,7 @@ __metadata:
     nanoid: ^4.0.0
     next: ^12.3.1
     react: ^18.2.0
-    react-arborist: 2.0.0
+    react-arborist: "workspace:^"
     react-dom: ^18.2.0
     react-icons: ^4.6.0
     tree-model-improved: ^2.0.1
