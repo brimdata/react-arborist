@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useTreeApi } from "../context";
 import { IdObj } from "../types/utils";
 
-export function useFreshNode<T extends IdObj>(index: number) {
+export function useFreshNode<T>(index: number) {
   const tree = useTreeApi<T>();
   const original = tree.at(index);
   if (!original) throw new Error(`Could not find node for index: ${index}`);

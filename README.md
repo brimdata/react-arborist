@@ -262,7 +262,7 @@ function App() {
 These are all the props you can pass to the Tree component.
 
 ```ts
-interface TreeProps<T extends IdObj> {
+interface TreeProps<T> {
   /* Data Options */
   data?: T[];
   initialData?: T[];
@@ -327,7 +327,7 @@ interface TreeProps<T extends IdObj> {
 The _\<RowRenderer\>_ is responsible for attaching the drop ref, the row style (top, height) and the aria-attributes. The default should work fine for most use cases, but it can be replaced by your own component if you need. See the _renderRow_ prop in the _\<Tree\>_ component.
 
 ```ts
-type RowRendererProps<T extends IdObj> = {
+type RowRendererProps<T> = {
   node: NodeApi<T>;
   innerRef: (el: HTMLDivElement | null) => void;
   attrs: HTMLAttributes<any>;
@@ -342,7 +342,7 @@ The _\<NodeRenderer\>_ is responsible for attaching the drag ref, the node style
 There is a default renderer, but it's only there as a placeholder to get started. You'll want to create your own component for this. It is passed as the _\<Tree\>_ components only child.
 
 ```ts
-export type NodeRendererProps<T extends IdObj> = {
+export type NodeRendererProps<T> = {
   style: CSSProperties;
   node: NodeApi<T>;
   tree: TreeApi<T>;

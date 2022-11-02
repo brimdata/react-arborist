@@ -2,9 +2,7 @@ import { TreeProps } from "../types/tree-props";
 import { IdObj } from "../types/utils";
 import { SimpleTreeData, useSimpleTree } from "./use-simple-tree";
 
-export function useValidatedProps<T extends IdObj>(
-  props: TreeProps<T>
-): TreeProps<T> {
+export function useValidatedProps<T>(props: TreeProps<T>): TreeProps<T> {
   if (props.initialData && props.data) {
     throw new Error(
       `React Arborist Tree => Provide either a data or initialData prop, but not both.`

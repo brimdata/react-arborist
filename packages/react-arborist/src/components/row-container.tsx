@@ -10,7 +10,7 @@ type Props = {
   index: number;
 };
 
-export const RowContainer = React.memo(function RowContainer<T extends IdObj>({
+export const RowContainer = React.memo(function RowContainer<T>({
   index,
   style,
 }: Props) {

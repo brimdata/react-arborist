@@ -70,7 +70,7 @@ function Count(props: { count: number; mouse: XYCoord | null }) {
   else return null;
 }
 
-const PreviewNode = memo(function PreviewNode<T extends IdObj>(props: {
+const PreviewNode = memo(function PreviewNode<T>(props: {
   id: string | null;
   dragIds: string[];
 }) {

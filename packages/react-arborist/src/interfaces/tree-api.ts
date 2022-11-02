@@ -23,7 +23,7 @@ import { createList } from "../data/create-list";
 import { createIndex } from "../data/create-index";
 
 const { safeRun, identify, identifyNull } = utils;
-export class TreeApi<T extends IdObj> {
+export class TreeApi<T> {
   static editPromise: null | ((args: EditResult) => void);
   root: NodeApi<T>;
   visibleNodes: NodeApi<T>[];
@@ -91,7 +91,9 @@ export class TreeApi<T extends IdObj> {
     const match =
       this.props.searchMatch ??
       ((node, term) => {
-        const string = JSON.stringify(Object.values(node.data));
+        const string = JSON.stringify(
+          Object.values(node.data as { [k: string]: unknown })
+        );
         return string.toLocaleLowerCase().includes(term.toLocaleLowerCase());
       });
     return (node: NodeApi<T>) => match(node, this.searchTerm);
@@ -190,13 +192,17 @@ export class TreeApi<T extends IdObj> {
       index?: null | number;
     } = {}
   ) {
+    const parentId =
+      opts.parentId === undefined
+        ? utils.getInsertParentId(this)
+        : opts.parentId;
+    const index = opts.index ?? utils.getInsertIndex(this);
+    const type = opts.type ?? "leaf";
     const data = await safeRun(this.props.onCreate, {
-      type: opts.type ?? "leaf",
-      parentId:
-        opts.parentId === undefined
-          ? utils.getInsertParentId(this)
-          : opts.parentId,
-      index: opts.index ?? utils.getInsertIndex(this),
+      type,
+      parentId,
+      index,
+      parentNode: this.get(parentId),
     });
     if (data) {
       this.focus(data);
@@ -211,9 +217,10 @@ export class TreeApi<T extends IdObj> {
 
   async delete(node: string | IdObj | null | string[] | IdObj[]) {
     if (!node) return;
-    const nodes = Array.isArray(node) ? node : [node];
-    const ids = nodes.map(identify);
-    await safeRun(this.props.onDelete, { ids });
+    const idents = Array.isArray(node) ? node : [node];
+    const ids = idents.map(identify);
+    const nodes = ids.map((id) => this.get(id)!).filter((n) => !!n);
+    await safeRun(this.props.onDelete, { nodes, ids });
   }
 
   edit(node: string | IdObj): Promise<EditResult> {
@@ -226,10 +233,14 @@ export class TreeApi<T extends IdObj> {
     });
   }
 
-  async submit(node: Identity, value: string) {
-    if (!node) return;
-    const id = identify(node);
-    await safeRun(this.props.onRename, { id, name: value });
+  async submit(identity: Identity, value: string) {
+    if (!identity) return;
+    const id = identify(identity);
+    await safeRun(this.props.onRename, {
+      id,
+      name: value,
+      node: this.get(id)!,
+    });
     this.dispatch(edit(null));
     this.resolveEdit({ cancelled: false, value });
     setTimeout(() => this.onFocus()); // Return focus to element;

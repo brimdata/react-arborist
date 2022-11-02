@@ -16,11 +16,16 @@ export type SimpleTreeData = {
 
 let nextId = 0;
 
-export function useSimpleTree<T extends IdObj>(initialData: T[]) {
+export function useSimpleTree<T>(initialData: T[]) {
   const [data, setData] = useState(initialData);
-  const tree = useMemo(() => new SimpleTree<T>(data), [data]);
+  const tree = useMemo(
+    () =>
+      new SimpleTree<// @ts-ignore
+      T>(data),
+    [data]
+  );
 
-  const onMove: MoveHandler = (args: {
+  const onMove: MoveHandler<T> = (args: {
     dragIds: string[];
     parentId: null | string;
     index: number;
@@ -31,12 +36,12 @@ export function useSimpleTree<T extends IdObj>(initialData: T[]) {
     setData(tree.data);
   };
 
-  const onRename: RenameHandler = ({ name, id }) => {
+  const onRename: RenameHandler<T> = ({ name, id }) => {
     tree.update({ id, changes: { name } as any });
     setData(tree.data);
   };
 
-  const onCreate: CreateHandler = ({ parentId, index, type }) => {
+  const onCreate: CreateHandler<T> = ({ parentId, index, type }) => {
     const data = { id: `simple-tree-id-${nextId++}`, name: "" } as any;
     if (type === "internal") data.children = [];
     tree.create({ parentId, index, data });
@@ -44,7 +49,7 @@ export function useSimpleTree<T extends IdObj>(initialData: T[]) {
     return data;
   };
 
-  const onDelete: DeleteHandler = (args: { ids: string[] }) => {
+  const onDelete: DeleteHandler<T> = (args: { ids: string[] }) => {
     args.ids.forEach((id) => tree.drop({ id }));
     setData(tree.data);
   };

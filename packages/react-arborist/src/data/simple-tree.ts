@@ -1,6 +1,6 @@
-type IdObj = { id: string; children?: IdObj[] };
+type SimpleData = { id: string; name: string; children?: SimpleData[] };
 
-export class SimpleTree<T extends IdObj> {
+export class SimpleTree<T extends SimpleData> {
   root: SimpleNode<T>;
   constructor(data: T[]) {
     this.root = createRoot<T>(data);
@@ -48,20 +48,20 @@ export class SimpleTree<T extends IdObj> {
   }
 }
 
-function createRoot<T extends IdObj>(data: T[]) {
+function createRoot<T extends SimpleData>(data: T[]) {
   const root = new SimpleNode<T>({ id: "ROOT" } as T, null);
   root.children = data.map((d) => createNode(d as T, root));
   return root;
 }
 
-function createNode<T extends IdObj>(data: T, parent: SimpleNode<T>) {
+function createNode<T extends SimpleData>(data: T, parent: SimpleNode<T>) {
   const node = new SimpleNode<T>(data, parent);
   if (data.children)
     node.children = data.children.map((d) => createNode<T>(d as T, node));
   return node;
 }
 
-class SimpleNode<T extends IdObj> {
+class SimpleNode<T extends SimpleData> {
   id: string;
   children?: SimpleNode<T>[];
   constructor(public data: T, public parent: SimpleNode<T> | null) {

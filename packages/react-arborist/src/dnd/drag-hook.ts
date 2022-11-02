@@ -10,9 +10,7 @@ import { actions as dnd } from "../state/dnd-slice";
 import { safeRun } from "../utils";
 import { ROOT_ID } from "../data/create-root";
 
-export function useDragHook<T extends IdObj>(
-  node: NodeApi<T>
-): ConnectDragSource {
+export function useDragHook<T>(node: NodeApi<T>): ConnectDragSource {
   const tree = useTreeApi();
   const ids = tree.selectedIds;
   const [_, ref, preview] = useDrag<DragItem, DropResult, void>(
@@ -33,10 +31,13 @@ export function useDragHook<T extends IdObj>(
         // If they held down meta, we need to create a copy
         // if (drop.dropEffect === "copy")
         if (drop && drop.parentId) {
+          const parentId = drop.parentId === ROOT_ID ? null : drop.parentId;
           safeRun(tree.props.onMove, {
             dragIds: item.dragIds,
-            parentId: drop.parentId === ROOT_ID ? null : drop.parentId,
+            parentId,
             index: drop.index,
+            dragNodes: item.dragIds.map((id) => tree.get(id)!),
+            parentNode: tree.get(drop.parentId),
           });
           tree.open(drop.parentId);
         }
