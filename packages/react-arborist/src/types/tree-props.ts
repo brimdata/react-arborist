@@ -8,8 +8,8 @@ import { OpenMap, OpenSlice } from "../state/open-slice";
 
 export interface TreeProps<T> {
   /* Data Options */
-  data?: T[];
-  initialData?: T[];
+  data?: readonly T[];
+  initialData?: readonly T[];
 
   /* Data Handlers */
   onCreate?: handlers.CreateHandler<T>;
