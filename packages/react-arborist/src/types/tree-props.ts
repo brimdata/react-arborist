@@ -38,7 +38,7 @@ export interface TreeProps<T> {
   selectionFollowsFocus?: boolean;
   disableDrag?: string | boolean | BoolFunc<T>;
   disableDrop?: string | boolean | BoolFunc<T>;
-  childrenAccessor?: string | ((d: T) => T[]);
+  childrenAccessor?: string | ((d: T) => T[] | null);
   idAccessor?: string | ((d: T) => string);
 
   /* Event Handlers */
