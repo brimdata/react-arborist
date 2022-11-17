@@ -26,7 +26,7 @@ export interface TreeProps<T> {
 
   /* Sizes */
   rowHeight?: number;
-  width?: number;
+  width?: number | string;
   height?: number;
   indent?: number;
   paddingTop?: number;
