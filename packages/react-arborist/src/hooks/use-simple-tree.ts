@@ -16,7 +16,7 @@ export type SimpleTreeData = {
 
 let nextId = 0;
 
-export function useSimpleTree<T>(initialData: T[]) {
+export function useSimpleTree<T>(initialData: readonly T[]) {
   const [data, setData] = useState(initialData);
   const tree = useMemo(
     () =>

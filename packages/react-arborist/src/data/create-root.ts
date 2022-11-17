@@ -44,7 +44,7 @@ export function createRoot<T>(tree: TreeApi<T>): NodeApi<T> {
     rowIndex: null,
   });
 
-  const data: T[] = tree.props.data ?? [];
+  const data: readonly T[] = tree.props.data ?? [];
 
   root.children = data.map((child) => {
     return visitSelfAndChildren(child, 0, root);
