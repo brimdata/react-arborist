@@ -338,6 +338,7 @@ export class TreeApi<T> {
   }
 
   selectMulti(identity: Identity) {
+    if (this.props.disableMultipleSelections) return this.select(identity);
     const node = this.get(identifyNull(identity));
     if (!node) return;
     this.dispatch(focus(node.id));
@@ -350,6 +351,7 @@ export class TreeApi<T> {
   }
 
   selectContiguous(identity: Identity) {
+    if (this.props.disableMultipleSelections) return this.select(identity);
     if (!identity) return;
     const id = identify(identity);
     const { anchor, mostRecent } = this.state.nodes.selection;
