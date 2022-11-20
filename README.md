@@ -82,6 +82,24 @@ function App() {
 
 [Demo](https://codesandbox.io/s/the-simplest-tree-7tbedw)
 
+### UseSimpleTree hook
+If you need to provide a callback for tree changes, but you want the tree to behave as it were uncontrolled (you don't want to reimplement all the handlers), you can use useSimpleTree hook. The useSimpleTree hook is what is used under the hood when you pass "initialData" to the Tree. The signature is pretty similar to React useState. The second argument is composed with this 4 handlers: **onMove**, **onRename**, **onCreate** and **onDelete**.
+
+
+```tsx
+export default function App() {
+  const [mutableData, { onMove }] = useSimpleTree(data);
+
+  useEffect(() => {
+    console.log(mutableData);
+  }, [mutableData]);
+
+  return <Tree data={mutableData} onMove={onMove} />;
+}
+```
+
+[Demo](https://codesandbox.io/s/react-arborist-with-hidden-hook-y1dd78)
+
 ### Customize the Appearance
 
 We provide our own dimensions and our own `Node` component.
