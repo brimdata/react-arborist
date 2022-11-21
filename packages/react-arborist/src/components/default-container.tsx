@@ -73,44 +73,43 @@ export function DefaultContainer() {
           focusPrevElement(e.currentTarget);
           return;
         }
-        if (e.key === "ArrowDown" && !e.shiftKey && !e.metaKey) {
+        if (e.key === "ArrowDown") {
           e.preventDefault();
           const next = tree.nextNode;
-          tree.focus(next);
-          return;
-        }
-        if (e.key === "ArrowDown" && e.shiftKey) {
-          e.preventDefault();
-          const next = tree.nextNode;
-          if (!next) return;
-          const current = tree.focusedNode;
-          if (!current) {
-            tree.focus(tree.firstNode);
-          } else if (current.isSelected) {
-            tree.selectContiguous(next);
+          if (!e.shiftKey || tree.props.disableMultiSelection) {
+            tree.focus(next);
+            return;
           } else {
-            tree.selectMulti(next);
+            if (!next) return;
+            const current = tree.focusedNode;
+            if (!current) {
+              tree.focus(tree.firstNode);
+            } else if (current.isSelected) {
+              tree.selectContiguous(next);
+            } else {
+              tree.selectMulti(next);
+            }
+            return;
           }
-          return;
         }
-        if (e.key === "ArrowUp" && !e.shiftKey) {
-          e.preventDefault();
-          tree.focus(tree.prevNode);
-          return;
-        }
-        if (e.key === "ArrowUp" && e.shiftKey) {
+        if (e.key === "ArrowUp") {
           e.preventDefault();
           const prev = tree.prevNode;
-          const current = tree.focusedNode;
-          if (!prev) return;
-          if (!current) {
-            tree.focus(tree.lastNode); // ?
-          } else if (current.isSelected) {
-            tree.selectContiguous(prev);
+          if (!e.shiftKey || tree.props.disableMultiSelection) {
+            tree.focus(prev);
+            return;
           } else {
-            tree.selectMulti(prev);
+            if (!prev) return;
+            const current = tree.focusedNode;
+            if (!current) {
+              tree.focus(tree.lastNode); // ?
+            } else if (current.isSelected) {
+              tree.selectContiguous(prev);
+            } else {
+              tree.selectMulti(prev);
+            }
+            return;
           }
-          return;
         }
         if (e.key === "ArrowRight") {
           const node = tree.focusedNode;
