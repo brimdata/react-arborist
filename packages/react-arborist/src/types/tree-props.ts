@@ -36,6 +36,7 @@ export interface TreeProps<T> {
   /* Config */
   openByDefault?: boolean;
   selectionFollowsFocus?: boolean;
+  disableMultiSelection?: boolean;
   disableDrag?: string | boolean | BoolFunc<T>;
   disableDrop?: string | boolean | BoolFunc<T>;
   childrenAccessor?: string | ((d: T) => T[] | null);
