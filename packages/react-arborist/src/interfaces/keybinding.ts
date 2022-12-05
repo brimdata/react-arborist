@@ -29,7 +29,7 @@ type KeysToControl = [string[], Command];
 
 export const parseKeybinding = (keybinding: Keybinding): KeysToControl[] =>
   Object.keys(keybinding).reduce((acc, key) => {
-    const keys = key.split(/[ +]/g).filter(filterFalseyToString);
+    const keys = key.toLowerCase().split(/[ +]/g).filter(filterFalseyToString);
     acc.push([keys, commands[keybinding[key]]]);
     return acc;
   }, [] as KeysToControl[]);

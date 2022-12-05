@@ -48,7 +48,7 @@ export function DefaultContainer() {
         const keysToControls = parseKeybinding(keybinding);
 
         const currentKeys = [
-          e.key,
+          e.key.toLowerCase(),
           e.shiftKey ? "shift" : false,
           e.metaKey ? "meta" : false,
         ].filter(filterFalseyToString);
