@@ -21,7 +21,7 @@ import { Cursor } from "../dnd/compute-drop";
 import { Store } from "redux";
 import { createList } from "../data/create-list";
 import { createIndex } from "../data/create-index";
-import { DEFAULT_KEYBINDING, Keybinding } from "./keybindings";
+import { DEFAULT_KEYBINDING, Keybinding } from "./keybinding";
 
 const { safeRun, identify, identifyNull } = utils;
 export class TreeApi<T> {
@@ -557,7 +557,7 @@ export class TreeApi<T> {
   }
 
   get keybinding(): Keybinding {
-    return this.props.keybindings || DEFAULT_KEYBINDING;
+    return this.props.keybinding || DEFAULT_KEYBINDING;
   }
 
   /* Tree Event Handlers */

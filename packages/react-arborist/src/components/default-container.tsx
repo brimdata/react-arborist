@@ -5,9 +5,9 @@ import { ListInnerElement } from "./list-inner-element";
 import { RowContainer } from "./row-container";
 import { SearchForNode } from "../interfaces/commands";
 import {
-  parseKeybindings,
+  parseKeybinding,
   filterFalseyToString,
-} from "../interfaces/keybindings";
+} from "../interfaces/keybinding";
 
 /**
  * All these keyboard shortcuts seem like they should be configurable.
@@ -45,7 +45,7 @@ export function DefaultContainer() {
 
         const keybinding = tree.keybinding;
 
-        const keysToControls = parseKeybindings(keybinding);
+        const keysToControls = parseKeybinding(keybinding);
 
         const currentKeys = [
           e.key,

@@ -27,7 +27,7 @@ export const filterFalseyToString = (key: unknown): key is string => !!key;
 
 type KeysToControl = [string[], Command];
 
-export const parseKeybindings = (keybinding: Keybinding): KeysToControl[] =>
+export const parseKeybinding = (keybinding: Keybinding): KeysToControl[] =>
   Object.keys(keybinding).reduce((acc, key) => {
     const keys = key.split(/[ +]/g).filter(filterFalseyToString);
     acc.push([keys, commands[keybinding[key]]]);

@@ -314,8 +314,8 @@ interface TreeProps<T> {
   searchTerm?: string;
   searchMatch?: (node: NodeApi<T>, searchTerm: string) => boolean;
 
-  /* Keybindings */
-  keybindings?: Keybinding;
+  /* Keybinding */
+  keybinding?: Keybinding;
 
   /* Extra */
   className?: string | undefined;
