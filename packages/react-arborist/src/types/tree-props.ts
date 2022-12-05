@@ -5,6 +5,7 @@ import { ElementType, MouseEventHandler } from "react";
 import { ListOnScrollProps } from "react-window";
 import { NodeApi } from "../interfaces/node-api";
 import { OpenMap, OpenSlice } from "../state/open-slice";
+import { Keybinding } from "../interfaces/keybindings";
 
 export interface TreeProps<T> {
   /* Data Options */
@@ -62,6 +63,9 @@ export interface TreeProps<T> {
   /* Extra */
   className?: string | undefined;
   rowClassName?: string | undefined;
+
+  /* Keybindings */
+  keybindings?: Keybinding;
 
   dndRootElement?: globalThis.Node | null;
   onClick?: MouseEventHandler;

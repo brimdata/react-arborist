@@ -21,6 +21,7 @@ import { Cursor } from "../dnd/compute-drop";
 import { Store } from "redux";
 import { createList } from "../data/create-list";
 import { createIndex } from "../data/create-index";
+import { DEFAULT_KEYBINDING, Keybinding } from "./keybindings";
 
 const { safeRun, identify, identifyNull } = utils;
 export class TreeApi<T> {
@@ -553,6 +554,10 @@ export class TreeApi<T> {
     const id = identifyNull(node);
     if (!id) return false;
     return id === this.state.nodes.drag.idWillReceiveDrop;
+  }
+
+  get keybinding(): Keybinding {
+    return this.props.keybindings || DEFAULT_KEYBINDING;
   }
 
   /* Tree Event Handlers */
