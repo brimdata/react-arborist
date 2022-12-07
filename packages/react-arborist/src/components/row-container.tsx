@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { useDataUpdates, useNodesContext, useTreeApi } from "../context";
 import { useDragHook } from "../dnd/drag-hook";
 import { useDropHook } from "../dnd/drop-hook";
-import { IdObj } from "../types/utils";
 import { useFreshNode } from "../hooks/use-fresh-node";
 
 type Props = {
@@ -67,7 +66,7 @@ export const RowContainer = React.memo(function RowContainer<T>({
   };
 
   useEffect(() => {
-    if (!node.isEditing && node.isFocused) {
+    if (!node.isEditing && node.isFocused && tree.focusedNode !== node) {
       el.current?.focus();
     }
   }, [node.isEditing, node.isFocused, el.current]);
