@@ -479,7 +479,7 @@ export class TreeApi<T> {
         this.list.current?.scrollToItem(index, align);
       })
       .catch(() => {
-        console.log(`Id: ${id} never appeared in the list.`);
+        // Id: ${id} never appeared in the list.
       });
   }
 
