@@ -66,8 +66,8 @@ export const RowContainer = React.memo(function RowContainer<T>({
   };
 
   useEffect(() => {
-    if (!node.isEditing && node.isFocused && tree.focusedNode !== node) {
-      el.current?.focus();
+    if (!node.isEditing && node.isFocused) {
+      el.current?.focus({ preventScroll: true });
     }
   }, [node.isEditing, node.isFocused, el.current]);
 
