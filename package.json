@@ -5,9 +5,9 @@
   ],
   "scripts": {
     "bump": "yarn workspace react-arborist version",
-    "dev:shocase": "yarn workspace showcase dev",
-    "dev:library": "yarn workspace react-arborist watch",
-    "dev": "run-p 'dev:**'",
+    "start:showcase": "yarn workspace showcase dev",
+    "start:library": "yarn workspace react-arborist watch",
+    "start": "run-p 'start:**'",
     "build": "yarn workspace react-arborist build",
     "watch": "yarn workspace react-arborist watch",
     "build:showcase": "yarn build && yarn workspace showcase build"
