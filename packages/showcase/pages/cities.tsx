@@ -20,6 +20,7 @@ export default function Cities() {
   const [searchTerm, setSearchTerm] = useState("");
   const [count, setCount] = useState(0);
   const [followsFocus, setFollowsFocus] = useState(false);
+  const [disableMulti, setDisableMulti] = useState(false);
 
   useEffect(() => {
     setCount(tree?.visibleNodes.length ?? 0);
@@ -35,6 +36,7 @@ export default function Cities() {
                 {...dimens}
                 initialData={data}
                 selectionFollowsFocus={followsFocus}
+                disableMultiSelection={disableMulti}
                 ref={(t) => setTree(t)}
                 openByDefault={true}
                 searchTerm={searchTerm}
@@ -98,6 +100,16 @@ export default function Cities() {
               type="checkbox"
               checked={followsFocus}
               onChange={(e) => setFollowsFocus((v) => !v)}
+            />
+          </section>
+          <section>
+            <label>
+              Demo the <i>disableMultiSelection</i> prop:
+            </label>
+            <input
+              type="checkbox"
+              checked={disableMulti}
+              onChange={(e) => setDisableMulti((v) => !v)}
             />
           </section>
           <section>

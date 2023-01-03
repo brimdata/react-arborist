@@ -2,6 +2,7 @@
 
 1. Clone the repo
 2. From the root, run yarn start
+3. Visit localhost:3000
 
 # Publishing a Release
 
