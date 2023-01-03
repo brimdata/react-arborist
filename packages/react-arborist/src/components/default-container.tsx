@@ -132,7 +132,7 @@ export function DefaultContainer() {
           }
           return;
         }
-        if (e.key === "a" && e.metaKey) {
+        if (e.key === "a" && e.metaKey && !tree.props.disableMultiSelection) {
           e.preventDefault();
           tree.selectAll();
           return;

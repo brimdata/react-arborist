@@ -718,6 +718,4 @@ Returns the root _NodeApi_ instance. Its children are the Node representations o
 
 ## Author
 
-This library was created by James Kerr while working at Brim Data on the [Zui desktop app](https://www.youtube.com/watch?v=I2y663n8d2A). Work with data? Check us out at [brimdata.io](https://www.brimdata.io)
-
-[Follow me on Twitter](https://twitter.com/specialCaseDev) for react-arborist updates.
+[James Kerr](https://twitter.com/specialCaseDev) at [Brim Data](https://brimdata.io) for the [Zui desktop app](https://www.youtube.com/watch?v=I2y663n8d2A).
