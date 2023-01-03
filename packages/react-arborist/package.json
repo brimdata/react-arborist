@@ -1,13 +1,14 @@
 {
   "name": "react-arborist",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "license": "MIT",
   "source": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/module.js",
   "types": "dist/index.d.ts",
-  "repository": "https://github.com/brimdata/react-arborist",
+  "repository": "github:brimdata/react-arborist",
   "homepage": "https://react-arborist.netlify.app",
+  "bugs": "https://github.com/brimdata/react-arborist/issues",
   "keywords": [
     "react",
     "arborist",
