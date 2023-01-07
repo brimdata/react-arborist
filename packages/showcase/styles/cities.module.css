@@ -213,5 +213,10 @@
     .mobileWarning {
         display: block;
     }
-  }
+}
   
+@media (prefers-color-scheme: dark) {
+    .tree {
+        background: #101010;
+    }
+}
