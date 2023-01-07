@@ -219,4 +219,8 @@
     .tree {
         background: #101010;
     }
+
+    .row:focus-visible .node {
+        color: black;
+    }
 }
