@@ -137,8 +137,7 @@ export function DefaultContainer() {
           tree.selectAll();
           return;
         }
-        if (e.key === "a" && !e.metaKey) {
-          if (!tree.props.onCreate) return;
+        if (e.key === "a" && !e.metaKey && tree.props.onCreate) {
           tree.createLeaf();
           return;
         }
