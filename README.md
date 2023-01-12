@@ -96,6 +96,7 @@ function App() {
       height={1000}
       indent={24}
       rowHeight={36}
+      overscanCount={1}
       paddingTop={30}
       paddingBottom={10}
       padding={25 /* sets both */}
@@ -281,6 +282,7 @@ interface TreeProps<T> {
 
   /* Sizes */
   rowHeight?: number;
+  overscanCount?: number;
   width?: number;
   height?: number;
   indent?: number;

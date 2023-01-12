@@ -220,6 +220,7 @@ export function DefaultContainer() {
         height={tree.height}
         width={tree.width}
         itemSize={tree.rowHeight}
+        overscanCount={tree.overscanCount}
         itemKey={(index) => tree.visibleNodes[index]?.id || index}
         outerElementType={ListOuterElement}
         innerElementType={ListInnerElement}

@@ -83,6 +83,10 @@ export class TreeApi<T> {
     return this.props.rowHeight ?? 24;
   }
 
+  get overscanCount() {
+    return this.props.overscanCount ?? 1;
+  }
+
   get searchTerm() {
     return (this.props.searchTerm || "").trim();
   }
