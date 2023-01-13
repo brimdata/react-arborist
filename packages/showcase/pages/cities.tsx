@@ -46,6 +46,7 @@ export default function Cities() {
                 padding={15}
                 rowHeight={30}
                 indent={15}
+                overscanCount={8}
                 onSelect={(selected) => setSelectedCount(selected.length)}
                 onActivate={(node) => setActive(node.data)}
                 onFocus={(node) => setFocused(node.data)}
