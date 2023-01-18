@@ -11,6 +11,7 @@ import Link from "next/link";
 type Data = { id: string; name: string; children?: Data[] };
 
 const data = sortData(cities);
+const INDENT_STEP = 15;
 
 export default function Cities() {
   const [tree, setTree] = useState<TreeApi<Data> | null | undefined>(null);
@@ -45,7 +46,7 @@ export default function Cities() {
                 rowClassName={styles.row}
                 padding={15}
                 rowHeight={30}
-                indent={15}
+                indent={INDENT_STEP}
                 overscanCount={8}
                 onSelect={(selected) => setSelectedCount(selected.length)}
                 onActivate={(node) => setActive(node.data)}
@@ -168,6 +169,8 @@ export default function Cities() {
 
 function Node({ node, style, dragHandle }: NodeRendererProps<Data>) {
   const Icon = node.isInternal ? BsMapFill : BsGeoFill;
+  const indentSize = Number.parseFloat(`${style.paddingLeft || 0}`);
+  
   return (
     <div
       ref={dragHandle}
@@ -175,6 +178,11 @@ function Node({ node, style, dragHandle }: NodeRendererProps<Data>) {
       className={clsx(styles.node, node.state)}
       onClick={() => node.isInternal && node.toggle()}
     >
+      <div className={styles.indentLines}>
+        {new Array(indentSize / INDENT_STEP).fill(0).map((_, index) => {
+          return <div key={index}></div>;
+        })}
+      </div>
       <FolderArrow node={node} />
       <Icon className={styles.icon} />{" "}
       <span className={styles.text}>

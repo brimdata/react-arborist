@@ -113,6 +113,7 @@
 }
 
 .node {
+    position: relative;
     border-radius: 8px;
     display: flex;
     align-items: center;
@@ -125,7 +126,7 @@
 }
 
 .node:global(.isSelected) {
-    background: rgb(20, 127, 250);
+    background: rgb(20, 127, 250, 0.5);
     color: white;
     border-radius: 0;
 }
@@ -142,6 +143,28 @@
     border-radius: 8px;
 }
 
+.tree:hover .indentLines {
+    display: flex;
+}
+
+.indentLines {
+    --indent-size: 15px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    display: none;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.indentLines > div {
+    height: 100%;
+    padding-left: 10px;
+    border-right: 1px solid #ccc;
+    margin-right: calc(var(--indent-size) - 10px - 1px);
+}
 
 .row:focus-visible {
     outline: none;
