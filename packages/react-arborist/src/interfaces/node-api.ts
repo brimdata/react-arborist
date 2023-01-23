@@ -58,6 +58,10 @@ export class NodeApi<T = any> {
     return this.isLeaf ? false : !this.tree.isOpen(this.id);
   }
 
+  get isEditable() {
+    return this.tree.isEditable(this.data);
+  }
+
   get isEditing() {
     return this.tree.editingId === this.id;
   }

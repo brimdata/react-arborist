@@ -35,6 +35,7 @@ export default function GmailSidebar() {
                   renderCursor={Cursor}
                   searchTerm={term}
                   paddingBottom={32}
+                  disableEdit={(data) => data.readOnly}
                 >
                   {Node}
                 </Tree>
@@ -57,7 +58,7 @@ export default function GmailSidebar() {
             <li>Drag the items around</li>
             <li>Move focus with the arrow keys</li>
             <li>Toggle folders (press spacebar)</li>
-            <li>Rename (press enter)</li>
+            <li>Rename (press enter, only allowed on items in 'Categories')</li>
             <li>Create a new item (press A)</li>
             <li>Create a new folder (press shift+A)</li>
             <li>Delete items (press delete)</li>

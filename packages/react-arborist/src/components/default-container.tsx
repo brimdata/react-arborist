@@ -160,9 +160,11 @@ export function DefaultContainer() {
           return;
         }
         if (e.key === "Enter") {
-          if (!tree.props.onRename) return;
+          const node = tree.focusedNode;
+          if (!node) return;
+          if (!node.isEditable || !tree.props.onRename) return;
           setTimeout(() => {
-            if (tree.focusedNode) tree.edit(tree.focusedNode);
+            if (node) tree.edit(node);
           });
           return;
         }
