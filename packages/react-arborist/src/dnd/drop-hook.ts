@@ -33,12 +33,17 @@ export function useDropHook(
         });
         if (!drop) return false;
         const dropParent = tree.get(drop.parentId) ?? tree.root;
-
-        for (let id of item.dragIds) {
-          const drag = tree.get(id);
+        
+        const dragNodes = <NodeApi[]>item.dragIds.map(tree.get, tree);
+        for (const drag of dragNodes) {
           if (!drag) return false;
           if (!dropParent) return false;
           if (drag.isInternal && isDecendent(dropParent, drag)) return false;
+        }
+
+        const check = tree.props.disableDrop;
+        if (typeof check === 'function' && check(dropParent, dragNodes)) {
+          return false;
         }
         return true;
       },
