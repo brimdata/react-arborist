@@ -36,6 +36,16 @@ export default function GmailSidebar() {
                   searchTerm={term}
                   paddingBottom={32}
                   disableEdit={(data) => data.readOnly}
+                  disableDrop={({ parentNode, dragNodes }) => {
+                    if (
+                      parentNode.data.name === "Categories" &&
+                      dragNodes.some((drag) => drag.data.name === "Inbox")
+                    ) {
+                      return false;
+                    } else {
+                      return true;
+                    }
+                  }}
                 >
                   {Node}
                 </Tree>
@@ -56,6 +66,7 @@ export default function GmailSidebar() {
           <p>The tree is fully functional. Try the following:</p>
           <ul>
             <li>Drag the items around</li>
+            <li>Try to drag Inbox into Categories (not allowed)</li>
             <li>Move focus with the arrow keys</li>
             <li>Toggle folders (press spacebar)</li>
             <li>Rename (press enter, only allowed on items in 'Categories')</li>

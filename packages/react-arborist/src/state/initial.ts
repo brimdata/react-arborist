@@ -10,5 +10,11 @@ export const initialState = (props?: TreeProps<any>): RootState => ({
     drag: { id: null, idWillReceiveDrop: null },
     selection: { ids: new Set(), anchor: null, mostRecent: null },
   },
-  dnd: { cursor: { type: "none" }, dragId: null },
+  dnd: {
+    cursor: { type: "none" },
+    dragId: null,
+    dragIds: [],
+    parentId: null,
+    index: -1,
+  },
 });

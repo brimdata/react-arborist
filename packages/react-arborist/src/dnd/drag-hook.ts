@@ -4,7 +4,6 @@ import { getEmptyImage } from "react-dnd-html5-backend";
 import { useTreeApi } from "../context";
 import { NodeApi } from "../interfaces/node-api";
 import { DragItem } from "../types/dnd";
-import { IdObj } from "../types/utils";
 import { DropResult } from "./drop-hook";
 import { actions as dnd } from "../state/dnd-slice";
 import { safeRun } from "../utils";
@@ -17,30 +16,28 @@ export function useDragHook<T>(node: NodeApi<T>): ConnectDragSource {
     () => ({
       canDrag: () => node.isDraggable,
       type: "NODE",
-      item: () => ({
-        id: node.id,
-        dragIds: tree.isSelected(node.id) ? Array.from(ids) : [node.id],
-      }),
-      start: () => {
-        tree.dispatch(dnd.dragStart(node.id));
+      item: () => {
+        // This is fired once at the begging of a drag operation
+        const dragIds = tree.isSelected(node.id) ? Array.from(ids) : [node.id];
+        tree.dispatch(dnd.dragStart(node.id, dragIds));
+        return { id: node.id };
       },
-      end: (item, monitor) => {
-        tree.dispatch(dnd.dragEnd());
+      end: () => {
         tree.hideCursor();
-        const drop = monitor.getDropResult();
+        let { parentId, index, dragIds } = tree.state.dnd;
         // If they held down meta, we need to create a copy
         // if (drop.dropEffect === "copy")
-        if (drop && drop.parentId) {
-          const parentId = drop.parentId === ROOT_ID ? null : drop.parentId;
+        if (tree.canDrop()) {
           safeRun(tree.props.onMove, {
-            dragIds: item.dragIds,
-            parentId,
-            index: drop.index,
-            dragNodes: item.dragIds.map((id) => tree.get(id)!),
-            parentNode: tree.get(drop.parentId),
+            dragIds,
+            parentId: parentId === ROOT_ID ? null : parentId,
+            index,
+            dragNodes: tree.dragNodes,
+            parentNode: tree.get(parentId),
           });
-          tree.open(drop.parentId);
+          tree.open(parentId);
         }
+        tree.dispatch(dnd.dragEnd());
       },
     }),
     [ids, node]

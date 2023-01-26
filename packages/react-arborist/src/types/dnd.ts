@@ -5,6 +5,5 @@ export type CursorLocation = {
 };
 
 export type DragItem = {
-  dragIds: string[];
   id: string;
 };

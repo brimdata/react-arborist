@@ -398,6 +398,41 @@ export class TreeApi<T> {
     return this.state.dnd.cursor.type === "highlight";
   }
 
+  get dragNodes() {
+    return this.state.dnd.dragIds
+      .map((id) => this.get(id))
+      .filter((n) => !!n) as NodeApi<T>[];
+  }
+
+  canDrop() {
+    if (this.isFiltered) return false;
+    const parentNode = this.get(this.state.dnd.parentId) ?? this.root;
+    const dragNodes = this.dragNodes;
+    const check = this.props.disableDrop;
+
+    for (const drag of dragNodes) {
+      if (!drag) return false;
+      if (!parentNode) return false;
+      if (drag.isInternal && utils.isDecendent(parentNode, drag)) return false;
+    }
+
+    // Allow the user to insert their own logic
+    if (typeof check == "function") {
+      return check({
+        parentNode,
+        dragNodes: this.dragNodes,
+        index: this.state.dnd.index,
+      });
+    } else if (typeof check == "string") {
+      // @ts-ignore
+      return !!parentNode.data[check];
+    } else if (typeof check === "boolean") {
+      return check;
+    } else {
+      return true;
+    }
+  }
+
   hideCursor() {
     this.dispatch(dnd.cursor({ type: "none" }));
   }
@@ -536,11 +571,6 @@ export class TreeApi<T> {
 
   isDraggable(data: T) {
     const check = this.props.disableDrag || (() => false);
-    return !utils.access(data, check) ?? true;
-  }
-
-  isDroppable(data: T) {
-    const check = this.props.disableDrop || (() => false);
     return !utils.access(data, check) ?? true;
   }
 

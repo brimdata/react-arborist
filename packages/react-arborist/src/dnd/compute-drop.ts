@@ -78,21 +78,6 @@ function getDropLevel(
   return bound(hoverLevel, min, max);
 }
 
-function canDrop(above: NodeApi | null, below: NodeApi | null) {
-  if (!above) {
-    return true;
-  }
-
-  let n: NodeApi | null = above;
-  if (isClosed(above) && above !== below) n = above.parent;
-
-  while (n) {
-    if (!n.isDroppable) return false;
-    n = n.parent;
-  }
-  return true;
-}
-
 export type ComputedDrop = {
   drop: DropResult | null;
   cursor: Cursor | null;
@@ -146,10 +131,6 @@ export function computeDrop(args: Args): ComputedDrop {
   const hover = measureHover(args.element, args.offset);
   const { node, nextNode, prevNode } = args;
   const [above, below] = getNodesAroundCursor(node, prevNode, nextNode, hover);
-
-  if (!canDrop(above, below)) {
-    return { drop: null, cursor: noCursor() };
-  }
 
   /* Hovering over the middle of a folder */
   if (node && node.isInternal && hover.inMiddle) {
