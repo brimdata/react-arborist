@@ -173,6 +173,6 @@ export function getInsertParentId(tree: TreeApi<any>) {
   const focus = tree.focusedNode;
   if (!focus) return null;
   if (focus.isOpen) return focus.id;
-  if (focus.parent) return focus.parent.id;
+  if (focus.parent && !focus.parent.isRoot) return focus.parent.id;
   return null;
 }

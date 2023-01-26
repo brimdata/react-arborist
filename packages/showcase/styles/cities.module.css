@@ -166,15 +166,15 @@
     margin-right: calc(var(--indent-size) - 10px - 1px);
 }
 
-.row:focus-visible {
+.row:focus {
     outline: none;
 }
 
-.row:focus-visible .node {
+.row:focus .node {
     background: #ddd;
 }
 
-.row:focus-visible .node:global(.isSelected) {
+.row:focus .node:global(.isSelected) {
     background: rgb(12, 105, 211);
 }
 
