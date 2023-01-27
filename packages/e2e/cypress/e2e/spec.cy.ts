@@ -121,7 +121,7 @@ describe("template spec", () => {
     cy.focused().invoke("index").should("eq", 11);
   });
 
-  it.only("prevents Inbox from Dragging into Categories", () => {
+  it("prevents Inbox from Dragging into Categories", () => {
     cy.get("@item").contains("Inbox").drag("[role=treeitem]:nth-child(12)");
     cy.get("@item").contains("Inbox").click();
     cy.focused().invoke("index").should("eq", 0);
