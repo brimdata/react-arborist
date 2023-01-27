@@ -11,7 +11,7 @@ The `disableEdit` prop was added to the tree to specify nodes that cannot be edi
 
 ### Disable Drop Dynamically
 
-The `disableDrop` prop now accepts a function with two arguments. The first is the node being hovered over, the second are the nodes that are being dragged. This allows a node to be droppable for some nodes, but not others. Previously you could only provide a static list of nodes that were not droppable.
+The `disableDrop` prop now accepts a function with the arguments described below. Previously you could only provide a static list of nodes that were not droppable, but now you can determine it dynamically.
 
 ## Breaking Changes
 
@@ -21,13 +21,13 @@ If you were passing a function to the `disableDrop` prop, you'll need to update 
 
 ```ts
 declare function disableDrop(args: {
-  parentNode: NodeApi;
-  dragNodes: NodeApi[];
-  index: number;
+  dragNodes: NodeApi[]; // The nodes being dragged
+  parentNode: NodeApi; // The new parent of the dragNodes if dropped
+  index: number; // The new child index of the dragNodes if dropped
 }): boolean;
 ```
 
-This lets you disallow a drop based on the items being dragged and which node you are hovering over. You may notice it matches the function signature of the onMove handler. It is still possible to pass a string or a boolean to the `disableDrop` prop to prevent drops statically.
+This lets you disallow a drop based on the items being dragged and which node you are hovering over. You might notice it matches the function signature of the onMove handler. It is still possible to pass a string or a boolean to the `disableDrop` prop to prevent drops statically.
 
 ### NodeApi `isDroppable` property
 
