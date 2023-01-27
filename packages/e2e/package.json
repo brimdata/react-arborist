@@ -1,0 +1,14 @@
+{
+  "name": "e2e",
+  "packageManager": "yarn@3.2.0",
+  "dependencies": {
+    "@4tw/cypress-drag-drop": "^2.2.3",
+    "cypress": "^12.4.1",
+    "cypress-drag-drop": "^1.1.1",
+    "typescript": "^4.9.4"
+  },
+  "scripts": {
+    "test": "yarn cypress run",
+    "open": "yarn cypress open"
+  }
+}
