@@ -8,7 +8,7 @@ import { TreeProps } from "../types/tree-props";
 import { IdObj } from "../types/utils";
 import { useValidatedProps } from "../hooks/use-validated-props";
 
-export const Tree = forwardRef(function Tree<T>(
+function TreeComponent<T>(
   props: TreeProps<T>,
   ref: React.Ref<TreeApi<T> | undefined>
 ) {
@@ -21,4 +21,8 @@ export const Tree = forwardRef(function Tree<T>(
       <DragPreviewContainer />
     </TreeProvider>
   );
-});
+}
+
+export const Tree = forwardRef(TreeComponent) as <T>(
+  props: TreeProps<T> & { ref?: React.ForwardedRef<TreeApi<T> | undefined> }
+) => ReturnType<typeof TreeComponent>;
