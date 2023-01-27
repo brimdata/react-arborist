@@ -265,25 +265,26 @@ These are all the props you can pass to the Tree component.
 ```ts
 interface TreeProps<T> {
   /* Data Options */
-  data?: T[];
-  initialData?: T[];
+  data?: readonly T[];
+  initialData?: readonly T[];
 
   /* Data Handlers */
-  onCreate?: handlers.CreateHandler;
-  onMove?: handlers.MoveHandler;
-  onRename?: handlers.RenameHandler;
-  onDelete?: handlers.DeleteHandler;
+  onCreate?: handlers.CreateHandler<T>;
+  onMove?: handlers.MoveHandler<T>;
+  onRename?: handlers.RenameHandler<T>;
+  onDelete?: handlers.DeleteHandler<T>;
 
   /* Renderers*/
   children?: ElementType<renderers.NodeRendererProps<T>>;
   renderRow?: ElementType<renderers.RowRendererProps<T>>;
   renderDragPreview?: ElementType<renderers.DragPreviewProps>;
   renderCursor?: ElementType<renderers.CursorProps>;
+  renderContainer?: ElementType<{}>;
 
   /* Sizes */
   rowHeight?: number;
   overscanCount?: number;
-  width?: number;
+  width?: number | string;
   height?: number;
   indent?: number;
   paddingTop?: number;
@@ -291,13 +292,21 @@ interface TreeProps<T> {
   padding?: number;
 
   /* Config */
+  childrenAccessor?: string | ((d: T) => T[] | null);
+  idAccessor?: string | ((d: T) => string);
   openByDefault?: boolean;
   selectionFollowsFocus?: boolean;
   disableMultiSelection?: boolean;
+  disableEdit?: string | boolean | BoolFunc<T>;
   disableDrag?: string | boolean | BoolFunc<T>;
-  disableDrop?: string | boolean | BoolFunc<T>;
-  childrenAccessor?: string | ((d: T) => T[]);
-  idAccessor?: string | ((d: T) => string);
+  disableDrop?:
+    | string
+    | boolean
+    | ((args: {
+        parentNode: NodeApi<T>;
+        dragNodes: NodeApi<T>[];
+        index: number;
+      }) => boolean);
 
   /* Event Handlers */
   onActivate?: (node: NodeApi<T>) => void;
@@ -319,6 +328,7 @@ interface TreeProps<T> {
   /* Extra */
   className?: string | undefined;
   rowClassName?: string | undefined;
+
   dndRootElement?: globalThis.Node | null;
   onClick?: MouseEventHandler;
   onContextMenu?: MouseEventHandler;

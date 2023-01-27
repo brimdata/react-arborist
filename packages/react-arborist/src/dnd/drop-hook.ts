@@ -3,8 +3,8 @@ import { ConnectDropTarget, useDrop } from "react-dnd";
 import { useTreeApi } from "../context";
 import { NodeApi } from "../interfaces/node-api";
 import { DragItem } from "../types/dnd";
-import { isDecendent } from "../utils";
 import { computeDrop } from "./compute-drop";
+import { actions as dnd } from "../state/dnd-slice";
 
 export type DropResult = {
   parentId: string | null;
@@ -19,11 +19,11 @@ export function useDropHook(
   const [_, dropRef] = useDrop<DragItem, DropResult | null, void>(
     () => ({
       accept: "NODE",
-      canDrop: (item, m) => {
-        if (node.tree.isFiltered) return false;
+      canDrop: () => tree.canDrop(),
+      hover: (_item, m) => {
         const offset = m.getClientOffset();
-        if (!el.current || !offset) return false;
-        const { drop } = computeDrop({
+        if (!el.current || !offset) return;
+        const { cursor, drop } = computeDrop({
           element: el.current,
           offset: offset,
           indent: tree.indent,
@@ -31,51 +31,16 @@ export function useDropHook(
           prevNode: node.prev,
           nextNode: node.next,
         });
-        if (!drop) return false;
-        const dropParent = tree.get(drop.parentId) ?? tree.root;
-        
-        const dragNodes = <NodeApi[]>item.dragIds.map(tree.get, tree);
-        for (const drag of dragNodes) {
-          if (!drag) return false;
-          if (!dropParent) return false;
-          if (drag.isInternal && isDecendent(dropParent, drag)) return false;
-        }
+        if (drop) tree.dispatch(dnd.hovering(drop.parentId, drop.index));
 
-        const check = tree.props.disableDrop;
-        if (typeof check === 'function' && check(dropParent, dragNodes)) {
-          return false;
-        }
-        return true;
-      },
-      hover: (item, m) => {
         if (m.canDrop()) {
-          const offset = m.getClientOffset();
-          if (!el.current || !offset) return;
-          const { cursor } = computeDrop({
-            element: el.current,
-            offset: offset,
-            indent: tree.indent,
-            node: node,
-            prevNode: node.prev,
-            nextNode: node.next,
-          });
           if (cursor) tree.showCursor(cursor);
         } else {
           tree.hideCursor();
         }
       },
-      drop: (item, m): DropResult | undefined | null => {
-        const offset = m.getClientOffset();
-        if (!el.current || !offset) return;
-        const { drop } = computeDrop({
-          element: el.current,
-          offset: offset,
-          indent: tree.indent,
-          node: node,
-          prevNode: node.prev,
-          nextNode: node.next,
-        });
-        return drop;
+      drop: (_, m) => {
+        if (!m.canDrop()) return null;
       },
     }),
     [node, el.current, tree.props]

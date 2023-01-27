@@ -10,7 +10,6 @@ type Params<T> = {
   children: NodeApi<T>[] | null;
   parent: NodeApi<T> | null;
   isDraggable: boolean;
-  isDroppable: boolean;
   rowIndex: number | null;
   tree: TreeApi<T>;
 };
@@ -23,7 +22,6 @@ export class NodeApi<T = any> {
   children: NodeApi<T>[] | null;
   parent: NodeApi<T> | null;
   isDraggable: boolean;
-  isDroppable: boolean;
   rowIndex: number | null;
 
   constructor(params: Params<T>) {
@@ -34,7 +32,6 @@ export class NodeApi<T = any> {
     this.children = params.children;
     this.parent = params.parent;
     this.isDraggable = params.isDraggable;
-    this.isDroppable = params.isDroppable;
     this.rowIndex = params.rowIndex;
   }
 

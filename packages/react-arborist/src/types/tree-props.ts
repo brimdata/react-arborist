@@ -4,7 +4,7 @@ import * as renderers from "./renderers";
 import { ElementType, MouseEventHandler } from "react";
 import { ListOnScrollProps } from "react-window";
 import { NodeApi } from "../interfaces/node-api";
-import { OpenMap, OpenSlice } from "../state/open-slice";
+import { OpenMap } from "../state/open-slice";
 
 export interface TreeProps<T> {
   /* Data Options */
@@ -35,14 +35,21 @@ export interface TreeProps<T> {
   padding?: number;
 
   /* Config */
+  childrenAccessor?: string | ((d: T) => T[] | null);
+  idAccessor?: string | ((d: T) => string);
   openByDefault?: boolean;
   selectionFollowsFocus?: boolean;
   disableMultiSelection?: boolean;
   disableEdit?: string | boolean | BoolFunc<T>;
   disableDrag?: string | boolean | BoolFunc<T>;
-  disableDrop?: string | boolean | BoolFunc<T> | ((node: NodeApi, dragNodes: NodeApi[]) => boolean);
-  childrenAccessor?: string | ((d: T) => T[] | null);
-  idAccessor?: string | ((d: T) => string);
+  disableDrop?:
+    | string
+    | boolean
+    | ((args: {
+        parentNode: NodeApi<T>;
+        dragNodes: NodeApi<T>[];
+        index: number;
+      }) => boolean);
 
   /* Event Handlers */
   onActivate?: (node: NodeApi<T>) => void;
