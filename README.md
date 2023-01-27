@@ -17,17 +17,12 @@ Here is a Gmail sidebar clone built with react-arborist.
 - Inline renaming
 - Virtualized rendering
 - Custom styling
-
-**New Features in Version 2**
-
 - Keyboard navigation
 - Aria attributes
 - Tree filtering
 - Selection synchronization
-- More callbacks (onScroll, onActivate, onSelect)
+- Callbacks (onScroll, onActivate, onSelect)
 - Controlled or uncontrolled trees
-
-> These docs are for version 2. It contains breaking changes. Here is the [v1.2.0 README](https://github.com/brimdata/react-arborist/tree/4fe9659d2c4cbd57582294330863d4fd7e7af74b).
 
 ## Installation
 

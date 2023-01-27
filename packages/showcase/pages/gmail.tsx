@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { CursorProps, NodeApi, NodeRendererProps, Tree } from "react-arborist";
 import { gmailData, GmailItem } from "../data/gmail";
 import * as icons from "react-icons/md";
-import styles from "../styles/gmail.module.css";
+import styles from "../styles/Gmail.module.css";
 import { FillFlexParent } from "../components/fill-flex-parent";
 import { SiGmail } from "react-icons/si";
 import { BsTree } from "react-icons/bs";
@@ -69,7 +69,10 @@ export default function GmailSidebar() {
             <li>Try to drag Inbox into Categories (not allowed)</li>
             <li>Move focus with the arrow keys</li>
             <li>Toggle folders (press spacebar)</li>
-            <li>Rename (press enter, only allowed on items in 'Categories')</li>
+            <li>
+              Rename (press enter, only allowed on items in {"'"}Categories{"'"}
+              )
+            </li>
             <li>Create a new item (press A)</li>
             <li>Create a new folder (press shift+A)</li>
             <li>Delete items (press delete)</li>

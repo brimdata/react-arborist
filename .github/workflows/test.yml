@@ -13,4 +13,5 @@ jobs:
           node-version: "16.x"
           registry-url: "https://registry.npmjs.org"
       - run: yarn
-      - run: yarn workspace react-arborist build
+      - run: yarn build
+      - run: yarn build:showcase
