@@ -12,11 +12,11 @@
 2. Increment the version number in packages/react-arborist/package.json
 3. Create a branch called release/v0.0.0
 4. Open a PR to main
-5. Test, review, and merge, don't delete branch
+5. Test, review, and merge, delete branch
 
 ### Create Github Release
 
-1. Create a release based on release/v0.0.0
+1. Create a release based on main
 2. Assign a new tag to be created with v0.0.0
 3. Title the release "Version 0.0.0"
 4. Write release notes
