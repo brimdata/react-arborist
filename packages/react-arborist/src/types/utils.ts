@@ -7,14 +7,6 @@ export interface IdObj {
 
 export type Identity = string | IdObj | null;
 
-// Forward ref can't forward generics without this little re-declare
-// https://fettblog.eu/typescript-react-generic-forward-refs/
-declare module "react" {
-  function forwardRef<T, P = {}>(
-    render: (props: P, ref: React.Ref<T>) => React.ReactElement | null
-  ): (props: P & React.RefAttributes<T>) => React.ReactElement | null;
-}
-
 export type BoolFunc<T> = (data: T) => boolean;
 
 export type ActionTypes<
