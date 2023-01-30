@@ -2471,6 +2471,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"auto-scroll-while-dragging@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "auto-scroll-while-dragging@npm:1.0.1"
+  checksum: 9be4ddfc75a5295f8c15d2fcf30a215de2dfb2cd2768036999c1437a792e2436d19dace98f9859eb5ac2c89c6ca99ca51d939f94287a7b09f9c2ea3f57600a46
+  languageName: node
+  linkType: hard
+
 "aws-sign2@npm:~0.7.0":
   version: 0.7.0
   resolution: "aws-sign2@npm:0.7.0"
@@ -3527,6 +3534,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"enhanced-resolve@npm:^5.10.0":
+  version: 5.12.0
+  resolution: "enhanced-resolve@npm:5.12.0"
+  dependencies:
+    graceful-fs: ^4.2.4
+    tapable: ^2.2.0
+  checksum: bf3f787facaf4ce3439bef59d148646344e372bef5557f0d37ea8aa02c51f50a925cd1f07b8d338f18992c29f544ec235a8c64bcdb56030196c48832a5494174
+  languageName: node
+  linkType: hard
+
 "enquirer@npm:^2.3.6":
   version: 2.3.6
   resolution: "enquirer@npm:2.3.6"
@@ -4487,7 +4504,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.6, graceful-fs@npm:^4.2.9":
+"graceful-fs@npm:^4.1.2, graceful-fs@npm:^4.1.6, graceful-fs@npm:^4.2.0, graceful-fs@npm:^4.2.4, graceful-fs@npm:^4.2.6, graceful-fs@npm:^4.2.9":
   version: 4.2.10
   resolution: "graceful-fs@npm:4.2.10"
   checksum: 3f109d70ae123951905d85032ebeae3c2a5a7a997430df00ea30df0e3a6c60cf6689b109654d6fdacd28810a053348c4d14642da1d075049e6be1ba5216218da
@@ -6424,6 +6441,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"next-transpile-modules@npm:10.0.0":
+  version: 10.0.0
+  resolution: "next-transpile-modules@npm:10.0.0"
+  dependencies:
+    enhanced-resolve: ^5.10.0
+  checksum: 3300fc7081f63b2c9487588db7cbe718f209dfd2111adec22d9c8af0e3c8ade2d95fd45f91e045546d78d98cafc78a49431de9a623360d33831b5e694bf007c9
+  languageName: node
+  linkType: hard
+
 "next@npm:^12.3.1":
   version: 12.3.1
   resolution: "next@npm:12.3.1"
@@ -7701,11 +7727,13 @@ __metadata:
     "@types/node": 18.7.19
     "@types/react": 18.0.21
     "@types/react-dom": 18.0.6
+    auto-scroll-while-dragging: ^1.0.1
     clsx: ^1.2.1
     eslint: 8.23.1
     eslint-config-next: 12.3.1
     nanoid: ^4.0.0
     next: ^12.3.1
+    next-transpile-modules: 10.0.0
     react: ^18.2.0
     react-arborist: "workspace:^"
     react-dom: ^18.2.0
@@ -8111,6 +8139,13 @@ __metadata:
   version: 3.2.4
   resolution: "symbol-tree@npm:3.2.4"
   checksum: 6e8fc7e1486b8b54bea91199d9535bb72f10842e40c79e882fc94fb7b14b89866adf2fd79efa5ebb5b658bc07fb459ccce5ac0e99ef3d72f474e74aaf284029d
+  languageName: node
+  linkType: hard
+
+"tapable@npm:^2.2.0":
+  version: 2.2.1
+  resolution: "tapable@npm:2.2.1"
+  checksum: 3b7a1b4d86fa940aad46d9e73d1e8739335efd4c48322cb37d073eb6f80f5281889bf0320c6d8ffcfa1a0dd5bfdbd0f9d037e252ef972aca595330538aac4d51
   languageName: node
   linkType: hard
 

@@ -7,6 +7,7 @@ import { BsMapFill, BsMap, BsGeo, BsGeoFill } from "react-icons/bs";
 import { FillFlexParent } from "../components/fill-flex-parent";
 import { MdArrowDropDown, MdArrowRight } from "react-icons/md";
 import Link from "next/link";
+import { autoScrollWhileDragging } from "auto-scroll-while-dragging";
 
 type Data = { id: string; name: string; children?: Data[] };
 
@@ -23,6 +24,13 @@ export default function Cities() {
   const [followsFocus, setFollowsFocus] = useState(false);
   const [disableMulti, setDisableMulti] = useState(false);
 
+  const treeContainerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    let unbind = autoScrollWhileDragging({ gap: 150, speed: 0.5 });
+    return () => unbind();
+  }, []);
+
   useEffect(() => {
     setCount(tree?.visibleNodes.length ?? 0);
   }, [tree, searchTerm]);
@@ -30,12 +38,20 @@ export default function Cities() {
   return (
     <div className={styles.container}>
       <div className={styles.split}>
-        <div className={styles.treeContainer}>
+        <div className={styles.treeContainer} ref={treeContainerRef}>
           <FillFlexParent>
             {(dimens) => (
               <Tree
                 {...dimens}
                 initialData={data}
+                dndRootElement={treeContainerRef.current}
+                onDndDrag={(params) => {
+                  const { mouse, isDragging } = params;
+                  if (isDragging && mouse) {
+                    let e = { clientX: mouse.x, clientY: mouse.y } as DragEvent;
+                    autoScrollWhileDragging.dragHandler(e);
+                  } else autoScrollWhileDragging.dragEndHandler();
+                }}
                 selectionFollowsFocus={followsFocus}
                 disableMultiSelection={disableMulti}
                 ref={(t) => setTree(t)}

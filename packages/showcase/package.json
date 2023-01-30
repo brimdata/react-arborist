@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "auto-scroll-while-dragging": "^1.0.1",
     "clsx": "^1.2.1",
     "nanoid": "^4.0.0",
     "next": "^12.3.1",
@@ -25,6 +26,7 @@
     "@types/react-dom": "18.0.6",
     "eslint": "8.23.1",
     "eslint-config-next": "12.3.1",
+    "next-transpile-modules": "10.0.0",
     "typescript": "4.8.3"
   }
 }
