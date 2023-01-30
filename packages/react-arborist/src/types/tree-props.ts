@@ -6,6 +6,13 @@ import { ListOnScrollProps } from "react-window";
 import { NodeApi } from "../interfaces/node-api";
 import { OpenMap } from "../state/open-slice";
 
+export interface DndDragParams {
+  offset: { x: number; y: number; } | null;
+  mouse: { x: number; y: number; } | null;
+  item: any;
+  isDragging: boolean;
+};
+
 export interface TreeProps<T> {
   /* Data Options */
   data?: readonly T[];
@@ -72,7 +79,10 @@ export interface TreeProps<T> {
   className?: string | undefined;
   rowClassName?: string | undefined;
 
+  /** Dnd */
   dndRootElement?: globalThis.Node | null;
+  onDndDrag?: (params: DndDragParams) => void;
+
   onClick?: MouseEventHandler;
   onContextMenu?: MouseEventHandler;
 }

@@ -13,6 +13,10 @@ export function DragPreviewContainer() {
     };
   });
 
+  if (tree.props.onDndDrag) {
+    tree.props.onDndDrag({ offset, mouse, item, isDragging });
+  }
+
   const DragPreview = tree.props.renderDragPreview || DefaultDragPreview;
   return (
     <DragPreview

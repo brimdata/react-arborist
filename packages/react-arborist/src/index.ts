@@ -1,5 +1,6 @@
 /* The Public Api */
 export { Tree } from "./components/tree";
+export * from "./types/tree-props";
 export * from "./types/handlers";
 export * from "./types/renderers";
 export * from "./types/state";
