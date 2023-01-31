@@ -186,7 +186,16 @@ export default function Cities() {
 function Node({ node, style, dragHandle }: NodeRendererProps<Data>) {
   const Icon = node.isInternal ? BsMapFill : BsGeoFill;
   const indentSize = Number.parseFloat(`${style.paddingLeft || 0}`);
-  
+
+  // Auto open folder node while the dragging node on it
+  if (node.state.willReceiveDrop && node.isClosed) {
+    // Why using setTimeout? Because if not, the console will report a warnning of bad setState().
+    setTimeout(() => {
+      // Second check if need open the node, because the dragging node may just pass the folder node
+      if (node.state.willReceiveDrop) node.open();
+    }, 666);
+  }
+
   return (
     <div
       ref={dragHandle}
