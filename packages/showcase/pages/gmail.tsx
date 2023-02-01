@@ -41,9 +41,9 @@ export default function GmailSidebar() {
                       parentNode.data.name === "Categories" &&
                       dragNodes.some((drag) => drag.data.name === "Inbox")
                     ) {
-                      return false;
-                    } else {
                       return true;
+                    } else {
+                      return false;
                     }
                   }}
                 >

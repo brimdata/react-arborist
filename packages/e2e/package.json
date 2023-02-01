@@ -1,14 +1,18 @@
 {
   "name": "e2e",
   "packageManager": "yarn@3.2.0",
-  "dependencies": {
+  "scripts": {
+    "cy:run": "yarn cypress run",
+    "start": "yarn cypress open",
+    "serve": "yarn workspace showcase serve > /dev/null",
+    "test": "start-server-and-test serve http://localhost:3000 cy:run"
+  },
+  "devDependencies": {
     "@4tw/cypress-drag-drop": "^2.2.3",
     "cypress": "^12.4.1",
     "cypress-drag-drop": "^1.1.1",
+    "serve": "^14.2.0",
+    "start-server-and-test": "^1.15.3",
     "typescript": "^4.9.4"
-  },
-  "scripts": {
-    "test": "yarn cypress run",
-    "open": "yarn cypress open"
   }
 }
