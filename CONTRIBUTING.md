@@ -1,8 +1,14 @@
 # Testing Locally
 
 1. Clone the repo
-2. From the root, run yarn start
+2. From the root, run yarn && yarn start
 3. Visit localhost:3000
+
+# Running Tests
+
+Run `yarn build && yarn test` from the root of the repo.
+
+To test individual packages, cd into them and run `yarn test`. For example, running the unit tests would be `cd packages/react-arborist && yarn test`.
 
 # Publishing a Release
 
