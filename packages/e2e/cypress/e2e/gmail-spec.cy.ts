@@ -1,6 +1,6 @@
 import "@4tw/cypress-drag-drop";
 
-describe("template spec", () => {
+describe("Testing the Gmail Demo", () => {
   beforeEach(() => {
     cy.visit("http://localhost:3000/gmail");
     cy.get("[role=treeitem]").as("item");

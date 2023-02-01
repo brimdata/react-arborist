@@ -408,7 +408,7 @@ export class TreeApi<T> {
     if (this.isFiltered) return false;
     const parentNode = this.get(this.state.dnd.parentId) ?? this.root;
     const dragNodes = this.dragNodes;
-    const check = this.props.disableDrop;
+    const isDisabled = this.props.disableDrop;
 
     for (const drag of dragNodes) {
       if (!drag) return false;
@@ -417,17 +417,17 @@ export class TreeApi<T> {
     }
 
     // Allow the user to insert their own logic
-    if (typeof check == "function") {
-      return check({
+    if (typeof isDisabled == "function") {
+      return !isDisabled({
         parentNode,
         dragNodes: this.dragNodes,
         index: this.state.dnd.index,
       });
-    } else if (typeof check == "string") {
+    } else if (typeof isDisabled == "string") {
       // @ts-ignore
-      return !!parentNode.data[check];
-    } else if (typeof check === "boolean") {
-      return check;
+      return !parentNode.data[isDisabled];
+    } else if (typeof isDisabled === "boolean") {
+      return !isDisabled;
     } else {
       return true;
     }
