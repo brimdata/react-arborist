@@ -30,6 +30,7 @@ export class TreeApi<T> {
   visibleStartIndex: number = 0;
   visibleStopIndex: number = 0;
   idToIndex: { [id: string]: number };
+  filteredCount: number = 0;
 
   constructor(
     public store: Store<RootState, Actions>,
@@ -608,6 +609,11 @@ export class TreeApi<T> {
   onItemsRendered(args: ListOnItemsRenderedProps) {
     this.visibleStartIndex = args.visibleStartIndex;
     this.visibleStopIndex = args.visibleStopIndex;
+  }
+
+  onFilter(filteredCount: number) {
+    this.filteredCount = filteredCount;
+    this.props.onFilter?.(filteredCount);
   }
 
   /* Get Renderers */

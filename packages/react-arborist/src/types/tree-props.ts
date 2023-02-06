@@ -57,6 +57,7 @@ export interface TreeProps<T> {
   onScroll?: (props: ListOnScrollProps) => void;
   onToggle?: (id: string) => void;
   onFocus?: (node: NodeApi<T>) => void;
+  onFilter?: (filteredCount: number) => void;
 
   /* Selection */
   selection?: string;
