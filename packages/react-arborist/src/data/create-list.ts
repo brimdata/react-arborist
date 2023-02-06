@@ -30,7 +30,6 @@ function flattenAndFilterTree<T>(
   isMatch: (n: NodeApi<T>) => boolean
 ): NodeApi<T>[] {
   let filteredCount: number = 0;
-  const tree = root.tree;
 
   function collect(node: NodeApi<T>) {
     let result: NodeApi<T>[] = [];
@@ -55,7 +54,7 @@ function flattenAndFilterTree<T>(
 
   const list = collect(root).filter((n) => n.parent?.isOpen);
   list.forEach(assignRowIndex);
-  tree.onFilter(filteredCount)
+  root.tree.onFilter(filteredCount)
   return list;
 }
 
