@@ -1,4 +1,4 @@
-import "@4tw/cypress-drag-drop";
+const TOTAL_ITEMS = 17;
 
 describe("Testing the Gmail Demo", () => {
   beforeEach(() => {
@@ -14,11 +14,11 @@ describe("Testing the Gmail Demo", () => {
   });
 
   it("Collapses and Expands the Categories", () => {
-    cy.get("@item").should("have.length", "16");
+    cy.get("@item").should("have.length", TOTAL_ITEMS);
     cy.get("@item").contains("Categories").click();
     cy.get("@item").should("have.length", "12");
     cy.get("@item").contains("Categories").click();
-    cy.get("@item").should("have.length", "16");
+    cy.get("@item").should("have.length", TOTAL_ITEMS);
   });
 
   it("Up and Down Arrows", () => {
@@ -32,12 +32,12 @@ describe("Testing the Gmail Demo", () => {
   });
 
   it("Left and Right Arrows", () => {
-    cy.get("@item").should("have.length", 16);
+    cy.get("@item").should("have.length", TOTAL_ITEMS);
     cy.get("@item").contains("Categories").click();
     cy.focused().type("{leftArrow}");
     cy.get("@item").should("have.length", 12);
     cy.focused().type("{rightArrow}");
-    cy.get("@item").should("have.length", 16);
+    cy.get("@item").should("have.length", TOTAL_ITEMS);
     cy.focused().should("contain.text", "Categories");
     cy.focused().type("{rightArrow}");
     cy.focused().should("contain.text", "Social");
@@ -51,13 +51,13 @@ describe("Testing the Gmail Demo", () => {
     cy.get("@item").first().click();
     cy.focused().type("a");
     cy.focused().type("Turn A New Leaf{enter}");
-    cy.get("@item").should("have.length", 17);
+    cy.get("@item").should("have.length", TOTAL_ITEMS + 1);
 
     // In a Folder
     cy.get("@item").contains("Social").click();
     cy.focused().type("a");
     cy.focused().type("Turn More Leaves{enter}");
-    cy.get("@item").should("have.length", 18);
+    cy.get("@item").should("have.length", TOTAL_ITEMS + 2);
 
     // On a folder that is closed
     cy.get("@item").contains("Categories").click(); // closed it
@@ -79,14 +79,14 @@ describe("Testing the Gmail Demo", () => {
     cy.get("@item").first().click();
     cy.focused().type("A");
     cy.focused().type("Turn A New Internal{enter}");
-    cy.get("@item").should("have.length", 17);
+    cy.get("@item").should("have.length", TOTAL_ITEMS + 1);
     cy.focused().children().should("have.class", "isInternal");
 
     // In a Folder
     cy.get("@item").contains("Social").click();
     cy.focused().type("A");
     cy.focused().type("Turn More Inernals{enter}");
-    cy.get("@item").should("have.length", 18);
+    cy.get("@item").should("have.length", TOTAL_ITEMS + 2);
     cy.focused().children().should("have.class", "isInternal");
 
     // On a folder that is closed
@@ -106,24 +106,44 @@ describe("Testing the Gmail Demo", () => {
   });
 
   it("drags and drops in its list", () => {
-    cy.get("@item")
-      .contains("Inbox")
-      .drag("[role=treeitem]:nth-child(5)", "bottom");
+    dragAndDrop(
+      cy.get("@item").contains("Inbox").first(),
+      cy.get("@item").contains("Sent").first()
+    );
 
     cy.get("@item").contains("Inbox").click();
-    cy.focused().invoke("index").should("eq", 4);
+    cy.focused().invoke("index").should("eq", 2);
   });
 
   it("drags and drops into folder", () => {
-    cy.get("@item").contains("Starred").drag("[role=treeitem]:nth-child(12)");
-
+    dragAndDrop(
+      cy.get("@item").contains("Starred").first(),
+      cy.get("@item").contains("Social").first()
+    );
     cy.get("@item").contains("Starred").click();
     cy.focused().invoke("index").should("eq", 11);
   });
 
   it("prevents Inbox from Dragging into Categories", () => {
-    cy.get("@item").contains("Inbox").drag("[role=treeitem]:nth-child(12)");
+    dragAndDrop(
+      cy.get("@item").contains("Inbox").first(),
+      cy.get("@item").contains("Social").first()
+    );
     cy.get("@item").contains("Inbox").click();
     cy.focused().invoke("index").should("eq", 0);
   });
+
+  it("filters to github, then checks expanding and collapsing", () => {
+    cy.get("input").type("Git");
+    cy.get("@item").should("have.length", 3);
+    cy.get("@item").contains("Categories").click(); // collapses
+    cy.get("@item").should("have.length", 1);
+  });
 });
+
+function dragAndDrop(src: any, dst: any) {
+  const dataTransfer = new DataTransfer();
+  src.trigger("dragstart", { dataTransfer });
+  dst.trigger("drop", { dataTransfer });
+  dst.trigger("dragend", { dataTransfer });
+}

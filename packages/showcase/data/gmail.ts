@@ -114,6 +114,14 @@ export const gmailData: GmailItem[] = [
         unread: 312,
         readOnly: false,
         icon: icons.MdChatBubbleOutline,
+        children: [
+          {
+            id: "15-1",
+            name: "Github",
+            readOnly: false,
+            icon: icons.MdSocialDistance,
+          },
+        ],
       },
       {
         id: "16",

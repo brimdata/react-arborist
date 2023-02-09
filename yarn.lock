@@ -5,15 +5,6 @@ __metadata:
   version: 6
   cacheKey: 8
 
-"@4tw/cypress-drag-drop@npm:^2.2.3":
-  version: 2.2.3
-  resolution: "@4tw/cypress-drag-drop@npm:2.2.3"
-  peerDependencies:
-    cypress: ^2.1.0 || ^3.1.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0
-  checksum: 575a0f981093b44cc7c60de2cbe527468495ef2c020883ae54d5e2c977008d7466cf607b75de208bb954a3a0728fe744cf08b10aab0fdb7de866f2ccd04c89fe
-  languageName: node
-  linkType: hard
-
 "@ampproject/remapping@npm:^2.1.0":
   version: 2.2.0
   resolution: "@ampproject/remapping@npm:2.2.0"
@@ -3472,13 +3463,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cypress-drag-drop@npm:^1.1.1":
-  version: 1.1.1
-  resolution: "cypress-drag-drop@npm:1.1.1"
-  checksum: 8e449c5db25c64afd5c403a19e91879f8d28750c0f7bb1ca5e0e95abb9731639e64b251c279673fb6de57c17454b6066b1e097536639e662ad1c1e308ecfa283
-  languageName: node
-  linkType: hard
-
 "cypress@npm:^12.4.1":
   version: 12.4.1
   resolution: "cypress@npm:12.4.1"
@@ -3774,9 +3758,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "e2e@workspace:packages/e2e"
   dependencies:
-    "@4tw/cypress-drag-drop": ^2.2.3
     cypress: ^12.4.1
-    cypress-drag-drop: ^1.1.1
     serve: ^14.2.0
     start-server-and-test: ^1.15.3
     typescript: ^4.9.4
