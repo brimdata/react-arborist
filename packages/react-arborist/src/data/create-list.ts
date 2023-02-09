@@ -29,24 +29,35 @@ function flattenAndFilterTree<T>(
   root: NodeApi<T>,
   isMatch: (n: NodeApi<T>) => boolean
 ): NodeApi<T>[] {
-  function collect(node: NodeApi<T>) {
-    let result: NodeApi<T>[] = [];
-    const yes = !node.isRoot && isMatch(node);
+  const matches: Record<string, boolean> = {};
+  const list: NodeApi<T>[] = [];
 
-    if (node.children) {
-      for (let child of node.children) {
-        result = result.concat(collect(child));
+  function markMatch(node: NodeApi<T>) {
+    const yes = !node.isRoot && isMatch(node);
+    if (yes) {
+      matches[node.id] = true;
+      let parent = node.parent;
+      while (parent) {
+        matches[parent.id] = true;
+        parent = parent.parent;
       }
     }
-    if (result.length) {
-      if (!node.isRoot) result.unshift(node);
-      return result;
+    if (node.children) {
+      for (let child of node.children) markMatch(child);
     }
-    if (yes) return [node];
-    else return [];
   }
 
-  const list = collect(root).filter((n) => n.parent?.isOpen);
+  function collect(node: NodeApi<T>) {
+    if (node.level >= 0 && matches[node.id]) {
+      list.push(node);
+    }
+    if (node.isOpen) {
+      node.children?.forEach(collect);
+    }
+  }
+
+  markMatch(root);
+  collect(root);
   list.forEach(assignRowIndex);
   return list;
 }

@@ -7,7 +7,7 @@
   "module": "dist/module.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "start": "run-p 'watch:**'",
+    "start": "run-p 'start:**'",
     "build": "npm-run-all clean -p 'build:**'",
     "test": "jest",
     "build:js": "parcel build --target main --target module",
