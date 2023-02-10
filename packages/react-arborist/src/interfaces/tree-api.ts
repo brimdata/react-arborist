@@ -323,15 +323,18 @@ export class TreeApi<T> {
     this.focus(this.at(index));
   }
 
-  select(node: Identity, opts: { align?: Align } = {}) {
+  select(node: Identity, opts: { align?: Align; focus?: boolean } = {}) {
     if (!node) return;
+    const changeFocus = opts.focus !== false;
     const id = identify(node);
-    this.dispatch(focus(id));
+    if (changeFocus) this.dispatch(focus(id));
     this.dispatch(selection.only(id));
     this.dispatch(selection.anchor(id));
     this.dispatch(selection.mostRecent(id));
     this.scrollTo(id, opts.align);
-    if (this.focusedNode) safeRun(this.props.onFocus, this.focusedNode);
+    if (this.focusedNode && changeFocus) {
+      safeRun(this.props.onFocus, this.focusedNode);
+    }
     safeRun(this.props.onSelect, this.selectedNodes);
   }
 
