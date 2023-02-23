@@ -6,6 +6,7 @@
   "main": "dist/index.js",
   "module": "dist/module.js",
   "types": "dist/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "start": "run-p 'start:**'",
     "build": "npm-run-all clean -p 'build:**'",
