@@ -86,6 +86,7 @@ export function TreeProvider<T>({
             <DndProvider
               backend={HTML5Backend}
               options={{ rootElement: api.props.dndRootElement || undefined }}
+              manager={treeProps.dragDropManager}
             >
               {children}
             </DndProvider>

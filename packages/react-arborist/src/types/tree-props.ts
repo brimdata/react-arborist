@@ -5,6 +5,7 @@ import { ElementType, MouseEventHandler } from "react";
 import { ListOnScrollProps } from "react-window";
 import { NodeApi } from "../interfaces/node-api";
 import { OpenMap } from "../state/open-slice";
+import { useDragDropManager } from "react-dnd"
 
 export interface TreeProps<T> {
   /* Data Options */
@@ -75,4 +76,6 @@ export interface TreeProps<T> {
   dndRootElement?: globalThis.Node | null;
   onClick?: MouseEventHandler;
   onContextMenu?: MouseEventHandler;
+
+  dragDropManager?: ReturnType<typeof useDragDropManager>
 }
