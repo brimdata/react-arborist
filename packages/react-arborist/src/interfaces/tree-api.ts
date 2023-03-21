@@ -15,7 +15,6 @@ import { createRoot, ROOT_ID } from "../data/create-root";
 import { actions as visibility } from "../state/open-slice";
 import { actions as selection } from "../state/selection-slice";
 import { actions as dnd } from "../state/dnd-slice";
-import { DefaultDragPreview } from "../components/default-drag-preview";
 import { DefaultContainer } from "../components/default-container";
 import { Cursor } from "../dnd/compute-drop";
 import { Store } from "redux";
@@ -628,7 +627,7 @@ export class TreeApi<T> {
   }
 
   get renderDragPreview() {
-    return this.props.renderDragPreview || DefaultDragPreview;
+    return this.props.renderDragPreview;
   }
 
   get renderCursor() {

@@ -9,6 +9,7 @@ export type NodeRendererProps<T> = {
   node: NodeApi<T>;
   tree: TreeApi<T>;
   dragHandle?: (el: HTMLDivElement | null) => void;
+  previewHandle?: (el: HTMLDivElement | null) => void; 
   preview?: boolean;
 };
 

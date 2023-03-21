@@ -35,7 +35,7 @@ export const RowContainer = React.memo(function RowContainer<T>({
   const node = useFreshNode<T>(index);
 
   const el = useRef<HTMLDivElement | null>(null);
-  const dragRef = useDragHook<T>(node);
+  const { dragRef, previewRef } = useDragHook<T>(node);
   const dropRef = useDropHook(el, node);
   const innerRef = useCallback(
     (n: any) => {
@@ -76,7 +76,7 @@ export const RowContainer = React.memo(function RowContainer<T>({
 
   return (
     <Row node={node} innerRef={innerRef} attrs={rowAttrs}>
-      <Node node={node} tree={tree} style={nodeStyle} dragHandle={dragRef} />
+      <Node node={node} tree={tree} style={nodeStyle}  dragHandle={dragRef} previewHandle={previewRef} />
     </Row>
   );
 });

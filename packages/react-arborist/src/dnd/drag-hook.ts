@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { ConnectDragSource, useDrag } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
 import { useTreeApi } from "../context";
@@ -9,7 +9,7 @@ import { actions as dnd } from "../state/dnd-slice";
 import { safeRun } from "../utils";
 import { ROOT_ID } from "../data/create-root";
 
-export function useDragHook<T>(node: NodeApi<T>): ConnectDragSource {
+export function useDragHook<T>(node: NodeApi<T>) {
   const tree = useTreeApi();
   const ids = tree.selectedIds;
   const [_, ref, preview] = useDrag<DragItem, DropResult, void>(
@@ -42,10 +42,15 @@ export function useDragHook<T>(node: NodeApi<T>): ConnectDragSource {
     }),
     [ids, node]
   );
+  
+   useEffect(() => {
+    if (tree.renderDragPreview) {
+      preview(getEmptyImage());
+    }
+  }, []);
 
-  useEffect(() => {
-    preview(getEmptyImage());
-  }, [preview]);
-
-  return ref;
+  return {
+    dragRef: ref,
+    previewRef: preview,
+  };
 }
