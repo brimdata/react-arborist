@@ -327,6 +327,7 @@ interface TreeProps<T> {
   dndRootElement?: globalThis.Node | null;
   onClick?: MouseEventHandler;
   onContextMenu?: MouseEventHandler;
+  dragDropManager?: DragDropManager;
 }
 ```
 
