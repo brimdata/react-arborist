@@ -161,7 +161,7 @@ export function computeDrop(args: Args): ComputedDrop {
   /* The above node is an open folder */
   const level = getDropLevel(hover, above, below, args.indent, true);
   return {
-    drop: walkUpFrom(above, level),
+    drop: level === above.level + 1 ? dropAt(above?.id, 0) : walkUpFrom(above, level),
     cursor: lineCursor(above.rowIndex! + 1, level),
   };
 }
