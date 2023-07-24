@@ -12,12 +12,12 @@ import styles from "../styles/Gmail.module.css";
 import { FillFlexParent } from "../components/fill-flex-parent";
 import { SiGmail } from "react-icons/si";
 import { BsTree } from "react-icons/bs";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 
 export default function GmailSidebar() {
   const [term, setTerm] = useState("");
-  const globalTree = (tree: TreeApi<any> | null) => {
+  const globalTree = (tree?: TreeApi<GmailItem> | null) => {
     // @ts-ignore
     window.tree = tree;
   };
