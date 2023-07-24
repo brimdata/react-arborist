@@ -14,7 +14,6 @@ import {
   TreeApiContext,
 } from "../context";
 import { TreeApi } from "../interfaces/tree-api";
-import { IdObj } from "../types/utils";
 import { initialState } from "../state/initial";
 import { rootReducer, RootState } from "../state/root-reducer";
 import { HTML5Backend } from "react-dnd-html5-backend";

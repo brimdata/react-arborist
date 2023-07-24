@@ -1,16 +1,27 @@
 import clsx from "clsx";
-import { CursorProps, NodeApi, NodeRendererProps, Tree } from "react-arborist";
+import {
+  CursorProps,
+  NodeApi,
+  NodeRendererProps,
+  Tree,
+  TreeApi,
+} from "react-arborist";
 import { gmailData, GmailItem } from "../data/gmail";
 import * as icons from "react-icons/md";
 import styles from "../styles/gmail.module.css";
 import { FillFlexParent } from "../components/fill-flex-parent";
 import { SiGmail } from "react-icons/si";
 import { BsTree } from "react-icons/bs";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 
 export default function GmailSidebar() {
   const [term, setTerm] = useState("");
+  const globalTree = (tree: TreeApi<any> | null) => {
+    // @ts-ignore
+    window.tree = tree;
+  };
+
   return (
     <div className={styles.page}>
       <div className={styles.mainContent}>
@@ -28,6 +39,7 @@ export default function GmailSidebar() {
             {({ width, height }) => {
               return (
                 <Tree
+                  ref={globalTree}
                   initialData={gmailData}
                   width={width}
                   height={height}

@@ -40,7 +40,11 @@ export interface TreeProps<T> {
   disableMultiSelection?: boolean;
   disableEdit?: string | boolean | BoolFunc<T>;
   disableDrag?: string | boolean | BoolFunc<T>;
-  disableDrop?: string | boolean | BoolFunc<T> | ((node: NodeApi, dragNodes: NodeApi[]) => boolean);
+  disableDrop?:
+    | string
+    | boolean
+    | BoolFunc<T>
+    | ((node: NodeApi, dragNodes: NodeApi[]) => boolean);
   childrenAccessor?: string | ((d: T) => T[] | null);
   idAccessor?: string | ((d: T) => string);
 
