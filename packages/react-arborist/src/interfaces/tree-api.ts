@@ -370,18 +370,30 @@ export class TreeApi<T> {
   }
 
   deselectAll() {
-    this.dispatch(selection.clear());
-    this.dispatch(selection.anchor(null));
-    this.dispatch(selection.mostRecent(null));
+    this.setSelection({ ids: [], anchor: null, mostRecent: null });
     safeRun(this.props.onSelect, this.selectedNodes);
   }
 
   selectAll() {
-    this.dispatch(selection.set(new Set(Object.keys(this.idToIndex))));
+    this.setSelection({
+      ids: Object.keys(this.idToIndex),
+      anchor: this.firstNode,
+      mostRecent: this.lastNode,
+    });
     this.dispatch(focus(this.lastNode?.id));
-    this.dispatch(selection.anchor(this.firstNode));
-    this.dispatch(selection.mostRecent(this.lastNode));
     if (this.focusedNode) safeRun(this.props.onFocus, this.focusedNode);
+    safeRun(this.props.onSelect, this.selectedNodes);
+  }
+
+  setSelection(args: {
+    ids: (IdObj | string)[] | null;
+    anchor: IdObj | string | null;
+    mostRecent: IdObj | string | null;
+  }) {
+    const ids = new Set(args.ids?.map(identify));
+    const anchor = identifyNull(args.anchor);
+    const mostRecent = identifyNull(args.mostRecent);
+    this.dispatch(selection.set({ ids, anchor, mostRecent }));
     safeRun(this.props.onSelect, this.selectedNodes);
   }
 

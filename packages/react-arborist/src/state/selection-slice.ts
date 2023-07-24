@@ -28,9 +28,13 @@ export const actions = {
     ids: (Array.isArray(id) ? id : [id]).map(identify),
   }),
 
-  set: (ids: Set<string>) => ({
+  set: (args: {
+    ids: Set<string>;
+    anchor: string | null;
+    mostRecent: string | null;
+  }) => ({
     type: "SELECTION_SET" as const,
-    ids,
+    ...args,
   }),
 
   mostRecent: (id: string | null | IdObj) => ({
@@ -64,7 +68,12 @@ export function reducer(
       action.ids.forEach((id) => ids.delete(id));
       return { ...state, ids: new Set(ids) };
     case "SELECTION_SET":
-      return { ...state, ids: new Set(action.ids) };
+      return {
+        ...state,
+        ids: action.ids,
+        mostRecent: action.mostRecent,
+        anchor: action.anchor,
+      };
     case "SELECTION_MOST_RECENT":
       return { ...state, mostRecent: action.id };
     case "SELECTION_ANCHOR":
