@@ -30,3 +30,7 @@ To test individual packages, cd into them and run `yarn test`. For example, runn
 6. Check that it successfully published to npmjs
 
 The Github actions workflow will publish to npm.
+
+# Publish the Demo Site
+
+I run yarn build, then I copy the showcase/out directory into the netlify manual deploys interface.
