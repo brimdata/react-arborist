@@ -292,6 +292,7 @@ interface TreeProps<T> {
   openByDefault?: boolean;
   selectionFollowsFocus?: boolean;
   disableMultiSelection?: boolean;
+  disableSelect?: string | boolean | BoolFunc<T>;
   disableEdit?: string | boolean | BoolFunc<T>;
   disableDrag?: string | boolean | BoolFunc<T>;
   disableDrop?:
