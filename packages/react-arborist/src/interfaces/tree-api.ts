@@ -169,7 +169,7 @@ export class TreeApi<T> {
     return this.visibleNodes.slice(start, end + 1);
   }
 
-  indexOf(id: string | null | IdObj) {
+  indexOf(id: Identity) {
     const key = utils.identifyNull(id);
     if (!key) return null;
     return this.idToIndex[key];
@@ -219,7 +219,7 @@ export class TreeApi<T> {
     }
   }
 
-  async delete(node: string | IdObj | null | string[] | IdObj[]) {
+  async delete(node: Identity | string[] | IdObj[]) {
     if (!node) return;
     const idents = Array.isArray(node) ? node : [node];
     const ids = idents.map(identify);
@@ -256,7 +256,7 @@ export class TreeApi<T> {
     setTimeout(() => this.onFocus()); // Return focus to element;
   }
 
-  activate(id: string | IdObj | null) {
+  activate(id: Identity) {
     const node = this.get(identifyNull(id));
     if (!node) return;
     safeRun(this.props.onActivate, node);
@@ -403,8 +403,8 @@ export class TreeApi<T> {
 
   setSelection(args: {
     ids: (IdObj | string)[] | null;
-    anchor: IdObj | string | null;
-    mostRecent: IdObj | string | null;
+    anchor: Identity;
+    mostRecent: Identity;
   }) {
     const ids = new Set(args.ids?.map(identify));
     const anchor = identifyNull(args.anchor);
@@ -611,7 +611,7 @@ export class TreeApi<T> {
     return !utils.access(data, disabler);
   }
 
-  isDragging(node: string | IdObj | null) {
+  isDragging(node: Identity) {
     const id = identifyNull(node);
     if (!id) return false;
     return this.state.nodes.drag.id === id;
@@ -625,7 +625,7 @@ export class TreeApi<T> {
     return this.matchFn(node);
   }
 
-  willReceiveDrop(node: string | IdObj | null) {
+  willReceiveDrop(node: Identity) {
     const id = identifyNull(node);
     if (!id) return false;
     return id === this.state.nodes.drag.idWillReceiveDrop;
