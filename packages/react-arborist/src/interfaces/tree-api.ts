@@ -603,8 +603,8 @@ export class TreeApi<T> {
     return this.isActionPossible(data, this.props.disableSelect);
   }
 
-  private isActionPossible(data: T, disabler: string | boolean | BoolFunc<T> | undefined = (() => false)) {
-    return !utils.access(data, disabler) ?? true;
+  private isActionPossible(data: T, disabler: string | boolean | BoolFunc<T> = (() => false)) {
+    return !utils.access(data, disabler);
   }
 
   isDragging(node: string | IdObj | null) {
