@@ -616,7 +616,7 @@ export class TreeApi<T> {
     return id === this.state.nodes.drag.idWillReceiveDrop;
   }
 
-  ancestorWillReceiveDrop(identity: Identity) {
+  willDropInAncestor(identity: Identity) {
     const id = identifyNull(identity);
     if (!id) return false;
     const parent = this.get(this.state.nodes.drag.dropParentId);
