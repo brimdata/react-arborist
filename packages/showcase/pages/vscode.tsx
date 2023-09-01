@@ -1,6 +1,6 @@
 import useResizeObserver from "use-resize-observer";
 import styles from "../styles/vscode.module.css";
-import { CursorProps, NodeRendererProps, Tree } from "react-arborist";
+import { NodeRendererProps, Tree } from "react-arborist";
 import { SiTypescript } from "react-icons/si";
 import { MdFolder } from "react-icons/md";
 import clsx from "clsx";
@@ -65,7 +65,8 @@ function Node({ style, node, dragHandle, tree }: NodeRendererProps<Entry>) {
       style={style}
       className={clsx(styles.node, node.state, {
         [styles.highlight]:
-          node.willDropInAncestor && tree.dragNodeWillChangeParent,
+          tree.dragDestinationParent?.isAncestorOf(node) &&
+          tree.dragDestinationParent?.id !== tree.dragNode?.parent?.id,
       })}
       ref={dragHandle}
     >

@@ -419,6 +419,18 @@ export class TreeApi<T> {
       .filter((n) => !!n) as NodeApi<T>[];
   }
 
+  get dragNode() {
+    return this.get(this.state.nodes.drag.id);
+  }
+
+  get dragDestinationParent() {
+    return this.get(this.state.nodes.drag.destinationParentId);
+  }
+
+  get dragDestinationIndex() {
+    return this.state.nodes.drag.destinationIndex;
+  }
+
   canDrop() {
     if (this.isFiltered) return false;
     const parentNode = this.get(this.state.dnd.parentId) ?? this.root;
@@ -428,7 +440,7 @@ export class TreeApi<T> {
     for (const drag of dragNodes) {
       if (!drag) return false;
       if (!parentNode) return false;
-      if (drag.isInternal && utils.isDecendent(parentNode, drag)) return false;
+      if (drag.isInternal && utils.isDescendant(parentNode, drag)) return false;
     }
 
     // Allow the user to insert their own logic
@@ -436,7 +448,7 @@ export class TreeApi<T> {
       return !isDisabled({
         parentNode,
         dragNodes: this.dragNodes,
-        index: this.state.dnd.index,
+        index: this.state.dnd.index || 0,
       });
     } else if (typeof isDisabled == "string") {
       // @ts-ignore
@@ -563,13 +575,6 @@ export class TreeApi<T> {
     return this.state.nodes.selection.ids.size > 1;
   }
 
-  get dragNodeWillChangeParent() {
-    const node = this.get(this.state.nodes.drag.id);
-    if (!node) return false;
-    const newParentId = this.state.nodes.drag.dropParentId;
-    return node.parent?.id !== newParentId;
-  }
-
   isSelected(id?: string) {
     if (!id) return false;
     return this.state.nodes.selection.ids.has(id);
@@ -613,16 +618,8 @@ export class TreeApi<T> {
   willReceiveDrop(node: string | IdObj | null) {
     const id = identifyNull(node);
     if (!id) return false;
-    return id === this.state.nodes.drag.idWillReceiveDrop;
-  }
-
-  willDropInAncestor(identity: Identity) {
-    const id = identifyNull(identity);
-    if (!id) return false;
-    const parent = this.get(this.state.nodes.drag.dropParentId);
-    const node = this.get(id);
-    if (!parent) return false;
-    return parent.isAncestorOf(node);
+    const { destinationParentId, destinationIndex } = this.state.nodes.drag;
+    return id === destinationParentId && destinationIndex === null;
   }
 
   /* Tree Event Handlers */

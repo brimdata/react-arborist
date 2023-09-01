@@ -8,7 +8,7 @@ import { actions as dnd } from "../state/dnd-slice";
 
 export type DropResult = {
   parentId: string | null;
-  index: number;
+  index: number | null;
 };
 
 export function useDropHook(
