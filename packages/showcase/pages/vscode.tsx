@@ -59,11 +59,14 @@ function useTreeSort(data: Entry[]) {
   return data.map(sortChildren);
 }
 
-function Node({ style, node, dragHandle }: NodeRendererProps<Entry>) {
+function Node({ style, node, dragHandle, tree }: NodeRendererProps<Entry>) {
   return (
     <div
       style={style}
-      className={clsx(styles.node, node.state)}
+      className={clsx(styles.node, node.state, {
+        [styles.highlight]:
+          node.willDropInAncestor && tree.dragNodeWillChangeParent,
+      })}
       ref={dragHandle}
     >
       {node.isInternal ? <MdFolder /> : <SiTypescript />}

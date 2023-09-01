@@ -34,14 +34,10 @@
     fill: #3865BD;
 }
 
-.node:global(.willReceiveDrop) {
-    background: blue;
-}
-
 .node:hover {
     color: white;
 }
 
-.node:global(.willDropInAncestor) {
-    background: lightskyblue;
+.highlight {
+    background: #062F4A;
 }

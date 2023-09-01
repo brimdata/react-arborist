@@ -563,6 +563,13 @@ export class TreeApi<T> {
     return this.state.nodes.selection.ids.size > 1;
   }
 
+  get dragNodeWillChangeParent() {
+    const node = this.get(this.state.nodes.drag.id);
+    if (!node) return false;
+    const newParentId = this.state.nodes.drag.dropParentId;
+    return node.parent?.id !== newParentId;
+  }
+
   isSelected(id?: string) {
     if (!id) return false;
     return this.state.nodes.selection.ids.has(id);
@@ -609,7 +616,7 @@ export class TreeApi<T> {
     return id === this.state.nodes.drag.idWillReceiveDrop;
   }
 
-  willDropInAncestor(identity: Identity) {
+  ancestorWillReceiveDrop(identity: Identity) {
     const id = identifyNull(identity);
     if (!id) return false;
     const parent = this.get(this.state.nodes.drag.dropParentId);
