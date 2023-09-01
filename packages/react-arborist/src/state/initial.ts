@@ -7,7 +7,7 @@ export const initialState = (props?: TreeProps<any>): RootState => ({
     open: { filtered: {}, unfiltered: props?.initialOpenState ?? {} },
     focus: { id: null, treeFocused: false },
     edit: { id: null },
-    drag: { id: null, idWillReceiveDrop: null },
+    drag: { id: null, idWillReceiveDrop: null, dropParentId: null },
     selection: { ids: new Set(), anchor: null, mostRecent: null },
   },
   dnd: {

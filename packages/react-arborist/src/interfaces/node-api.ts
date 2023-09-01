@@ -91,6 +91,10 @@ export class NodeApi<T = any> {
     return this.tree.willReceiveDrop(this.id);
   }
 
+  get willDropInAncestor() {
+    return this.tree.willDropInAncestor(this.id);
+  }
+
   get state() {
     return {
       isClosed: this.isClosed,
@@ -104,6 +108,7 @@ export class NodeApi<T = any> {
       isSelectedEnd: this.isSelectedEnd,
       isSelectedStart: this.isSelectedStart,
       willReceiveDrop: this.willReceiveDrop,
+      willDropInAncestor: this.willDropInAncestor,
     };
   }
 
@@ -128,6 +133,16 @@ export class NodeApi<T = any> {
   get nextSibling(): NodeApi<T> | null {
     const i = this.childIndex;
     return this.parent?.children![i + 1] ?? null;
+  }
+
+  isAncestorOf(node: NodeApi<T> | null) {
+    if (!node) return false;
+    let ancestor: NodeApi<T> | null = node;
+    while (ancestor) {
+      if (ancestor.id === this.id) return true;
+      ancestor = ancestor.parent;
+    }
+    return false;
   }
 
   select() {

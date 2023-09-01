@@ -7,6 +7,7 @@ export function useFreshNode<T>(index: number) {
   const original = tree.at(index);
   if (!original) throw new Error(`Could not find node for index: ${index}`);
 
+  console.log(original.state.willDropInAncestor, original.id);
   return useMemo(() => {
     const fresh = original.clone();
     tree.visibleNodes[index] = fresh; // sneaky

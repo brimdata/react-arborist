@@ -609,6 +609,15 @@ export class TreeApi<T> {
     return id === this.state.nodes.drag.idWillReceiveDrop;
   }
 
+  willDropInAncestor(identity: Identity) {
+    const id = identifyNull(identity);
+    if (!id) return false;
+    const parent = this.get(this.state.nodes.drag.dropParentId);
+    const node = this.get(id);
+    if (!parent) return false;
+    return parent.isAncestorOf(node);
+  }
+
   /* Tree Event Handlers */
 
   onFocus() {

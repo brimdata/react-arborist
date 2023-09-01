@@ -17,7 +17,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true
+    "incremental": true,
   },
   "include": [
     "next-env.d.ts",
@@ -26,5 +26,5 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
 }
