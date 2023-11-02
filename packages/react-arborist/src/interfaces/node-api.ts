@@ -210,6 +210,10 @@ export class NodeApi<T = any> {
   }
 
   key() {
-    return this.path().join(',');
+    if (this.id) {
+      return this.path().join(',');
+    }
+
+    return null;
   }
 }
