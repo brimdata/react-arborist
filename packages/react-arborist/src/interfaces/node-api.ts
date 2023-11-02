@@ -196,4 +196,20 @@ export class NodeApi<T = any> {
       this.activate();
     }
   };
+
+  path() {
+    const path = [this.id];
+    let parent = this.parent;
+
+    while (parent) {
+      path.push(parent.id);
+      parent = parent.parent;
+    }
+
+    return path.reverse();
+  }
+
+  key() {
+    return this.path().join(',');
+  }
 }
