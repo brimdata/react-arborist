@@ -1,27 +1,43 @@
 import { ActionTypes } from "../types/utils";
 import { actions as dnd } from "./dnd-slice";
+import { initialState } from "./initial";
 
 /* Types */
 
-export type DragSlice = { id: string | null; idWillReceiveDrop: string | null };
+export type DragSlice = {
+  id: string | null;
+  selectedIds: string[];
+  destinationParentId: string | null;
+  destinationIndex: number | null;
+};
 
 /* Reducer */
 
 export function reducer(
-  state: DragSlice = { id: null, idWillReceiveDrop: null },
+  state: DragSlice = initialState().nodes.drag,
   action: ActionTypes<typeof dnd>
-) {
+): DragSlice {
   switch (action.type) {
     case "DND_DRAG_START":
-      return { ...state, id: action.id };
+      return { ...state, id: action.id, selectedIds: action.dragIds };
     case "DND_DRAG_END":
-      return { ...state, id: null };
-    case "DND_CURSOR":
-      const c = action.cursor;
-      if (c.type === "highlight" && c.id !== state.idWillReceiveDrop) {
-        return { ...state, idWillReceiveDrop: c.id };
-      } else if (c.type !== "highlight" && state.idWillReceiveDrop !== null) {
-        return { ...state, idWillReceiveDrop: null };
+      return {
+        ...state,
+        id: null,
+        destinationParentId: null,
+        destinationIndex: null,
+        selectedIds: [],
+      };
+    case "DND_HOVERING":
+      if (
+        action.parentId !== state.destinationParentId ||
+        action.index != state.destinationIndex
+      ) {
+        return {
+          ...state,
+          destinationParentId: action.parentId,
+          destinationIndex: action.index,
+        };
       } else {
         return state;
       }

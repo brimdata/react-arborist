@@ -130,6 +130,16 @@ export class NodeApi<T = any> {
     return this.parent?.children![i + 1] ?? null;
   }
 
+  isAncestorOf(node: NodeApi<T> | null) {
+    if (!node) return false;
+    let ancestor: NodeApi<T> | null = node;
+    while (ancestor) {
+      if (ancestor.id === this.id) return true;
+      ancestor = ancestor.parent;
+    }
+    return false;
+  }
+
   select() {
     this.tree.select(this);
   }

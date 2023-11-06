@@ -8,7 +8,7 @@ export type DndState = {
   cursor: Cursor;
   dragIds: string[];
   parentId: null | string;
-  index: number;
+  index: number | null;
 };
 
 /* Actions */
@@ -22,7 +22,7 @@ export const actions = {
   dragEnd() {
     return { type: "DND_DRAG_END" as const };
   },
-  hovering(parentId: string | null, index: number) {
+  hovering(parentId: string | null, index: number | null) {
     return { type: "DND_HOVERING" as const, parentId, index };
   },
 };

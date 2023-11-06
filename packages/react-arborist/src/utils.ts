@@ -15,9 +15,9 @@ export function isClosed(node: NodeApi<any> | null) {
 }
 
 /**
- * Is first param a decendent of the second param
+ * Is first param a descendant of the second param
  */
-export const isDecendent = (a: NodeApi<any>, b: NodeApi<any>) => {
+export const isDescendant = (a: NodeApi<any>, b: NodeApi<any>) => {
   let n: NodeApi<any> | null = a;
   while (n) {
     if (n.id === b.id) return true;

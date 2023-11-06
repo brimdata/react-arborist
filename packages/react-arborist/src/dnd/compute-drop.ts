@@ -26,7 +26,7 @@ function getNodesAroundCursor(
   hover: HoverData
 ): [NodeApi | null, NodeApi | null] {
   if (!node) {
-    // We're hoving over the empty part of the list, not over an item,
+    // We're hovering over the empty part of the list, not over an item,
     // Put the cursor below the last item which is "prev"
     return [prev, null];
   }
@@ -83,7 +83,10 @@ export type ComputedDrop = {
   cursor: Cursor | null;
 };
 
-function dropAt(parentId: string | undefined, index: number): DropResult {
+function dropAt(
+  parentId: string | undefined,
+  index: number | null
+): DropResult {
   return { parentId: parentId || null, index };
 }
 
@@ -135,7 +138,7 @@ export function computeDrop(args: Args): ComputedDrop {
   /* Hovering over the middle of a folder */
   if (node && node.isInternal && hover.inMiddle) {
     return {
-      drop: dropAt(node.id, 0),
+      drop: dropAt(node.id, null),
       cursor: highlightCursor(node.id),
     };
   }

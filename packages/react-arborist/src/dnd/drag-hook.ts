@@ -31,7 +31,7 @@ export function useDragHook<T>(node: NodeApi<T>): ConnectDragSource {
           safeRun(tree.props.onMove, {
             dragIds,
             parentId: parentId === ROOT_ID ? null : parentId,
-            index,
+            index: index === null ? 0 : index, // When it's null it was dropped over a folder
             dragNodes: tree.dragNodes,
             parentNode: tree.get(parentId),
           });
