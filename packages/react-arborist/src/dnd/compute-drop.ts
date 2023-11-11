@@ -60,7 +60,8 @@ function getDropLevel(
   hovering: HoverData,
   aboveCursor: NodeApi | null,
   belowCursor: NodeApi | null,
-  indent: number
+  indent: number,
+  isAboveNodeOpen: boolean
 ) {
   const hoverLevel = Math.round(Math.max(0, hovering.x - indent) / indent);
   let min, max;
@@ -68,10 +69,10 @@ function getDropLevel(
     max = 0;
     min = 0;
   } else if (!belowCursor) {
-    max = aboveCursor.level;
+    max = aboveCursor.level + (isAboveNodeOpen ? 1 : 0);
     min = 0;
   } else {
-    max = aboveCursor.level;
+    max = aboveCursor.level + (isAboveNodeOpen ? 1 : 0);
     min = belowCursor.level;
   }
 
@@ -153,7 +154,7 @@ export function computeDrop(args: Args): ComputedDrop {
 
   /* The above node is an item or a closed folder */
   if (isItem(above) || isClosed(above)) {
-    const level = getDropLevel(hover, above, below, args.indent);
+    const level = getDropLevel(hover, above, below, args.indent, false);
     return {
       drop: walkUpFrom(above, level),
       cursor: lineCursor(above.rowIndex! + 1, level),
@@ -161,8 +162,9 @@ export function computeDrop(args: Args): ComputedDrop {
   }
 
   /* The above node is an open folder */
+  const level = getDropLevel(hover, above, below, args.indent, true);
   return {
-    drop: dropAt(above?.id, 0),
-    cursor: lineCursor(above.rowIndex! + 1, above.level + 1),
+    drop: level === above.level + 1 ? dropAt(above?.id, 0) : walkUpFrom(above, level),
+    cursor: lineCursor(above.rowIndex! + 1, level),
   };
 }
