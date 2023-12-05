@@ -58,7 +58,7 @@ export const RowContainer = React.memo(function RowContainer<T>({
   );
   const rowAttrs: React.HTMLAttributes<any> = {
     role: "treeitem",
-    "aria-level": node.level,
+    "aria-level": node.level + 1,
     "aria-selected": node.isSelected,
     style: rowStyle,
     tabIndex: -1,

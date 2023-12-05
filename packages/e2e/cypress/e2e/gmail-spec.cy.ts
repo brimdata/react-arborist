@@ -64,14 +64,14 @@ describe("Testing the Gmail Demo", () => {
     cy.focused().type("a");
     cy.focused().type("Root{enter}");
     cy.get("@item").contains("Root").click();
-    cy.focused().should("have.attr", "aria-level", "0");
+    cy.focused().should("have.attr", "aria-level", "1");
 
     // On a folder that is open
     cy.get("@item").contains("Categories").click(); // opened it
     cy.focused().type("a");
     cy.focused().type("Child{enter}");
     cy.get("@item").contains("Child").click();
-    cy.focused().should("have.attr", "aria-level", "1");
+    cy.focused().should("have.attr", "aria-level", "2");
   });
 
   it("Creates Internal Nodes", () => {
@@ -95,14 +95,14 @@ describe("Testing the Gmail Demo", () => {
     cy.focused().type("Root{enter}");
     cy.get("@item").contains("Root").click();
     cy.focused().children().should("have.class", "isInternal");
-    cy.focused().should("have.attr", "aria-level", "0");
+    cy.focused().should("have.attr", "aria-level", "1");
 
     // On a folder that is open
     cy.get("@item").contains("Categories").click(); // opened it
     cy.focused().type("A");
     cy.focused().type("Child{enter}");
     cy.get("@item").contains("Child").click();
-    cy.focused().should("have.attr", "aria-level", "1");
+    cy.focused().should("have.attr", "aria-level", "2");
   });
 
   it("drags and drops in its list", () => {
