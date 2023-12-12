@@ -1,6 +1,6 @@
 {
   "name": "react-arborist",
-  "version": "3.3.0-rc.1",
+  "version": "3.3.0",
   "license": "MIT",
   "source": "src/index.ts",
   "main": "dist/main/index.js",
@@ -16,6 +16,10 @@
     "test": "jest",
     "watch": "yarn build:es --watch"
   },
+  "files": [
+    "src",
+    "dist"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/brimdata/react-arborist.git"
