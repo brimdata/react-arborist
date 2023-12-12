@@ -105,7 +105,7 @@ export class TreeApi<T> {
 
   accessChildren(data: T) {
     const get = this.props.childrenAccessor || "children";
-    return utils.access<T[] | undefined>(data, get) ?? null;
+    return utils.access<readonly T[] | undefined>(data, get) ?? null;
   }
 
   accessId(data: T) {
