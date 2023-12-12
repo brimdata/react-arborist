@@ -13,7 +13,8 @@
     "build": "npm-run-all clean -p 'build:**'",
     "clean": "rimraf dist",
     "prepack": "yarn build",
-    "test": "jest"
+    "test": "jest",
+    "watch": "yarn build:es --watch"
   },
   "repository": {
     "type": "git",
