@@ -34,8 +34,8 @@
     "filterable"
   ],
   "dependencies": {
-    "react-dnd": "^16.0.1",
-    "react-dnd-html5-backend": "^16.0.1",
+    "react-dnd": "^15.1.2",
+    "react-dnd-html5-backend": "^15.1.2",
     "react-window": "^1.8.10",
     "redux": "^5.0.0",
     "use-sync-external-store": "^1.2.0"
