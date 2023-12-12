@@ -1210,24 +1210,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-dnd/asap@npm:4.0.1":
+"@react-dnd/asap@npm:^4.0.0":
   version: 4.0.1
   resolution: "@react-dnd/asap@npm:4.0.1"
   checksum: 757db3b5c436a95383b74f187f503321092909401ce9665d9cc1999308a44de22809bf8dbe82c9126bd73b72dd6665bbc4a788e864fc3c243c59f65057a4f87f
   languageName: node
   linkType: hard
 
-"@react-dnd/invariant@npm:3.0.1":
-  version: 3.0.1
-  resolution: "@react-dnd/invariant@npm:3.0.1"
-  checksum: c1626899b8b8af0dc5c10a5745709fc415a6c81f1b729e589c579ac9a563471882c1cd9ca362f6df37f3ef9a0481316aeb1f587cbf8c104e82ceda11639af8e8
+"@react-dnd/invariant@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@react-dnd/invariant@npm:2.0.0"
+  checksum: ef1e989920d70b15c80dccb01af9b598081d76993311aa22d2e9a3ec41d10a88540eeec4b4de7a8b2a2ea52dfc3495ab45e39192c2d27795a9258bd6b79d000e
   languageName: node
   linkType: hard
 
-"@react-dnd/shallowequal@npm:3.0.1":
-  version: 3.0.1
-  resolution: "@react-dnd/shallowequal@npm:3.0.1"
-  checksum: 0a41d7283a113126d98072a1c9f11d38a853dd7d6473ff1d5b8c24374977451266ba01f2e27bc5159bab08dda0a0a751672bb47a432def1db2871fd323369d8c
+"@react-dnd/shallowequal@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "@react-dnd/shallowequal@npm:2.0.0"
+  checksum: b5bbdc795d65945bb7ba2322bed5cf8d4c6fe91dced98c3b10e3d16822c438f558751135ff296f8d1aa1eaa9d0037dacab2b522ca5eb812175123b9996966dcb
   languageName: node
   linkType: hard
 
@@ -2959,14 +2959,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dnd-core@npm:15.1.2":
-  version: 15.1.2
-  resolution: "dnd-core@npm:15.1.2"
+"dnd-core@npm:14.0.1":
+  version: 14.0.1
+  resolution: "dnd-core@npm:14.0.1"
   dependencies:
-    "@react-dnd/asap": 4.0.1
-    "@react-dnd/invariant": 3.0.1
-    redux: ^4.1.2
-  checksum: c3b1759fbcdbe1f102793bdda0f422ffa3e6d99f06a6d135bb65a728849eb50746dfffdfd52652bf0332795f61a522ff4e1a57364e0ae162ac7018a234fa9b52
+    "@react-dnd/asap": ^4.0.0
+    "@react-dnd/invariant": ^2.0.0
+    redux: ^4.1.1
+  checksum: dbc50727f53baad1cb1e0430a2a1b81c5c291389322f90fdc46edeb2fd49cc206ce4fa30a95afb53d88238945228e34866d7465f7ea49285c296baf883551301
   languageName: node
   linkType: hard
 
@@ -6889,8 +6889,8 @@ __metadata:
     "@types/use-sync-external-store": ^0.0.6
     jest: ^29.7.0
     npm-run-all: ^4.1.5
-    react-dnd: ^15.1.2
-    react-dnd-html5-backend: ^15.1.2
+    react-dnd: ^14.0.3
+    react-dnd-html5-backend: ^14.0.3
     react-window: ^1.8.10
     redux: ^5.0.0
     rimraf: ^5.0.5
@@ -6903,22 +6903,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-dnd-html5-backend@npm:^15.1.2":
-  version: 15.1.3
-  resolution: "react-dnd-html5-backend@npm:15.1.3"
+"react-dnd-html5-backend@npm:^14.0.3":
+  version: 14.1.0
+  resolution: "react-dnd-html5-backend@npm:14.1.0"
   dependencies:
-    dnd-core: 15.1.2
-  checksum: 325672647965873365d5afaa5ddb81562202f30e11a6d4922236f5a1c46eb336db04746726fa070ee328cade45455c636330893d330dddd7d7aad6b45c7bfb7f
+    dnd-core: 14.0.1
+  checksum: 6aa8d62c6b2288893b3f216d476d2f84495b40d33578ba9e3a5051dc093a71dc59700e6927ed7ac596ff8d7aa3b3f29404f7d173f844bd6144ed633403dd8e96
   languageName: node
   linkType: hard
 
-"react-dnd@npm:^15.1.2":
-  version: 15.1.2
-  resolution: "react-dnd@npm:15.1.2"
+"react-dnd@npm:^14.0.3":
+  version: 14.0.5
+  resolution: "react-dnd@npm:14.0.5"
   dependencies:
-    "@react-dnd/invariant": 3.0.1
-    "@react-dnd/shallowequal": 3.0.1
-    dnd-core: 15.1.2
+    "@react-dnd/invariant": ^2.0.0
+    "@react-dnd/shallowequal": ^2.0.0
+    dnd-core: 14.0.1
     fast-deep-equal: ^3.1.3
     hoist-non-react-statics: ^3.3.2
   peerDependencies:
@@ -6933,7 +6933,7 @@ __metadata:
       optional: true
     "@types/react":
       optional: true
-  checksum: 3e8c07ea4c1c0a0a6d2dfd8ba67f4f971dbd868ea50ccecc86f0735f4d583962d1ee4c5a8362b0b92c14538d2696567fed1309ef6ac95f575ccf1b580f99934d
+  checksum: 464e231de8c2b79546049a1600b67b1df0b7f762f23c688d3e9aeddbf334b1e64931ef91d0129df3c8be255f0af76e89426729dbcbefe4bdc09b0f665d2da368
   languageName: node
   linkType: hard
 
@@ -7016,7 +7016,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redux@npm:^4.1.2":
+"redux@npm:^4.1.1":
   version: 4.2.1
   resolution: "redux@npm:4.2.1"
   dependencies:
@@ -7552,6 +7552,7 @@ __metadata:
     react-dom: ^18.2.0
     react-icons: ^4.12.0
     rimraf: ^5.0.5
+    serve: ^14.2.1
     tree-model-improved: ^2.0.1
     typescript: ^5.3.3
     use-resize-observer: ^9.1.0

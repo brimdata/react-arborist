@@ -4,13 +4,12 @@
   "scripts": {
     "cy:run": "yarn cypress run",
     "start": "yarn cypress open",
-    "serve": "yarn workspace showcase serve > /dev/null",
+    "serve": "yarn workspace showcase static > /dev/null",
     "test": "start-server-and-test serve http://localhost:3000 cy:run"
   },
   "devDependencies": {
     "cypress": "^13.6.1",
     "serve": "^14.2.1",
-    "start-server-and-test": "^2.0.3",
-    "typescript": "^5.3.3"
+    "start-server-and-test": "^2.0.3"
   }
 }

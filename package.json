@@ -12,7 +12,8 @@
     "build:showcase": "yarn workspace showcase build",
     "test": "run-p test:react-arborist test:e2e",
     "test:react-arborist": "yarn workspace react-arborist test",
-    "test:e2e": "yarn workspace e2e test"
+    "test:e2e": "yarn workspace e2e test",
+    "static": "yarn workspace"
   },
   "private": true,
   "packageManager": "yarn@3.2.0",
