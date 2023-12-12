@@ -151,8 +151,11 @@ export function computeDrop(args: Args): ComputedDrop {
     };
   }
 
-  /* The above node is an item or a closed folder */
-  if (isItem(above) || isClosed(above)) {
+  /**
+   * The above node is an item, a closed folder or hovering over
+   * the top of next node, proposing to append as next sibling.
+   */
+  if (isItem(above) || isClosed(above) || hover.atTop) {
     const level = getDropLevel(hover, above, below, args.indent);
     return {
       drop: walkUpFrom(above, level),
