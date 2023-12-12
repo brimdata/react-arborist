@@ -4,20 +4,15 @@
     "./packages/*"
   ],
   "scripts": {
-    "start": "run-p 'start:**'",
-    "start:showcase": "yarn workspace showcase start",
-    "start:library": "yarn workspace react-arborist start",
-    "build": "run-s build:react-arborist build:showcase",
-    "build:react-arborist": "yarn workspace react-arborist build",
-    "build:showcase": "yarn workspace showcase build",
-    "test": "run-p test:react-arborist test:e2e",
-    "test:react-arborist": "yarn workspace react-arborist test",
-    "test:e2e": "yarn workspace e2e test"
+    "build": "yarn workspaces foreach --all run build",
+    "test": "yarn workspaces foreach --all run test",
+    "bump": "yarn workspace react-arborist version",
+    "publish": "sh bin/publish"
   },
   "private": true,
-  "packageManager": "yarn@3.2.0",
+  "packageManager": "yarn@4.0.2",
   "devDependencies": {
     "npm-run-all": "^4.1.5",
-    "typescript": ">=3.0.0"
+    "typescript": "^5.3.3"
   }
 }

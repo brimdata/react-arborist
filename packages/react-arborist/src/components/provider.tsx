@@ -15,7 +15,7 @@ import {
 } from "../context";
 import { TreeApi } from "../interfaces/tree-api";
 import { initialState } from "../state/initial";
-import { rootReducer, RootState } from "../state/root-reducer";
+import { Actions, rootReducer, RootState } from "../state/root-reducer";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
 import { TreeProps } from "../types/tree-props";
@@ -37,7 +37,8 @@ export function TreeProvider<T>({
 }: Props<T>) {
   const list = useRef<FixedSizeList | null>(null);
   const listEl = useRef<HTMLDivElement | null>(null);
-  const store = useRef<Store>(
+  const store = useRef<Store<RootState, Actions>>(
+    // @ts-ignore
     createStore(rootReducer, initialState(treeProps))
   );
   const state = useSyncExternalStore<RootState>(

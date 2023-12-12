@@ -141,7 +141,7 @@ describe("Testing the Gmail Demo", () => {
   });
 });
 
-function dragAndDrop(src: any, dst: any) {
+function dragAndDrop(src, dst) {
   const dataTransfer = new DataTransfer();
   src.trigger("dragstart", { dataTransfer });
   dst.trigger("drop", { dataTransfer });

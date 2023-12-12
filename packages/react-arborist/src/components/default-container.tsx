@@ -216,6 +216,7 @@ export function DefaultContainer() {
         if (node) tree.focus(node.id);
       }}
     >
+      {/* @ts-ignore */}
       <FixedSizeList
         className={tree.props.className}
         outerRef={tree.listEl}
