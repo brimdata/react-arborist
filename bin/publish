@@ -1,6 +1,5 @@
 #!/bin/sh
 
-yarn
 yarn build
 cp README.md packages/react-arborist/README.md
 yarn workspace react-arborist npm publish $@
