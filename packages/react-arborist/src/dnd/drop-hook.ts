@@ -22,7 +22,8 @@ export function useDropHook(
       canDrop: () => tree.canDrop(),
       hover: (item, m) => {
         const offset = m.getClientOffset();
-        if (!el.current || !offset || item.id === node.id) return;
+
+        if (!el.current || !offset) return;
         const { cursor, drop } = computeDrop({
           element: el.current,
           offset: offset,
