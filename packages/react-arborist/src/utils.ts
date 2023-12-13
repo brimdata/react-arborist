@@ -14,6 +14,10 @@ export function isClosed(node: NodeApi<any> | null) {
   return node && node.isInternal && !node.isOpen;
 }
 
+export function isOpenWithEmptyChildren(node: NodeApi<any> | null) {
+  return node && node.isOpen && !node.children?.length;
+}
+
 /**
  * Is first param a descendant of the second param
  */

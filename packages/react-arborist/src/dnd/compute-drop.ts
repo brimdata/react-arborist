@@ -1,6 +1,6 @@
 import { XYCoord } from "react-dnd";
 import { NodeApi } from "../interfaces/node-api";
-import { bound, indexOf, isClosed, isItem } from "../utils";
+import { bound, indexOf, isClosed, isItem, isOpenWithEmptyChildren } from "../utils";
 import { DropResult } from "./drop-hook";
 
 function measureHover(el: HTMLElement, offset: XYCoord) {
@@ -155,7 +155,7 @@ export function computeDrop(args: Args): ComputedDrop {
    * The above node is an item, a closed folder or hovering over
    * the top of next node, proposing to append as next sibling.
    */
-  if (isItem(above) || isClosed(above) || hover.atTop) {
+  if (isItem(above) || isClosed(above) || (!below && hover.inBottomHalf) || (hover.atTop && isOpenWithEmptyChildren(above))) {
     const level = getDropLevel(hover, above, below, args.indent);
     return {
       drop: walkUpFrom(above, level),
