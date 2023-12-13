@@ -18,6 +18,7 @@ export function DefaultContainer() {
   const tree = useTreeApi();
   return (
     <div
+      role="tree"
       style={{
         height: tree.height,
         width: tree.width,
@@ -215,6 +216,7 @@ export function DefaultContainer() {
         if (node) tree.focus(node.id);
       }}
     >
+      {/* @ts-ignore */}
       <FixedSizeList
         className={tree.props.className}
         outerRef={tree.listEl}

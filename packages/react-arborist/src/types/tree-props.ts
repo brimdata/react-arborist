@@ -36,7 +36,7 @@ export interface TreeProps<T> {
   padding?: number;
 
   /* Config */
-  childrenAccessor?: string | ((d: T) => T[] | null);
+  childrenAccessor?: string | ((d: T) => readonly T[] | null);
   idAccessor?: string | ((d: T) => string);
   openByDefault?: boolean;
   selectionFollowsFocus?: boolean;
