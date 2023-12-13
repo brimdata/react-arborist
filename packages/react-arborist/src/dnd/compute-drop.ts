@@ -1,6 +1,12 @@
 import { XYCoord } from "react-dnd";
 import { NodeApi } from "../interfaces/node-api";
-import { bound, indexOf, isClosed, isItem } from "../utils";
+import {
+  bound,
+  indexOf,
+  isClosed,
+  isItem,
+  isOpenWithEmptyChildren,
+} from "../utils";
 import { DropResult } from "./drop-hook";
 
 function measureHover(el: HTMLElement, offset: XYCoord) {
@@ -56,28 +62,6 @@ type Args = {
   nextNode: NodeApi | null;
 };
 
-function getDropLevel(
-  hovering: HoverData,
-  aboveCursor: NodeApi | null,
-  belowCursor: NodeApi | null,
-  indent: number
-) {
-  const hoverLevel = Math.round(Math.max(0, hovering.x - indent) / indent);
-  let min, max;
-  if (!aboveCursor) {
-    max = 0;
-    min = 0;
-  } else if (!belowCursor) {
-    max = aboveCursor.level;
-    min = 0;
-  } else {
-    max = aboveCursor.level;
-    min = belowCursor.level;
-  }
-
-  return bound(hoverLevel, min, max);
-}
-
 export type ComputedDrop = {
   drop: DropResult | null;
   cursor: Cursor | null;
@@ -128,10 +112,11 @@ export type Cursor = LineCursor | NoCursor | HighlightCursor;
 
 /**
  * This is the most complex, tricky function in the whole repo.
- * It could be simplified and made more understandable.
  */
 export function computeDrop(args: Args): ComputedDrop {
   const hover = measureHover(args.element, args.offset);
+  const indent = args.indent;
+  const hoverLevel = Math.round(Math.max(0, hover.x - indent) / indent);
   const { node, nextNode, prevNode } = args;
   const [above, below] = getNodesAroundCursor(node, prevNode, nextNode, hover);
 
@@ -143,7 +128,12 @@ export function computeDrop(args: Args): ComputedDrop {
     };
   }
 
-  /* At the top of the list */
+  /*
+   * Now we only need to care about the node above the cursor
+   * -----------                            -------
+   */
+
+  /* There is no node above the cursor line */
   if (!above) {
     return {
       drop: dropAt(below?.parent?.id, 0),
@@ -151,16 +141,43 @@ export function computeDrop(args: Args): ComputedDrop {
     };
   }
 
-  /* The above node is an item or a closed folder */
-  if (isItem(above) || isClosed(above)) {
-    const level = getDropLevel(hover, above, below, args.indent);
+  /* The node above the cursor line is an item */
+  if (isItem(above)) {
+    const level = bound(hoverLevel, below?.level || 0, above.level);
     return {
       drop: walkUpFrom(above, level),
       cursor: lineCursor(above.rowIndex! + 1, level),
     };
   }
 
-  /* The above node is an open folder */
+  /* The node above the cursor line is a closed folder */
+  if (isClosed(above)) {
+    const level = bound(hoverLevel, below?.level || 0, above.level);
+    return {
+      drop: walkUpFrom(above, level),
+      cursor: lineCursor(above.rowIndex! + 1, level),
+    };
+  }
+
+  /* The node above the cursor line is an open folder with no children */
+  if (isOpenWithEmptyChildren(above)) {
+    const level = bound(hoverLevel, 0, above.level + 1);
+    if (level > above.level) {
+      /* Will be the first child of the empty folder */
+      return {
+        drop: dropAt(above.id, 0),
+        cursor: lineCursor(above.rowIndex! + 1, level),
+      };
+    } else {
+      /* Will be a sibling or grandsibling of the empty folder */
+      return {
+        drop: walkUpFrom(above, level),
+        cursor: lineCursor(above.rowIndex! + 1, level),
+      };
+    }
+  }
+
+  /* The node above the cursor is a an open folder with children */
   return {
     drop: dropAt(above?.id, 0),
     cursor: lineCursor(above.rowIndex! + 1, above.level + 1),
