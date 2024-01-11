@@ -20,7 +20,7 @@ export function useDragHook<T>(node: NodeApi<T>): ConnectDragSource {
         // This is fired once at the begging of a drag operation
         const dragIds = tree.isSelected(node.id) ? Array.from(ids) : [node.id];
         tree.dispatch(dnd.dragStart(node.id, dragIds));
-        return { id: node.id };
+        return { id: node.id, node: node };
       },
       end: () => {
         tree.hideCursor();
