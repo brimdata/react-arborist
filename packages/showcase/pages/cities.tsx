@@ -1,6 +1,6 @@
 import clsx from "clsx";
 import { useEffect, useRef, useState } from "react";
-import { NodeApi, NodeRendererProps, Tree, TreeApi } from "react-arborist";
+import { NodeApi, NodeRendererProps, Tree, TreeApi, shortcutHandlers } from "react-arborist";
 import styles from "../styles/cities.module.css";
 import { cities } from "../data/cities";
 import { BsMapFill, BsMap, BsGeo, BsGeoFill } from "react-icons/bs";
@@ -26,6 +26,22 @@ export default function Cities() {
   useEffect(() => {
     setCount(tree?.visibleNodes.length ?? 0);
   }, [tree, searchTerm]);
+
+  const customShortcutHandlers = {
+    ...shortcutHandlers,
+    // You can override shortcuts like this
+    handleSelectDownTree: {
+      shortcut: (e:any) => e.key === "ArrowUp" || e.key === "k",
+      function: shortcutHandlers.handleSelectDownTree.function
+    },
+    // You can even add custom shortcuts
+    customHandler: {
+      shortcut: (e:any) => e.key === "@",
+      function: (tree:any, e:any) => {
+        alert("@");
+      }
+    }
+  }
 
   return (
     <div className={styles.container}>
@@ -56,6 +72,7 @@ export default function Cities() {
                     setCount(tree?.visibleNodes.length ?? 0);
                   });
                 }}
+                shortcutHandlers={customShortcutHandlers}
               >
                 {Node}
               </Tree>

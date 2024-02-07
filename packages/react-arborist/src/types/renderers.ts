@@ -3,6 +3,7 @@ import { IdObj } from "./utils";
 import { NodeApi } from "../interfaces/node-api";
 import { TreeApi } from "../interfaces/tree-api";
 import { XYCoord } from "react-dnd";
+import { ShortcutHandlers } from "../shortcuts";
 
 export type NodeRendererProps<T> = {
   style: CSSProperties;
@@ -32,3 +33,7 @@ export type CursorProps = {
   left: number;
   indent: number;
 };
+
+export type ContainerProps = {
+  shortcutHandlers: ShortcutHandlers
+}

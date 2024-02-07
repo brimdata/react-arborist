@@ -5,6 +5,7 @@ import { ElementType, MouseEventHandler } from "react";
 import { ListOnScrollProps } from "react-window";
 import { NodeApi } from "../interfaces/node-api";
 import { OpenMap } from "../state/open-slice";
+import { ShortcutHandlers } from "../shortcuts";
 import { useDragDropManager } from "react-dnd";
 
 export interface TreeProps<T> {
@@ -73,6 +74,7 @@ export interface TreeProps<T> {
   className?: string | undefined;
   rowClassName?: string | undefined;
 
+  shortcutHandlers?: ShortcutHandlers;
   dndRootElement?: globalThis.Node | null;
   onClick?: MouseEventHandler;
   onContextMenu?: MouseEventHandler;
