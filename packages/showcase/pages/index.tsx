@@ -26,7 +26,7 @@ const Home: NextPage = () => {
         </p>
 
         <div className={styles.demos}>
-          <Link href="/gmail">
+          <Link href="/gmail" legacyBehavior>
             <div className={styles.demoCard}>
               <div className={`${styles.demoCardImage} gmail`}></div>
               <b>Custom Styles</b>
@@ -39,7 +39,7 @@ const Home: NextPage = () => {
             </div>
           </Link>
 
-          <Link href="/cities">
+          <Link href="/cities" legacyBehavior>
             <div className={styles.demoCard}>
               <div className={`${styles.demoCardImage} cities`}></div>
               <b>30,000 Nodes</b>
