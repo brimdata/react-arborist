@@ -466,6 +466,14 @@ _node_.**childIndex**
 
 Returns the node's index in relation to its siblings.
 
+_node_.**path**
+
+Returns an array that represents the ancestry of the node, starting from the root node and ending with the current node. Each element in the array corresponds to an ID in the node's hierarchy.
+
+_node_.**key**
+
+Returns the unique React key associated with the node.
+
 _node_.**next**
 
 Returns the next visible node. The node directly under this node in the tree component. Returns null if none exist.

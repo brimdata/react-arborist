@@ -225,7 +225,7 @@ export function DefaultContainer() {
         width={tree.width}
         itemSize={tree.rowHeight}
         overscanCount={tree.overscanCount}
-        itemKey={(index) => tree.visibleNodes[index]?.id || index}
+        itemKey={(index) => tree.visibleNodes[index]?.key || index}
         outerElementType={ListOuterElement}
         innerElementType={ListInnerElement}
         onScroll={tree.props.onScroll}

@@ -115,6 +115,26 @@ export class NodeApi<T = any> {
     }
   }
 
+  get path() {
+    const path = [this.id];
+    let parent = this.parent;
+
+    while (parent) {
+      path.push(parent.id);
+      parent = parent.parent;
+    }
+
+    return path.reverse();
+  }
+
+  get key() {
+    if (this.id) {
+      return this.path.join(',');
+    }
+
+    return null;
+  }
+
   get next(): NodeApi<T> | null {
     if (this.rowIndex === null) return null;
     return this.tree.at(this.rowIndex + 1);
