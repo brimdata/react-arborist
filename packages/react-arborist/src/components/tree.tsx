@@ -18,7 +18,7 @@ function TreeComponent<T>(
       <OuterDrop>
         <TreeContainer />
       </OuterDrop>
-      <DragPreviewContainer />
+      { props.renderDragPreview && <DragPreviewContainer /> }
     </TreeProvider>
   );
 }
