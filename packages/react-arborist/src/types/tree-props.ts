@@ -52,6 +52,7 @@ export interface TreeProps<T> {
         dragNodes: NodeApi<T>[];
         index: number;
       }) => boolean);
+  ignoreDropsOutside?: boolean;
 
   /* Event Handlers */
   onActivate?: (node: NodeApi<T>) => void;
