@@ -24,6 +24,7 @@ export function useOuterDrop() {
           element: tree.listEl.current,
           offset: offset,
           indent: tree.indent,
+          hitAreaHeight: tree.props.rowHitAreaHeight,
           node: null,
           prevNode: tree.visibleNodes[tree.visibleNodes.length - 1],
           nextNode: null,

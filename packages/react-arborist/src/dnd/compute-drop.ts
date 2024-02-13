@@ -9,15 +9,20 @@ import {
 } from "../utils";
 import { DropResult } from "./drop-hook";
 
-function measureHover(el: HTMLElement, offset: XYCoord) {
+function measureHover(
+  el: HTMLElement,
+  offset: XYCoord,
+  hitAreaHeight?: number
+) {
   const rect = el.getBoundingClientRect();
   const x = offset.x - Math.round(rect.x);
   const y = offset.y - Math.round(rect.y);
   const height = rect.height;
   const inTopHalf = y < height / 2;
   const inBottomHalf = !inTopHalf;
-  const pad = height / 4;
-  const inMiddle = y > pad && y < height - pad;
+  const pad =
+    hitAreaHeight === undefined ? height / 4 : (height - hitAreaHeight) / 2;
+  const inMiddle = y >= pad && y <= height - pad;
   const atTop = !inMiddle && inTopHalf;
   const atBottom = !inMiddle && inBottomHalf;
   return { x, inTopHalf, inBottomHalf, inMiddle, atTop, atBottom };
@@ -57,6 +62,7 @@ type Args = {
   element: HTMLElement;
   offset: XYCoord;
   indent: number;
+  hitAreaHeight?: number;
   node: NodeApi | null;
   prevNode: NodeApi | null;
   nextNode: NodeApi | null;
@@ -114,7 +120,7 @@ export type Cursor = LineCursor | NoCursor | HighlightCursor;
  * This is the most complex, tricky function in the whole repo.
  */
 export function computeDrop(args: Args): ComputedDrop {
-  const hover = measureHover(args.element, args.offset);
+  const hover = measureHover(args.element, args.offset, args.hitAreaHeight);
   const indent = args.indent;
   const hoverLevel = Math.round(Math.max(0, hover.x - indent) / indent);
   const { node, nextNode, prevNode } = args;
