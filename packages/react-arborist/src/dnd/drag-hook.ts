@@ -22,8 +22,26 @@ export function useDragHook<T>(node: NodeApi<T>): ConnectDragSource {
         tree.dispatch(dnd.dragStart(node.id, dragIds));
         return { id: node.id };
       },
-      end: () => {
+      end: (_, monitor) => {
         tree.hideCursor();
+
+        if (tree.props.ignoreDropsOutside) {
+          const coords = monitor.getClientOffset();
+          const bounds = tree.listEl.current?.getBoundingClientRect();
+
+          if (
+            coords &&
+            bounds &&
+            (coords.y < bounds.top ||
+              coords.y > bounds.bottom ||
+              coords.x < bounds.left ||
+              coords.x > bounds.right)
+          ) {
+            tree.dispatch(dnd.dragEnd());
+            return;
+          }
+        }
+
         let { parentId, index, dragIds } = tree.state.dnd;
         // If they held down meta, we need to create a copy
         // if (drop.dropEffect === "copy")

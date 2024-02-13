@@ -27,6 +27,7 @@ export function useDropHook(
           element: el.current,
           offset: offset,
           indent: tree.indent,
+          hitAreaHeight: tree.props.rowHitAreaHeight,
           node: node,
           prevNode: node.prev,
           nextNode: node.next,

@@ -27,6 +27,7 @@ export interface TreeProps<T> {
 
   /* Sizes */
   rowHeight?: number;
+  rowHitAreaHeight?: number;
   overscanCount?: number;
   width?: number | string;
   height?: number;
@@ -51,6 +52,7 @@ export interface TreeProps<T> {
         dragNodes: NodeApi<T>[];
         index: number;
       }) => boolean);
+  ignoreDropsOutside?: boolean;
 
   /* Event Handlers */
   onActivate?: (node: NodeApi<T>) => void;
