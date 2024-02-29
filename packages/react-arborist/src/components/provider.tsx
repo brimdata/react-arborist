@@ -57,7 +57,12 @@ export function TreeProvider<T>({
   useMemo(() => {
     updateCount.current += 1;
     api.update(treeProps);
-  }, [...Object.values(treeProps), state.nodes.open]);
+  }, [...Object.values(treeProps)]);
+
+  /* when the node's open or closed state changes, just perform rendering. */
+  useMemo(() => {
+    api.update(api.props);
+  }, [state.nodes.open]);
 
   /* Expose the tree api */
   useImperativeHandle(imperativeHandle, () => api);
