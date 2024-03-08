@@ -1,7 +1,7 @@
 {
   "name": "react-arborist-monorepo",
   "workspaces": [
-    "./packages/*"
+    "./modules/*"
   ],
   "scripts": {
     "build": "yarn workspaces foreach --all run build",

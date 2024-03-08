@@ -2995,9 +2995,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"e2e@workspace:packages/e2e":
+"e2e@workspace:modules/e2e":
   version: 0.0.0-use.local
-  resolution: "e2e@workspace:packages/e2e"
+  resolution: "e2e@workspace:modules/e2e"
   dependencies:
     cypress: "npm:^13.6.1"
     serve: "npm:^14.2.1"
@@ -6878,9 +6878,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-arborist@workspace:*, react-arborist@workspace:packages/react-arborist":
+"react-arborist@workspace:*, react-arborist@workspace:modules/react-arborist":
   version: 0.0.0-use.local
-  resolution: "react-arborist@workspace:packages/react-arborist"
+  resolution: "react-arborist@workspace:modules/react-arborist"
   dependencies:
     "@types/jest": "npm:^29.5.11"
     "@types/react": "npm:^18.2.43"
@@ -7533,9 +7533,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"showcase@workspace:packages/showcase":
+"showcase@workspace:modules/showcase":
   version: 0.0.0-use.local
-  resolution: "showcase@workspace:packages/showcase"
+  resolution: "showcase@workspace:modules/showcase"
   dependencies:
     "@types/node": "npm:20.10.4"
     "@types/react": "npm:18.2.43"
