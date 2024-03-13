@@ -64,7 +64,10 @@ function createNode<T extends SimpleData>(data: T, parent: SimpleNode<T>) {
 class SimpleNode<T extends SimpleData> {
   id: string;
   children?: SimpleNode<T>[];
-  constructor(public data: T, public parent: SimpleNode<T> | null) {
+  constructor(
+    public data: T,
+    public parent: SimpleNode<T> | null,
+  ) {
     this.id = data.id;
   }
 

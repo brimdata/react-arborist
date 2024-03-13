@@ -1,50 +1,51 @@
 import React from "react";
 import { TreeApi } from "./tree-api";
-import { IdObj } from "../types/utils";
-import { ROOT_ID } from "../data/create-root";
-
-type Params<T> = {
-  id: string;
-  data: T;
-  level: number;
-  children: NodeApi<T>[] | null;
-  parent: NodeApi<T> | null;
-  isDraggable: boolean;
-  rowIndex: number | null;
-  tree: TreeApi<T>;
-};
+import { RowStruct } from "../nodes/flatten";
 
 export class NodeApi<T = any> {
-  tree: TreeApi<T>;
-  id: string;
-  data: T;
-  level: number;
-  children: NodeApi<T>[] | null;
-  parent: NodeApi<T> | null;
-  isDraggable: boolean;
-  rowIndex: number | null;
+  constructor(
+    public tree: TreeApi<T>,
+    public row: RowStruct<T>,
+  ) {}
 
-  constructor(params: Params<T>) {
-    this.tree = params.tree;
-    this.id = params.id;
-    this.data = params.data;
-    this.level = params.level;
-    this.children = params.children;
-    this.parent = params.parent;
-    this.isDraggable = params.isDraggable;
-    this.rowIndex = params.rowIndex;
+  get struct() {
+    return this.row.node;
+  }
+
+  get isDraggable() {
+    throw new Error("implement this with the tree");
   }
 
   get isRoot() {
-    return this.id === ROOT_ID;
-  }
-
-  get isLeaf() {
-    return !Array.isArray(this.children);
+    return this.struct.parent === null;
   }
 
   get isInternal() {
-    return !this.isLeaf;
+    return !this.struct.isLeaf;
+  }
+
+  get isLeaf() {
+    return this.struct.isLeaf;
+  }
+
+  get id() {
+    return this.struct.id;
+  }
+
+  get data() {
+    return this.struct.data;
+  }
+
+  get parent() {
+    return this.struct.parent;
+  }
+
+  get rowIndex() {
+    return this.row.index;
+  }
+
+  get level() {
+    return this.struct.level;
   }
 
   get isOpen() {
@@ -186,10 +187,6 @@ export class NodeApi<T = any> {
 
   reset() {
     this.tree.reset();
-  }
-
-  clone() {
-    return new NodeApi<T>({ ...this });
   }
 
   edit() {

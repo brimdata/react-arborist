@@ -25,7 +25,7 @@ export function useOuterDrop() {
           offset: offset,
           indent: tree.indent,
           node: null,
-          prevNode: tree.visibleNodes[tree.visibleNodes.length - 1],
+          prevNode: tree.rows[tree.rows.length - 1],
           nextNode: null,
         });
         if (drop) tree.dispatch(dnd.hovering(drop.parentId, drop.index));
@@ -37,7 +37,7 @@ export function useOuterDrop() {
         }
       },
     }),
-    [tree]
+    [tree],
   );
 
   drop(tree.listEl);

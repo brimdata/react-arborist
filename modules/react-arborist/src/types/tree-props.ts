@@ -4,13 +4,53 @@ import * as renderers from "./renderers";
 import { ElementType, MouseEventHandler } from "react";
 import { ListOnScrollProps } from "react-window";
 import { NodeApi } from "../interfaces/node-api";
-import { OpenMap } from "../state/open-slice";
 import { useDragDropManager } from "react-dnd";
+import { NodeStruct } from "../nodes/node-struct";
+import { OpenMap } from "../state/open-slice";
+
+type PartialController<Value, Event> = {
+  value: Value;
+  onChange: (event: Event) => void;
+};
+
+// These all need to be worked out and compatibility must be kept
+export type CreatePayload<T> = {
+  parentId: string | null;
+  index: number;
+  data: T;
+};
+
+export type UpdatePayload<T> = {
+  id: string;
+  changes: Partial<T>;
+};
+
+export type MovePayload<T> = {
+  dragIds: string[];
+  parentId: string | null;
+  index: number;
+};
+
+export type DestroyPayload<T> = {
+  ids: string[];
+  nodes: NodeApi<T>[];
+};
+
+export type NodesOnChangeEvent<T> =
+  | { type: "create"; payload: CreatePayload<T> }
+  | { type: "update"; payload: UpdatePayload<T> }
+  | { type: "move"; payload: MovePayload<T> }
+  | { type: "destroy"; payload: DestroyPayload<T> };
 
 export interface TreeProps<T> {
+  /* START V4 PROPS */
+  nodes?: PartialController<NodeStruct<T>[], NodesOnChangeEvent<T>>;
+  renderNode?: ElementType<renderers.NodeRendererProps<T>>;
+  /* END V4 PROPS */
+
   /* Data Options */
-  data?: readonly T[];
-  initialData?: readonly T[];
+  data?: readonly T[]; // deprecated will add back for compat
+  initialData?: readonly T[]; //deprecated will add back for compat
 
   /* Data Handlers */
   onCreate?: handlers.CreateHandler<T>;

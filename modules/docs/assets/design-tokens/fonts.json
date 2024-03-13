@@ -1,0 +1,11 @@
+{
+  "title": "Fonts",
+  "description": "Each array of fonts creates a priority-based order. The first font in the array should be the ideal font, followed by sensible, web-safe fallbacks",
+  "items": [
+    {
+      "name": "Base",
+      "description": "System fonts for body copy and globally set text.",
+      "value": ["Rooney", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", "sans-serif"]
+    }
+  ]
+}

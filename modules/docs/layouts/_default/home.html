@@ -1,0 +1,9 @@
+{{ define "main" }}
+  <div class="wrapper flow prose">
+    {{ .Content }}
+  </div>
+  {{ range site.RegularPages }}
+    <h2 class="step-5"><a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a></h2>
+    {{ .Summary }}
+  {{ end }}
+{{ end }}

@@ -1,0 +1,34 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'React Arborist'
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[module]
+[module.hugoVersion]
+  extended = false
+  min = "0.112.0"
+
+[[module.mounts]]
+  source = "assets"
+  target = "assets"
+
+[[module.mounts]]
+  source = "hugo_stats.json"
+  target = "assets/watching/hugo_stats.json"
+
+[build]
+  writeStats = true
+[[build.cachebusters]]
+  source = "assets/watching/hugo_stats\\.json"
+  target = "main\\.css"
+[[build.cachebusters]]
+  source = "(postcss|tailwind)\\.config\\.js"
+  target = "css"
+[[build.cachebusters]]
+  source = "assets/.*\\.(js|ts|jsx|tsx)"
+  target = "js"
+[[build.cachebusters]]
+  source = "assets/.*\\.(.*)$"
+  target = "$1"

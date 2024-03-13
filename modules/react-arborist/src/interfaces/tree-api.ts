@@ -11,7 +11,6 @@ import { NodeApi } from "./node-api";
 import { edit } from "../state/edit-slice";
 import { Actions, RootState } from "../state/root-reducer";
 import { focus, treeBlur } from "../state/focus-slice";
-import { createRoot, ROOT_ID } from "../data/create-root";
 import { actions as visibility } from "../state/open-slice";
 import { actions as selection } from "../state/selection-slice";
 import { actions as dnd } from "../state/dnd-slice";
@@ -19,14 +18,15 @@ import { DefaultDragPreview } from "../components/default-drag-preview";
 import { DefaultContainer } from "../components/default-container";
 import { Cursor } from "../dnd/compute-drop";
 import { Store } from "redux";
-import { createList } from "../data/create-list";
 import { createIndex } from "../data/create-index";
+import { flatten, RowStruct } from "../nodes/flatten";
+import { TreePropsV4 } from "../types/tree-props-v4";
+import { ROOT_ID } from "../nodes/root-node-struct";
 
 const { safeRun, identify, identifyNull } = utils;
 export class TreeApi<T> {
   static editPromise: null | ((args: EditResult) => void);
-  root: NodeApi<T>;
-  visibleNodes: NodeApi<T>[];
+  rows: RowStruct<T>[];
   visibleStartIndex: number = 0;
   visibleStopIndex: number = 0;
   idToIndex: { [id: string]: number };
@@ -35,20 +35,22 @@ export class TreeApi<T> {
     public store: Store<RootState, Actions>,
     public props: TreeProps<T>,
     public list: MutableRefObject<FixedSizeList | null>,
-    public listEl: MutableRefObject<HTMLDivElement | null>
+    public listEl: MutableRefObject<HTMLDivElement | null>,
   ) {
     /* Changes here must also be made in update() */
-    this.root = createRoot<T>(this);
-    this.visibleNodes = createList<T>(this);
-    this.idToIndex = createIndex(this.visibleNodes);
+    this.rows = flatten(this);
+    this.idToIndex = createIndex(this.rows);
+  }
+
+  get nodes() {
+    return this.props.nodes.value;
   }
 
   /* Changes here must also be made in constructor() */
   update(props: TreeProps<T>) {
     this.props = props;
-    this.root = createRoot<T>(this);
-    this.visibleNodes = createList<T>(this);
-    this.idToIndex = createIndex(this.visibleNodes);
+    this.rows = flatten(this);
+    this.idToIndex = createIndex(this.rows);
   }
 
   /* Store helpers */
@@ -96,7 +98,7 @@ export class TreeApi<T> {
       this.props.searchMatch ??
       ((node, term) => {
         const string = JSON.stringify(
-          Object.values(node.data as { [k: string]: unknown })
+          Object.values(node.data as { [k: string]: unknown }),
         );
         return string.toLocaleLowerCase().includes(term.toLocaleLowerCase());
       });
@@ -113,7 +115,7 @@ export class TreeApi<T> {
     const id = utils.access<string>(data, get);
     if (!id)
       throw new Error(
-        "Data must contain an 'id' property or props.idAccessor must return a string"
+        "Data must contain an 'id' property or props.idAccessor must return a string",
       );
     return id;
   }
@@ -155,8 +157,8 @@ export class TreeApi<T> {
     else return null;
   }
 
-  at(index: number): NodeApi<T> | null {
-    return this.visibleNodes[index] || null;
+  at(index: number): RowStruct<T> | null {
+    return this.rows[index] || null;
   }
 
   nodesBetween(startId: string | null, endId: string | null) {
@@ -166,7 +168,7 @@ export class TreeApi<T> {
     if (index2 === null) return [];
     const start = Math.min(index1, index2);
     const end = Math.max(index1, index2);
-    return this.visibleNodes.slice(start, end + 1);
+    return this.rows.slice(start, end + 1);
   }
 
   indexOf(id: string | null | IdObj) {
@@ -194,7 +196,7 @@ export class TreeApi<T> {
       type?: "internal" | "leaf";
       parentId?: null | string;
       index?: null | number;
-    } = {}
+    } = {},
   ) {
     const parentId =
       opts.parentId === undefined
@@ -318,7 +320,7 @@ export class TreeApi<T> {
     if (index < stop) {
       index = stop;
     } else {
-      index = Math.min(index + page, this.visibleNodes.length - 1);
+      index = Math.min(index + page, this.rows.length - 1);
     }
     this.focus(this.at(index));
   }
