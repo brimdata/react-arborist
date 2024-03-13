@@ -1,0 +1,59 @@
+/* AUTO GRID
+Related Every Layout: https://every-layout.dev/layouts/grid/
+More info on the flexible nature: https://piccalil.li/tutorial/create-a-responsive-grid-layout-with-no-media-queries-using-css-grid/
+A flexible layout that will create an auto-fill grid with
+configurable grid item sizes
+
+CUSTOM PROPERTIES AND CONFIGURATION
+--gutter (var(--space-s-m)): This defines the space
+between each item.
+
+--grid-min-item-size (14rem): How large each item should be
+ideally, as a minimum.
+
+--grid-placement (auto-fill): Set either auto-fit or auto-fill
+to change how empty grid tracks are handled */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(
+    var(--grid-placement, auto-fill),
+    minmax(var(--grid-min-item-size, 16rem), 1fr)
+  );
+  gap: var(--gutter, var(--space-s-l));
+}
+
+/* A split 50/50 layout */
+.grid[data-layout='50-50'] {
+  --grid-placement: auto-fit;
+  --grid-min-item-size: clamp(16rem, 50vw, 33rem);
+}
+
+/* Three column grid layout */
+.grid[data-layout='thirds'] {
+  --grid-placement: auto-fit;
+  --grid-min-item-size: clamp(16rem, 33%, 20rem);
+}
+
+/* Twelve column grid layout */
+.grid[data-layout='twelfths'] {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+/* Special layout for larger devices. Used on home page intro */
+.grid[data-layout='lg:10/2'] {
+  grid-template-columns: 100%;
+}
+
+@media screen(md) {
+  .grid[data-layout='lg:10/2'] {
+    grid-template-columns: clamp(40rem, 80vw, 60rem);
+  }
+}
+
+@media screen(lg) {
+  .grid[data-layout='lg:10/2'] {
+    grid-template-columns: 10fr 2fr;
+  }
+}

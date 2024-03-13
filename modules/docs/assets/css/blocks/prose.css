@@ -1,0 +1,7 @@
+.prose {
+  --flow-space: var(--space-m);
+}
+
+.prose p {
+  max-inline-size: var(--measure);
+}

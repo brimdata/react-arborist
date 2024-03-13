@@ -1,0 +1,11 @@
+/*
+WRAPPER COMPOSITION 
+A common wrapper/container
+*/
+.wrapper {
+  margin-inline: auto;
+  max-width: clamp(16rem, var(--wrapper-max-width, 100vw), 80rem);
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+  position: relative;
+}

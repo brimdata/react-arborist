@@ -1,0 +1,18 @@
+{{- with resources.Get "js/main.js" }}
+  {{- if eq hugo.Environment "development" }}
+    {{- $opts := dict "format" "esm" }}
+    {{- with . | js.Build }}
+      <script type="module" src="{{ .RelPermalink }}"></script>
+    {{- end }}
+  {{- else }}
+    {{- $opts := dict "minify" true }}
+    {{- with . | js.Build $opts | fingerprint }}
+      <script
+        type="module"
+        src="{{ .RelPermalink }}"
+        integrity="{{- .Data.Integrity }}"
+        crossorigin="anonymous"
+      ></script>
+    {{- end }}
+  {{- end }}
+{{- end }}
