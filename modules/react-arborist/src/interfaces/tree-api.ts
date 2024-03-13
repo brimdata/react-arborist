@@ -20,7 +20,6 @@ import { Cursor } from "../dnd/compute-drop";
 import { Store } from "redux";
 import { createIndex } from "../data/create-index";
 import { flatten, RowStruct } from "../nodes/flatten";
-import { TreePropsV4 } from "../types/tree-props-v4";
 import { ROOT_ID } from "../nodes/root-node-struct";
 
 const { safeRun, identify, identifyNull } = utils;
@@ -43,7 +42,7 @@ export class TreeApi<T> {
   }
 
   get nodes() {
-    return this.props.nodes.value;
+    return this.props.nodes!.value;
   }
 
   /* Changes here must also be made in constructor() */
