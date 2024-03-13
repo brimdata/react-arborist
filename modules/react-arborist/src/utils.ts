@@ -51,7 +51,7 @@ export function dfs(node: NodeApi<any>, id: string): NodeApi<any> | null {
 
 export function walk(
   node: NodeApi<any>,
-  fn: (node: NodeApi<any>) => void,
+  fn: (node: NodeApi<any>) => void
 ): void {
   fn(node);
   if (node.children) {
@@ -110,14 +110,14 @@ function prevItem(list: HTMLElement[], index: number) {
 function getFocusable(target: HTMLElement) {
   return Array.from(
     document.querySelectorAll(
-      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled]), details:not([disabled]), summary:not(:disabled)',
-    ),
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled]), details:not([disabled]), summary:not(:disabled)'
+    )
   ).filter((e) => e === target || !target.contains(e)) as HTMLElement[];
 }
 
 export function access<T = boolean>(
   obj: any,
-  accessor: string | boolean | Function,
+  accessor: string | boolean | Function
 ): T {
   if (typeof accessor === "boolean") return accessor as unknown as T;
   if (typeof accessor === "string") return obj[accessor] as T;
@@ -177,10 +177,6 @@ export function getInsertParentId(tree: TreeApi<any>) {
   const focus = tree.focusedNode;
   if (!focus) return null;
   if (focus.isOpen) return focus.id;
-  if (focus.parent) return focus.parent.id;
+  if (focus.parent && !focus.parent.isRoot) return focus.parent.id;
   return null;
-}
-
-export function hasProperty(object: unknown, propertyName: string) {
-  return object && typeof object === "object" && propertyName in object;
 }

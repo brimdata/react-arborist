@@ -1,8 +1,9 @@
-import { RowStruct } from "../nodes/flatten";
+import { NodeApi } from "../interfaces/node-api";
+import { IdObj } from "../types/utils";
 
-export const createIndex = <T>(rows: RowStruct<T>[]) => {
-  return rows.reduce<{ [id: string]: number }>((map, row, index) => {
-    map[row.node.id] = index;
+export const createIndex = <T>(nodes: NodeApi<T>[]) => {
+  return nodes.reduce<{ [id: string]: number }>((map, node, index) => {
+    map[node.id] = index;
     return map;
   }, {});
 };

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef } from "react";
 import { useDataUpdates, useNodesContext, useTreeApi } from "../context";
 import { useDragHook } from "../dnd/drag-hook";
 import { useDropHook } from "../dnd/drop-hook";
-import { NodeApi } from "../interfaces/node-api";
+import { useFreshNode } from "../hooks/use-fresh-node";
 
 type Props = {
   style: React.CSSProperties;
@@ -32,8 +32,7 @@ export const RowContainer = React.memo(function RowContainer<T>({
   useDataUpdates(); // Re-render when tree props or visability changes
   const _ = useNodesContext(); // So that we re-render appropriately
   const tree = useTreeApi<T>(); // Tree already has the fresh state
-  const row = tree.at(index)!;
-  const node = new NodeApi(tree, row);
+  const node = useFreshNode<T>(index);
 
   const el = useRef<HTMLDivElement | null>(null);
   const dragRef = useDragHook<T>(node);
@@ -43,7 +42,7 @@ export const RowContainer = React.memo(function RowContainer<T>({
       el.current = n;
       dropRef(n);
     },
-    [dropRef],
+    [dropRef]
   );
 
   const indent = tree.indent * node.level;
@@ -55,7 +54,7 @@ export const RowContainer = React.memo(function RowContainer<T>({
         parseFloat(style.top as string) +
         (tree.props.padding ?? tree.props.paddingTop ?? 0),
     }),
-    [style, tree.props.padding, tree.props.paddingTop],
+    [style, tree.props.padding, tree.props.paddingTop]
   );
   const rowAttrs: React.HTMLAttributes<any> = {
     role: "treeitem",

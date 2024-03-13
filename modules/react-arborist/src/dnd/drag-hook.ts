@@ -7,7 +7,7 @@ import { DragItem } from "../types/dnd";
 import { DropResult } from "./drop-hook";
 import { actions as dnd } from "../state/dnd-slice";
 import { safeRun } from "../utils";
-import { ROOT_ID } from "../nodes/root-node-struct";
+import { ROOT_ID } from "../data/create-root";
 
 export function useDragHook<T>(node: NodeApi<T>): ConnectDragSource {
   const tree = useTreeApi();
@@ -40,7 +40,7 @@ export function useDragHook<T>(node: NodeApi<T>): ConnectDragSource {
         tree.dispatch(dnd.dragEnd());
       },
     }),
-    [ids, node],
+    [ids, node]
   );
 
   useEffect(() => {

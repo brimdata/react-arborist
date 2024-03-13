@@ -1,10 +1,11 @@
 import { forwardRef } from "react";
 import { useTreeApi } from "../context";
+import { treeBlur } from "../state/focus-slice";
 import { Cursor } from "./cursor";
 
 export const ListOuterElement = forwardRef(function Outer(
   props: React.HTMLProps<HTMLDivElement>,
-  ref,
+  ref
 ) {
   const { children, ...rest } = props;
   const tree = useTreeApi();
@@ -28,7 +29,7 @@ const DropContainer = () => {
   return (
     <div
       style={{
-        height: tree.rows.length * tree.rowHeight,
+        height: tree.visibleNodes.length * tree.rowHeight,
         width: "100%",
         position: "absolute",
         left: "0",

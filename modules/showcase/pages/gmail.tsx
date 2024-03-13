@@ -5,7 +5,6 @@ import {
   NodeRendererProps,
   Tree,
   TreeApi,
-  useNodes,
 } from "react-arborist";
 import { gmailData, GmailItem } from "../data/gmail";
 import * as icons from "react-icons/md";
@@ -17,7 +16,6 @@ import { useState } from "react";
 import Link from "next/link";
 
 export default function GmailSidebar() {
-  const nodes = useNodes(gmailData);
   const [term, setTerm] = useState("");
   const globalTree = (tree?: TreeApi<GmailItem> | null) => {
     // @ts-ignore
@@ -41,10 +39,6 @@ export default function GmailSidebar() {
             {({ width, height }) => {
               return (
                 <Tree
-                  nodes={{
-                    value: nodes.value,
-                    onChange: (e) => nodes.set(e.value),
-                  }}
                   ref={globalTree}
                   initialData={gmailData}
                   width={width}

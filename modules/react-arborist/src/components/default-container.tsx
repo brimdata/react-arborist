@@ -206,26 +206,26 @@ export function DefaultContainer() {
         timeoutId = setTimeout(() => {
           focusSearchTerm = "";
         }, 600);
-        const row = tree.rows.find((n) => {
+        const node = tree.visibleNodes.find((n) => {
           // @ts-ignore
           const name = n.data.name;
           if (typeof name === "string") {
             return name.toLowerCase().startsWith(focusSearchTerm);
           } else return false;
         });
-        if (row) tree.focus(row.node.id);
+        if (node) tree.focus(node.id);
       }}
     >
       {/* @ts-ignore */}
       <FixedSizeList
         className={tree.props.className}
         outerRef={tree.listEl}
-        itemCount={tree.rows.length}
+        itemCount={tree.visibleNodes.length}
         height={tree.height}
         width={tree.width}
         itemSize={tree.rowHeight}
         overscanCount={tree.overscanCount}
-        itemKey={(index) => tree.rows[index].node.id || index}
+        itemKey={(index) => tree.visibleNodes[index]?.id || index}
         outerElementType={ListOuterElement}
         innerElementType={ListInnerElement}
         onScroll={tree.props.onScroll}
