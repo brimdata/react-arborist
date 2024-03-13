@@ -1,0 +1,10 @@
+:root {
+  --gutter: var(--space-s-l);
+  --transition-base: 250ms ease;
+  --transition-movement: 200ms linear;
+  --transition-fade: 300ms ease;
+  --transition-bounce: 500ms cubic-bezier(0.5, 0.05, 0.2, 1.5);
+  --leading-standard: 1.5;
+  --measure: 60ch;
+  --radius-m: 8px;
+}

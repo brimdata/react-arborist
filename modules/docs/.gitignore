@@ -1,0 +1,5 @@
+.DS_Store
+node_modules
+resources
+public
+hugo_stats.json
