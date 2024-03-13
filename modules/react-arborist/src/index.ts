@@ -7,3 +7,5 @@ export * from "./interfaces/node-api";
 export * from "./interfaces/tree-api";
 export * from "./data/simple-tree";
 export * from "./hooks/use-simple-tree";
+export * from "./components/tree-view";
+export * from "./nodes/tree-manager";

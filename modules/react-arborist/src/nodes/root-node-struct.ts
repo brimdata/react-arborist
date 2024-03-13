@@ -1,4 +1,4 @@
-import { Accessor } from "./accessor";
+import { Accessor } from "./source-data-accessor";
 import { NodeStruct, createNodeStruct } from "./node-struct";
 
 export const ROOT_ID = "__REACT_ARBORIST_INTERNAL_ROOT__";

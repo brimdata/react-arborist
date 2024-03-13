@@ -1,4 +1,4 @@
-import { Accessor } from "./accessor";
+import { Accessor } from "./source-data-accessor";
 
 export type NodeStruct<T> = {
   id: string;
@@ -40,18 +40,4 @@ export function createNodeStruct<T>(args: {
   return node;
 }
 
-export function find<T>(
-  id: string,
-  current?: NodeStruct<T>,
-): NodeStruct<T> | null {
-  if (!current) return null;
-  if (current.id === id) return current;
-  if (current.children) {
-    for (let child of current.children) {
-      const found = find(id, child);
-      if (found) return found;
-    }
-    return null;
-  }
-  return null;
-}
+

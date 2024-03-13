@@ -1,11 +1,11 @@
-export type NodeDataAccessors<T> = {
+export type SourceDataAccessors<T> = {
   id: (d: T) => string;
   children: (d: T) => T[];
   isLeaf: (d: T) => boolean;
 };
 
-export class Accessor<T> {
-  constructor(public accessors: Partial<NodeDataAccessors<T>> = {}) {}
+export class SourceDataAccessor<T> {
+  constructor(public accessors: Partial<SourceDataAccessors<T>> = {}) {}
 
   getId(d: T): string {
     if (this.accessors.id) {

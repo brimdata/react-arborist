@@ -1,20 +1,22 @@
 import * as nodes from "../types/nodes-partial-controller";
-import { Accessor } from "./source-data-accessor";
-import { NodeStruct, find } from "./node-struct";
+import {
+  SourceDataAccessor,
+  SourceDataAccessors,
+} from "./source-data-accessor";
+import { SourceDataProxy } from "./source-data-proxy";
 
-/* We wrap and mutate the data provided */
-export class TreeStruct<T> {
+export class TreeManager<T> {
+  nodes: SourceDataProxy<T>[];
+  accessor: SourceDataAccessor<T>;
+
   constructor(
-    public root: NodeStruct<T>,
-    public accessor: Accessor<T>,
-  ) {}
-
-  get data() {
-    return this.root.children?.map((node) => node.data);
-  }
-
-  get nodes() {
-    return this.root.children;
+    public sourceData: T[],
+    public accessors: SourceDataAccessors<T>,
+  ) {
+    this.accessor = new SourceDataAccessor(accessors);
+    this.nodes = sourceData.map((data) => {
+      return new SourceDataProxy(null, data, this.accessor);
+    });
   }
 
   create(args: nodes.CreatePayload<T>) {
@@ -64,5 +66,22 @@ export class TreeStruct<T> {
       const index = siblings.indexOf(node.data);
       siblings.splice(index);
     }
+  }
+
+  findNodeObject(id: string) {
+    
+  }
+
+  find(id: string, cursor?: SourceDataProxy<T>): SourceDataProxy<T> | null {
+    if (!cursor) return null;
+    if (current.id === id) return current;
+    if (current.children) {
+      for (let child of current.children) {
+        const found = find(id, child);
+        if (found) return found;
+      }
+      return null;
+    }
+    return null;
   }
 }
