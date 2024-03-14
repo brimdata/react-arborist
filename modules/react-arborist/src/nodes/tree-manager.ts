@@ -11,7 +11,7 @@ export class TreeManager<T> {
 
   constructor(
     public sourceData: T[],
-    public accessors: SourceDataAccessors<T>,
+    public accessors: Partial<SourceDataAccessors<T>>,
   ) {
     this.accessor = new SourceDataAccessor(accessors);
     this.nodes = sourceData.map((data) => {

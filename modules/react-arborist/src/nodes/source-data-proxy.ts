@@ -1,4 +1,4 @@
-import { NodeObject } from "../types/node-object";
+import { NodeObject } from "./node-object";
 import { SourceDataAccessor } from "./source-data-accessor";
 
 export class SourceDataProxy<T> implements NodeObject<T> {
