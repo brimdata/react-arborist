@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { ConnectDragSource, useDrag } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
-import { useTreeApi } from "../context";
 import { NodeApi } from "../interfaces/node-api";
 import { DragItem } from "../types/dnd";
 import { DropResult } from "./drop-hook";
@@ -10,7 +9,7 @@ import { safeRun } from "../utils";
 import { ROOT_ID } from "../data/create-root";
 
 export function useDragHook<T>(node: NodeApi<T>): ConnectDragSource {
-  const tree = useTreeApi();
+  const tree = node.tree;
   const ids = tree.selectedIds;
   const [_, ref, preview] = useDrag<DragItem, DropResult, void>(
     () => ({
@@ -40,7 +39,7 @@ export function useDragHook<T>(node: NodeApi<T>): ConnectDragSource {
         tree.dispatch(dnd.dragEnd());
       },
     }),
-    [ids, node]
+    [ids, node],
   );
 
   useEffect(() => {

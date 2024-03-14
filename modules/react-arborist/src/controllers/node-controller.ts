@@ -25,15 +25,27 @@ export class NodeController<T> {
     return this.object.id;
   }
 
-  get isOpen() {
-    return this.isInternal && this.tree.isOpen(this.id);
-  }
-
   get isInternal() {
     return !this.isLeaf;
   }
 
   get isLeaf() {
     return this.object.isLeaf;
+  }
+
+  get level() {
+    return this.object.level;
+  }
+
+  get data() {
+    return this.object.sourceData;
+  }
+
+  get isOpen() {
+    return this.isInternal && this.tree.isOpen(this.id);
+  }
+
+  get isSelected() {
+    return this.tree.isSelected(this.id);
   }
 }

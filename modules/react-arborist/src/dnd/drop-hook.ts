@@ -1,6 +1,5 @@
 import { RefObject } from "react";
 import { ConnectDropTarget, useDrop } from "react-dnd";
-import { useTreeApi } from "../context";
 import { NodeApi } from "../interfaces/node-api";
 import { DragItem } from "../types/dnd";
 import { computeDrop } from "./compute-drop";
@@ -13,9 +12,9 @@ export type DropResult = {
 
 export function useDropHook(
   el: RefObject<HTMLElement | null>,
-  node: NodeApi<any>
+  node: NodeApi<any>,
 ): ConnectDropTarget {
-  const tree = useTreeApi();
+  const tree = node.tree;
   const [_, dropRef] = useDrop<DragItem, DropResult | null, void>(
     () => ({
       accept: "NODE",
@@ -43,7 +42,7 @@ export function useDropHook(
         if (!m.canDrop()) return null;
       },
     }),
-    [node, el.current, tree.props]
+    [node, el.current, tree.props],
   );
 
   return dropRef;
