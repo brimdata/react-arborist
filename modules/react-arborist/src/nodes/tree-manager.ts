@@ -21,67 +21,79 @@ export class TreeManager<T> {
 
   create(args: nodes.CreatePayload<T>) {
     const { parentId, index, data } = args;
-    const parent = parentId ? find(parentId, this.root) : this.root;
-    if (!parent) return null;
-    const siblings = this.accessor.getChildren(parent.data)!;
-
-    siblings.splice(index, 0, data);
+    if (!parentId) {
+      this.insertChildren(index, data);
+    } else {
+      this.find(parentId)?.insertChildren(index, data);
+    }
   }
 
   update(args: nodes.UpdatePayload<T>) {
     const { id, changes } = args;
-    const node = find(id, this.root);
-
-    if (node) node.data = { ...node.data, ...changes };
+    this.find(id)?.update(changes);
   }
 
   move(args: nodes.MovePayload<T>) {
     const { dragIds, parentId, index } = args;
-    const parent = parentId ? find(parentId, this.root) : this.root;
-    const nodes = dragIds
-      .map((id) => find(id, this.root))
-      .filter((node) => !!node) as NodeStruct<T>[];
-
-    if (!parent || !nodes.length) return;
-    // Add to new parent
-    const newSiblings = this.accessor.getChildren(parent.data)!;
-    const draggedData = nodes.map((node) => node.data);
-    newSiblings.splice(index, 0, ...draggedData);
-
-    // Remove from old parent
-    for (const node of nodes) {
-      const oldSiblings = this.accessor.getChildren(node.parent!.data)!;
-      const oldIndex = oldSiblings.indexOf(node!.data);
-      oldSiblings.splice(oldIndex, 1);
+    const draggedData = this.findAll(dragIds).map((d) => d.sourceData);
+    if (!parentId) {
+      this.insertChildren(index, ...draggedData);
+      this.destroy({ ids: dragIds });
+    } else {
+      const parent = this.find(parentId);
+      if (parent) {
+        parent.insertChildren(index, ...draggedData);
+        this.destroy({ ids: dragIds });
+      }
     }
   }
 
   destroy(args: nodes.DestroyPayload<T>) {
-    const nodes = args.ids
-      .map((id) => find(id, this.root))
-      .filter((node) => !!node) as NodeStruct<T>[];
-
-    for (const node of nodes) {
-      const siblings = this.accessor.getChildren(node.parent!.data)!;
-      const index = siblings.indexOf(node.data);
-      siblings.splice(index);
+    for (const node of this.findAll(args.ids)) {
+      const parent = node.parent;
+      if (!parent) {
+        this.deleteChild(node.sourceData);
+      } else {
+        parent.deleteChild(node.sourceData);
+      }
     }
   }
 
-  findNodeObject(id: string) {
-    
+  findAll(ids: string[]) {
+    return ids
+      .map((id) => this.find(id))
+      .filter((node) => !!node) as SourceDataProxy<T>[];
   }
 
-  find(id: string, cursor?: SourceDataProxy<T>): SourceDataProxy<T> | null {
-    if (!cursor) return null;
-    if (current.id === id) return current;
-    if (current.children) {
-      for (let child of current.children) {
-        const found = find(id, child);
+  find(id: string) {
+    return this.nodes.find((nodeObject) => this.findNodeObject(id, nodeObject));
+  }
+
+  findNodeObject(
+    id: string,
+    cursor: SourceDataProxy<T>,
+  ): SourceDataProxy<T> | null {
+    if (!cursor) {
+      return null;
+    } else if (cursor.id === id) {
+      return cursor;
+    } else if (cursor.children) {
+      for (let child of cursor.children) {
+        const found = this.findNodeObject(id, child);
         if (found) return found;
       }
       return null;
+    } else {
+      return null;
     }
-    return null;
+  }
+
+  insertChildren(index: number, ...data: T[]) {
+    this.sourceData.splice(index, 0, ...data);
+  }
+
+  deleteChild(data: T) {
+    const index = this.sourceData.indexOf(data);
+    this.sourceData.splice(index, 1);
   }
 }
