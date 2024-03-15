@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { SourceDataAccessors } from "./source-data-accessor";
 import { TreeManager } from "./tree-manager";
-import { NodesOnChangeEvent } from "../types/nodes-partial-controller";
+import { NodesOnChangeEvent } from "./change-event";
 
 export function useNodes<T>(
   initialData: T[],

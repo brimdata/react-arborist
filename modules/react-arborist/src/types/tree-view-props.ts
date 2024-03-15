@@ -1,10 +1,12 @@
 import { NodeObject } from "../nodes/node-object";
-import { NodesOnChangeEvent } from "./nodes-partial-controller";
+import { NodesOnChangeEvent } from "../nodes/change-event";
+import { OpensOnChangeEvent } from "../opens/change-event";
 import { PartialController } from "./utils";
 
 export type TreeViewProps<T> = {
   /* Partial Controllers */
   nodes: PartialController<NodeObject<T>[], NodesOnChangeEvent<T>>;
+  opens: PartialController<Record<string, boolean>, OpensOnChangeEvent>;
 
   /* Dimensions and Sizes */
   width: number | string;
@@ -19,4 +21,7 @@ export type TreeViewProps<T> = {
   /* Class Names */
   className?: string | undefined;
   rowClassName?: string | undefined;
+
+  /* Configurations */
+  openByDefault?: boolean;
 };

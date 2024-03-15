@@ -1,4 +1,4 @@
-import * as nodes from "../types/nodes-partial-controller";
+import * as nodes from "./change-event";
 import {
   SourceDataAccessor,
   SourceDataAccessors,

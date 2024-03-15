@@ -115,7 +115,8 @@ function NodeRenderer(props: {
       <span
         onClick={(e) => {
           e.stopPropagation();
-          // props.node.toggle();
+          console.log("click");
+          props.node.toggle();
         }}
       >
         {props.node.isLeaf ? "🌳" : props.node.isOpen ? "🗁" : "🗀"}

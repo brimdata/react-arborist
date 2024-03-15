@@ -29,7 +29,27 @@ export class TreeController<T> {
   }
 
   isOpen(id: string) {
-    return true; // to do
+    if (id in this.props.opens.value) {
+      return this.props.opens.value[id];
+    } else {
+      return this.props.openByDefault; // default open state
+    }
+  }
+
+  open(id: string) {
+    this.props.opens.onChange({
+      value: { ...this.props.opens.value, [id]: true },
+      type: "open",
+      ids: [id],
+    });
+  }
+
+  close(id: string) {
+    this.props.opens.onChange({
+      value: { ...this.props.opens.value, [id]: false },
+      type: "close",
+      ids: [id],
+    });
   }
 
   isSelected(id: string) {

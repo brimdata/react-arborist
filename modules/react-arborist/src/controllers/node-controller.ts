@@ -48,4 +48,18 @@ export class NodeController<T> {
   get isSelected() {
     return this.tree.isSelected(this.id);
   }
+
+  open() {
+    this.tree.open(this.id);
+  }
+
+  close() {
+    this.tree.close(this.id);
+  }
+
+  toggle() {
+    if (this.isInternal) {
+      this.isOpen ? this.close() : this.open();
+    }
+  }
 }
