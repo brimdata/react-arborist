@@ -9,17 +9,23 @@ export default function Version4() {
   });
 
   const [opensValue, setOpens] = useState({});
+  const [editValue, setEditValue] = useState<string | null>(null);
   // return <p>Reset</p>;
   return (
     <div>
       {
         <TreeView
+          openByDefault
           nodes={nodes}
           opens={{
             value: opensValue,
             onChange: (e) => {
               setOpens(e.value);
             },
+          }}
+          edit={{
+            value: editValue,
+            onChange: (e) => setEditValue(e.value),
           }}
         />
       }

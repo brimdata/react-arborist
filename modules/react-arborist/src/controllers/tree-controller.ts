@@ -48,9 +48,33 @@ export class TreeController<T> {
     this.props.opens.onChange({
       value: { ...this.props.opens.value, [id]: false },
       type: "close",
-      ids: [id],
+      ids: [id], // maybe move this to payload?
     });
   }
+
+  /* Edit State */
+
+  isEditId(id: string) {
+    return this.props.edit.value === id;
+  }
+
+  edit(id: string) {
+    this.props.edit.onChange({
+      value: id,
+    });
+  }
+
+  submit(id: string, changes: Partial<T>) {
+    this.props.nodes.onChange({
+      type: "update",
+      payload: { id, changes },
+    });
+    this.props.edit.onChange({
+      value: null,
+    });
+  }
+
+  /* Selection State */
 
   isSelected(id: string) {
     return false; // to do

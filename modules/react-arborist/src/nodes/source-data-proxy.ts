@@ -4,7 +4,6 @@ import { SourceDataAccessor } from "./source-data-accessor";
 export class SourceDataProxy<T> implements NodeObject<T> {
   id: string;
   level: number;
-  isLeaf: boolean;
   children: SourceDataProxy<T>[] | null = null;
 
   constructor(
@@ -14,11 +13,12 @@ export class SourceDataProxy<T> implements NodeObject<T> {
   ) {
     this.id = this.accessor.getId(sourceData);
     this.level = parent === null ? 0 : parent.level + 1;
-    this.isLeaf = this.accessor.getIsLeaf(sourceData);
-    this.children =
-      this.sourceChildren?.map((sourceChild) => {
-        return new SourceDataProxy(this, sourceChild, accessor);
-      }) || null;
+    const initChild = (d: T) => new SourceDataProxy(this, d, accessor);
+    this.children = this.sourceChildren?.map(initChild) || null;
+  }
+
+  get isLeaf() {
+    return this.accessor.getIsLeaf(this.sourceData);
   }
 
   get sourceChildren() {
@@ -30,7 +30,10 @@ export class SourceDataProxy<T> implements NodeObject<T> {
   }
 
   update(changes: Partial<T>) {
-    this.sourceData = { ...this.sourceData, ...changes };
+    for (const key in changes) {
+      // @ts-ignore
+      this.sourceData[key] = changes[key];
+    }
   }
 
   deleteChild(data: T) {

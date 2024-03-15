@@ -6,7 +6,9 @@ import { NodeController } from "../controllers/node-controller";
 export function useRowDragAndDrop<T>(node: NodeController<T>) {
   const el = useRef<HTMLDivElement | null>(null);
 
+  // @ts-ignore todo
   const dragRef = useDragHook<T>(node); // to do
+  // @ts-ignore todo
   const dropRef = useDropHook(el, node); // to do
   const innerRef = useCallback(
     (n: any) => {

@@ -21,6 +21,7 @@ export class NodeController<T> {
     public rowIndex: number,
   ) {}
 
+  /* Data Access */
   get id() {
     return this.object.id;
   }
@@ -41,12 +42,9 @@ export class NodeController<T> {
     return this.object.sourceData;
   }
 
+  /* Open State */
   get isOpen() {
     return this.isInternal && this.tree.isOpen(this.id);
-  }
-
-  get isSelected() {
-    return this.tree.isSelected(this.id);
   }
 
   open() {
@@ -61,5 +59,22 @@ export class NodeController<T> {
     if (this.isInternal) {
       this.isOpen ? this.close() : this.open();
     }
+  }
+
+  /* Edit State */
+  get isEditing() {
+    return this.tree.isEditId(this.id);
+  }
+
+  edit() {
+    this.tree.edit(this.id);
+  }
+
+  submit(changes: Partial<T>) {
+    this.tree.submit(this.id, changes);
+  }
+
+  get isSelected() {
+    return this.tree.isSelected(this.id);
   }
 }

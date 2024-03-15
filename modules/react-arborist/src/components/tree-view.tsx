@@ -6,6 +6,7 @@ import React, {
 } from "react";
 import { TreeController } from "../controllers/tree-controller";
 import { TreeViewProps } from "../types/tree-view-props";
+
 import { FixedSizeList } from "react-window";
 import { NodeController } from "../controllers/node-controller";
 import { createRowAttributes } from "../row/attributes";
@@ -29,13 +30,13 @@ function TreeViewProvider<T>(props: {
   children: any;
 }) {
   return (
-    <Context.Provider value={props.tree}>
+    <Context.Provider value={props.tree as TreeController<T>}>
       <DndProvider backend={HTML5Backend}>{props.children}</DndProvider>
     </Context.Provider>
   );
 }
 
-export function useTree() {
+export function useTree<T>(): TreeController<T> {
   const value = useContext(Context);
   if (!value) throw new Error("No context provided");
   return value;
@@ -45,6 +46,7 @@ function TreeViewContainer() {
   const tree = useTree();
   return (
     <div role="tree">
+      {/* @ts-ignore */}
       <FixedSizeList
         // className={tree.props.className}
         // outerRef={tree.listEl}
@@ -67,7 +69,7 @@ function TreeViewContainer() {
 }
 
 function RowContainer<T>(props: { style: React.CSSProperties; index: number }) {
-  const tree = useTree();
+  const tree = useTree<T>();
   const node = tree.rows[props.index];
   const indent = tree.indent * node.level;
   const nodeStyle = { paddingLeft: indent };
@@ -103,25 +105,47 @@ export function RowRenderer<T>(props: {
   );
 }
 
-function NodeRenderer(props: {
+function NodeRenderer<T>(props: {
   style: CSSProperties;
   node: NodeController<T>;
   tree: TreeController<T>;
   dragHandle?: (el: HTMLDivElement | null) => void;
   preview?: boolean;
 }) {
+  function onSubmit(e: any) {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+    const changes = Object.fromEntries(data.entries());
+    props.node.submit(changes as Partial<T>);
+  }
+
   return (
     <div ref={props.dragHandle} style={props.style}>
       <span
         onClick={(e) => {
           e.stopPropagation();
-          console.log("click");
           props.node.toggle();
         }}
       >
         {props.node.isLeaf ? "🌳" : props.node.isOpen ? "🗁" : "🗀"}
       </span>{" "}
-      <span>{props.node.data.name}</span>
+      {props.node.isEditing ? (
+        <form onSubmit={onSubmit} style={{ display: "contents" }}>
+          <input
+            type="text"
+            name="name"
+            defaultValue={
+              /* @ts-ignore */
+              props.node.data.name
+            }
+          />
+        </form>
+      ) : (
+        <span onClick={() => props.node.edit()}>
+          {/* @ts-ignore */}
+          {props.node.id + " " + props.node.data.name}
+        </span>
+      )}
     </div>
   );
 }

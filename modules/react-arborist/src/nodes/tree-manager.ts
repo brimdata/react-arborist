@@ -10,13 +10,17 @@ export class TreeManager<T> {
   accessor: SourceDataAccessor<T>;
 
   constructor(
-    public sourceData: T[],
+    sourceData: T[],
     public accessors: Partial<SourceDataAccessors<T>>,
   ) {
     this.accessor = new SourceDataAccessor(accessors);
     this.nodes = sourceData.map((data) => {
       return new SourceDataProxy(null, data, this.accessor);
     });
+  }
+
+  get sourceData() {
+    return this.nodes.map((node) => node.sourceData);
   }
 
   create(args: nodes.CreatePayload<T>) {
@@ -30,7 +34,11 @@ export class TreeManager<T> {
 
   update(args: nodes.UpdatePayload<T>) {
     const { id, changes } = args;
-    this.find(id)?.update(changes);
+    const target = this.find(id);
+    if (target) {
+      console.log("looking for", id, "got", target);
+      target.update(changes);
+    }
   }
 
   move(args: nodes.MovePayload<T>) {
@@ -66,7 +74,11 @@ export class TreeManager<T> {
   }
 
   find(id: string) {
-    return this.nodes.find((nodeObject) => this.findNodeObject(id, nodeObject));
+    for (let cursor of this.nodes) {
+      const found = this.findNodeObject(id, cursor);
+      if (found) return found;
+    }
+    return null;
   }
 
   findNodeObject(

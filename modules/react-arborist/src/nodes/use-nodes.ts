@@ -8,6 +8,7 @@ export function useNodes<T>(
   options: Partial<SourceDataAccessors<T>>,
 ) {
   const [sourceData, setSourceData] = useState(initialData);
+  // console.log("re-render source data", sourceData[0]);
   const treeManager = new TreeManager(sourceData, options);
 
   return {
@@ -22,12 +23,14 @@ export function useNodes<T>(
           treeManager.move(event.payload);
           break;
         case "update":
+          console.log(event);
           treeManager.update(event.payload);
           break;
         case "destroy":
           treeManager.destroy(event.payload);
           break;
       }
+      console.log(treeManager.sourceData[0]);
       setSourceData([...treeManager.sourceData]);
     },
   };

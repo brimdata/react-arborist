@@ -2,11 +2,13 @@ import { NodeObject } from "../nodes/node-object";
 import { NodesOnChangeEvent } from "../nodes/change-event";
 import { OpensOnChangeEvent } from "../opens/change-event";
 import { PartialController } from "./utils";
+import { EditOnChangeEvent } from "../edit/change-event";
 
 export type TreeViewProps<T> = {
   /* Partial Controllers */
   nodes: PartialController<NodeObject<T>[], NodesOnChangeEvent<T>>;
   opens: PartialController<Record<string, boolean>, OpensOnChangeEvent>;
+  edit: PartialController<string | null, EditOnChangeEvent>;
 
   /* Dimensions and Sizes */
   width: number | string;
