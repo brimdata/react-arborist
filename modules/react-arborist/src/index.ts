@@ -10,3 +10,4 @@ export * from "./hooks/use-simple-tree";
 export * from "./components/tree-view";
 export * from "./nodes/tree-manager";
 export * from "./nodes/use-nodes";
+export * from "./selection/use-multi-selection";

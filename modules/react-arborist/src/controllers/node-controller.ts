@@ -74,7 +74,25 @@ export class NodeController<T> {
     this.tree.submit(this.id, changes);
   }
 
+  /* Selection State */
+
   get isSelected() {
     return this.tree.isSelected(this.id);
+  }
+
+  select() {
+    this.tree.select(this.id);
+  }
+
+  selectMulti() {
+    this.tree.selectMulti(this.id);
+  }
+
+  selectContiguous() {
+    this.tree.selectContiguous(this.id);
+  }
+
+  deselect() {
+    this.tree.deselect(this.id);
   }
 }

@@ -1,4 +1,4 @@
-import { TreeView, useNodes } from "react-arborist";
+import { TreeView, useNodes, useMultiSelection } from "react-arborist";
 import { gmailData } from "../data/gmail";
 import { useState } from "react";
 
@@ -10,6 +10,7 @@ export default function Version4() {
 
   const [opensValue, setOpens] = useState({});
   const [editValue, setEditValue] = useState<string | null>(null);
+  const selection = useMultiSelection();
   // return <p>Reset</p>;
   return (
     <div>
@@ -17,11 +18,10 @@ export default function Version4() {
         <TreeView
           openByDefault
           nodes={nodes}
+          selection={selection}
           opens={{
             value: opensValue,
-            onChange: (e) => {
-              setOpens(e.value);
-            },
+            onChange: (e) => setOpens(e.value),
           }}
           edit={{
             value: editValue,

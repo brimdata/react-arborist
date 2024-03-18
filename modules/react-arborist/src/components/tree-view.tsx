@@ -112,11 +112,25 @@ function NodeRenderer<T>(props: {
   dragHandle?: (el: HTMLDivElement | null) => void;
   preview?: boolean;
 }) {
+  const { node } = props;
+
   function onSubmit(e: any) {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const changes = Object.fromEntries(data.entries());
     props.node.submit(changes as Partial<T>);
+  }
+
+  function onClick(e: any) {
+    if (e.metaKey && e.shiftKey) {
+      node.tree.selectAll();
+    } else if (e.metaKey) {
+      node.isSelected ? node.deselect() : node.selectMulti();
+    } else if (e.shiftKey) {
+      node.selectContiguous();
+    } else {
+      node.select();
+    }
   }
 
   return (
@@ -141,9 +155,14 @@ function NodeRenderer<T>(props: {
           />
         </form>
       ) : (
-        <span onClick={() => props.node.edit()}>
-          {/* @ts-ignore */}
-          {props.node.id + " " + props.node.data.name}
+        <span style={{ color: props.node.isSelected ? "red" : "inherit" }}>
+          <span onClick={onClick}>{props.node.id}</span>
+          <span onClick={() => props.node.edit()}>
+            {
+              /* @ts-ignore */
+              props.node.data.name
+            }
+          </span>
         </span>
       )}
     </div>
