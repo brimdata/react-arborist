@@ -35,7 +35,7 @@ export class TreeApi<T> {
     public store: Store<RootState, Actions>,
     public props: TreeProps<T>,
     public list: MutableRefObject<FixedSizeList | null>,
-    public listEl: MutableRefObject<HTMLDivElement | null>
+    public listEl: MutableRefObject<HTMLDivElement | null>,
   ) {
     /* Changes here must also be made in update() */
     this.root = createRoot<T>(this);
@@ -96,7 +96,7 @@ export class TreeApi<T> {
       this.props.searchMatch ??
       ((node, term) => {
         const string = JSON.stringify(
-          Object.values(node.data as { [k: string]: unknown })
+          Object.values(node.data as { [k: string]: unknown }),
         );
         return string.toLocaleLowerCase().includes(term.toLocaleLowerCase());
       });
@@ -113,7 +113,7 @@ export class TreeApi<T> {
     const id = utils.access<string>(data, get);
     if (!id)
       throw new Error(
-        "Data must contain an 'id' property or props.idAccessor must return a string"
+        "Data must contain an 'id' property or props.idAccessor must return a string",
       );
     return id;
   }
@@ -194,7 +194,7 @@ export class TreeApi<T> {
       type?: "internal" | "leaf";
       parentId?: null | string;
       index?: null | number;
-    } = {}
+    } = {},
   ) {
     const parentId =
       opts.parentId === undefined
@@ -401,6 +401,7 @@ export class TreeApi<T> {
 
   get cursorParentId() {
     const { cursor } = this.state.dnd;
+    if (!cursor) return null;
     switch (cursor.type) {
       case "highlight":
         return cursor.id;
@@ -410,7 +411,7 @@ export class TreeApi<T> {
   }
 
   get cursorOverFolder() {
-    return this.state.dnd.cursor.type === "highlight";
+    return this.state.dnd.cursor?.type === "highlight";
   }
 
   get dragNodes() {
@@ -461,7 +462,7 @@ export class TreeApi<T> {
   }
 
   hideCursor() {
-    this.dispatch(dnd.cursor({ type: "none" }));
+    this.dispatch(dnd.cursor(null));
   }
 
   showCursor(cursor: Cursor) {

@@ -1,16 +1,19 @@
-import { NodeObject } from "../nodes/node-object";
-import { NodesOnChangeEvent } from "../nodes/change-event";
-import { OpensOnChangeEvent } from "../opens/change-event";
+import { NodesPartialController } from "../nodes/types";
+import { OpensPartialController } from "../opens/types";
 import { PartialController } from "./utils";
-import { EditOnChangeEvent } from "../edit/change-event";
+import { EditOnChangeEvent, EditPartialController } from "../edit/types";
 import { SelectionPartialController } from "../selection/types";
+import { DndPartialController } from "../dnd/types";
+import { CursorPartialController } from "../cursor/types";
 
 export type TreeViewProps<T> = {
   /* Partial Controllers */
-  nodes: PartialController<NodeObject<T>[], NodesOnChangeEvent<T>>;
-  opens: PartialController<Record<string, boolean>, OpensOnChangeEvent>;
-  edit: PartialController<string | null, EditOnChangeEvent>;
+  nodes: NodesPartialController<T>;
+  opens: OpensPartialController;
+  edit: EditPartialController;
   selection: SelectionPartialController<T>;
+  dnd: DndPartialController<T>;
+  cursor: CursorPartialController;
 
   /* Dimensions and Sizes */
   width: number | string;

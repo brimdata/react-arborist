@@ -1,3 +1,4 @@
+import { NodeController } from "./controllers/node-controller";
 import { NodeApi } from "./interfaces/node-api";
 import { TreeApi } from "./interfaces/tree-api";
 import { IdObj } from "./types/utils";
@@ -6,16 +7,8 @@ export function bound(n: number, min: number, max: number) {
   return Math.max(Math.min(n, max), min);
 }
 
-export function isItem(node: NodeApi<any> | null) {
-  return node && node.isLeaf;
-}
-
-export function isClosed(node: NodeApi<any> | null) {
-  return node && node.isInternal && !node.isOpen;
-}
-
-export function isOpenWithEmptyChildren(node: NodeApi<any> | null) {
-  return node && node.isOpen && !node.children?.length;
+export function isOpenWithEmptyChildren(node: NodeController<any> | null) {
+  return node && node.isOpen && !node.object.children?.length;
 }
 
 /**
@@ -51,7 +44,7 @@ export function dfs(node: NodeApi<any>, id: string): NodeApi<any> | null {
 
 export function walk(
   node: NodeApi<any>,
-  fn: (node: NodeApi<any>) => void
+  fn: (node: NodeApi<any>) => void,
 ): void {
   fn(node);
   if (node.children) {
@@ -110,14 +103,14 @@ function prevItem(list: HTMLElement[], index: number) {
 function getFocusable(target: HTMLElement) {
   return Array.from(
     document.querySelectorAll(
-      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled]), details:not([disabled]), summary:not(:disabled)'
-    )
+      'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"]):not([disabled]), details:not([disabled]), summary:not(:disabled)',
+    ),
   ).filter((e) => e === target || !target.contains(e)) as HTMLElement[];
 }
 
 export function access<T = boolean>(
   obj: any,
-  accessor: string | boolean | Function
+  accessor: string | boolean | Function,
 ): T {
   if (typeof accessor === "boolean") return accessor as unknown as T;
   if (typeof accessor === "string") return obj[accessor] as T;

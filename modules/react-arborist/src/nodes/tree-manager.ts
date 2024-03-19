@@ -1,4 +1,3 @@
-import * as nodes from "./change-event";
 import {
   SourceDataAccessor,
   SourceDataAccessors,
@@ -23,7 +22,7 @@ export class TreeManager<T> {
     return this.nodes.map((node) => node.sourceData);
   }
 
-  create(args: nodes.CreatePayload<T>) {
+  create(args: { parentId: string | null; index: number; data: T }) {
     const { parentId, index, data } = args;
     if (!parentId) {
       this.insertChildren(index, data);
@@ -32,7 +31,7 @@ export class TreeManager<T> {
     }
   }
 
-  update(args: nodes.UpdatePayload<T>) {
+  update(args: { id: string; changes: Partial<T> }) {
     const { id, changes } = args;
     const target = this.find(id);
     if (target) {
@@ -41,7 +40,7 @@ export class TreeManager<T> {
     }
   }
 
-  move(args: nodes.MovePayload<T>) {
+  move(args: { dragIds: string[]; parentId: string | null; index: number }) {
     const { dragIds, parentId, index } = args;
     const draggedData = this.findAll(dragIds).map((d) => d.sourceData);
     if (!parentId) {
@@ -56,7 +55,7 @@ export class TreeManager<T> {
     }
   }
 
-  destroy(args: nodes.DestroyPayload<T>) {
+  destroy(args: { ids: string[] }) {
     for (const node of this.findAll(args.ids)) {
       const parent = node.parent;
       if (!parent) {

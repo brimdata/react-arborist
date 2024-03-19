@@ -2,17 +2,23 @@ import React, {
   CSSProperties,
   HTMLAttributes,
   ReactElement,
+  forwardRef,
   useContext,
+  useRef,
 } from "react";
 import { TreeController } from "../controllers/tree-controller";
 import { TreeViewProps } from "../types/tree-view-props";
 
-import { FixedSizeList } from "react-window";
+import { FixedSizeList, FixedSizeListProps } from "react-window";
 import { NodeController } from "../controllers/node-controller";
 import { createRowAttributes } from "../row/attributes";
 import { useRowDragAndDrop } from "../row/drag-and-drop";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { DndProvider } from "react-dnd";
+import { DefaultCursor } from "./default-cursor";
+import { useCursorProps } from "../cursor/use-cursor-props";
+import { useCursorContainerStyle } from "../cursor/use-cursor-container-style";
+import { useOuterDrop } from "../dnd/outer-drop-hook";
 
 export function TreeView<T>(props: TreeViewProps<T>) {
   const tree = new TreeController<T>(props);
@@ -44,19 +50,21 @@ export function useTree<T>(): TreeController<T> {
 
 function TreeViewContainer() {
   const tree = useTree();
+  const outerRef = useRef();
+  useOuterDrop(outerRef);
   return (
     <div role="tree">
       {/* @ts-ignore */}
       <FixedSizeList
         // className={tree.props.className}
-        // outerRef={tree.listEl}
         itemCount={tree.rows.length}
         height={tree.height}
         width={tree.width}
         itemSize={tree.rowHeight}
         overscanCount={tree.overscanCount}
         itemKey={(index) => tree.rows[index]?.id || index}
-        // outerElementType={ListOuterElement}
+        outerElementType={ListOuter as any}
+        outerRef={outerRef}
         // innerElementType={ListInnerElement}
         // onScroll={tree.props.onScroll}
         // onItemsRendered={tree.onItemsRendered.bind(tree)}
@@ -64,6 +72,30 @@ function TreeViewContainer() {
       >
         {RowContainer}
       </FixedSizeList>
+    </div>
+  );
+}
+
+const ListOuter = forwardRef(function ListOuter(
+  { children, ...rest }: any,
+  ref,
+) {
+  return (
+    <div {...rest} ref={ref}>
+      <CursorContainer />
+      {children}
+    </div>
+  );
+});
+
+function CursorContainer() {
+  const tree = useTree();
+  const style = useCursorContainerStyle(tree);
+  const props = useCursorProps(tree);
+  if (!props) return null;
+  return (
+    <div style={style}>
+      <DefaultCursor {...props} />
     </div>
   );
 }
@@ -141,7 +173,7 @@ function NodeRenderer<T>(props: {
           props.node.toggle();
         }}
       >
-        {props.node.isLeaf ? "🌳" : props.node.isOpen ? "🗁" : "🗀"}
+        {props.node.isLeaf ? "·" : props.node.isOpen ? "📂" : "📁"}
       </span>{" "}
       {props.node.isEditing ? (
         <form onSubmit={onSubmit} style={{ display: "contents" }}>
@@ -157,7 +189,7 @@ function NodeRenderer<T>(props: {
       ) : (
         <span style={{ color: props.node.isSelected ? "red" : "inherit" }}>
           <span onClick={onClick}>{props.node.id}</span>
-          <span onClick={() => props.node.edit()}>
+          <span>
             {
               /* @ts-ignore */
               props.node.data.name

@@ -2,7 +2,7 @@ import { TreeController } from "../controllers/tree-controller";
 import { PartialController } from "../types/utils";
 
 export type SelectionState = Record<string, boolean>;
-export type SelectionOnChange<T> =
+export type SelectionOnChangeEvent<T> =
   | { type: "select"; id: string }
   | { type: "select-multi"; id: string }
   | { type: "select-contiguous"; id: string; tree: TreeController<T> }
@@ -11,5 +11,5 @@ export type SelectionOnChange<T> =
 
 export type SelectionPartialController<T> = PartialController<
   SelectionState,
-  SelectionOnChange<T>
+  SelectionOnChangeEvent<T>
 >;

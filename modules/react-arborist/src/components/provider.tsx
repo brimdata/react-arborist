@@ -5,6 +5,8 @@ import {
   useMemo,
   useRef,
 } from "react";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { DndProvider } from "react-dnd";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
 import { FixedSizeList } from "react-window";
 import {
@@ -16,8 +18,7 @@ import {
 import { TreeApi } from "../interfaces/tree-api";
 import { initialState } from "../state/initial";
 import { Actions, rootReducer, RootState } from "../state/root-reducer";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
+
 import { TreeProps } from "../types/tree-props";
 import { createStore, Store } from "redux";
 import { actions as visibility } from "../state/open-slice";
@@ -39,12 +40,12 @@ export function TreeProvider<T>({
   const listEl = useRef<HTMLDivElement | null>(null);
   const store = useRef<Store<RootState, Actions>>(
     // @ts-ignore
-    createStore(rootReducer, initialState(treeProps))
+    createStore(rootReducer, initialState(treeProps)),
   );
   const state = useSyncExternalStore<RootState>(
     store.current.subscribe,
     store.current.getState,
-    () => SERVER_STATE
+    () => SERVER_STATE,
   );
 
   /* The tree api object is stable. */

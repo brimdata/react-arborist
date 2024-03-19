@@ -1,3 +1,4 @@
+import { CursorState } from "../cursor/types";
 import { TreeViewProps } from "../types/tree-view-props";
 import { NodeController } from "./node-controller";
 
@@ -8,12 +9,18 @@ export class TreeController<T> {
     this.rows = NodeController.constructRows(this, props.nodes.value);
   }
 
+  /* Dimensions */
+
   get width() {
     return this.props.width ?? 300;
   }
 
   get height() {
     return this.props.height ?? 500;
+  }
+
+  get listHeight() {
+    return this.rows.length * this.rowHeight;
   }
 
   get rowHeight() {
@@ -26,6 +33,62 @@ export class TreeController<T> {
 
   get indent() {
     return this.props.indent ?? 24;
+  }
+
+  get paddingTop() {
+    return this.props.padding ?? this.props.paddingTop ?? 0;
+  }
+
+  get paddingBottom() {
+    return this.props.padding ?? this.props.paddingBottom ?? 0;
+  }
+
+  /* Node Getters */
+
+  get rootNodeObjects() {
+    return this.props.nodes.value;
+  }
+
+  get firstNode() {
+    return this.rows[0] || null;
+  }
+
+  get lastNode() {
+    const len = this.rows.length;
+    return len === 0 ? null : this.rows[len - 1];
+  }
+
+  get(id: string) {
+    const index = this.indexOf(id);
+    if (index) {
+      this.rows[index] || null;
+    } else {
+      return null;
+    }
+  }
+
+  nodeBefore(node: NodeController<T>) {
+    return this.rows[node.rowIndex - 1] || null;
+  }
+
+  nodeAfter(node: NodeController<T>) {
+    return this.rows[node.rowIndex + 1] || null;
+  }
+
+  nodesBetween(startId: string | null, endId: string | null) {
+    if (startId === null || endId === null) return [];
+    const index1 = this.indexOf(startId) ?? 0;
+    const index2 = this.indexOf(endId);
+    if (index2 === null) return [];
+    const start = Math.min(index1, index2);
+    const end = Math.max(index1, index2);
+    return this.rows.slice(start, end + 1);
+  }
+
+  indexOf(id: string) {
+    if (!id) return null;
+    const index = this.rows.findIndex((node) => node.id === id);
+    return index === -1 ? null : index;
   }
 
   /* Open State */
@@ -61,22 +124,23 @@ export class TreeController<T> {
   }
 
   edit(id: string) {
-    this.props.edit.onChange({
-      value: id,
-    });
+    this.props.edit.onChange({ value: id });
   }
 
   submit(id: string, changes: Partial<T>) {
-    this.props.nodes.onChange({
-      type: "update",
-      payload: { id, changes },
-    });
-    this.props.edit.onChange({
-      value: null,
-    });
+    this.props.nodes.onChange({ type: "update", id, changes });
+    this.props.edit.onChange({ value: null });
   }
 
   /* Selection State */
+
+  get selectedIds() {
+    const ids = [];
+    for (const id in this.props.selection.value) {
+      if (this.props.selection.value[id] === true) ids.push(id);
+    }
+    return ids;
+  }
 
   isSelected(id: string) {
     return this.props.selection.value[id] === true;
@@ -109,30 +173,54 @@ export class TreeController<T> {
     this.props.selection.onChange({ type: "deselect", id });
   }
 
-  /* Node Getters */
+  /* Drag and Drop State */
 
-  get firstNode() {
-    return this.rows[0] || null;
+  isDraggable(node: NodeController<T>) {
+    // todo
+    return true;
   }
 
-  get lastNode() {
-    const len = this.rows.length;
-    return len === 0 ? null : this.rows[len - 1];
+  dragStart(id: string) {
+    const dragIds = this.isSelected(id) ? this.selectedIds : [id];
+    this.props.dnd.onChange({ type: "drag-start", dragIds });
   }
 
-  nodesBetween(startId: string | null, endId: string | null) {
-    if (startId === null || endId === null) return [];
-    const index1 = this.indexOf(startId) ?? 0;
-    const index2 = this.indexOf(endId);
-    if (index2 === null) return [];
-    const start = Math.min(index1, index2);
-    const end = Math.max(index1, index2);
-    return this.rows.slice(start, end + 1);
+  draggingOver(parentId: string | null, index: number | null) {
+    this.props.dnd.onChange({
+      type: "dragging-over",
+      destinationParentId: parentId,
+      destinationIndex: index,
+    });
   }
 
-  indexOf(id: string) {
-    if (!id) return null;
-    const index = this.rows.findIndex((node) => node.id === id);
-    return index === -1 ? null : index;
+  canDrop() {
+    // todo
+    // mmove this into a default prop or something
+    return true;
+  }
+
+  drop() {
+    const dnd = this.props.dnd.value;
+    this.props.nodes.onChange({
+      type: "move",
+      dragIds: dnd.dragIds,
+      parentId: dnd.destinationParentId,
+      index: dnd.destinationIndex || 0,
+    });
+  }
+
+  dragEnd() {
+    this.props.dnd.onChange({ type: "drag-end" });
+    this.props.cursor.onChange({ value: null });
+  }
+
+  /* Drop Cursor State */
+
+  showCursor(value: CursorState) {
+    this.props.cursor.onChange({ value });
+  }
+
+  hideCursor() {
+    this.props.cursor.onChange({ value: null });
   }
 }

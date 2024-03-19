@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  SelectionOnChange,
+  SelectionOnChangeEvent,
   SelectionPartialController,
   SelectionState,
 } from "./types";
@@ -10,7 +10,7 @@ export function useMultiSelection<T>(): SelectionPartialController<T> {
   const [mostRecent, setMostRecent] = useState<string | null>(null);
   const [value, setValue] = useState<SelectionState>({});
 
-  function onChange(e: SelectionOnChange<T>) {
+  function onChange(e: SelectionOnChangeEvent<T>) {
     switch (e.type) {
       case "select":
         setValue({ [e.id]: true });

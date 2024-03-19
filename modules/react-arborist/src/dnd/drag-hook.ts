@@ -1,14 +1,11 @@
 import { useEffect } from "react";
 import { ConnectDragSource, useDrag } from "react-dnd";
 import { getEmptyImage } from "react-dnd-html5-backend";
-import { NodeApi } from "../interfaces/node-api";
 import { DragItem } from "../types/dnd";
 import { DropResult } from "./drop-hook";
-import { actions as dnd } from "../state/dnd-slice";
-import { safeRun } from "../utils";
-import { ROOT_ID } from "../data/create-root";
+import { NodeController } from "../controllers/node-controller";
 
-export function useDragHook<T>(node: NodeApi<T>): ConnectDragSource {
+export function useDragHook<T>(node: NodeController<T>): ConnectDragSource {
   const tree = node.tree;
   const ids = tree.selectedIds;
   const [_, ref, preview] = useDrag<DragItem, DropResult, void>(
@@ -17,26 +14,13 @@ export function useDragHook<T>(node: NodeApi<T>): ConnectDragSource {
       type: "NODE",
       item: () => {
         // This is fired once at the begging of a drag operation
-        const dragIds = tree.isSelected(node.id) ? Array.from(ids) : [node.id];
-        tree.dispatch(dnd.dragStart(node.id, dragIds));
+        tree.dragStart(node.id);
+        console.log("item", node.id);
         return { id: node.id };
       },
       end: () => {
-        tree.hideCursor();
-        let { parentId, index, dragIds } = tree.state.dnd;
-        // If they held down meta, we need to create a copy
-        // if (drop.dropEffect === "copy")
-        if (tree.canDrop()) {
-          safeRun(tree.props.onMove, {
-            dragIds,
-            parentId: parentId === ROOT_ID ? null : parentId,
-            index: index === null ? 0 : index, // When it's null it was dropped over a folder
-            dragNodes: tree.dragNodes,
-            parentNode: tree.get(parentId),
-          });
-          tree.open(parentId);
-        }
-        tree.dispatch(dnd.dragEnd());
+        if (tree.canDrop()) tree.drop();
+        tree.dragEnd();
       },
     }),
     [ids, node],
