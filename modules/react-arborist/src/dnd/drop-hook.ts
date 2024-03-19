@@ -1,10 +1,8 @@
 import { RefObject } from "react";
 import { ConnectDropTarget, useDrop } from "react-dnd";
-import { useTreeApi } from "../context";
-import { NodeApi } from "../interfaces/node-api";
 import { DragItem } from "../types/dnd";
 import { computeDrop } from "./compute-drop";
-import { actions as dnd } from "../state/dnd-slice";
+import { NodeController } from "../controllers/node-controller";
 
 export type DropResult = {
   parentId: string | null;
@@ -13,9 +11,9 @@ export type DropResult = {
 
 export function useDropHook(
   el: RefObject<HTMLElement | null>,
-  node: NodeApi<any>
+  node: NodeController<any>,
 ): ConnectDropTarget {
-  const tree = useTreeApi();
+  const tree = node.tree;
   const [_, dropRef] = useDrop<DragItem, DropResult | null, void>(
     () => ({
       accept: "NODE",
@@ -31,7 +29,7 @@ export function useDropHook(
           prevNode: node.prev,
           nextNode: node.next,
         });
-        if (drop) tree.dispatch(dnd.hovering(drop.parentId, drop.index));
+        if (drop) tree.draggingOver(drop.parentId, drop.index!);
 
         if (m.canDrop()) {
           if (cursor) tree.showCursor(cursor);
@@ -43,7 +41,7 @@ export function useDropHook(
         if (!m.canDrop()) return null;
       },
     }),
-    [node, el.current, tree.props]
+    [node, el.current, tree.props],
   );
 
   return dropRef;

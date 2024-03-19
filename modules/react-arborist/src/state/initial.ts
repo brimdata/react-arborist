@@ -16,7 +16,7 @@ export const initialState = (props?: TreeProps<any>): RootState => ({
     selection: { ids: new Set(), anchor: null, mostRecent: null },
   },
   dnd: {
-    cursor: { type: "none" },
+    cursor: null,
     dragId: null,
     dragIds: [],
     parentId: null,

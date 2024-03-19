@@ -4,8 +4,8 @@ import * as renderers from "./renderers";
 import { ElementType, MouseEventHandler } from "react";
 import { ListOnScrollProps } from "react-window";
 import { NodeApi } from "../interfaces/node-api";
-import { OpenMap } from "../state/open-slice";
 import { useDragDropManager } from "react-dnd";
+import { OpenMap } from "../state/open-slice";
 
 export interface TreeProps<T> {
   /* Data Options */

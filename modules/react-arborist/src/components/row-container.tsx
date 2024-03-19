@@ -35,14 +35,14 @@ export const RowContainer = React.memo(function RowContainer<T>({
   const node = useFreshNode<T>(index);
 
   const el = useRef<HTMLDivElement | null>(null);
-  const dragRef = useDragHook<T>(node);
-  const dropRef = useDropHook(el, node);
+  const dragRef = useDragHook<T>(node as any);
+  const dropRef = useDropHook(el, node as any);
   const innerRef = useCallback(
     (n: any) => {
       el.current = n;
       dropRef(n);
     },
-    [dropRef]
+    [dropRef],
   );
 
   const indent = tree.indent * node.level;
@@ -54,7 +54,7 @@ export const RowContainer = React.memo(function RowContainer<T>({
         parseFloat(style.top as string) +
         (tree.props.padding ?? tree.props.paddingTop ?? 0),
     }),
-    [style, tree.props.padding, tree.props.paddingTop]
+    [style, tree.props.padding, tree.props.paddingTop],
   );
   const rowAttrs: React.HTMLAttributes<any> = {
     role: "treeitem",
