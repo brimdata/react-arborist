@@ -1,4 +1,5 @@
 import { CursorState } from "../cursor/types";
+import { safeToDrop } from "../dnd/safe-to-drop";
 import { TreeViewProps } from "../types/tree-view-props";
 import { NodeController } from "./node-controller";
 
@@ -58,13 +59,36 @@ export class TreeController<T> {
     return len === 0 ? null : this.rows[len - 1];
   }
 
-  get(id: string) {
+  get dragNodes() {
+    return this.getAll(this.props.dnd.value.dragItems);
+  }
+
+  get dragSourceNode() {
+    return this.get(this.props.dnd.value.dragSourceId);
+  }
+
+  get dropTargetParentNode() {
+    return this.get(this.props.dnd.value.targetParentId);
+  }
+
+  get dropTargetIndex() {
+    return this.props.dnd.value.targetIndex;
+  }
+
+  get(id: string | null): NodeController<T> | null {
+    if (id === null) return null;
     const index = this.indexOf(id);
     if (index) {
-      this.rows[index] || null;
+      return this.rows[index] || null;
     } else {
       return null;
     }
+  }
+
+  getAll(ids: string[]) {
+    return ids
+      .map((id) => this.get(id))
+      .filter((n) => !!n) as NodeController<T>[];
   }
 
   nodeBefore(node: NodeController<T>) {
@@ -211,9 +235,7 @@ export class TreeController<T> {
   }
 
   canDrop() {
-    // todo
-    // mmove this into a default prop or something
-    return true;
+    return safeToDrop(this);
   }
 
   drop() {

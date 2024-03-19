@@ -41,11 +41,11 @@ export const defaultNodeObjects: DefaultNodeObject[] = [
             name: "Mastodon",
           },
           {
-            id: "10",
+            id: "12",
             name: "GitHub Profile",
           },
           {
-            id: "11",
+            id: "13",
             name: "Email",
           },
         ],

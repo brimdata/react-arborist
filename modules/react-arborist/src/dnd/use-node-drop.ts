@@ -16,7 +16,7 @@ export function useNodeDrop<T>(node: NodeController<T>, ref: any) {
       });
       if (drop) node.tree.draggingOver(drop.parentId, drop.index!);
 
-      if (true /* canDrop? */) {
+      if (node.tree.canDrop()) {
         if (cursor) node.tree.showCursor(cursor);
       } else {
         node.tree.hideCursor();

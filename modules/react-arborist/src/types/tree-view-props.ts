@@ -3,7 +3,7 @@ import { OpensPartialController } from "../opens/types";
 import { PartialController } from "./utils";
 import { EditOnChangeEvent, EditPartialController } from "../edit/types";
 import { SelectionPartialController } from "../selection/types";
-import { DndPartialController } from "../dnd/types";
+import { DisableDropCheck, DndPartialController } from "../dnd/types";
 import { CursorPartialController } from "../cursor/types";
 import { FocusPartialController } from "../focus/types";
 
@@ -33,4 +33,5 @@ export type TreeViewProps<T> = {
 
   /* Configurations */
   openByDefault: boolean;
+  disableDrop?: string | boolean | DisableDropCheck<T>;
 };

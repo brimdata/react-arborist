@@ -43,7 +43,7 @@ export class NodeController<T> {
     return this.object.parent?.id || null;
   }
 
-  get parent() {
+  get parent(): NodeController<T> | null {
     if (this.parentId) {
       return this.tree.get(this.parentId);
     } else {
@@ -92,6 +92,15 @@ export class NodeController<T> {
       willReceiveDrop: this.willReceiveDrop,
       isDragging: this.isDragging,
     } as Record<string, boolean>;
+  }
+
+  isDescendantOf(node: NodeController<T>) {
+    let cursor: NodeController<any> | null = this;
+    while (cursor) {
+      if (cursor.id === node.id) return true;
+      cursor = cursor.parent;
+    }
+    return false;
   }
 
   /* Open State */

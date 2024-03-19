@@ -1,3 +1,4 @@
+import { NodeController } from "../controllers/node-controller";
 import { PartialController } from "../types/utils";
 
 export type DndState = {
@@ -26,3 +27,9 @@ export type DndPartialController = PartialController<
   DndState,
   DndOnChangeEvent
 >;
+
+export type DisableDropCheck<T> = (args: {
+  dragNodes: NodeController<T>[];
+  targetParentNode: NodeController<T> | null;
+  targetIndex: number | null;
+}) => boolean;
