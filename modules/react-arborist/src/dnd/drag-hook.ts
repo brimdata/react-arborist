@@ -15,7 +15,6 @@ export function useDragHook<T>(node: NodeController<T>): ConnectDragSource {
       item: () => {
         // This is fired once at the begging of a drag operation
         tree.dragStart(node.id);
-        console.log("item", node.id);
         return { id: node.id };
       },
       end: () => {

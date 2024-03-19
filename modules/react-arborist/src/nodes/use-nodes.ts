@@ -29,6 +29,7 @@ export function useNodes<T>(
           treeManager.destroy(event);
           break;
       }
+      console.log([...treeManager.sourceData]);
       setSourceData([...treeManager.sourceData]);
     },
   };

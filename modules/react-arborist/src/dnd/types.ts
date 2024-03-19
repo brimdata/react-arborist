@@ -6,7 +6,7 @@ export type DndState = {
   destinationIndex: number | null;
 };
 
-export type DndOnChangeEvent<T> =
+export type DndOnChangeEvent =
   | {
       type: "drag-start";
       dragIds: string[];
@@ -20,7 +20,7 @@ export type DndOnChangeEvent<T> =
       type: "drag-end";
     };
 
-export type DndPartialController<T> = PartialController<
+export type DndPartialController = PartialController<
   DndState,
-  DndOnChangeEvent<T>
+  DndOnChangeEvent
 >;

@@ -9,17 +9,13 @@ export class TreeManager<T> {
   accessor: SourceDataAccessor<T>;
 
   constructor(
-    sourceData: T[],
+    public sourceData: T[],
     public accessors: Partial<SourceDataAccessors<T>>,
   ) {
     this.accessor = new SourceDataAccessor(accessors);
     this.nodes = sourceData.map((data) => {
       return new SourceDataProxy(null, data, this.accessor);
     });
-  }
-
-  get sourceData() {
-    return this.nodes.map((node) => node.sourceData);
   }
 
   create(args: { parentId: string | null; index: number; data: T }) {
@@ -44,13 +40,13 @@ export class TreeManager<T> {
     const { dragIds, parentId, index } = args;
     const draggedData = this.findAll(dragIds).map((d) => d.sourceData);
     if (!parentId) {
-      this.insertChildren(index, ...draggedData);
       this.destroy({ ids: dragIds });
+      this.insertChildren(index, ...draggedData);
     } else {
       const parent = this.find(parentId);
       if (parent) {
-        parent.insertChildren(index, ...draggedData);
         this.destroy({ ids: dragIds });
+        parent.insertChildren(index, ...draggedData);
       }
     }
   }
@@ -100,6 +96,7 @@ export class TreeManager<T> {
   }
 
   insertChildren(index: number, ...data: T[]) {
+    console.log(this.sourceData, index, data);
     this.sourceData.splice(index, 0, ...data);
   }
 
