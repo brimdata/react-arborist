@@ -21,10 +21,11 @@ import { useListInnerStyle } from "../list/use-list-inner-style";
 import { computeDrop } from "../dnd/compute-drop";
 import { useNodeDrag } from "../dnd/use-node-drag";
 import { useNodeDrop } from "../dnd/use-node-drop";
+import { useDefaultProps } from "../props/use-default-props";
 
-export function TreeView<T>(props: TreeViewProps<T>) {
-  console.log("<TreeView/>");
-  const tree = new TreeController<T>(props);
+export function TreeView<T>(props: Partial<TreeViewProps<T>>) {
+  const filledProps = useDefaultProps(props);
+  const tree = new TreeController<T>(filledProps);
   return (
     <TreeViewProvider tree={tree}>
       <TreeViewContainer />
@@ -161,6 +162,7 @@ function NodeRenderer<T>(props: {
   node: NodeController<T>;
 }) {
   const { node, attrs } = props;
+  const style = { attrs };
 
   function onSubmit(e: any) {
     e.preventDefault();
@@ -181,15 +183,20 @@ function NodeRenderer<T>(props: {
     }
   }
 
+  let classNames = "";
+  for (const key in node.state) {
+    if (node.state[key]) classNames += " " + key;
+  }
+
   return (
-    <div {...attrs}>
+    <div {...attrs} className={classNames}>
       <span
         onClick={(e) => {
           e.stopPropagation();
           node.toggle();
         }}
       >
-        {node.isLeaf ? "·" : node.isOpen ? "📂" : "📁"}
+        {node.isLeaf ? "" : node.isOpen ? "📂" : "📁"}
       </span>{" "}
       {node.isEditing ? (
         <form onSubmit={onSubmit} style={{ display: "contents" }}>
@@ -204,8 +211,7 @@ function NodeRenderer<T>(props: {
         </form>
       ) : (
         <span style={{ color: node.isSelected ? "red" : "inherit" }}>
-          <span onClick={onClick}>{node.id}</span>
-          <span>
+          <span onClick={onClick}>
             {
               /* @ts-ignore */
               node.data.name

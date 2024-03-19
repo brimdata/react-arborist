@@ -31,22 +31,25 @@ export class TreeManager<T> {
     const { id, changes } = args;
     const target = this.find(id);
     if (target) {
-      console.log("looking for", id, "got", target);
       target.update(changes);
     }
   }
 
-  move(args: { dragIds: string[]; parentId: string | null; index: number }) {
-    const { dragIds, parentId, index } = args;
-    const draggedData = this.findAll(dragIds).map((d) => d.sourceData);
-    if (!parentId) {
-      this.destroy({ ids: dragIds });
-      this.insertChildren(index, ...draggedData);
+  move(args: {
+    sourceIds: string[];
+    targetParentId: string | null;
+    targetIndex: number;
+  }) {
+    const { sourceIds, targetParentId, targetIndex } = args;
+    const sourceData = this.findAll(sourceIds).map((d) => d.sourceData);
+    if (!targetParentId) {
+      this.destroy({ ids: sourceIds });
+      this.insertChildren(targetIndex, ...sourceData);
     } else {
-      const parent = this.find(parentId);
+      const parent = this.find(targetParentId);
       if (parent) {
-        this.destroy({ ids: dragIds });
-        parent.insertChildren(index, ...draggedData);
+        this.destroy({ ids: sourceIds });
+        parent.insertChildren(targetIndex, ...sourceData);
       }
     }
   }
@@ -96,7 +99,6 @@ export class TreeManager<T> {
   }
 
   insertChildren(index: number, ...data: T[]) {
-    console.log(this.sourceData, index, data);
     this.sourceData.splice(index, 0, ...data);
   }
 

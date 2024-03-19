@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { SourceDataAccessors } from "./source-data-accessor";
 import { TreeManager } from "./tree-manager";
-import { NodesOnChangeEvent } from "./types";
+import { NodesOnChangeEvent, NodesPartialController } from "./types";
+import { NodeObject } from "./node-object";
 
 export function useNodes<T>(
   initialData: T[],
-  options: Partial<SourceDataAccessors<T>>,
+  options: Partial<SourceDataAccessors<T>> = {},
 ) {
   const [sourceData, setSourceData] = useState(initialData);
   const treeManager = new TreeManager(sourceData, options);
 
   return {
     setSourceData,
-    value: treeManager.nodes,
+    value: treeManager.nodes as NodeObject<T>[],
     onChange: (event: NodesOnChangeEvent<T>) => {
       switch (event.type) {
         case "create":
@@ -29,8 +30,7 @@ export function useNodes<T>(
           treeManager.destroy(event);
           break;
       }
-      console.log([...treeManager.sourceData]);
       setSourceData([...treeManager.sourceData]);
     },
-  };
+  } as NodesPartialController<T>;
 }

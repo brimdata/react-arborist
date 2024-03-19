@@ -1,20 +1,22 @@
 import { PartialController } from "../types/utils";
 
 export type DndState = {
-  dragIds: string[];
-  destinationParentId: string | null;
-  destinationIndex: number | null;
+  dragSourceId: string | null;
+  dragItems: string[];
+  targetParentId: string | null;
+  targetIndex: number | null;
 };
 
 export type DndOnChangeEvent =
   | {
       type: "drag-start";
-      dragIds: string[];
+      dragSourceId: string;
+      dragItems: string[];
     }
   | {
       type: "dragging-over";
-      destinationParentId: string | null;
-      destinationIndex: number | null;
+      targetParentId: string | null;
+      targetIndex: number | null;
     }
   | {
       type: "drag-end";

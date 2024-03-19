@@ -2,23 +2,33 @@ import { DndPartialController, DndState } from "./types";
 import { useState } from "react";
 
 function getInitialState(): DndState {
-  return { dragIds: [], destinationParentId: null, destinationIndex: null };
+  return {
+    dragSourceId: null,
+    dragItems: [],
+    targetParentId: null,
+    targetIndex: null,
+  };
 }
 
 export function useDnd(): DndPartialController {
-  const [value, setValue] = useState(getInitialState);
+  const [value, setValue] = useState<DndState>(getInitialState);
   return {
     value: value,
     onChange: (e) => {
       switch (e.type) {
         case "drag-start":
-          setValue((prev) => ({ ...prev, dragIds: e.dragIds }));
+          setValue({
+            dragSourceId: e.dragSourceId,
+            dragItems: e.dragItems,
+            targetIndex: null,
+            targetParentId: null,
+          });
           break;
         case "dragging-over":
           setValue((prev) => ({
             ...prev,
-            destinationParentId: e.destinationParentId,
-            destinationIndex: e.destinationIndex,
+            targetParentId: e.targetParentId,
+            targetIndex: e.targetIndex,
           }));
           break;
         case "drag-end":

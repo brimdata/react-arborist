@@ -5,6 +5,7 @@ import { EditOnChangeEvent, EditPartialController } from "../edit/types";
 import { SelectionPartialController } from "../selection/types";
 import { DndPartialController } from "../dnd/types";
 import { CursorPartialController } from "../cursor/types";
+import { FocusPartialController } from "../focus/types";
 
 export type TreeViewProps<T> = {
   /* Partial Controllers */
@@ -12,8 +13,9 @@ export type TreeViewProps<T> = {
   opens: OpensPartialController;
   edit: EditPartialController;
   selection: SelectionPartialController<T>;
-  dnd: DndPartialController<T>;
+  dnd: DndPartialController;
   cursor: CursorPartialController;
+  focus: FocusPartialController;
 
   /* Dimensions and Sizes */
   width: number | string;
@@ -26,9 +28,9 @@ export type TreeViewProps<T> = {
   padding: number;
 
   /* Class Names */
-  className?: string | undefined;
-  rowClassName?: string | undefined;
+  className?: string;
+  rowClassName?: string;
 
   /* Configurations */
-  openByDefault?: boolean;
+  openByDefault: boolean;
 };

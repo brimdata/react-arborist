@@ -95,7 +95,7 @@ export class TreeController<T> {
 
   isOpen(id: string) {
     if (id in this.props.opens.value) {
-      return this.props.opens.value[id];
+      return this.props.opens.value[id] || false;
     } else {
       return this.props.openByDefault; // default open state
     }
@@ -142,6 +142,10 @@ export class TreeController<T> {
     return ids;
   }
 
+  get hasOneSelection() {
+    return this.selectedIds.length === 1;
+  }
+
   isSelected(id: string) {
     return this.props.selection.value[id] === true;
   }
@@ -180,16 +184,29 @@ export class TreeController<T> {
     return true;
   }
 
+  isDragging(id: string) {
+    return this.props.dnd.value.dragSourceId === id;
+  }
+
+  willReceiveDrop(id: string) {
+    const { targetParentId, targetIndex } = this.props.dnd.value;
+    return id === targetParentId && targetIndex === null;
+  }
+
   dragStart(id: string) {
-    const dragIds = this.isSelected(id) ? this.selectedIds : [id];
-    this.props.dnd.onChange({ type: "drag-start", dragIds });
+    const ids = this.isSelected(id) ? this.selectedIds : [id];
+    this.props.dnd.onChange({
+      type: "drag-start",
+      dragSourceId: id,
+      dragItems: ids,
+    });
   }
 
   draggingOver(parentId: string | null, index: number | null) {
     this.props.dnd.onChange({
       type: "dragging-over",
-      destinationParentId: parentId,
-      destinationIndex: index,
+      targetParentId: parentId,
+      targetIndex: index,
     });
   }
 
@@ -203,9 +220,9 @@ export class TreeController<T> {
     const dnd = this.props.dnd.value;
     this.props.nodes.onChange({
       type: "move",
-      dragIds: dnd.dragIds,
-      parentId: dnd.destinationParentId,
-      index: dnd.destinationIndex || 0,
+      sourceIds: dnd.dragItems,
+      targetParentId: dnd.targetParentId,
+      targetIndex: dnd.targetIndex || 0,
     });
   }
 
@@ -222,5 +239,15 @@ export class TreeController<T> {
 
   hideCursor() {
     this.props.cursor.onChange({ value: null });
+  }
+
+  /* Focus */
+
+  isFocused(id: string) {
+    return this.hasFocus && this.props.focus.value.id === id;
+  }
+
+  get hasFocus() {
+    return this.props.focus.value.isWithinTree;
   }
 }

@@ -16,9 +16,9 @@ export type UpdateEvent<T> = {
 
 export type MoveEvent<T> = {
   type: "move";
-  dragIds: string[];
-  parentId: string | null;
-  index: number;
+  sourceIds: string[];
+  targetParentId: string | null;
+  targetIndex: number;
 };
 
 export type DestroyEvent<T> = {
