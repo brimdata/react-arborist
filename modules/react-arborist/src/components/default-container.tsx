@@ -1,4 +1,4 @@
-import { FixedSizeList } from "react-window";
+import { VariableSizeList } from "react-window";
 import { useDataUpdates, useTreeApi } from "../context";
 import { focusNextElement, focusPrevElement } from "../utils";
 import { ListOuterElement } from "./list-outer-element";
@@ -217,7 +217,7 @@ export function DefaultContainer() {
       }}
     >
       {/* @ts-ignore */}
-      <FixedSizeList
+      <VariableSizeList
         className={tree.props.className}
         outerRef={tree.listEl}
         itemCount={tree.visibleNodes.length}
@@ -233,7 +233,7 @@ export function DefaultContainer() {
         ref={tree.list}
       >
         {RowContainer}
-      </FixedSizeList>
+      </VariableSizeList>
     </div>
   );
 }

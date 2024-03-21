@@ -29,7 +29,7 @@ const DropContainer = () => {
   return (
     <div
       style={{
-        height: tree.visibleNodes.length * tree.rowHeight,
+        height: tree.rowHeight(tree.visibleNodes.length - 1),
         width: "100%",
         position: "absolute",
         left: "0",

@@ -6,7 +6,7 @@ import {
   useRef,
 } from "react";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
-import { FixedSizeList } from "react-window";
+import { VariableSizeList } from "react-window";
 import {
   DataUpdatesContext,
   DndContext,
@@ -35,7 +35,7 @@ export function TreeProvider<T>({
   imperativeHandle,
   children,
 }: Props<T>) {
-  const list = useRef<FixedSizeList | null>(null);
+  const list = useRef<VariableSizeList | null>(null);
   const listEl = useRef<HTMLDivElement | null>(null);
   const store = useRef<Store<RootState, Actions>>(
     // @ts-ignore
