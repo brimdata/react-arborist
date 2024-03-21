@@ -21,6 +21,7 @@ export type RowHeightCalculatorParams<T> = Pick<
   | "isClosed"
   | "isOpen"
   | "isAncestorOf"
+  | "level"
 >;
 
 export type RowHeightCalculator<T> = (
