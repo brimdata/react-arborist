@@ -1,11 +1,15 @@
+import { toArray } from "../utils";
 import { createDefaultAccessors } from "./default-accessors";
+
+type GetSortField<T> = (d: T) => number | string | boolean;
+type SortOrder = "asc" | "desc";
 
 export type SourceDataAccessors<T> = {
   id: (d: T) => string;
   children: (d: T) => T[] | null;
   isLeaf: (d: T) => boolean;
-  sortBy: (d: T) => number | string | boolean;
-  sortOrder: "asc" | "desc";
+  sortBy: GetSortField<T> | GetSortField<T>[];
+  sortOrder: SortOrder | SortOrder[];
 };
 
 export class SourceDataAccessor<T> {
@@ -28,19 +32,39 @@ export class SourceDataAccessor<T> {
   }
 
   sort(array: T[]) {
-    return array.sort((a, b) => {
-      const first = this.access.sortBy(a);
-      const second = this.access.sortBy(b);
+    const orders = toArray(this.access.sortOrder);
+    const compares = toArray(this.access.sortBy);
 
-      if (this.asc) {
-        return first < second ? -1 : 1;
-      } else {
-        return first > second ? -1 : 1;
+    return array.sort((a, b) => {
+      for (let i = 0; i < compares.length; i++) {
+        const comparator = this.createComparator(
+          compares[i],
+          orders[i] || "asc",
+        );
+        const result = comparator(a, b);
+        if (result !== 0) return result;
       }
+      return 0;
     });
   }
 
   get asc() {
     return this.access.sortOrder === "asc";
+  }
+
+  createComparator(getField: GetSortField<T>, sortOrder: SortOrder) {
+    return (a: T, b: T) => {
+      const first = getField(a);
+      const second = getField(b);
+
+      if (sortOrder === "asc") {
+        if (first < second) return -1;
+        if (first > second) return 1;
+      } else {
+        if (first < second) return 1;
+        if (first > second) return -1;
+      }
+      return 0;
+    };
   }
 }

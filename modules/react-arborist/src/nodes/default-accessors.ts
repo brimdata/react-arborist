@@ -23,7 +23,7 @@ export function createDefaultAccessors<T>(): SourceDataAccessors<T> {
         return true;
       }
     },
-    sortBy: (_d: T) => 0,
-    sortOrder: "asc",
+    sortBy: [],
+    sortOrder: [],
   };
 }

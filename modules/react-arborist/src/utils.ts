@@ -173,3 +173,8 @@ export function getInsertParentId(tree: TreeApi<any>) {
   if (focus.parent && !focus.parent.isRoot) return focus.parent.id;
   return null;
 }
+
+export function toArray<T>(itemOrArray: T | T[]): T[] {
+  if (Array.isArray(itemOrArray)) return itemOrArray;
+  else return [itemOrArray];
+}
