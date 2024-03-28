@@ -10,10 +10,10 @@ export class TreeManager<T> {
 
   constructor(
     public sourceData: T[],
-    public accessors: Partial<SourceDataAccessors<T>>,
+    accessors: Partial<SourceDataAccessors<T>>,
   ) {
     this.accessor = new SourceDataAccessor(accessors);
-    this.nodes = sourceData.map((data) => {
+    this.nodes = this.accessor.sort(sourceData).map((data) => {
       return new SourceDataProxy(null, data, this.accessor);
     });
   }

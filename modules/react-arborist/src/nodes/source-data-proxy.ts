@@ -13,8 +13,13 @@ export class SourceDataProxy<T> implements NodeObject<T> {
   ) {
     this.id = this.accessor.getId(sourceData);
     this.level = parent === null ? 0 : parent.level + 1;
-    const initChild = (d: T) => new SourceDataProxy(this, d, accessor);
-    this.children = this.sourceChildren?.map(initChild) || null;
+    if (this.sourceChildren) {
+      this.children = accessor
+        .sort(this.sourceChildren)
+        .map((d: T) => new SourceDataProxy(this, d, accessor));
+    } else {
+      this.children = null;
+    }
   }
 
   get isLeaf() {

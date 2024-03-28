@@ -1,37 +1,46 @@
+import { createDefaultAccessors } from "./default-accessors";
+
 export type SourceDataAccessors<T> = {
   id: (d: T) => string;
-  children: (d: T) => T[];
+  children: (d: T) => T[] | null;
   isLeaf: (d: T) => boolean;
+  sortBy: (d: T) => number | string | boolean;
+  sortOrder: "asc" | "desc";
 };
 
 export class SourceDataAccessor<T> {
-  constructor(public accessors: Partial<SourceDataAccessors<T>> = {}) {}
+  access: SourceDataAccessors<T>;
+
+  constructor(accessors: Partial<SourceDataAccessors<T>> = {}) {
+    this.access = { ...createDefaultAccessors(), ...accessors };
+  }
 
   getId(d: T): string {
-    if (this.accessors.id) {
-      return this.accessors.id(d);
-    } else if (d && typeof d === "object" && "id" in d) {
-      return d.id as string;
-    } else {
-      throw new Error("No id found for node data. Specify an id accessor.");
-    }
+    return this.access.id(d);
   }
 
   getChildren(d: T): null | T[] {
-    if (this.accessors.children) {
-      return this.accessors.children(d);
-    } else if (d && typeof d === "object" && "children" in d) {
-      return d.children as T[];
-    } else {
-      return null;
-    }
+    return this.access.children(d);
   }
 
   getIsLeaf(d: T): boolean {
-    if (this.accessors.isLeaf) {
-      return this.accessors.isLeaf(d);
-    } else {
-      return !this.getChildren(d);
-    }
+    return this.access.isLeaf(d);
+  }
+
+  sort(array: T[]) {
+    return array.sort((a, b) => {
+      const first = this.access.sortBy(a);
+      const second = this.access.sortBy(b);
+
+      if (this.asc) {
+        return first < second ? -1 : 1;
+      } else {
+        return first > second ? -1 : 1;
+      }
+    });
+  }
+
+  get asc() {
+    return this.access.sortOrder === "asc";
   }
 }
