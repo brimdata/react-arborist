@@ -1,5 +1,4 @@
 import { NodeObject } from "../nodes/node-object";
-import { NodeState } from "../types/state";
 import { TreeController } from "./tree-controller";
 
 export class NodeController<T> {
@@ -9,9 +8,11 @@ export class NodeController<T> {
     let index = 0;
     while (queue.length > 0) {
       const object = queue.shift()!;
-      const node = new NodeController(tree, object, index++);
-      rows.push(node);
-      if (node.isOpen) queue.unshift(...node.object.children!);
+      if (tree.isVisible(object.id)) {
+        const node = new NodeController(tree, object, index++);
+        rows.push(node);
+        if (node.isOpen) queue.unshift(...node.object.children!);
+      }
     }
     return rows;
   }

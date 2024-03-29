@@ -19,6 +19,7 @@ export function useDefaultProps<T>(
     dnd: props.dnd ?? useDnd(),
     cursor: props.cursor ?? useCursor(),
     focus: props.focus ?? useFocus(),
+    visible: props.visible ?? { value: {}, onChange: () => {} },
 
     width: props.width ?? 300,
     height: props.height ?? 500,

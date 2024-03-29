@@ -330,3 +330,12 @@ return (
   />
 );
 ```
+
+
+## Filtering
+
+I need to decide where to do the filtering on the dones. Some things to consider are this. When the tree is filtered, we probably want have different open state. For example, if everything is closed and we type a search, we want all the folders to suddenly be open. But if they clear out their search, it would be good to leave all the folders closed again.
+
+So the tree needs to know if it is filtered or not. So the filtering should happen in the tree.
+
+this.rows = ConstructNodes

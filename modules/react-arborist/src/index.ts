@@ -12,3 +12,6 @@ export * from "./nodes/tree-manager";
 export * from "./nodes/use-nodes";
 export * from "./selection/use-multi-selection";
 export * from "./dnd/use-dnd";
+
+/* Partial Controllers */
+export * from "./visible/use-filter";

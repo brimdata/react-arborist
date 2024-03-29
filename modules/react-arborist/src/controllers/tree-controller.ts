@@ -272,4 +272,14 @@ export class TreeController<T> {
   get hasFocus() {
     return this.props.focus.value.isWithinTree;
   }
+
+  /* Visibility */
+
+  isVisible(id: string) {
+    if (id in this.props.visible.value) {
+      return this.props.visible.value[id] === true;
+    } else {
+      return true; // default visible state
+    }
+  }
 }

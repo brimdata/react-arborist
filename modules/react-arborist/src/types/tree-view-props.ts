@@ -1,11 +1,11 @@
 import { NodesPartialController } from "../nodes/types";
 import { OpensPartialController } from "../opens/types";
-import { PartialController } from "./utils";
-import { EditOnChangeEvent, EditPartialController } from "../edit/types";
+import { EditPartialController } from "../edit/types";
 import { SelectionPartialController } from "../selection/types";
 import { DisableDropCheck, DndPartialController } from "../dnd/types";
 import { CursorPartialController } from "../cursor/types";
 import { FocusPartialController } from "../focus/types";
+import { VisiblePartialController } from "../visible/types";
 
 export type TreeViewProps<T> = {
   /* Partial Controllers */
@@ -16,6 +16,7 @@ export type TreeViewProps<T> = {
   dnd: DndPartialController;
   cursor: CursorPartialController;
   focus: FocusPartialController;
+  visible: VisiblePartialController;
 
   /* Dimensions and Sizes */
   width: number | string;
