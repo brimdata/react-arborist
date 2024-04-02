@@ -1312,6 +1312,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@peggyjs/from-mem@npm:1.2.1":
+  version: 1.2.1
+  resolution: "@peggyjs/from-mem@npm:1.2.1"
+  dependencies:
+    semver: "npm:7.6.0"
+  checksum: bc57645de7c3a94f09d7ab7a9f2f49e9bd947d56f4f537653955daea4b2c57b6f69dc0ede318035ea2a510b4c41e30c3a8a85896c41e465c30dec1a143e04b02
+  languageName: node
+  linkType: hard
+
 "@pkgjs/parseargs@npm:^0.11.0":
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
@@ -4244,6 +4253,13 @@ __metadata:
   dependencies:
     delayed-stream: "npm:~1.0.0"
   checksum: 2e969e637d05d09fa50b02d74c83a1186f6914aae89e6653b62595cc75a221464f884f55f231b8f4df7a49537fba60bdc0427acd2bf324c09a1dbb84837e36e4
+  languageName: node
+  linkType: hard
+
+"commander@npm:^12.0.0":
+  version: 12.0.0
+  resolution: "commander@npm:12.0.0"
+  checksum: 62062e2ffe6abd5aa42a551e62fd5eb9b2620f6ac4299382b2aa9fb02f95cda0242d7e84acb890479bd6491edb805f7f91aecb5b4f5c70dc57df49ed7f02ef14
   languageName: node
   linkType: hard
 
@@ -8696,6 +8712,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"peggy@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "peggy@npm:4.0.2"
+  dependencies:
+    "@peggyjs/from-mem": "npm:1.2.1"
+    commander: "npm:^12.0.0"
+    source-map-generator: "npm:0.8.0"
+  bin:
+    peggy: bin/peggy.js
+  checksum: bacea711ea01d980e5bbef9716b03b352824c7b61c739727724cc63f4d7afcc19268a9b5719037c8481571ce2a77918208c67d6c451f6554b393b97efb9a3c7e
+  languageName: node
+  linkType: hard
+
 "pend@npm:~1.2.0":
   version: 1.2.0
   resolution: "pend@npm:1.2.0"
@@ -9447,6 +9476,7 @@ __metadata:
     ts-jest: "npm:^29.1.1"
     typescript: "npm:^5.3.3"
     use-sync-external-store: "npm:^1.2.0"
+    when-clause: "workspace:*"
   peerDependencies:
     react: ">= 16.14"
     react-dom: ">= 16.14"
@@ -10004,6 +10034,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"semver@npm:7.6.0":
+  version: 7.6.0
+  resolution: "semver@npm:7.6.0"
+  dependencies:
+    lru-cache: "npm:^6.0.0"
+  bin:
+    semver: bin/semver.js
+  checksum: 1b41018df2d8aca5a1db4729985e8e20428c650daea60fcd16e926e9383217d00f574fab92d79612771884a98d2ee2a1973f49d630829a8d54d6570defe62535
+  languageName: node
+  linkType: hard
+
 "semver@npm:^6.0.0, semver@npm:^6.3.0":
   version: 6.3.0
   resolution: "semver@npm:6.3.0"
@@ -10289,6 +10330,13 @@ __metadata:
     ip: "npm:^2.0.0"
     smart-buffer: "npm:^4.2.0"
   checksum: 5074f7d6a13b3155fa655191df1c7e7a48ce3234b8ccf99afa2ccb56591c195e75e8bb78486f8e9ea8168e95a29573cbaad55b2b5e195160ae4d2ea6811ba833
+  languageName: node
+  linkType: hard
+
+"source-map-generator@npm:0.8.0":
+  version: 0.8.0
+  resolution: "source-map-generator@npm:0.8.0"
+  checksum: f57df2c1bf33d84fc8a74fa030d4d355b033548569977b63d6930f6b2bf37f575946c88fb89c73b42a54ff6a46bd24253f0ddfa2c2226341e25c22240d168ed1
   languageName: node
   linkType: hard
 
@@ -11321,6 +11369,14 @@ __metadata:
   checksum: ad7a257ea1e662e57ef2e018f97b3c02a7240ad5093c392186ce0bcf1f1a60bbadd520d073b9beb921ed99f64f065efb63dfc8eec689a80e569f93c1c5d5e16c
   languageName: node
   linkType: hard
+
+"when-clause@workspace:*, when-clause@workspace:modules/when-clause":
+  version: 0.0.0-use.local
+  resolution: "when-clause@workspace:modules/when-clause"
+  dependencies:
+    peggy: "npm:^4.0.2"
+  languageName: unknown
+  linkType: soft
 
 "which-boxed-primitive@npm:^1.0.2":
   version: 1.0.2

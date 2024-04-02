@@ -6,6 +6,8 @@ import { DisableDropCheck, DndPartialController } from "../dnd/types";
 import { CursorPartialController } from "../cursor/types";
 import { FocusPartialController } from "../focus/types";
 import { VisiblePartialController } from "../visible/types";
+import { ShortcutAttrs } from "../shortcuts/types";
+import { CommandObject } from "../commands/types";
 
 export type TreeViewProps<T> = {
   /* Partial Controllers */
@@ -17,6 +19,10 @@ export type TreeViewProps<T> = {
   cursor: CursorPartialController;
   focus: FocusPartialController;
   visible: VisiblePartialController;
+
+  /* Commands and Shortcuts */
+  shortcuts: ShortcutAttrs[];
+  commands: CommandObject<T>;
 
   /* Dimensions and Sizes */
   width: number | string;

@@ -22,6 +22,8 @@ import { computeDrop } from "../dnd/compute-drop";
 import { useNodeDrag } from "../dnd/use-node-drag";
 import { useNodeDrop } from "../dnd/use-node-drop";
 import { useDefaultProps } from "../props/use-default-props";
+import { useRowFocus } from "../focus/use-row-focus";
+import { createTreeViewAttributes } from "../tree-view/attributes";
 
 export function TreeView<T>(props: Partial<TreeViewProps<T>>) {
   const filledProps = useDefaultProps(props);
@@ -54,10 +56,11 @@ export function useTree<T>(): TreeController<T> {
 
 function TreeViewContainer() {
   const tree = useTree();
+  const attrs = createTreeViewAttributes(tree);
   const outerRef = useRef();
   // useOuterDrop(outerRef);
   return (
-    <div role="tree">
+    <div {...attrs}>
       {/* @ts-ignore */}
       <FixedSizeList
         className={tree.props.className}
@@ -72,7 +75,7 @@ function TreeViewContainer() {
         innerElementType={ListInner as any}
         // onScroll={tree.props.onScroll}
         // onItemsRendered={tree.onItemsRendered.bind(tree)}
-        // ref={tree.list}
+        ref={(node) => (tree.listElement = node)}
       >
         {RowContainer as any}
       </FixedSizeList>
@@ -123,6 +126,7 @@ function RowContainer<T>(props: { style: React.CSSProperties; index: number }) {
   const attrs = createRowAttributes(tree, node, props.style);
   const ref = useRef<any>();
   const dropProps = useNodeDrop(node, ref);
+  useRowFocus(node, ref);
 
   return (
     <RowRenderer node={node} attrs={{ ...attrs, ...dropProps }} innerRef={ref}>
@@ -151,7 +155,7 @@ export function RowRenderer<T>(props: {
 function NodeContainer<T>(props: { node: NodeController<T> }) {
   const { node } = props;
   const indent = node.tree.indent * node.level;
-  const style = { paddingLeft: indent };
+  const style = { paddingLeft: indent + 10 };
   const dragProps = useNodeDrag(node);
 
   return <NodeRenderer attrs={{ style, ...dragProps }} node={node} />;

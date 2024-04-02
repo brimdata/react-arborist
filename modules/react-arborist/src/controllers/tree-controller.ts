@@ -1,10 +1,14 @@
+import { Align, FixedSizeList } from "react-window";
 import { CursorState } from "../cursor/types";
 import { safeToDrop } from "../dnd/safe-to-drop";
+import { ShortcutManager } from "../shortcuts/shortcut-manager";
+import { NodeState } from "../types/state";
 import { TreeViewProps } from "../types/tree-view-props";
 import { NodeController } from "./node-controller";
 
 export class TreeController<T> {
   rows: NodeController<T>[];
+  listElement: FixedSizeList | null = null;
 
   constructor(public props: TreeViewProps<T>) {
     this.rows = NodeController.constructRows(this, props.nodes.value);
@@ -50,13 +54,32 @@ export class TreeController<T> {
     return this.props.nodes.value;
   }
 
+  get focusedNode() {
+    console.log("get", this.props.focus.value.id);
+    return this.get(this.props.focus.value.id);
+  }
+
   get firstNode() {
     return this.rows[0] || null;
   }
 
   get lastNode() {
     const len = this.rows.length;
-    return len === 0 ? null : this.rows[len - 1];
+    return len === 0 ? null : this.rows[len - 1] || null;
+  }
+
+  get nextNode() {
+    if (this.focusedNode) {
+      return this.rows[this.focusedNode.rowIndex + 1] || null;
+    }
+    return null;
+  }
+
+  get prevNode() {
+    if (this.focusedNode) {
+      return this.rows[this.focusedNode.rowIndex - 1] || null;
+    }
+    return null;
   }
 
   get dragNodes() {
@@ -78,7 +101,7 @@ export class TreeController<T> {
   get(id: string | null): NodeController<T> | null {
     if (id === null) return null;
     const index = this.indexOf(id);
-    if (index) {
+    if (index !== null) {
       return this.rows[index] || null;
     } else {
       return null;
@@ -273,6 +296,29 @@ export class TreeController<T> {
     return this.props.focus.value.isWithinTree;
   }
 
+  focus(id: string) {
+    const node = this.get(id);
+    if (node) {
+      this.props.focus.onChange({ id, type: "node-focus" });
+      this.scrollTo(node.rowIndex);
+    }
+  }
+
+  onFocus() {
+    this.props.focus.onChange({ type: "tree-focus" });
+    this.focus(this.focusedNode?.id || this.firstNode?.id);
+  }
+
+  onBlur() {
+    this.props.focus.onChange({ type: "tree-blur" });
+  }
+
+  /* Scroll Positions */
+
+  scrollTo(index: number, align: Align = "smart") {
+    this.listElement?.scrollToItem(index, align);
+  }
+
   /* Visibility */
 
   isVisible(id: string) {
@@ -280,6 +326,36 @@ export class TreeController<T> {
       return this.props.visible.value[id] === true;
     } else {
       return true; // default visible state
+    }
+  }
+
+  /* Commands */
+  exec(command: string) {
+    if (command in this.props.commands) {
+      return this.props.commands[command](this);
+    } else {
+      throw new Error(
+        `Command not found: "${command}". To fix, ensure that you pass an object to the commands prop in the <TreeView /> component that has a key with then name "${command}"`,
+      );
+    }
+  }
+
+  /* Keyboard Shortcuts */
+  handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    const focused = this.focusedNode;
+    const shortcut = new ShortcutManager<any>(this.props.shortcuts).find(
+      e.nativeEvent,
+      {
+        isOpen: focused?.isOpen,
+        isClosed: focused?.isClosed,
+        isInternal: focused?.isInternal,
+        isLeaf: focused?.isLeaf,
+      },
+    );
+    console.log("focused Node", focused);
+    if (shortcut) {
+      e.preventDefault();
+      this.exec(shortcut.command);
     }
   }
 }

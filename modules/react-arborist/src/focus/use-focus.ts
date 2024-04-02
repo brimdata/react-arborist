@@ -6,6 +6,7 @@ export function useFocus(): FocusPartialController {
     isWithinTree: false,
     id: null,
   });
+  console.log(value);
 
   return {
     value,

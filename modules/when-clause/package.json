@@ -1,0 +1,20 @@
+{
+  "name": "when-clause",
+  "packageManager": "yarn@4.0.2",
+  "type": "module",
+  "devDependencies": {
+    "peggy": "^4.0.2"
+  },
+  "types": "./index.d.ts",
+  "exports": "./index.js",
+  "scripts": {
+    "build": "peggy -o build/parser.js --format es grammar.peggy",
+    "test": "yarn build && node --test",
+    "prepack": "yarn build"
+  },
+  "files": [
+    "build",
+    "lib",
+    "grammar.peggy"
+  ]
+}
