@@ -199,10 +199,12 @@ export class TreeController<T> {
 
   select(id: string) {
     this.props.selection.onChange({ type: "select", id });
+    this.focus(id);
   }
 
   selectMulti(id: string) {
     this.props.selection.onChange({ type: "select-multi", id });
+    this.focus(id);
   }
 
   selectContiguous(id: string) {
@@ -211,6 +213,7 @@ export class TreeController<T> {
       id,
       tree: this,
     });
+    this.focus(id);
   }
 
   selectAll() {
@@ -222,6 +225,7 @@ export class TreeController<T> {
 
   deselect(id: string) {
     this.props.selection.onChange({ type: "deselect", id });
+    this.focus(id);
   }
 
   /* Drag and Drop State */
