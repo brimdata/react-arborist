@@ -1,4 +1,5 @@
 import { TreeController } from "../controllers/tree-controller";
+import { focusNextElement, focusPrevElement } from "../utils";
 
 export function focusNext(tree: TreeController<any>) {
   const next = tree.nextNode || tree.firstNode;
@@ -10,10 +11,23 @@ export function focusPrev(tree: TreeController<any>) {
   if (prev) tree.focus(prev.id);
 }
 
-export function close() {
-  alert("close");
+export function focusParent(tree: TreeController<any>) {
+  const parentId = tree.focusedNode?.parentId;
+  if (parentId) tree.focus(parentId);
 }
 
-export function focusParent() {
-  alert("focusParent");
+export function close(tree: TreeController<any>) {
+  tree.focusedNode?.close();
+}
+
+export function open(tree: TreeController<any>) {
+  tree.focusedNode?.open();
+}
+
+export function focusOutsideNext(tree: TreeController<any>) {
+  focusNextElement(tree.element);
+}
+
+export function focusOutsidePrev() {
+  focusPrevElement(tree.element);
 }

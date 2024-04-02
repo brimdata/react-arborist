@@ -60,7 +60,7 @@ function TreeViewContainer() {
   const outerRef = useRef();
   // useOuterDrop(outerRef);
   return (
-    <div {...attrs}>
+    <div {...attrs} ref={(node) => (tree.element = node)}>
       {/* @ts-ignore */}
       <FixedSizeList
         className={tree.props.className}

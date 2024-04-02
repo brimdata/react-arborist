@@ -1,8 +1,18 @@
 import { ShortcutAttrs } from "./types";
 
 export const defaultShortcuts: ShortcutAttrs[] = [
+  /* Arrow Navigation */
   { key: "ArrowDown", command: "focusNext" },
   { key: "ArrowUp", command: "focusPrev" },
+  { key: "ArrowLeft", command: "focusParent", when: "isLeaf || isClosed" },
+  { key: "ArrowLeft", command: "close", when: "isOpen" },
+  { key: "ArrowRight", command: "open", when: "isClosed" },
+  { key: "ArrowRight", command: "focusNext", when: "isOpen" },
+  
+  /* Tabbing Around */
+  {key: "Tab", command: "focusOutsideNext"},
+  {key: "Shift+Tab", command: "focusOutsidePrev"}
+
   // { key: "Backspace", command: "destroy" },
   // { key: "Tab", command: "focusNextOutside" },
   // { key: "Shift+Tab", command: "focusNextOutside" },

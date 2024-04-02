@@ -8,6 +8,7 @@ import { NodeController } from "./node-controller";
 
 export class TreeController<T> {
   rows: NodeController<T>[];
+  element: HTMLDivElement | null = null;
   listElement: FixedSizeList | null = null;
 
   constructor(public props: TreeViewProps<T>) {
@@ -55,7 +56,6 @@ export class TreeController<T> {
   }
 
   get focusedNode() {
-    console.log("get", this.props.focus.value.id);
     return this.get(this.props.focus.value.id);
   }
 
@@ -356,7 +356,6 @@ export class TreeController<T> {
         isLeaf: focused?.isLeaf,
       },
     );
-    console.log("focused Node", focused);
     if (shortcut) {
       e.preventDefault();
       this.exec(shortcut.command);
