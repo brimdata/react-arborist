@@ -17,7 +17,7 @@ export const defaultShortcuts: ShortcutAttrs[] = [
   { key: "Tab", command: "focusOutsideNext" },
   { key: "Shift+Tab", command: "focusOutsidePrev" },
 
-  // { key: "Backspace", command: "destroy" },
+  { key: "Backspace", command: "destroy" },
   // { key: "Tab", command: "focusNextOutside" },
   // { key: "Shift+Tab", command: "focusNextOutside" },
   // { key: "Shift+Tab", command: "focusNextOutside" },

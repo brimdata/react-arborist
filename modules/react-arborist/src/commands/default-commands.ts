@@ -69,3 +69,16 @@ export function focusOutsideNext(tree: Tree) {
 export function focusOutsidePrev(tree: Tree) {
   if (tree.element) focusPrevElement(tree.element);
 }
+
+export function destroy(tree: Tree) {
+  if (confirm("Are you sure you want to delete?")) {
+    if (tree.selectedIds.length) {
+      tree.props.nodes.onChange({ type: "destroy", ids: tree.selectedIds });
+    } else if (tree.focusedNode) {
+      tree.props.nodes.onChange({
+        type: "destroy",
+        ids: [tree.focusedNode.id],
+      });
+    }
+  }
+}
