@@ -58,6 +58,7 @@ function TreeViewContainer() {
   const tree = useTree();
   const attrs = createTreeViewAttributes(tree);
   const outerRef = useRef();
+
   // useOuterDrop(outerRef);
   return (
     <div {...attrs} ref={(node) => (tree.element = node)}>
@@ -74,8 +75,10 @@ function TreeViewContainer() {
         outerRef={outerRef}
         innerElementType={ListInner as any}
         // onScroll={tree.props.onScroll}
-        // onItemsRendered={tree.onItemsRendered.bind(tree)}
-        ref={(node) => (tree.listElement = node)}
+        ref={(node) => {
+          tree.listElement = node;
+          tree.visibleStartIndex;
+        }}
       >
         {RowContainer as any}
       </FixedSizeList>

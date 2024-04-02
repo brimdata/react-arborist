@@ -49,6 +49,21 @@ export class TreeController<T> {
     return this.props.padding ?? this.props.paddingBottom ?? 0;
   }
 
+  get visibleStartIndex() {
+    // @ts-ignore
+    const offset = this.listElement?.state?.scrollOffset || 0;
+    const rowsAbove = Math.ceil(offset / this.rowHeight);
+    return rowsAbove;
+  }
+
+  get visibleStopIndex() {
+    // @ts-ignore
+    const offset = this.listElement?.state?.scrollOffset || 0;
+    const bottom = offset + this.height;
+    const rowsAbove = Math.floor(bottom / this.rowHeight);
+    return rowsAbove;
+  }
+
   /* Node Getters */
 
   get rootNodeObjects() {
@@ -106,6 +121,10 @@ export class TreeController<T> {
     } else {
       return null;
     }
+  }
+
+  at(index: number) {
+    return this.rows[index] || null;
   }
 
   getAll(ids: string[]) {
