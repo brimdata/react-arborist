@@ -1,5 +1,6 @@
 import { PartialController } from "../types/utils";
 import { NodeObject } from "./node-object";
+import { NodeType } from "./source-data-accessor";
 
 export type CreateEvent<T> = {
   type: "create";
@@ -36,4 +37,4 @@ export type NodesState<T> = NodeObject<T>[];
 export type NodesPartialController<T> = PartialController<
   NodesState<T>,
   NodesOnChangeEvent<T>
->;
+> & { initialize: (args: { nodeType: NodeType }) => T };

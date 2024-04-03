@@ -183,7 +183,25 @@ export class TreeController<T> {
     });
   }
 
+  /* CRUD Operations */
+
+  create(args: { parentId: string | null; index: number; data: T }) {
+    this.props.nodes.onChange({ type: "create", ...args });
+  }
+
+  update(args: { id: string; changes: Partial<T> }) {
+    this.props.nodes.onChange({ type: "update", ...args });
+  }
+
+  destroy(ids: string[]) {
+    this.props.nodes.onChange({ type: "destroy", ids: ids });
+  }
+
   /* Edit State */
+
+  get isEditing() {
+    return this.props.edit.value !== null;
+  }
 
   isEditId(id: string) {
     return this.props.edit.value === id;
@@ -194,8 +212,9 @@ export class TreeController<T> {
   }
 
   submit(id: string, changes: Partial<T>) {
-    this.props.nodes.onChange({ type: "update", id, changes });
+    this.update({ id, changes });
     this.props.edit.onChange({ value: null });
+    this.focus(id);
   }
 
   /* Selection State */
@@ -365,6 +384,7 @@ export class TreeController<T> {
 
   /* Keyboard Shortcuts */
   handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (this.isEditing) return;
     const focused = this.focusedNode;
     const shortcut = new ShortcutManager<any>(this.props.shortcuts).find(
       e.nativeEvent,

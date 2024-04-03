@@ -3,11 +3,15 @@ import { createDefaultAccessors } from "./default-accessors";
 
 type GetSortField<T> = (d: T) => number | string | boolean;
 type SortOrder = "asc" | "desc";
+type Initializer<T> = (args: { nodeType: NodeType }) => T;
+
+export type NodeType = "leaf" | "internal";
 
 export type SourceDataAccessors<T> = {
   id: (d: T) => string;
   children: (d: T) => T[] | null;
   isLeaf: (d: T) => boolean;
+  initialize: Initializer<T>;
   sortBy: GetSortField<T> | GetSortField<T>[];
   sortOrder: SortOrder | SortOrder[];
 };
@@ -17,6 +21,10 @@ export class SourceDataAccessor<T> {
 
   constructor(accessors: Partial<SourceDataAccessors<T>> = {}) {
     this.access = { ...createDefaultAccessors(), ...accessors };
+  }
+
+  initialize(args: { nodeType: NodeType }) {
+    return this.access.initialize(args);
   }
 
   getId(d: T): string {

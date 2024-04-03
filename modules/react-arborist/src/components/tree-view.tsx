@@ -169,7 +169,6 @@ function NodeRenderer<T>(props: {
   node: NodeController<T>;
 }) {
   const { node, attrs } = props;
-  const style = { attrs };
 
   function onSubmit(e: any) {
     e.preventDefault();
@@ -208,6 +207,7 @@ function NodeRenderer<T>(props: {
       {node.isEditing ? (
         <form onSubmit={onSubmit} style={{ display: "contents" }}>
           <input
+            autoFocus
             type="text"
             name="name"
             defaultValue={

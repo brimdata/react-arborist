@@ -1,4 +1,5 @@
 import {
+  NodeType,
   SourceDataAccessor,
   SourceDataAccessors,
 } from "./source-data-accessor";
@@ -16,6 +17,10 @@ export class TreeManager<T> {
     this.nodes = this.accessor.sort(sourceData).map((data) => {
       return new SourceDataProxy(null, data, this.accessor);
     });
+  }
+
+  initialize(args: { nodeType: NodeType }): T {
+    return this.accessor.initialize(args);
   }
 
   create(args: { parentId: string | null; index: number; data: T }) {

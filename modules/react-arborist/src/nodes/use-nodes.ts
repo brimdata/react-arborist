@@ -13,6 +13,7 @@ export function useNodes<T>(
 
   return {
     setSourceData,
+    initialize: (args) => treeManager.initialize(args),
     value: treeManager.nodes as NodeObject<T>[],
     onChange: (event: NodesOnChangeEvent<T>) => {
       switch (event.type) {
@@ -23,7 +24,6 @@ export function useNodes<T>(
           treeManager.move(event);
           break;
         case "update":
-          console.log(event);
           treeManager.update(event);
           break;
         case "destroy":

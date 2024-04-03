@@ -1,4 +1,7 @@
+import { NodeController } from "../controllers/node-controller";
 import { TreeController } from "../controllers/tree-controller";
+import { NodeObject } from "../nodes/node-object";
+import { NodeType } from "../nodes/source-data-accessor";
 import { focusNextElement, focusPrevElement } from "../utils";
 
 export type Tree = TreeController<any>;
@@ -73,12 +76,39 @@ export function focusOutsidePrev(tree: Tree) {
 export function destroy(tree: Tree) {
   if (confirm("Are you sure you want to delete?")) {
     if (tree.selectedIds.length) {
-      tree.props.nodes.onChange({ type: "destroy", ids: tree.selectedIds });
+      tree.destroy(tree.selectedIds);
     } else if (tree.focusedNode) {
-      tree.props.nodes.onChange({
-        type: "destroy",
-        ids: [tree.focusedNode.id],
-      });
+      tree.destroy([tree.focusedNode.id]);
     }
   }
+}
+
+function create(tree: Tree, nodeType: NodeType) {
+  const node = tree.focusedNode;
+  const parentId = getInsertParentId(node);
+  const index = getInsertIndex(tree, node);
+  const data = tree.props.nodes.initialize({ nodeType });
+  tree.create({ parentId, index, data });
+  tree.edit(data.id);
+  tree.focus(data.id);
+}
+
+export function createLeaf(tree: Tree) {
+  create(tree, "leaf");
+}
+
+export function createInternal(tree: Tree) {
+  create(tree, "internal");
+}
+
+function getInsertParentId(focus: NodeController<any> | null) {
+  if (!focus) return null;
+  if (focus.isOpen) return focus.id;
+  return focus.parentId;
+}
+
+function getInsertIndex(tree: Tree, focus: NodeController<any> | null) {
+  if (!focus) return tree.props.nodes.value.length;
+  if (focus.isOpen) return 0;
+  return focus.childIndex + 1;
 }

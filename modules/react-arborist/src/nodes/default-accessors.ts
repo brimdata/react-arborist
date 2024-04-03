@@ -23,6 +23,14 @@ export function createDefaultAccessors<T>(): SourceDataAccessors<T> {
         return true;
       }
     },
+    initialize: ({ nodeType }) => {
+      const data = {
+        id: new Date().getTime().toString(),
+        name: "",
+      } as any;
+      if (nodeType === "internal") data.children = [];
+      return data;
+    },
     sortBy: [],
     sortOrder: [],
   };

@@ -17,10 +17,13 @@ export const defaultShortcuts: ShortcutAttrs[] = [
   { key: "Tab", command: "focusOutsideNext" },
   { key: "Shift+Tab", command: "focusOutsidePrev" },
 
+  /* CRUD */
   { key: "Backspace", command: "destroy" },
-  // { key: "Tab", command: "focusNextOutside" },
-  // { key: "Shift+Tab", command: "focusNextOutside" },
-  // { key: "Shift+Tab", command: "focusNextOutside" },
+  { key: "a", command: "createLeaf" },
+  { key: "Shift+A", command: "createInternal" },
+
+  /* Selection */
+
   // { key: "Meta+ArrowDown", command: "activate" },
   // { key: "Shift+ArrowDown", command: "extendSelectionDown" },
   // { key: "Shift+ArrowUp", command: "extendSelectionUp" },
