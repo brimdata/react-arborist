@@ -24,10 +24,11 @@ export const defaultShortcuts: ShortcutAttrs[] = [
   { key: "Enter", command: "edit" },
 
   /* Selection */
+  { key: "Shift+ArrowUp", command: "moveSelectionStart" },
+  { key: "Shift+ArrowDown", command: "moveSelectionEnd" },
 
+  /* Activation */
   // { key: "Meta+ArrowDown", command: "activate" },
-  // { key: "Shift+ArrowDown", command: "extendSelectionDown" },
-  // { key: "Shift+ArrowUp", command: "extendSelectionUp" },
   // { key: "ArrowLeft", command: "close", when: "isOpen" },
   // { key: "ArrowLeft", command: "focusParent", when: "isLeaf || isClosed" },
   // { key: "ArrowRight", command: "focusChildren" },

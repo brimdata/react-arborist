@@ -117,3 +117,19 @@ export function edit(tree: Tree) {
   const node = tree.focusedNode;
   if (node) tree.edit(node.id);
 }
+
+export function moveSelectionStart(tree: Tree) {
+  const prev = tree.prevNode;
+  if (prev) {
+    tree.focus(prev.id);
+    tree.selectContiguous(prev.id);
+  }
+}
+
+export function moveSelectionEnd(tree: Tree) {
+  const next = tree.nextNode;
+  if (next) {
+    tree.focus(next.id);
+    tree.selectContiguous(next.id);
+  }
+}
