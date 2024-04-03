@@ -112,3 +112,8 @@ function getInsertIndex(tree: Tree, focus: NodeController<any> | null) {
   if (focus.isOpen) return 0;
   return focus.childIndex + 1;
 }
+
+export function edit(tree: Tree) {
+  const node = tree.focusedNode;
+  if (node) tree.edit(node.id);
+}

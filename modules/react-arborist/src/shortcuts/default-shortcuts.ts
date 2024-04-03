@@ -21,6 +21,7 @@ export const defaultShortcuts: ShortcutAttrs[] = [
   { key: "Backspace", command: "destroy" },
   { key: "a", command: "createLeaf" },
   { key: "Shift+A", command: "createInternal" },
+  { key: "Enter", command: "edit" },
 
   /* Selection */
 
