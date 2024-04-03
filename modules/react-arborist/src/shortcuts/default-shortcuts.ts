@@ -26,17 +26,8 @@ export const defaultShortcuts: ShortcutAttrs[] = [
   /* Selection */
   { key: "Shift+ArrowUp", command: "moveSelectionStart" },
   { key: "Shift+ArrowDown", command: "moveSelectionEnd" },
-
-  /* Activation */
-  // { key: "Meta+ArrowDown", command: "activate" },
-  // { key: "ArrowLeft", command: "close", when: "isOpen" },
-  // { key: "ArrowLeft", command: "focusParent", when: "isLeaf || isClosed" },
-  // { key: "ArrowRight", command: "focusChildren" },
-  // { key: "Meta+A", command: "selectAll" },
-  // { key: "Control+A", command: "selectAll" },
-  // { key: "a", command: "createLeaf" },
-  // { key: "Shift+A", command: "createInternal" },
-  // { key: "Home", command: "focusFirst" },
-  // { key: "End", command: "focusLast" },
-  // { key: "Enter", command: "" },
+  { key: " ", command: "toggle", when: "isInternal" },
+  { key: " ", command: "select", when: "isLeaf" },
+  { key: "Meta+a", command: "selectAll" },
+  { key: "Control+a", command: "selectAll" },
 ];

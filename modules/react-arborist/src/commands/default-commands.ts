@@ -133,3 +133,19 @@ export function moveSelectionEnd(tree: Tree) {
     tree.selectContiguous(next.id);
   }
 }
+
+export function select(tree: Tree) {
+  const node = tree.focusedNode;
+  if (node) tree.select(node.id);
+}
+
+export function selectAll(tree: Tree) {
+  tree.selectAll();
+}
+
+export function toggle(tree: Tree) {
+  const node = tree.focusedNode;
+  if (node) {
+    node.isOpen ? tree.close(node.id) : tree.open(node.id);
+  }
+}
