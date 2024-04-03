@@ -1,5 +1,5 @@
+import { NodeObject } from "../nodes/types";
 import { VisibleState } from "./types";
-import { NodeObject } from "../nodes/node-object";
 
 export function useFilter<T>(nodeObjects: NodeObject<T>[], searchTerm: string) {
   const term = searchTerm.trim();

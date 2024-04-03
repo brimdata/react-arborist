@@ -1,7 +1,6 @@
 import { NodeController } from "../controllers/node-controller";
 import { TreeController } from "../controllers/tree-controller";
-import { NodeObject } from "../nodes/node-object";
-import { NodeType } from "../nodes/source-data-accessor";
+import { NodeType } from "../nodes/types";
 import { focusNextElement, focusPrevElement } from "../utils";
 
 export type Tree = TreeController<any>;

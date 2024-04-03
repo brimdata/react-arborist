@@ -1,6 +1,15 @@
-import { SourceDataAccessors } from "./source-data-accessor";
+import { Accessors } from "./types";
 
-export function createDefaultAccessors<T>(): SourceDataAccessors<T> {
+export function createAccessor<T>(
+  accessors: Partial<Accessors<T>>,
+): Accessors<T> {
+  return {
+    ...createDefaultAccessors(),
+    ...accessors,
+  };
+}
+
+function createDefaultAccessors<T>(): Accessors<T> {
   return {
     id: (d: T) => {
       if (d && typeof d === "object" && "id" in d) {

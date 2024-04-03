@@ -6,6 +6,8 @@ export function useNodeDrop<T>(node: NodeController<T>, ref: any) {
   const { dropProps } = useDrop({
     ref,
     onDropMove(e) {
+      // x, y is where the mouse position is relative
+      // to the draggable element
       const { drop, cursor } = computeDrop({
         element: ref.current,
         offset: { x: e.x, y: e.y },

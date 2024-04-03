@@ -20,9 +20,12 @@ export function useOuterDrop(listRef: MutableRefObject<any>) {
         if (!m.isOver({ shallow: true })) return;
         const offset = m.getClientOffset();
         if (!listRef.current || !offset) return;
+        const rect = listRef.current.getBoundingClientRect();
+        const x = offset.x - Math.round(rect.x);
+        const y = offset.y - Math.round(rect.y);
         const { cursor, drop } = computeDrop({
           element: listRef.current,
-          offset: offset,
+          offset: { x, y },
           indent: tree.indent,
           node: null,
           prevNode: tree.lastNode,

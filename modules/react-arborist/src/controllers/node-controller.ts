@@ -1,4 +1,4 @@
-import { NodeObject } from "../nodes/node-object";
+import { NodeObject } from "../nodes/types";
 import { TreeController } from "./tree-controller";
 
 export class NodeController<T> {
@@ -53,11 +53,7 @@ export class NodeController<T> {
   }
 
   get childIndex() {
-    const siblings = this.object.parent
-      ? this.object.parent.children
-      : this.tree.rootNodeObjects;
-    if (!siblings) throw new Error("No siblings found for node id: " + this.id);
-    return siblings.findIndex((child) => child.id === this.id);
+    return this.object.childIndex;
   }
 
   get data() {

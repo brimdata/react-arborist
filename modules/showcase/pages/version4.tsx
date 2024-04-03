@@ -10,7 +10,13 @@ export default function Version4() {
   return (
     <div className="wrap">
       <div className="region flow">
-        <TreeView nodes={nodes} visible={visible} className="tree" />
+        <TreeView
+          nodes={nodes}
+          visible={visible}
+          className="tree"
+          rowClassName="tree-row"
+          height={900}
+        />
         <input
           type="search"
           value={searchTerm}

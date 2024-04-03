@@ -1,15 +1,18 @@
 import { useState } from "react";
-import { SourceDataAccessors } from "./source-data-accessor";
-import { TreeManager } from "./tree-manager";
-import { NodesOnChangeEvent, NodesPartialController } from "./types";
-import { NodeObject } from "./node-object";
+import {
+  Accessors,
+  NodeObject,
+  NodesOnChangeEvent,
+  NodesPartialController,
+} from "./types";
+import { TreeModel } from "./tree-model";
 
 export function useNodes<T>(
   initialData: T[],
-  options: Partial<SourceDataAccessors<T>> = {},
+  options: Partial<Accessors<T>> = {},
 ) {
   const [sourceData, setSourceData] = useState(initialData);
-  const treeManager = new TreeManager(sourceData, options);
+  const treeManager = new TreeModel(sourceData, options);
 
   return {
     setSourceData,

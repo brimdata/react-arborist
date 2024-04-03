@@ -5,8 +5,8 @@ import { NodeController } from "../controllers/node-controller";
 
 function measureHover(el: HTMLElement, offset: XYCoord) {
   const rect = el.getBoundingClientRect();
-  const x = offset.x - Math.round(rect.x);
-  const y = offset.y - Math.round(rect.y);
+  const x = offset.x;
+  const y = offset.y;
   const height = rect.height;
   const inTopHalf = y < height / 2;
   const inBottomHalf = !inTopHalf;
@@ -14,7 +14,9 @@ function measureHover(el: HTMLElement, offset: XYCoord) {
   const inMiddle = y > pad && y < height - pad;
   const atTop = !inMiddle && inTopHalf;
   const atBottom = !inMiddle && inBottomHalf;
-  return { x, inTopHalf, inBottomHalf, inMiddle, atTop, atBottom };
+
+  const result = { x, inTopHalf, inBottomHalf, inMiddle, atTop, atBottom };
+  return result;
 }
 
 type HoverData = ReturnType<typeof measureHover>;
@@ -87,6 +89,7 @@ function walkUpFrom(node: NodeController<any>, level: number) {
   }
   const parentId = drop.parentId;
   const index = drop.childIndex + 1;
+  console.log({ parentId, index });
   return { parentId, index };
 }
 

@@ -21,9 +21,12 @@ export function useDropHook(
       hover: (_item, m) => {
         const offset = m.getClientOffset();
         if (!el.current || !offset) return;
+        const rect = el.current.getBoundingClientRect();
+        const x = offset.x - Math.round(rect.x);
+        const y = offset.y - Math.round(rect.y);
         const { cursor, drop } = computeDrop({
           element: el.current,
-          offset: offset,
+          offset: { x, y },
           indent: tree.indent,
           node: node,
           prevNode: node.prev,
