@@ -1,46 +1,25 @@
-import { Sorter } from "./sorter";
+import { createChildren } from "./create-node-model";
 import { NodeObject, Accessors } from "./types";
 
-export class NodeModel<T> implements NodeObject<T> {
+type Attrs<T> = {
   id: string;
+  isLeaf: boolean;
   level: number;
-  children: NodeModel<T>[] | null = null;
 
-  static initChildren<T>(
-    parent: NodeModel<T>,
-    sourceArray: T[] | null,
-    access: Accessors<T>,
-  ) {
-    if (!sourceArray) return null;
-    return new Sorter(access)
-      .sort(sourceArray)
-      .map((sourceData) => new NodeModel<T>(parent, sourceData, access));
-  }
+  sourceData: T;
+  sourceChildren: T[] | null;
 
-  constructor(
-    public parent: NodeModel<T> | null,
-    public sourceData: T,
-    public access: Accessors<T>,
-  ) {
-    this.id = this.access.id(sourceData);
-    this.level = parent === null ? 0 : parent.level + 1;
-    this.children = NodeModel.initChildren(this, this.sourceChildren, access);
-  }
+  parent: NodeModel<T>;
+  children: NodeModel<T>[] | null;
 
-  get isLeaf() {
-    return this.access.isLeaf(this.sourceData);
-  }
+  access: Accessors<T>;
+};
 
-  get sourceChildren() {
-    return this.access.children(this.sourceData);
-  }
-
-  get childIndex() {
-    return this.parent?.children?.indexOf(this) ?? -1;
-  }
+export class NodeModel<T> implements NodeObject<T> {
+  constructor(public attrs: Attrs<T>) {}
 
   insertChildren(index: number, ...data: T[]) {
-    const nodes = NodeModel.initChildren(this, data, this.access) ?? [];
+    const nodes = createChildren(this, data, this.access) ?? [];
     this.children?.splice(index, 0, ...nodes);
     this.sourceChildren?.splice(index, 0, ...data);
   }
@@ -52,26 +31,48 @@ export class NodeModel<T> implements NodeObject<T> {
     }
   }
 
-  removeChild(index: number) {
+  deleteChild(index: number) {
     this.children?.splice(index, 1);
     this.sourceChildren?.splice(index, 1);
   }
 
   drop() {
-    const index = this.childIndex;
-    if (index) this.parent!.removeChild(index);
+    this.parent!.deleteChild(this.childIndex);
   }
-}
 
-export class RootNodeModel<T> extends NodeModel<T> {
-  constructor(
-    public sourceDataArray: T[],
-    public access: Accessors<T>,
-  ) {
-    super(null, null as T, access);
+  get id() {
+    return this.attrs.id;
+  }
+
+  get isLeaf() {
+    return this.attrs.isLeaf;
+  }
+
+  get level() {
+    return this.attrs.level;
+  }
+
+  get sourceData() {
+    return this.attrs.sourceData;
   }
 
   get sourceChildren() {
-    return this.sourceDataArray;
+    return this.attrs.sourceChildren;
+  }
+
+  get parent() {
+    return this.attrs.parent;
+  }
+
+  get children() {
+    return this.attrs.children;
+  }
+
+  get access() {
+    return this.attrs.access;
+  }
+
+  get childIndex() {
+    return this.parent.children!.indexOf(this);
   }
 }

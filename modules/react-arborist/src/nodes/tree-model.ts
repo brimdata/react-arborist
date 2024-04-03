@@ -1,5 +1,6 @@
 import { createAccessor } from "./accessor";
-import { NodeModel, RootNodeModel } from "./node-model";
+import { NodeModel } from "./node-model";
+import { RootNodeModel } from "./root-node-model";
 import { Accessors, NodeType } from "./types";
 
 export class TreeModel<T> {
