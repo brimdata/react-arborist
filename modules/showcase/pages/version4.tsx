@@ -14,7 +14,7 @@ export default function Version4() {
           nodes={nodes}
           className="tree"
           rowClassName="tree-row"
-          height={900}
+          height={100}
           {...filterProps}
         />
         <input

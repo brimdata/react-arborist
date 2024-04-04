@@ -8,6 +8,7 @@ import { FocusPartialController } from "../focus/types";
 import { VisiblePartialController } from "../visible/types";
 import { ShortcutAttrs } from "../shortcuts/types";
 import { CommandObject } from "../commands/types";
+import { ListOnScrollProps } from "react-window";
 
 export type TreeViewProps<T> = {
   /* Partial Controllers */
@@ -34,6 +35,9 @@ export type TreeViewProps<T> = {
   paddingBottom: number;
   padding: number;
   direction: "rtl" | "ltr";
+
+  /* Callbacks */
+  onScroll: (args: ListOnScrollProps) => void;
 
   /* Class Names */
   className?: string;

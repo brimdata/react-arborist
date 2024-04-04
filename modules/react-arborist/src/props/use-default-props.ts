@@ -39,6 +39,9 @@ export function useDefaultProps<T>(
     overscanCount: props.overscanCount ?? 1,
     direction: "ltr",
 
+    /* Callbacks */
+    onScroll: props.onScroll ?? (() => {}),
+
     /* Class names */
     className: props.className,
     rowClassName: props.rowClassName,

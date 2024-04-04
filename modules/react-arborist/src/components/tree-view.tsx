@@ -71,7 +71,7 @@ function TreeViewContainer() {
         outerRef={outerRef}
         innerElementType={ListInner as any}
         direction={tree.props.direction}
-        // onScroll={tree.props.onScroll}
+        onScroll={tree.props.onScroll}
         ref={(node) => {
           tree.listElement = node;
           tree.visibleStartIndex;
