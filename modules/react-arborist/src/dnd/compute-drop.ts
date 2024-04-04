@@ -1,25 +1,8 @@
-import { XYCoord } from "react-dnd";
 import { bound, isOpenWithEmptyChildren } from "../utils";
 import { DropResult } from "./drop-hook";
 import { NodeController } from "../controllers/node-controller";
-
-function measureHover(el: HTMLElement, offset: XYCoord) {
-  const rect = el.getBoundingClientRect();
-  const x = offset.x;
-  const y = offset.y;
-  const height = rect.height;
-  const inTopHalf = y < height / 2;
-  const inBottomHalf = !inTopHalf;
-  const pad = height / 4;
-  const inMiddle = y > pad && y < height - pad;
-  const atTop = !inMiddle && inTopHalf;
-  const atBottom = !inMiddle && inBottomHalf;
-
-  const result = { x, inTopHalf, inBottomHalf, inMiddle, atTop, atBottom };
-  return result;
-}
-
-type HoverData = ReturnType<typeof measureHover>;
+import { HoverData, measureHover } from "./measure-hover";
+import { XY } from "./types";
 
 function getNodesAroundCursor(
   node: NodeController<any> | null,
@@ -51,11 +34,12 @@ function getNodesAroundCursor(
 
 type Args = {
   element: HTMLElement;
-  offset: XYCoord;
+  offset: XY;
   indent: number;
   node: NodeController<any> | null;
   prevNode: NodeController<any> | null;
   nextNode: NodeController<any> | null;
+  direction: "ltr" | "rtl";
 };
 
 export type ComputedDrop = {
@@ -100,7 +84,7 @@ export type Cursor = LineCursor | HighlightCursor | null;
  * This is the most complex, tricky function in the whole repo.
  */
 export function computeDrop(args: Args): ComputedDrop {
-  const hover = measureHover(args.element, args.offset);
+  const hover = measureHover(args.element, args.offset, args.direction);
   const indent = args.indent;
   const hoverLevel = Math.round(Math.max(0, hover.x - indent) / indent);
   const { node, nextNode, prevNode } = args;

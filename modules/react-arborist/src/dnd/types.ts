@@ -33,3 +33,5 @@ export type DisableDropCheck<T> = (args: {
   targetParentNode: NodeController<T> | null;
   targetIndex: number | null;
 }) => boolean;
+
+export type XY = { x: number; y: number };

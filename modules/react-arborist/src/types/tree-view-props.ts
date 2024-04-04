@@ -33,6 +33,7 @@ export type TreeViewProps<T> = {
   paddingTop: number;
   paddingBottom: number;
   padding: number;
+  direction: "rtl" | "ltr";
 
   /* Class Names */
   className?: string;

@@ -14,10 +14,7 @@ export function useNodeDrag<T>(node: NodeController<T>) {
       const el = tree.element!.getBoundingClientRect();
       const withinY = mouse.y > el.y && mouse.y < el.y + el.height;
       const withinX = mouse.x > el.x && mouse.x < el.x + el.width;
-      if (withinY && withinX) {
-      } else {
-        tree.hideCursor();
-      }
+      if (!(withinY && withinX)) tree.hideCursor();
     },
     onDragEnd(e) {
       tree.dragEnd();

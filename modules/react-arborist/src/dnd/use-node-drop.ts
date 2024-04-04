@@ -16,6 +16,7 @@ export function useNodeDrop<T>(node: NodeController<T>, ref: any) {
         node: node,
         nextNode: node.next,
         prevNode: node.prev,
+        direction: tree.props.direction,
       });
       if (drop) node.tree.draggingOver(drop.parentId, drop.index!);
 

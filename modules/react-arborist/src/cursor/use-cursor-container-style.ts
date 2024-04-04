@@ -6,7 +6,7 @@ export function useCursorContainerStyle(tree: TreeController<any>) {
     height: tree.listHeight,
     width: "100%",
     position: "absolute",
-    left: "0",
-    top: "0",
+    insetInlineStart: "0",
+    insetBlockStart: "0",
   } as CSSProperties;
 }

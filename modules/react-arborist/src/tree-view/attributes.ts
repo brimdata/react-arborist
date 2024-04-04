@@ -5,6 +5,7 @@ export function createTreeViewAttributes(tree: TreeController<any>) {
   return {
     role: "tree",
     tabIndex: 0,
+    dir: "rtl",
     style: {
       inlineSize: tree.width,
       blockSize: tree.height,

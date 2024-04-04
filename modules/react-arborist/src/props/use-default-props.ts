@@ -37,6 +37,7 @@ export function useDefaultProps<T>(
     paddingBottom: props.paddingBottom ?? props.padding ?? 0,
     padding: props.padding ?? 0,
     overscanCount: props.overscanCount ?? 1,
+    direction: "ltr",
 
     /* Class names */
     className: props.className,
