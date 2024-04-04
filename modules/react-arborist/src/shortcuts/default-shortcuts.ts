@@ -30,4 +30,7 @@ export const defaultShortcuts: ShortcutAttrs[] = [
   { key: " ", command: "select", when: "isLeaf" },
   { key: "Meta+a", command: "selectAll" },
   { key: "Control+a", command: "selectAll" },
+
+  /* Opening */
+  { key: "*", command: "openSiblings" },
 ];

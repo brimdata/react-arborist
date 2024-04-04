@@ -148,3 +148,17 @@ export function toggle(tree: Tree) {
     node.isOpen ? tree.close(node.id) : tree.open(node.id);
   }
 }
+
+export function openSiblings(tree: Tree) {
+  const node = tree.focusedNode;
+  if (!node) return;
+  const parent = node.parent;
+  if (!parent) return;
+
+  for (let sibling of parent.object.children!) {
+    if (!sibling.isLeaf) {
+      node.isOpen ? tree.close(sibling.id) : tree.open(sibling.id);
+    }
+  }
+  tree.scrollTo(node.rowIndex);
+}
