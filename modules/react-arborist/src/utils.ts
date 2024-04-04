@@ -178,3 +178,23 @@ export function toArray<T>(itemOrArray: T | T[]): T[] {
   if (Array.isArray(itemOrArray)) return itemOrArray;
   else return [itemOrArray];
 }
+
+export class Timer {
+  id: number | undefined;
+
+  cancel() {
+    clearTimeout(this.id);
+    this.id = undefined;
+  }
+
+  start(callback: () => void, delay: number) {
+    this.id = setTimeout(() => {
+      callback();
+      this.id = undefined;
+    }, delay) as unknown as number;
+  }
+
+  get hasStarted() {
+    return this.id !== undefined;
+  }
+}

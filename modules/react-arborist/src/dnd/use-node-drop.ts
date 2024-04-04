@@ -1,11 +1,23 @@
 import { useDrop } from "react-aria";
 import { NodeController } from "../controllers/node-controller";
-import { computeDrop } from "./compute-drop";
+import { ComputedDrop, computeDrop } from "./compute-drop";
+import { useRef } from "react";
+import { Timer } from "../utils";
 
 export function useNodeDrop<T>(node: NodeController<T>, ref: any) {
   const { tree } = node;
+  const timer = useRef(new Timer()).current;
+
+  function openAfterDelay(id: string) {
+    if (timer.hasStarted) return;
+    timer.start(() => tree.open(id), 750);
+  }
+
   const { dropProps } = useDrop({
     ref,
+    onDropExit() {
+      timer.cancel();
+    },
     onDropMove(e) {
       // x, y is where the mouse position is relative
       // to the draggable element
@@ -18,7 +30,14 @@ export function useNodeDrop<T>(node: NodeController<T>, ref: any) {
         prevNode: node.prev,
         direction: tree.props.direction,
       });
-      if (drop) node.tree.draggingOver(drop.parentId, drop.index!);
+      if (drop) {
+        node.tree.draggingOver(drop.parentId, drop.index!);
+        if (overFolder(drop)) {
+          openAfterDelay(drop.parentId!);
+        } else {
+          timer.cancel();
+        }
+      }
 
       if (node.tree.canDrop()) {
         if (cursor) node.tree.showCursor(cursor);
@@ -32,4 +51,8 @@ export function useNodeDrop<T>(node: NodeController<T>, ref: any) {
   });
 
   return dropProps;
+}
+
+function overFolder(drop: ComputedDrop["drop"]) {
+  return drop && drop.parentId && drop.index === null;
 }
