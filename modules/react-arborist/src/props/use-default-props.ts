@@ -28,7 +28,7 @@ export function useDefaultProps<T>(
     shortcuts: props.shortcuts ?? defaultShortcuts,
     commands: props.commands ?? defaultCommands,
 
-    /* Dimentions */
+    /* Dimensions */
     width: props.width ?? 300,
     height: props.height ?? 500,
     indent: props.indent ?? 24,

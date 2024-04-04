@@ -14,4 +14,4 @@ export * from "./selection/use-multi-selection";
 export * from "./dnd/use-dnd";
 
 /* Partial Controllers */
-export * from "./visible/use-filter";
+export * from "./filter/use-filter";

@@ -3,23 +3,23 @@ import { gmailData } from "../data/gmail";
 import { useState } from "react";
 
 export default function Version4() {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [term, setSearchTerm] = useState("");
   const nodes = useNodes(gmailData);
-  const visible = useFilter(nodes.value, searchTerm);
+  const filterProps = useFilter(nodes.value, { term });
 
   return (
     <div className="wrap">
       <div className="region flow">
         <TreeView
           nodes={nodes}
-          visible={visible}
           className="tree"
           rowClassName="tree-row"
           height={900}
+          {...filterProps}
         />
         <input
           type="search"
-          value={searchTerm}
+          value={term}
           placeholder="Search tree..."
           onChange={(e) => setSearchTerm(e.target.value)}
         />
