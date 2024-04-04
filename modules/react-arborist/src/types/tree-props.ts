@@ -3,9 +3,8 @@ import * as handlers from "./handlers";
 import * as renderers from "./renderers";
 import { ElementType, MouseEventHandler } from "react";
 import { ListOnScrollProps } from "react-window";
-import { NodeApi } from "../interfaces/node-api";
 import { useDragDropManager } from "react-dnd";
-import { OpenMap } from "../state/open-slice";
+import { NodeController } from "../controllers/node-controller";
 
 export interface TreeProps<T> {
   /* Data Options */
@@ -47,27 +46,27 @@ export interface TreeProps<T> {
     | string
     | boolean
     | ((args: {
-        parentNode: NodeApi<T>;
-        dragNodes: NodeApi<T>[];
+        parentNode: NodeController<T>;
+        dragNodes: NodeController<T>[];
         index: number;
       }) => boolean);
 
   /* Event Handlers */
-  onActivate?: (node: NodeApi<T>) => void;
-  onSelect?: (nodes: NodeApi<T>[]) => void;
+  onActivate?: (node: NodeController<T>) => void;
+  onSelect?: (nodes: NodeController<T>[]) => void;
   onScroll?: (props: ListOnScrollProps) => void;
   onToggle?: (id: string) => void;
-  onFocus?: (node: NodeApi<T>) => void;
+  onFocus?: (node: NodeController<T>) => void;
 
   /* Selection */
   selection?: string;
 
   /* Open State */
-  initialOpenState?: OpenMap;
+  initialOpenState?: Record<string, boolean>;
 
   /* Search */
   searchTerm?: string;
-  searchMatch?: (node: NodeApi<T>, searchTerm: string) => boolean;
+  searchMatch?: (node: NodeController<T>, searchTerm: string) => boolean;
 
   /* Extra */
   className?: string | undefined;

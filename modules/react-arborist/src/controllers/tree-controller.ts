@@ -2,7 +2,6 @@ import { Align, FixedSizeList } from "react-window";
 import { CursorState } from "../cursor/types";
 import { safeToDrop } from "../dnd/safe-to-drop";
 import { ShortcutManager } from "../shortcuts/shortcut-manager";
-import { NodeState } from "../types/state";
 import { TreeViewProps } from "../types/tree-view-props";
 import { NodeController } from "./node-controller";
 

@@ -1,5 +1,4 @@
 import { bound, isOpenWithEmptyChildren } from "../utils";
-import { DropResult } from "./drop-hook";
 import { NodeController } from "../controllers/node-controller";
 import { HoverData, measureHover } from "./measure-hover";
 import { XY } from "./types";
@@ -31,6 +30,11 @@ function getNodesAroundCursor(
     }
   }
 }
+
+export type DropResult = {
+  parentId: string | null;
+  index: number | null;
+};
 
 type Args = {
   element: HTMLElement;
