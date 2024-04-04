@@ -311,6 +311,7 @@ export class TreeController<T> {
       targetParentId: dnd.targetParentId,
       targetIndex: dnd.targetIndex || 0,
     });
+    if (dnd.targetParentId) this.open(dnd.targetParentId);
   }
 
   dragEnd() {
