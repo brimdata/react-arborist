@@ -89,7 +89,6 @@ function walkUpFrom(node: NodeController<any>, level: number) {
   }
   const parentId = drop.parentId;
   const index = drop.childIndex + 1;
-  console.log({ parentId, index });
   return { parentId, index };
 }
 

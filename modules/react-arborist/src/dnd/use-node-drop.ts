@@ -3,6 +3,7 @@ import { NodeController } from "../controllers/node-controller";
 import { computeDrop } from "./compute-drop";
 
 export function useNodeDrop<T>(node: NodeController<T>, ref: any) {
+  const { tree } = node;
   const { dropProps } = useDrop({
     ref,
     onDropMove(e) {
@@ -23,6 +24,9 @@ export function useNodeDrop<T>(node: NodeController<T>, ref: any) {
       } else {
         node.tree.hideCursor();
       }
+    },
+    onDrop() {
+      if (tree.canDrop()) tree.drop();
     },
   });
 

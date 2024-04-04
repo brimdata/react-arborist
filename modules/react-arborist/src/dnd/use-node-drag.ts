@@ -10,8 +10,16 @@ export function useNodeDrag<T>(node: NodeController<T>) {
     onDragStart(e) {
       tree.dragStart(node.id);
     },
+    onDragMove(mouse) {
+      const el = tree.element!.getBoundingClientRect();
+      const withinY = mouse.y > el.y && mouse.y < el.y + el.height;
+      const withinX = mouse.x > el.x && mouse.x < el.x + el.width;
+      if (withinY && withinX) {
+      } else {
+        tree.hideCursor();
+      }
+    },
     onDragEnd(e) {
-      if (tree.canDrop()) tree.drop();
       tree.dragEnd();
     },
   });
