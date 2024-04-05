@@ -241,6 +241,20 @@ function App() {
 }
 ```
 
+### Dynamic sizing
+
+You can add a ref to it with this package [ZeeCoder/use-resize-observer](https://github.com/ZeeCoder/use-resize-observer)
+ 
+That hook will return the height and width of the parent whenever it changes. You then pass these numbers to the Tree.
+
+```js
+const { ref, width, height } = useResizeObserver();
+ 
+<div className="parent" ref={ref}>
+  <Tree height={height} width={width} />
+</div>
+```
+
 ## API Reference
 
 - Components
