@@ -5,7 +5,7 @@ import { Cursor } from "./cursor";
 
 export const ListOuterElement = forwardRef(function Outer(
   props: React.HTMLProps<HTMLDivElement>,
-  ref
+  ref,
 ) {
   const { children, ...rest } = props;
   const tree = useTreeApi();
@@ -29,7 +29,9 @@ const DropContainer = () => {
   return (
     <div
       style={{
-        height: tree.visibleNodes.length * tree.rowHeight,
+        height:
+          tree.rowTopPosition(tree.visibleNodes.length - 1) +
+          tree.rowHeight(tree.visibleNodes.length - 1),
         width: "100%",
         position: "absolute",
         left: "0",

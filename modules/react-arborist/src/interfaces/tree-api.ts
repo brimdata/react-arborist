@@ -2,7 +2,11 @@ import { EditResult } from "../types/handlers";
 import { Identity, IdObj } from "../types/utils";
 import { TreeProps } from "../types/tree-props";
 import { MutableRefObject } from "react";
-import { Align, FixedSizeList, ListOnItemsRenderedProps } from "react-window";
+import {
+  Align,
+  ListOnItemsRenderedProps,
+  VariableSizeList,
+} from "react-window";
 import * as utils from "../utils";
 import { DefaultCursor } from "../components/default-cursor";
 import { DefaultRow } from "../components/default-row";
@@ -34,8 +38,8 @@ export class TreeApi<T> {
   constructor(
     public store: Store<RootState, Actions>,
     public props: TreeProps<T>,
-    public list: MutableRefObject<FixedSizeList | null>,
-    public listEl: MutableRefObject<HTMLDivElement | null>
+    public list: MutableRefObject<VariableSizeList | null>,
+    public listEl: MutableRefObject<HTMLDivElement | null>,
   ) {
     /* Changes here must also be made in update() */
     this.root = createRoot<T>(this);
@@ -79,10 +83,6 @@ export class TreeApi<T> {
     return this.props.indent ?? 24;
   }
 
-  get rowHeight() {
-    return this.props.rowHeight ?? 24;
-  }
-
   get overscanCount() {
     return this.props.overscanCount ?? 1;
   }
@@ -90,6 +90,33 @@ export class TreeApi<T> {
   get searchTerm() {
     return (this.props.searchTerm || "").trim();
   }
+
+  rowHeight = (index: number): number => {
+    if (!this.props.rowHeight) {
+      return 24;
+    }
+
+    const node = this.at(index);
+    if (!node) {
+      return 0;
+    }
+
+    return typeof this.props.rowHeight === "function"
+      ? this.props.rowHeight(node)
+      : this.props.rowHeight;
+  };
+
+  rowTopPosition = (index: number): number => {
+    let position = 0;
+    for (let i = 0; i < index; i++) {
+      position += this.rowHeight(i);
+    }
+    return position;
+  };
+
+  redrawList = (afterIndex?: number | undefined | null) => {
+    this.list.current?.resetAfterIndex(afterIndex ?? 0);
+  };
 
   get matchFn() {
     const match =
@@ -194,7 +221,7 @@ export class TreeApi<T> {
       type?: "internal" | "leaf";
       parentId?: null | string;
       index?: null | number;
-    } = {}
+    } = {},
   ) {
     const parentId =
       opts.parentId === undefined
@@ -224,6 +251,9 @@ export class TreeApi<T> {
     const idents = Array.isArray(node) ? node : [node];
     const ids = idents.map(identify);
     const nodes = ids.map((id) => this.get(id)!).filter((n) => !!n);
+
+    this.redrawList(Math.min(...nodes.map((node) => node.rowIndex ?? 0)));
+
     await safeRun(this.props.onDelete, { nodes, ids });
   }
 
@@ -232,6 +262,7 @@ export class TreeApi<T> {
     this.resolveEdit({ cancelled: true });
     this.scrollTo(id);
     this.dispatch(edit(id));
+    this.redrawList(this.get(id)?.rowIndex);
     return new Promise((resolve) => {
       TreeApi.editPromise = resolve;
     });
@@ -247,12 +278,14 @@ export class TreeApi<T> {
     });
     this.dispatch(edit(null));
     this.resolveEdit({ cancelled: false, value });
+    this.redrawList(this.get(id)?.rowIndex);
     setTimeout(() => this.onFocus()); // Return focus to element;
   }
 
   reset() {
     this.dispatch(edit(null));
     this.resolveEdit({ cancelled: true });
+    this.redrawList();
     setTimeout(() => this.onFocus()); // Return focus to element;
   }
 
@@ -470,19 +503,21 @@ export class TreeApi<T> {
 
   /* Visibility */
 
-  open(identity: Identity) {
+  open(identity: Identity, redraw: boolean = true) {
     const id = identifyNull(identity);
     if (!id) return;
     if (this.isOpen(id)) return;
     this.dispatch(visibility.open(id, this.isFiltered));
+    redraw && this.redrawList(this.get(id)?.rowIndex);
     safeRun(this.props.onToggle, id);
   }
 
-  close(identity: Identity) {
+  close(identity: Identity, redraw: boolean = true) {
     const id = identifyNull(identity);
     if (!id) return;
     if (!this.isOpen(id)) return;
     this.dispatch(visibility.close(id, this.isFiltered));
+    redraw && this.redrawList(this.get(id)?.rowIndex);
     safeRun(this.props.onToggle, id);
   }
 
@@ -499,9 +534,10 @@ export class TreeApi<T> {
     let parent = node?.parent;
 
     while (parent) {
-      this.open(parent.id);
+      this.open(parent.id, false);
       parent = parent.parent;
     }
+    this.redrawList();
   }
 
   openSiblings(node: NodeApi<T>) {
@@ -512,23 +548,26 @@ export class TreeApi<T> {
       const isOpen = node.isOpen;
       for (let sibling of parent.children) {
         if (sibling.isInternal) {
-          isOpen ? this.close(sibling.id) : this.open(sibling.id);
+          isOpen ? this.close(sibling.id, false) : this.open(sibling.id, false);
         }
       }
+      this.redrawList();
       this.scrollTo(this.focusedNode);
     }
   }
 
   openAll() {
     utils.walk(this.root, (node) => {
-      if (node.isInternal) node.open();
+      if (node.isInternal) this.open(node, false);
     });
+    this.redrawList();
   }
 
   closeAll() {
     utils.walk(this.root, (node) => {
-      if (node.isInternal) node.close();
+      if (node.isInternal) this.close(node, false);
     });
+    this.redrawList();
   }
 
   /* Scrolling */
