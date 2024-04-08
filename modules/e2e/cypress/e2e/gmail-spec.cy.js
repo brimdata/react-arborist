@@ -61,6 +61,7 @@ describe("Testing the Gmail Demo", () => {
 
     // On a folder that is closed
     cy.get("@item").contains("Categories").click(); // closed it
+    cy.focused().should("have.attr", "aria-expanded", "false");
     cy.focused().type("a");
     cy.focused().type("Root{enter}");
     cy.get("@item").contains("Root").click();
@@ -68,6 +69,7 @@ describe("Testing the Gmail Demo", () => {
 
     // On a folder that is open
     cy.get("@item").contains("Categories").click(); // opened it
+    cy.focused().should("have.attr", "aria-expanded", "true");
     cy.focused().type("a");
     cy.focused().type("Child{enter}");
     cy.get("@item").contains("Child").click();
@@ -91,6 +93,7 @@ describe("Testing the Gmail Demo", () => {
 
     // On a folder that is closed
     cy.get("@item").contains("Categories").click(); // closed it
+    cy.focused().should("have.attr", "aria-expanded", "false");
     cy.focused().type("A");
     cy.focused().type("Root{enter}");
     cy.get("@item").contains("Root").click();
@@ -99,6 +102,7 @@ describe("Testing the Gmail Demo", () => {
 
     // On a folder that is open
     cy.get("@item").contains("Categories").click(); // opened it
+    cy.focused().should("have.attr", "aria-expanded", "true");
     cy.focused().type("A");
     cy.focused().type("Child{enter}");
     cy.get("@item").contains("Child").click();
