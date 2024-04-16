@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   Accessors,
   NodeObject,
+  NodeType,
   NodesOnChangeEvent,
   NodesPartialController,
 } from "./types.js";
@@ -16,7 +17,7 @@ export function useNodes<T>(
 
   return {
     setSourceData,
-    initialize: (args) => treeManager.initialize(args),
+    initialize: (args: { nodeType: NodeType }) => treeManager.initialize(args),
     value: treeManager.nodes as NodeObject<T>[],
     onChange: (event: NodesOnChangeEvent<T>) => {
       switch (event.type) {
@@ -35,5 +36,5 @@ export function useNodes<T>(
       }
       setSourceData([...treeManager.sourceData]);
     },
-  } as NodesPartialController<T>;
+  };
 }
