@@ -1,13 +1,13 @@
-import { NodesPartialController } from "../nodes/types";
-import { OpensPartialController } from "../opens/types";
-import { EditPartialController } from "../edit/types";
-import { SelectionPartialController } from "../selection/types";
-import { DisableDropCheck, DndPartialController } from "../dnd/types";
-import { CursorPartialController } from "../cursor/types";
-import { FocusPartialController } from "../focus/types";
-import { VisiblePartialController } from "../visible/types";
-import { ShortcutAttrs } from "../shortcuts/types";
-import { CommandObject } from "../commands/types";
+import { NodesPartialController } from "../nodes/types.js";
+import { OpensPartialController } from "../opens/types.js";
+import { EditPartialController } from "../edit/types.js";
+import { SelectionPartialController } from "../selection/types.js";
+import { DisableDropCheck, DndPartialController } from "../dnd/types.js";
+import { CursorPartialController } from "../cursor/types.js";
+import { FocusPartialController } from "../focus/types.js";
+import { VisiblePartialController } from "../visible/types.js";
+import { ShortcutAttrs } from "../shortcuts/types.js";
+import { CommandObject } from "../commands/types.js";
 import { ListOnScrollProps } from "react-window";
 
 export type TreeViewProps<T> = {

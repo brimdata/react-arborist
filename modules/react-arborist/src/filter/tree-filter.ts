@@ -1,6 +1,6 @@
-import { NodeObject } from "../nodes/types";
-import { matchesStringProperties } from "./match";
-import { FilterOptions } from "./use-filter";
+import { NodeObject } from "../nodes/types.js";
+import { matchesStringProperties } from "./match.js";
+import { FilterOptions } from "./use-filter.js";
 
 type BoolMap = Record<string, boolean>;
 

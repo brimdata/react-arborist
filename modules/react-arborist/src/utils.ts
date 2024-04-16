@@ -1,4 +1,4 @@
-import { NodeController } from "./controllers/node-controller";
+import { NodeController } from "./controllers/node-controller.js";
 
 export function bound(n: number, min: number, max: number) {
   return Math.max(Math.min(n, max), min);

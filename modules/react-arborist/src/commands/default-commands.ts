@@ -1,7 +1,7 @@
-import { NodeController } from "../controllers/node-controller";
-import { TreeController } from "../controllers/tree-controller";
-import { NodeType } from "../nodes/types";
-import { focusNextElement, focusPrevElement } from "../utils";
+import { NodeController } from "../controllers/node-controller.js";
+import { TreeController } from "../controllers/tree-controller.js";
+import { NodeType } from "../nodes/types.js";
+import { focusNextElement, focusPrevElement } from "../utils.js";
 
 export type Tree = TreeController<any>;
 

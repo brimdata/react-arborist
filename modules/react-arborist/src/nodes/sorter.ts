@@ -1,6 +1,6 @@
-import { toArray } from "../utils";
-import { Comparator } from "./comparator";
-import { Accessors } from "./types";
+import { toArray } from "../utils.js";
+import { Comparator } from "./comparator.js";
+import { Accessors } from "./types.js";
 
 export class Sorter<T> {
   constructor(public access: Accessors<T>) {}

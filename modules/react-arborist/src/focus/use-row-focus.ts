@@ -1,5 +1,5 @@
 import { MutableRefObject, useEffect } from "react";
-import { NodeController } from "../controllers/node-controller";
+import { NodeController } from "../controllers/node-controller.js";
 
 export function useRowFocus(
   node: NodeController<any>,

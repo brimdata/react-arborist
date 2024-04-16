@@ -1,7 +1,7 @@
-import { createAccessor } from "./accessor";
-import { NodeModel } from "./node-model";
-import { RootNodeModel } from "./root-node-model";
-import { Accessors, NodeType } from "./types";
+import { createAccessor } from "./accessor.js";
+import { NodeModel } from "./node-model.js";
+import { RootNodeModel } from "./root-node-model.js";
+import { Accessors, NodeType } from "./types.js";
 
 export class TreeModel<T> {
   root: RootNodeModel<T>;

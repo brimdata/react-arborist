@@ -1,5 +1,5 @@
-import { TreeController } from "../controllers/tree-controller";
-import { PartialController } from "../types/utils";
+import { TreeController } from "../controllers/tree-controller.js";
+import { PartialController } from "../types/utils.js";
 
 export type SelectionState = Record<string, boolean>;
 export type SelectionOnChangeEvent<T> =

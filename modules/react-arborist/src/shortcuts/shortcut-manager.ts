@@ -1,6 +1,6 @@
-import { Press } from "./press";
-import { Shortcut } from "./shortcut";
-import { ShortcutAttrs } from "./types";
+import { Press } from "./press.js";
+import { Shortcut } from "./shortcut.js";
+import { ShortcutAttrs } from "./types.js";
 
 export class ShortcutManager<Context> {
   shortcuts: Shortcut<Context>[];

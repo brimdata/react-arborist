@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FocusPartialController, FocusState } from "./types";
+import { FocusPartialController, FocusState } from "./types.js";
 
 export function useFocus(): FocusPartialController {
   const [value, setValue] = useState<FocusState>({

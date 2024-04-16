@@ -1,6 +1,6 @@
 import { useDrop } from "react-aria";
-import { computeDrop } from "./compute-drop";
-import { TreeController } from "../controllers/tree-controller";
+import { computeDrop } from "./compute-drop.js";
+import { TreeController } from "../controllers/tree-controller.js";
 
 export function useTreeDrop<T>(tree: TreeController<T>, ref: any) {
   const { dropProps } = useDrop({

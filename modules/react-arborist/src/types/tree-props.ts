@@ -1,9 +1,9 @@
-import { BoolFunc } from "./utils";
-import * as handlers from "./handlers";
-import * as renderers from "./renderers";
+import { BoolFunc } from "./utils.js";
+import * as handlers from "./handlers.js";
+import * as renderers from "./renderers.js";
 import { ElementType, MouseEventHandler } from "react";
 import { ListOnScrollProps } from "react-window";
-import { NodeController } from "../controllers/node-controller";
+import { NodeController } from "../controllers/node-controller.js";
 
 export interface TreeProps<T> {
   /* Data Options */

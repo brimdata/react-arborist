@@ -1,5 +1,5 @@
 import { HTMLAttributes } from "react";
-import { TreeController } from "../controllers/tree-controller";
+import { TreeController } from "../controllers/tree-controller.js";
 
 export function createTreeViewAttributes(tree: TreeController<any>) {
   return {

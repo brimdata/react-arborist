@@ -1,14 +1,14 @@
-import * as defaultCommands from "../commands/default-commands";
-import { useCursor } from "../cursor/use-cursor";
-import { useDnd } from "../dnd/use-dnd";
-import { useEdit } from "../edit/use-edit";
-import { useFocus } from "../focus/use-focus";
-import { defaultNodeObjects } from "../nodes/default-node-objects";
-import { useNodes } from "../nodes/use-nodes";
-import { useOpens } from "../opens/use-opens";
-import { useMultiSelection } from "../selection/use-multi-selection";
-import { defaultShortcuts } from "../shortcuts/default-shortcuts";
-import { TreeViewProps } from "../types/tree-view-props";
+import * as defaultCommands from "../commands/default-commands.js";
+import { useCursor } from "../cursor/use-cursor.js";
+import { useDnd } from "../dnd/use-dnd.js";
+import { useEdit } from "../edit/use-edit.js";
+import { useFocus } from "../focus/use-focus.js";
+import { defaultNodeObjects } from "../nodes/default-node-objects.js";
+import { useNodes } from "../nodes/use-nodes.js";
+import { useOpens } from "../opens/use-opens.js";
+import { useMultiSelection } from "../selection/use-multi-selection.js";
+import { defaultShortcuts } from "../shortcuts/default-shortcuts.js";
+import { TreeViewProps } from "../types/tree-view-props.js";
 
 export function useDefaultProps<T>(
   props: Partial<TreeViewProps<T>>,

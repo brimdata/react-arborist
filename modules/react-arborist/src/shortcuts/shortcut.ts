@@ -1,4 +1,4 @@
-import { ShortcutAttrs } from "./types";
+import { ShortcutAttrs } from "./types.js";
 import { evaluate } from "when-clause";
 
 export class Shortcut<Context> {

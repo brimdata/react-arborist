@@ -1,7 +1,7 @@
 import { CSSProperties, HTMLAttributes, ReactElement } from "react";
-import { TreeController } from "../controllers/tree-controller";
-import { NodeController } from "../controllers/node-controller";
-import { XY } from "../dnd/types";
+import { TreeController } from "../controllers/tree-controller.js";
+import { NodeController } from "../controllers/node-controller.js";
+import { XY } from "../dnd/types.js";
 
 export type NodeRendererProps<T> = {
   style: CSSProperties;

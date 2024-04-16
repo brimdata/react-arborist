@@ -1,8 +1,8 @@
 import { useDrop } from "react-aria";
-import { NodeController } from "../controllers/node-controller";
-import { ComputedDrop, computeDrop } from "./compute-drop";
+import { NodeController } from "../controllers/node-controller.js";
+import { ComputedDrop, computeDrop } from "./compute-drop.js";
 import { useRef } from "react";
-import { Timer } from "../utils";
+import { Timer } from "../utils.js";
 
 export function useNodeDrop<T>(node: NodeController<T>, ref: any) {
   const { tree } = node;

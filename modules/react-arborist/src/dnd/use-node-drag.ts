@@ -1,5 +1,5 @@
 import { useDrag } from "react-aria";
-import { NodeController } from "../controllers/node-controller";
+import { NodeController } from "../controllers/node-controller.js";
 
 export function useNodeDrag<T>(node: NodeController<T>) {
   const { tree } = node;

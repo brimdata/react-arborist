@@ -1,5 +1,5 @@
 import { CSSProperties } from "react";
-import { TreeController } from "../controllers/tree-controller";
+import { TreeController } from "../controllers/tree-controller.js";
 
 export function useCursorContainerStyle(tree: TreeController<any>) {
   return {

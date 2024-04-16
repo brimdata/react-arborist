@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CursorPartialController, CursorState } from "./types";
+import { CursorPartialController, CursorState } from "./types.js";
 
 export function useCursor(): CursorPartialController {
   const [value, setValue] = useState<CursorState>(null);

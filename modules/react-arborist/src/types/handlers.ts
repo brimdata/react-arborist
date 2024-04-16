@@ -1,5 +1,5 @@
-import { NodeController } from "../controllers/node-controller";
-import { IdObj } from "./utils";
+import { NodeController } from "../controllers/node-controller.js";
+import { IdObj } from "./utils.js";
 
 export type CreateHandler<T> = (args: {
   parentId: string | null;

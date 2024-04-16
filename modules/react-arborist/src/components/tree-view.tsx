@@ -5,21 +5,21 @@ import React, {
   useContext,
   useRef,
 } from "react";
-import { TreeController } from "../controllers/tree-controller";
-import { TreeViewProps } from "../types/tree-view-props";
+import { TreeController } from "../controllers/tree-controller.js";
+import { TreeViewProps } from "../types/tree-view-props.js";
 import { FixedSizeList } from "react-window";
-import { NodeController } from "../controllers/node-controller";
-import { createRowAttributes } from "../row/attributes";
-import { DefaultCursor } from "./default-cursor";
-import { useCursorProps } from "../cursor/use-cursor-props";
-import { useCursorContainerStyle } from "../cursor/use-cursor-container-style";
-import { useListInnerStyle } from "../list/use-list-inner-style";
-import { useNodeDrag } from "../dnd/use-node-drag";
-import { useNodeDrop } from "../dnd/use-node-drop";
-import { useDefaultProps } from "../props/use-default-props";
-import { useRowFocus } from "../focus/use-row-focus";
-import { createTreeViewAttributes } from "../tree-view/attributes";
-import { useTreeDrop } from "../dnd/use-tree-drop";
+import { NodeController } from "../controllers/node-controller.js";
+import { createRowAttributes } from "../row/attributes.js";
+import { DefaultCursor } from "./default-cursor.js";
+import { useCursorProps } from "../cursor/use-cursor-props.js";
+import { useCursorContainerStyle } from "../cursor/use-cursor-container-style.js";
+import { useListInnerStyle } from "../list/use-list-inner-style.js";
+import { useNodeDrag } from "../dnd/use-node-drag.js";
+import { useNodeDrop } from "../dnd/use-node-drop.js";
+import { useDefaultProps } from "../props/use-default-props.js";
+import { useRowFocus } from "../focus/use-row-focus.js";
+import { createTreeViewAttributes } from "../tree-view/attributes.js";
+import { useTreeDrop } from "../dnd/use-tree-drop.js";
 
 export function TreeView<T>(props: Partial<TreeViewProps<T>>) {
   const filledProps = useDefaultProps(props);

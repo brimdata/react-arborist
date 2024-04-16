@@ -1,4 +1,4 @@
-import { PartialController } from "../types/utils";
+import { PartialController } from "../types/utils.js";
 
 export type NodeObject<T> = {
   id: string;

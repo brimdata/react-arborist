@@ -1,4 +1,4 @@
-import { DndPartialController, DndState } from "./types";
+import { DndPartialController, DndState } from "./types.js";
 import { useState } from "react";
 
 function getInitialState(): DndState {

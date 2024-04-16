@@ -1,9 +1,9 @@
 import { Align, FixedSizeList } from "react-window";
-import { CursorState } from "../cursor/types";
-import { safeToDrop } from "../dnd/safe-to-drop";
-import { ShortcutManager } from "../shortcuts/shortcut-manager";
-import { TreeViewProps } from "../types/tree-view-props";
-import { NodeController } from "./node-controller";
+import { CursorState } from "../cursor/types.js";
+import { safeToDrop } from "../dnd/safe-to-drop.js";
+import { ShortcutManager } from "../shortcuts/shortcut-manager.js";
+import { TreeViewProps } from "../types/tree-view-props.js";
+import { NodeController } from "./node-controller.js";
 
 export class TreeController<T> {
   rows: NodeController<T>[];

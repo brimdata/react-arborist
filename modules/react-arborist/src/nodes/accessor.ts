@@ -1,4 +1,4 @@
-import { Accessors } from "./types";
+import { Accessors } from "./types.js";
 
 export function createAccessor<T>(
   accessors: Partial<Accessors<T>>,

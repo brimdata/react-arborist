@@ -1,4 +1,4 @@
-import { TreeController } from "../controllers/tree-controller";
+import { TreeController } from "../controllers/tree-controller.js";
 
 export function useCursorProps(tree: TreeController<any>) {
   const cursor = tree.props.cursor.value;

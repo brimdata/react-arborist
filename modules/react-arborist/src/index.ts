@@ -1,10 +1,10 @@
 /* The Public Api */
-export type * from "./types/handlers";
-export type * from "./types/renderers";
+export type * from "./types/handlers.js";
+export type * from "./types/renderers.js";
 
-export * from "./components/tree-view";
-export * from "./nodes/tree-model";
-export * from "./nodes/use-nodes";
-export * from "./selection/use-multi-selection";
-export * from "./dnd/use-dnd";
-export * from "./filter/use-filter";
+export * from "./components/tree-view.js";
+export * from "./nodes/tree-model.js";
+export * from "./nodes/use-nodes.js";
+export * from "./selection/use-multi-selection.js";
+export * from "./dnd/use-dnd.js";
+export * from "./filter/use-filter.js";

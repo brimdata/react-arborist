@@ -1,6 +1,6 @@
-import { NodeModel } from "./node-model";
-import { Sorter } from "./sorter";
-import { Accessors } from "./types";
+import { NodeModel } from "./node-model.js";
+import { Sorter } from "./sorter.js";
+import { Accessors } from "./types.js";
 
 export function createNodeModel<T>(
   parent: NodeModel<T>,

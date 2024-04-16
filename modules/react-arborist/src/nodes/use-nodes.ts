@@ -4,8 +4,8 @@ import {
   NodeObject,
   NodesOnChangeEvent,
   NodesPartialController,
-} from "./types";
-import { TreeModel } from "./tree-model";
+} from "./types.js";
+import { TreeModel } from "./tree-model.js";
 
 export function useNodes<T>(
   initialData: T[],

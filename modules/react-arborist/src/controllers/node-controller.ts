@@ -1,5 +1,5 @@
-import { NodeObject } from "../nodes/types";
-import { TreeController } from "./tree-controller";
+import { NodeObject } from "../nodes/types.js";
+import { TreeController } from "./tree-controller.js";
 
 export class NodeController<T> {
   static constructRows<T>(tree: TreeController<T>, objects: NodeObject<T>[]) {

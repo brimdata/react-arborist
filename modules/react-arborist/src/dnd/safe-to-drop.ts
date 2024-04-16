@@ -1,4 +1,4 @@
-import { TreeController } from "../controllers/tree-controller";
+import { TreeController } from "../controllers/tree-controller.js";
 
 export function safeToDrop(tree: TreeController<any>) {
   const targetParentNode = tree.dropTargetParentNode;

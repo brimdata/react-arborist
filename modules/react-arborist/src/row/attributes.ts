@@ -1,6 +1,6 @@
 import { CSSProperties } from "react";
-import { NodeController } from "../controllers/node-controller";
-import { TreeController } from "../controllers/tree-controller";
+import { NodeController } from "../controllers/node-controller.js";
+import { TreeController } from "../controllers/tree-controller.js";
 
 export function createRowAttributes<T>(
   tree: TreeController<T>,

@@ -1,5 +1,5 @@
-import { NodeController } from "../controllers/node-controller";
-import { PartialController } from "../types/utils";
+import { NodeController } from "../controllers/node-controller.js";
+import { PartialController } from "../types/utils.js";
 
 export type DndState = {
   dragSourceId: string | null;

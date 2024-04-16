@@ -3,7 +3,7 @@ import {
   SelectionOnChangeEvent,
   SelectionPartialController,
   SelectionState,
-} from "./types";
+} from "./types.js";
 
 export function useMultiSelection<T>(): SelectionPartialController<T> {
   const [anchor, setAnchor] = useState<string | null>(null);
@@ -19,11 +19,11 @@ export function useMultiSelection<T>(): SelectionPartialController<T> {
         break;
 
       case "deselect":
-        setValue((prev) => ({ ...prev, [e.id]: false }));
+        setValue((prev: any) => ({ ...prev, [e.id]: false }));
         break;
 
       case "select-multi":
-        setValue((prev) => ({ ...prev, [e.id]: true }));
+        setValue((prev: any) => ({ ...prev, [e.id]: true }));
         setAnchor(e.id);
         setMostRecent(e.id);
         break;

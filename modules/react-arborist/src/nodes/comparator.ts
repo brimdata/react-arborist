@@ -1,4 +1,4 @@
-import { GetSortField, SortOrder } from "./types";
+import { GetSortField, SortOrder } from "./types.js";
 
 export class Comparator<T> {
   constructor(

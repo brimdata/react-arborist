@@ -1,4 +1,4 @@
-import { XY } from "./types";
+import { XY } from "./types.js";
 
 export function measureHover(
   el: HTMLElement,

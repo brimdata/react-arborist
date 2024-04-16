@@ -1,4 +1,4 @@
-import { ShortcutAttrs } from "./types";
+import { ShortcutAttrs } from "./types.js";
 
 export const defaultShortcuts: ShortcutAttrs[] = [
   /* Keyboard Navigation */

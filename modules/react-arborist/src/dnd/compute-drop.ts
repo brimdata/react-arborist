@@ -1,7 +1,7 @@
-import { bound, isOpenWithEmptyChildren } from "../utils";
-import { NodeController } from "../controllers/node-controller";
-import { HoverData, measureHover } from "./measure-hover";
-import { XY } from "./types";
+import { bound, isOpenWithEmptyChildren } from "../utils.js";
+import { NodeController } from "../controllers/node-controller.js";
+import { HoverData, measureHover } from "./measure-hover.js";
+import { XY } from "./types.js";
 
 function getNodesAroundCursor(
   node: NodeController<any> | null,

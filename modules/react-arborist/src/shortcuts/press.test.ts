@@ -1,4 +1,4 @@
-import { Press } from "./press";
+import { Press } from "./press.js";
 
 const cases = [
   {

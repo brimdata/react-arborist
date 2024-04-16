@@ -1,5 +1,5 @@
-import { createChildren } from "./create-node-model";
-import { NodeObject, Accessors } from "./types";
+import { createChildren } from "./create-node-model.js";
+import { NodeObject, Accessors } from "./types.js";
 
 type Attrs<T> = {
   id: string;

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { OpensOnChangeEvent, OpensState } from "../opens/types";
-import { TreeFilter } from "./tree-filter";
-import { NodeObject } from "../nodes/types";
+import { OpensOnChangeEvent, OpensState } from "../opens/types.js";
+import { TreeFilter } from "./tree-filter.js";
+import { NodeObject } from "../nodes/types.js";
 
 export type FilterOptions<T> = {
   term?: string;
