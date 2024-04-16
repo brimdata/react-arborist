@@ -3,7 +3,6 @@ import * as handlers from "./handlers";
 import * as renderers from "./renderers";
 import { ElementType, MouseEventHandler } from "react";
 import { ListOnScrollProps } from "react-window";
-import { useDragDropManager } from "react-dnd";
 import { NodeController } from "../controllers/node-controller";
 
 export interface TreeProps<T> {
@@ -72,8 +71,6 @@ export interface TreeProps<T> {
   className?: string | undefined;
   rowClassName?: string | undefined;
 
-  dndRootElement?: globalThis.Node | null;
   onClick?: MouseEventHandler;
   onContextMenu?: MouseEventHandler;
-  dndManager?: ReturnType<typeof useDragDropManager>;
 }

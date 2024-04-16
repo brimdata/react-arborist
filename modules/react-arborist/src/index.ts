@@ -1,6 +1,7 @@
 /* The Public Api */
-export * from "./types/handlers";
-export * from "./types/renderers";
+export type * from "./types/handlers";
+export type * from "./types/renderers";
+
 export * from "./components/tree-view";
 export * from "./nodes/tree-model";
 export * from "./nodes/use-nodes";

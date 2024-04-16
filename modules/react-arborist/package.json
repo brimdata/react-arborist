@@ -2,11 +2,12 @@
   "name": "react-arborist",
   "version": "3.4.0",
   "license": "MIT",
+  "type": "module",
   "exports": "./dist/module/index.js",
   "types": "dist/module/index.d.ts",
   "sideEffects": false,
   "scripts": {
-    "build:es": "tsc --outDir dist/module --module es2022 --moduleResolution node",
+    "build:es": "tsc --outDir dist/module",
     "build": "npm-run-all clean -p 'build:**'",
     "clean": "rimraf dist",
     "prepack": "yarn build",
@@ -37,7 +38,7 @@
   "dependencies": {
     "react-aria": "^3.32.1",
     "react-window": "^1.8.10",
-    "when-clause": "workspace:*"
+    "when-clause": "0.0.3"
   },
   "peerDependencies": {
     "react": ">= 16.14",
