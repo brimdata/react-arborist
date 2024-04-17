@@ -9,6 +9,11 @@ import { VisiblePartialController } from "../visible/types.js";
 import { ShortcutAttrs } from "../shortcuts/types.js";
 import { CommandObject } from "../commands/types.js";
 import { ListOnScrollProps } from "react-window";
+import {
+  CursorRendererProps,
+  NodeRendererProps,
+  RowRendererProps,
+} from "./renderers.js";
 
 export type TreeViewProps<T> = {
   /* Partial Controllers */
@@ -46,4 +51,8 @@ export type TreeViewProps<T> = {
   /* Configurations */
   openByDefault: boolean;
   disableDrop?: string | boolean | DisableDropCheck<T>;
+
+  renderRow: (props: RowRendererProps<T>) => any;
+  renderNode: (props: NodeRendererProps<T>) => any;
+  renderCursor: (props: CursorRendererProps) => any;
 };

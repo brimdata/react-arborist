@@ -1,4 +1,9 @@
 import * as defaultCommands from "../commands/default-commands.js";
+import { DefaultCursorRenderer } from "../components/default-cursor.js";
+import {
+  DefaultNodeRenderer,
+  DefaultRowRenderer,
+} from "../components/tree-view.js";
 import { useCursor } from "../cursor/use-cursor.js";
 import { useDnd } from "../dnd/use-dnd.js";
 import { useEdit } from "../edit/use-edit.js";
@@ -38,6 +43,11 @@ export function useDefaultProps<T>(
     padding: props.padding ?? 0,
     overscanCount: props.overscanCount ?? 1,
     direction: "ltr",
+
+    /* Renderers */
+    renderRow: props.renderRow ?? DefaultRowRenderer,
+    renderNode: props.renderNode ?? DefaultNodeRenderer,
+    renderCursor: props.renderCursor ?? DefaultCursorRenderer,
 
     /* Callbacks */
     onScroll: props.onScroll ?? (() => {}),

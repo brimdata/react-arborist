@@ -1,16 +1,10 @@
-import React, {
-  HTMLAttributes,
-  ReactElement,
-  forwardRef,
-  useContext,
-  useRef,
-} from "react";
+import React, { forwardRef, useContext, useRef } from "react";
 import { TreeController } from "../controllers/tree-controller.js";
 import { TreeViewProps } from "../types/tree-view-props.js";
 import { FixedSizeList } from "react-window";
 import { NodeController } from "../controllers/node-controller.js";
 import { createRowAttributes } from "../row/attributes.js";
-import { DefaultCursor } from "./default-cursor.js";
+import { DefaultCursorRenderer } from "./default-cursor.js";
 import { useCursorProps } from "../cursor/use-cursor-props.js";
 import { useCursorContainerStyle } from "../cursor/use-cursor-container-style.js";
 import { useListInnerStyle } from "../list/use-list-inner-style.js";
@@ -20,6 +14,7 @@ import { useDefaultProps } from "../props/use-default-props.js";
 import { useRowFocus } from "../focus/use-row-focus.js";
 import { createTreeViewAttributes } from "../tree-view/attributes.js";
 import { useTreeDrop } from "../dnd/use-tree-drop.js";
+import { NodeRendererProps, RowRendererProps } from "../types/renderers.js";
 
 export function TreeView<T>(props: Partial<TreeViewProps<T>>) {
   const filledProps = useDefaultProps(props);
@@ -115,7 +110,7 @@ function CursorContainer() {
   if (!props) return null;
   return (
     <div style={style}>
-      <DefaultCursor {...props} />
+      <DefaultCursorRenderer {...props} />
     </div>
   );
 }
@@ -126,6 +121,7 @@ function RowContainer<T>(props: { style: React.CSSProperties; index: number }) {
   const attrs = createRowAttributes(tree, node, props.style);
   const ref = useRef<any>();
   const dropProps = useNodeDrop(node, ref);
+  const RowRenderer = tree.props.renderRow;
   useRowFocus(node, ref);
 
   return (
@@ -135,12 +131,7 @@ function RowContainer<T>(props: { style: React.CSSProperties; index: number }) {
   );
 }
 
-export function RowRenderer<T>(props: {
-  node: NodeController<T>;
-  attrs: HTMLAttributes<any>;
-  children: ReactElement;
-  innerRef: any;
-}) {
+export function DefaultRowRenderer<T>(props: RowRendererProps<T>) {
   return (
     <div
       {...props.attrs}
@@ -157,14 +148,19 @@ function NodeContainer<T>(props: { node: NodeController<T> }) {
   const indent = node.tree.indent * node.level;
   const style = { paddingInlineStart: indent + 10 };
   const dragProps = useNodeDrag(node);
+  const NodeRenderer = node.tree.props.renderNode;
 
-  return <NodeRenderer attrs={{ style, ...dragProps }} node={node} />;
+  return (
+    <NodeRenderer
+      attrs={{ style, ...dragProps }}
+      node={node}
+      style={style}
+      tree={node.tree}
+    />
+  );
 }
 
-function NodeRenderer<T>(props: {
-  attrs: HTMLAttributes<any>;
-  node: NodeController<T>;
-}) {
+export function DefaultNodeRenderer<T>(props: NodeRendererProps<T>) {
   const { node, attrs } = props;
 
   function onSubmit(e: any) {
