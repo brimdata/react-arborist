@@ -1,0 +1,8 @@
+.tree {
+  border-style: solid;
+}
+
+.tree-row {
+  display: flex;
+  align-items: center;
+}

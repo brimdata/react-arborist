@@ -1,36 +1,14 @@
-import { XYCoord } from "react-dnd";
-import { NodeApi } from "../interfaces/node-api";
-import {
-  bound,
-  indexOf,
-  isClosed,
-  isItem,
-  isOpenWithEmptyChildren,
-} from "../utils";
-import { DropResult } from "./drop-hook";
-
-function measureHover(el: HTMLElement, offset: XYCoord) {
-  const rect = el.getBoundingClientRect();
-  const x = offset.x - Math.round(rect.x);
-  const y = offset.y - Math.round(rect.y);
-  const height = rect.height;
-  const inTopHalf = y < height / 2;
-  const inBottomHalf = !inTopHalf;
-  const pad = height / 4;
-  const inMiddle = y > pad && y < height - pad;
-  const atTop = !inMiddle && inTopHalf;
-  const atBottom = !inMiddle && inBottomHalf;
-  return { x, inTopHalf, inBottomHalf, inMiddle, atTop, atBottom };
-}
-
-type HoverData = ReturnType<typeof measureHover>;
+import { bound, isOpenWithEmptyChildren } from "../utils.js";
+import { NodeController } from "../controllers/node-controller.js";
+import { HoverData, measureHover } from "./measure-hover.js";
+import { XY } from "./types.js";
 
 function getNodesAroundCursor(
-  node: NodeApi | null,
-  prev: NodeApi | null,
-  next: NodeApi | null,
-  hover: HoverData
-): [NodeApi | null, NodeApi | null] {
+  node: NodeController<any> | null,
+  prev: NodeController<any> | null,
+  next: NodeController<any> | null,
+  hover: HoverData,
+): [NodeController<any> | null, NodeController<any> | null] {
   if (!node) {
     // We're hovering over the empty part of the list, not over an item,
     // Put the cursor below the last item which is "prev"
@@ -53,13 +31,19 @@ function getNodesAroundCursor(
   }
 }
 
+export type DropResult = {
+  parentId: string | null;
+  index: number | null;
+};
+
 type Args = {
   element: HTMLElement;
-  offset: XYCoord;
+  offset: XY;
   indent: number;
-  node: NodeApi | null;
-  prevNode: NodeApi | null;
-  nextNode: NodeApi | null;
+  node: NodeController<any> | null;
+  prevNode: NodeController<any> | null;
+  nextNode: NodeController<any> | null;
+  direction: "ltr" | "rtl";
 };
 
 export type ComputedDrop = {
@@ -67,11 +51,8 @@ export type ComputedDrop = {
   cursor: Cursor | null;
 };
 
-function dropAt(
-  parentId: string | undefined,
-  index: number | null
-): DropResult {
-  return { parentId: parentId || null, index };
+function dropAt(parentId: string | null, index: number | null): DropResult {
+  return { parentId, index };
 }
 
 function lineCursor(index: number, level: number) {
@@ -82,12 +63,6 @@ function lineCursor(index: number, level: number) {
   };
 }
 
-function noCursor() {
-  return {
-    type: "none" as "none",
-  };
-}
-
 function highlightCursor(id: string) {
   return {
     type: "highlight" as "highlight",
@@ -95,26 +70,25 @@ function highlightCursor(id: string) {
   };
 }
 
-function walkUpFrom(node: NodeApi, level: number) {
+function walkUpFrom(node: NodeController<any>, level: number) {
   let drop = node;
   while (drop.parent && drop.level > level) {
     drop = drop.parent;
   }
-  const parentId = drop.parent?.id || null;
-  const index = indexOf(drop) + 1;
+  const parentId = drop.parentId;
+  const index = drop.childIndex + 1;
   return { parentId, index };
 }
 
 export type LineCursor = ReturnType<typeof lineCursor>;
-export type NoCursor = ReturnType<typeof noCursor>;
 export type HighlightCursor = ReturnType<typeof highlightCursor>;
-export type Cursor = LineCursor | NoCursor | HighlightCursor;
+export type Cursor = LineCursor | HighlightCursor | null;
 
 /**
  * This is the most complex, tricky function in the whole repo.
  */
 export function computeDrop(args: Args): ComputedDrop {
-  const hover = measureHover(args.element, args.offset);
+  const hover = measureHover(args.element, args.offset, args.direction);
   const indent = args.indent;
   const hoverLevel = Math.round(Math.max(0, hover.x - indent) / indent);
   const { node, nextNode, prevNode } = args;
@@ -136,13 +110,13 @@ export function computeDrop(args: Args): ComputedDrop {
   /* There is no node above the cursor line */
   if (!above) {
     return {
-      drop: dropAt(below?.parent?.id, 0),
+      drop: dropAt(below?.parentId || null, 0),
       cursor: lineCursor(0, 0),
     };
   }
 
   /* The node above the cursor line is an item */
-  if (isItem(above)) {
+  if (above.isLeaf) {
     const level = bound(hoverLevel, below?.level || 0, above.level);
     return {
       drop: walkUpFrom(above, level),
@@ -151,7 +125,7 @@ export function computeDrop(args: Args): ComputedDrop {
   }
 
   /* The node above the cursor line is a closed folder */
-  if (isClosed(above)) {
+  if (above.isClosed) {
     const level = bound(hoverLevel, below?.level || 0, above.level);
     return {
       drop: walkUpFrom(above, level),
