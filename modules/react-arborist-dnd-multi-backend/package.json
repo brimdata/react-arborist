@@ -1,5 +1,5 @@
 {
-  "name": "react-arborist",
+  "name": "react-arborist-dnd-multi-backend",
   "version": "3.4.0",
   "license": "MIT",
   "source": "src/index.ts",
@@ -22,18 +22,20 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/brimdata/react-arborist.git"
+    "url": "https://github.com/RamzyVirani/react-arborist-dnd-multi-backend.git"
   },
   "homepage": "https://react-arborist.netlify.app",
-  "bugs": "https://github.com/brimdata/react-arborist/issues",
+  "bugs": "https://github.com/RamzyVirani/react-arborist-dnd-multi-backend/issues",
   "keywords": [
     "react",
     "arborist",
     "react-arborist",
+    "react-arborist-dnd-multi-backend",
     "treeview",
     "tree",
     "vitualized",
     "dnd",
+    "dnd-multi-backend",
     "multiselection",
     "filterable"
   ],

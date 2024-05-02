@@ -1,5 +1,5 @@
 #!/bin/sh
 
 yarn build
-cp README.md modules/react-arborist/README.md
-yarn workspace react-arborist npm publish $@
+cp README.md modules/react-arborist-dnd-multi-backend/README.md
+yarn workspace react-arborist-dnd-multi-backend npm publish $@

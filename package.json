@@ -1,12 +1,12 @@
 {
-  "name": "react-arborist-monorepo",
+  "name": "react-arborist-dnd-multi-backend-monorepo",
   "workspaces": [
     "./modules/*"
   ],
   "scripts": {
     "build": "yarn workspaces foreach --all run build",
     "test": "yarn workspaces foreach --all run test",
-    "bump": "yarn workspace react-arborist version",
+    "bump": "yarn workspace react-arborist-dnd-multi-backend version",
     "publish": "sh bin/publish"
   },
   "private": true,

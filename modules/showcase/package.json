@@ -14,7 +14,7 @@
     "nanoid": "^5.0.4",
     "next": "^14.0.4",
     "react": "^18.2.0",
-    "react-arborist": "workspace:*",
+    "react-arborist-dnd-multi-backend": "workspace:*",
     "react-dom": "^18.2.0",
     "react-icons": "^4.12.0",
     "tree-model-improved": "^2.0.1",
