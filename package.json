@@ -1,12 +1,12 @@
 {
-  "name": "react-arborist-monorepo",
+  "name": "@naviance/react-arborist-monorepo",
   "workspaces": [
     "./modules/*"
   ],
   "scripts": {
     "build": "yarn workspaces foreach --all run build",
     "test": "yarn workspaces foreach --all run test",
-    "bump": "yarn workspace react-arborist version",
+    "bump": "yarn workspace @naviance/react-arborist version",
     "publish": "sh bin/publish"
   },
   "private": true,
