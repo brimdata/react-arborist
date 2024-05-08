@@ -6,3 +6,11 @@ Hoping to get it work with [Accessible backends](https://github.com/discord/reac
 For most documentation and examples, please refer to the original react-arborist package. This fork is intended to be a drop-in replacement for the original package, with the added benefit of supporting multiple backends.
 
 The react-arborist package is still in process to release [v4](https://github.com/brimdata/react-arborist/pull/235) which adds accessibility features, fixes bugs and improves overall user experience. I will try to keep this package up-to-date, but this package should be a temporary solution until the original package has the touch and accessibility features.
+
+
+<h2>Installation</h2>
+Execute below command to install the package, make sure you have .npmrc setup to use @naviance registry.
+
+```bash
+npm i @naviance/react-arborist
+```
