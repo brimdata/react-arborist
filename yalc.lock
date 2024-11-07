@@ -1,0 +1,9 @@
+{
+  "version": "v1",
+  "packages": {
+    "@deepdub/react-arborist": {
+      "signature": "d2a829b67d4af9008b1cd9a8140e8912",
+      "file": true
+    }
+  }
+}

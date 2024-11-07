@@ -617,6 +617,30 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@deepdub/react-arborist@workspace:*, @deepdub/react-arborist@workspace:packages/react-arborist":
+  version: 0.0.0-use.local
+  resolution: "@deepdub/react-arborist@workspace:packages/react-arborist"
+  dependencies:
+    "@types/jest": "npm:^29.5.11"
+    "@types/react": "npm:^18.2.43"
+    "@types/react-window": "npm:^1.8.8"
+    "@types/use-sync-external-store": "npm:^0.0.6"
+    jest: "npm:^29.7.0"
+    npm-run-all: "npm:^4.1.5"
+    react-dnd: "npm:^14.0.3"
+    react-dnd-html5-backend: "npm:^14.0.3"
+    react-window: "npm:^1.8.10"
+    redux: "npm:^5.0.0"
+    rimraf: "npm:^5.0.5"
+    ts-jest: "npm:^29.1.1"
+    typescript: "npm:^5.3.3"
+    use-sync-external-store: "npm:^1.2.0"
+  peerDependencies:
+    react: ">= 16.14"
+    react-dom: ">= 16.14"
+  languageName: unknown
+  linkType: soft
+
 "@eslint-community/eslint-utils@npm:^4.2.0":
   version: 4.4.0
   resolution: "@eslint-community/eslint-utils@npm:4.4.0"
@@ -6878,30 +6902,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"react-arborist@workspace:*, react-arborist@workspace:packages/react-arborist":
-  version: 0.0.0-use.local
-  resolution: "react-arborist@workspace:packages/react-arborist"
-  dependencies:
-    "@types/jest": "npm:^29.5.11"
-    "@types/react": "npm:^18.2.43"
-    "@types/react-window": "npm:^1.8.8"
-    "@types/use-sync-external-store": "npm:^0.0.6"
-    jest: "npm:^29.7.0"
-    npm-run-all: "npm:^4.1.5"
-    react-dnd: "npm:^14.0.3"
-    react-dnd-html5-backend: "npm:^14.0.3"
-    react-window: "npm:^1.8.10"
-    redux: "npm:^5.0.0"
-    rimraf: "npm:^5.0.5"
-    ts-jest: "npm:^29.1.1"
-    typescript: "npm:^5.3.3"
-    use-sync-external-store: "npm:^1.2.0"
-  peerDependencies:
-    react: ">= 16.14"
-    react-dom: ">= 16.14"
-  languageName: unknown
-  linkType: soft
-
 "react-dnd-html5-backend@npm:^14.0.3":
   version: 14.1.0
   resolution: "react-dnd-html5-backend@npm:14.1.0"
@@ -7537,6 +7537,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "showcase@workspace:packages/showcase"
   dependencies:
+    "@deepdub/react-arborist": "workspace:*"
     "@types/node": "npm:20.10.4"
     "@types/react": "npm:18.2.43"
     "@types/react-dom": "npm:18.2.17"
@@ -7547,7 +7548,6 @@ __metadata:
     next: "npm:^14.0.4"
     npm-run-all: "npm:^4.1.5"
     react: "npm:^18.2.0"
-    react-arborist: "workspace:*"
     react-dom: "npm:^18.2.0"
     react-icons: "npm:^4.12.0"
     rimraf: "npm:^5.0.5"

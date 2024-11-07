@@ -1,6 +1,6 @@
 {
-  "name": "react-arborist",
-  "version": "3.4.1",
+  "name": "@deepdub/react-arborist",
+  "version": "3.4.2",
   "license": "MIT",
   "source": "src/index.ts",
   "main": "dist/main/index.js",
@@ -8,6 +8,8 @@
   "types": "dist/module/index.d.ts",
   "sideEffects": false,
   "scripts": {
+    "preyalc": "npm version prerelease --preid=\"yalc\" --no-git-tag-version",
+    "yalc": "yalc publish",
     "build:cjs": "tsc --outDir dist/main",
     "build:es": "tsc --outDir dist/module --module es2022 --moduleResolution node",
     "build": "npm-run-all clean -p 'build:**'",
