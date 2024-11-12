@@ -15,7 +15,7 @@ function TreeComponent<T>(
   const treeProps = useValidatedProps(props);
   return (
     <TreeProvider treeProps={treeProps} imperativeHandle={ref}>
-      <OuterDrop>
+      <OuterDrop accept={props.accept}>
         <TreeContainer />
       </OuterDrop>
       <DragPreviewContainer />

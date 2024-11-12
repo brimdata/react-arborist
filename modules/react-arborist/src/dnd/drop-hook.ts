@@ -13,12 +13,13 @@ export type DropResult = {
 
 export function useDropHook(
   el: RefObject<HTMLElement | null>,
-  node: NodeApi<any>
+  node: NodeApi<any>,
+  accept?:string[]
 ): ConnectDropTarget {
   const tree = useTreeApi();
   const [_, dropRef] = useDrop<DragItem, DropResult | null, void>(
     () => ({
-      accept: "NODE",
+      accept: accept?accept:"NODE",
       canDrop: () => tree.canDrop(),
       hover: (_item, m) => {
         const offset = m.getClientOffset();

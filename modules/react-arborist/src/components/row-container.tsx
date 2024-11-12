@@ -35,8 +35,8 @@ export const RowContainer = React.memo(function RowContainer<T>({
   const node = useFreshNode<T>(index);
 
   const el = useRef<HTMLDivElement | null>(null);
-  const dragRef = useDragHook<T>(node);
-  const dropRef = useDropHook(el, node);
+  const dragRef = useDragHook<T>(node,tree.props.dropType);
+  const dropRef = useDropHook(el, node,tree.props.accept);
   const innerRef = useCallback(
     (n: any) => {
       el.current = n;

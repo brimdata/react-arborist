@@ -5,13 +5,13 @@ import { computeDrop } from "./compute-drop";
 import { DropResult } from "./drop-hook";
 import { actions as dnd } from "../state/dnd-slice";
 
-export function useOuterDrop() {
+export function useOuterDrop(accept?:string[]) {
   const tree = useTreeApi();
 
   // In case we drop an item at the bottom of the list
   const [, drop] = useDrop<DragItem, DropResult | null, { isOver: boolean }>(
     () => ({
-      accept: "NODE",
+      accept: accept?accept:"NODE",
       canDrop: (_item, m) => {
         if (!m.isOver({ shallow: true })) return false;
         return tree.canDrop();

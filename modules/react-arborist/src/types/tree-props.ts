@@ -6,12 +6,14 @@ import { ListOnScrollProps } from "react-window";
 import { NodeApi } from "../interfaces/node-api";
 import { OpenMap } from "../state/open-slice";
 import { useDragDropManager } from "react-dnd";
+import { TreeApi } from "../interfaces/tree-api";
 
 export interface TreeProps<T> {
   /* Data Options */
   data?: readonly T[];
   initialData?: readonly T[];
-
+  accept?: string[];
+  dropType?:(node:T)=>string
   /* Data Handlers */
   onCreate?: handlers.CreateHandler<T>;
   onMove?: handlers.MoveHandler<T>;
