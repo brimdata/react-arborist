@@ -1,5 +1,5 @@
 {
-  "name": "react-arborist",
+  "name": "@atmnksd/react-arborist",
   "version": "3.4.0",
   "license": "MIT",
   "source": "src/index.ts",
@@ -22,10 +22,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/brimdata/react-arborist.git"
+    "url": "git+https://github.com/atmnksd/react-arborist.git"
   },
   "homepage": "https://react-arborist.netlify.app",
-  "bugs": "https://github.com/brimdata/react-arborist/issues",
+  "bugs": {
+    "url": "https://github.com/atmnksd/react-arborist/issues"
+  },
   "keywords": [
     "react",
     "arborist",
@@ -58,5 +60,7 @@
     "rimraf": "^5.0.5",
     "ts-jest": "^29.1.1",
     "typescript": "^5.3.3"
-  }
+  },
+  "author": "",
+  "description": ""
 }
