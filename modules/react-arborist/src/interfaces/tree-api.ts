@@ -593,12 +593,12 @@ export class TreeApi<T> {
 
   isEditable(data: T) {
     const check = this.props.disableEdit || (() => false);
-    return !utils.access(data, check) ?? true;
+    return !utils.access(data, check);
   }
 
   isDraggable(data: T) {
     const check = this.props.disableDrag || (() => false);
-    return !utils.access(data, check) ?? true;
+    return !utils.access(data, check);
   }
 
   isDragging(node: string | IdObj | null) {
