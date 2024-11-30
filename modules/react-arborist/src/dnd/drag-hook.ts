@@ -9,18 +9,18 @@ import { actions as dnd } from "../state/dnd-slice";
 import { safeRun } from "../utils";
 import { ROOT_ID } from "../data/create-root";
 
-export function useDragHook<T>(node: NodeApi<T>): ConnectDragSource {
+export function useDragHook<T>(node: NodeApi<T>,type?:(node:T)=>string): ConnectDragSource {
   const tree = useTreeApi();
   const ids = tree.selectedIds;
   const [_, ref, preview] = useDrag<DragItem, DropResult, void>(
     () => ({
       canDrag: () => node.isDraggable,
-      type: "NODE",
+      type: type?type(node.data):"NODE",
       item: () => {
         // This is fired once at the begging of a drag operation
         const dragIds = tree.isSelected(node.id) ? Array.from(ids) : [node.id];
         tree.dispatch(dnd.dragStart(node.id, dragIds));
-        return { id: node.id };
+        return { id: node.id,data:node.data };
       },
       end: () => {
         tree.hideCursor();
