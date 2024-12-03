@@ -37,6 +37,7 @@ export function useDragHook<T>(node: NodeApi<T>): ConnectDragSource {
           });
           tree.open(parentId);
         }
+        tree.list?.current?.resetAfterIndex(0);
         tree.dispatch(dnd.dragEnd());
       },
     }),
