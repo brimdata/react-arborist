@@ -68,6 +68,8 @@ const data = [
 Use all the defaults. The _initialData_ prop makes the tree an uncontrolled component. Create, move, rename, and delete will be handled internally.
 
 ```jsx
+import { Tree } from 'react-arborist';
+
 function App() {
   return <Tree initialData={data} />;
 }
