@@ -60,6 +60,7 @@ export const RowContainer = React.memo(function RowContainer<T>({
     role: "treeitem",
     "aria-level": node.level + 1,
     "aria-selected": node.isSelected,
+    "aria-expanded": node.isOpen,
     style: rowStyle,
     tabIndex: -1,
     className: tree.props.rowClassName,
