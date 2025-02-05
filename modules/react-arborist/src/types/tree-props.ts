@@ -7,6 +7,27 @@ import { NodeApi } from "../interfaces/node-api";
 import { OpenMap } from "../state/open-slice";
 import { useDragDropManager } from "react-dnd";
 
+export type RowHeightCalculatorParams<T> = Pick<
+  NodeApi<T>,
+  | "childIndex"
+  | "children"
+  | "data"
+  | "parent"
+  | "id"
+  | "rowIndex"
+  | "tree"
+  | "isRoot"
+  | "isLeaf"
+  | "isClosed"
+  | "isOpen"
+  | "isAncestorOf"
+  | "level"
+>;
+
+export type RowHeightCalculator<T> = (
+  params: RowHeightCalculatorParams<T>,
+) => number;
+
 export interface TreeProps<T> {
   /* Data Options */
   data?: readonly T[];
@@ -26,7 +47,7 @@ export interface TreeProps<T> {
   renderContainer?: ElementType<{}>;
 
   /* Sizes */
-  rowHeight?: number;
+  rowHeight?: number | RowHeightCalculator<T>;
   overscanCount?: number;
   width?: number | string;
   height?: number;
