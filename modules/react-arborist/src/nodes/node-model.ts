@@ -24,6 +24,12 @@ export class NodeModel<T> implements NodeObject<T> {
     this.sourceChildren?.splice(index, 0, ...data);
   }
 
+  setChildren(data: T[]) {
+    const nodes = createChildren(this, data, this.access) ?? [];
+    this.children?.splice(0, this.children?.length, ...nodes);
+    this.sourceChildren?.splice(0, this.sourceChildren?.length, ...data);
+  }
+
   update(changes: Partial<T>) {
     for (const key in changes) {
       // @ts-ignore
