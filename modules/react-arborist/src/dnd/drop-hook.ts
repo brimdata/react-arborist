@@ -5,6 +5,8 @@ import { NodeApi } from "../interfaces/node-api";
 import { DragItem } from "../types/dnd";
 import { computeDrop } from "./compute-drop";
 import { actions as dnd } from "../state/dnd-slice";
+import { safeRun } from "../utils";
+import { ROOT_ID } from "../data/create-root";
 
 export type DropResult = {
   parentId: string | null;
@@ -13,7 +15,7 @@ export type DropResult = {
 
 export function useDropHook(
   el: RefObject<HTMLElement | null>,
-  node: NodeApi<any>
+  node: NodeApi<any>,
 ): ConnectDropTarget {
   const tree = useTreeApi();
   const [_, dropRef] = useDrop<DragItem, DropResult | null, void>(
@@ -41,9 +43,18 @@ export function useDropHook(
       },
       drop: (_, m) => {
         if (!m.canDrop()) return null;
+        let { parentId, index, dragIds } = tree.state.dnd;
+        safeRun(tree.props.onMove, {
+          dragIds,
+          parentId: parentId === ROOT_ID ? null : parentId,
+          index: index === null ? 0 : index, // When it's null it was dropped over a folder
+          dragNodes: tree.dragNodes,
+          parentNode: tree.get(parentId),
+        });
+        tree.open(parentId);
       },
     }),
-    [node, el.current, tree.props]
+    [node, el.current, tree.props],
   );
 
   return dropRef;
