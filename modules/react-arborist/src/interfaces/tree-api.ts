@@ -342,6 +342,7 @@ export class TreeApi<T> {
     if (!node) return;
     const id = identify(node);
     this.dispatch(selection.remove(id));
+    safeRun(this.props.onSelect, this.selectedNodes);
   }
 
   selectMulti(identity: Identity) {
