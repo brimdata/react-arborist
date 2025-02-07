@@ -5,13 +5,14 @@
   ],
   "scripts": {
     "build": "yarn workspaces foreach --all run build",
-    "build:lib": "yarn workspace react-arborist build",
+    "build-lib": "yarn workspace react-arborist build",
     "test": "yarn workspaces foreach --all run test",
+    "watch": "yarn workspace react-arborist watch",
     "bump": "yarn workspace react-arborist version",
     "publish": "sh bin/publish",
-    "dev:showcase": "yarn workspace showcase start",
-    "dev:lib": "yarn workspace react-arborist watch",
-    "dev": "run-p 'dev:*'"
+    "clean": "yarn workspace react-arborist clean",
+    "showcase": "yarn workspace showcase start",
+    "start": "run-s clean build-lib && run-p watch showcase"
   },
   "private": true,
   "packageManager": "yarn@4.0.2",
