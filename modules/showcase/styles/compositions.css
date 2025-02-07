@@ -1,0 +1,13 @@
+.wrap {
+  padding-inline: var(--gutter);
+  max-width: var(--width-page);
+  margin-inline: auto;
+}
+
+.region {
+  padding-block: var(--region-space, 5rem);
+}
+
+.flow > * + * {
+  margin-block-start: var(--flow-space, 1.5em);
+}

@@ -1,11 +1,9 @@
-import { BoolFunc } from "./utils";
-import * as handlers from "./handlers";
-import * as renderers from "./renderers";
+import { BoolFunc } from "./utils.js";
+import * as handlers from "./handlers.js";
+import * as renderers from "./renderers.js";
 import { ElementType, MouseEventHandler } from "react";
 import { ListOnScrollProps } from "react-window";
-import { NodeApi } from "../interfaces/node-api";
-import { OpenMap } from "../state/open-slice";
-import { useDragDropManager } from "react-dnd";
+import { NodeController } from "../controllers/node-controller.js";
 
 export interface TreeProps<T> {
   /* Data Options */
@@ -22,7 +20,7 @@ export interface TreeProps<T> {
   children?: ElementType<renderers.NodeRendererProps<T>>;
   renderRow?: ElementType<renderers.RowRendererProps<T>>;
   renderDragPreview?: ElementType<renderers.DragPreviewProps>;
-  renderCursor?: ElementType<renderers.CursorProps>;
+  renderCursor?: ElementType<renderers.CursorRendererProps>;
   renderContainer?: ElementType<{}>;
 
   /* Sizes */
@@ -47,34 +45,32 @@ export interface TreeProps<T> {
     | string
     | boolean
     | ((args: {
-        parentNode: NodeApi<T>;
-        dragNodes: NodeApi<T>[];
+        parentNode: NodeController<T>;
+        dragNodes: NodeController<T>[];
         index: number;
       }) => boolean);
 
   /* Event Handlers */
-  onActivate?: (node: NodeApi<T>) => void;
-  onSelect?: (nodes: NodeApi<T>[]) => void;
+  onActivate?: (node: NodeController<T>) => void;
+  onSelect?: (nodes: NodeController<T>[]) => void;
   onScroll?: (props: ListOnScrollProps) => void;
   onToggle?: (id: string) => void;
-  onFocus?: (node: NodeApi<T>) => void;
+  onFocus?: (node: NodeController<T>) => void;
 
   /* Selection */
   selection?: string;
 
   /* Open State */
-  initialOpenState?: OpenMap;
+  initialOpenState?: Record<string, boolean>;
 
   /* Search */
   searchTerm?: string;
-  searchMatch?: (node: NodeApi<T>, searchTerm: string) => boolean;
+  searchMatch?: (node: NodeController<T>, searchTerm: string) => boolean;
 
   /* Extra */
   className?: string | undefined;
   rowClassName?: string | undefined;
 
-  dndRootElement?: globalThis.Node | null;
   onClick?: MouseEventHandler;
   onContextMenu?: MouseEventHandler;
-  dndManager?: ReturnType<typeof useDragDropManager>;
 }

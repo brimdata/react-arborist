@@ -1,26 +1,23 @@
-import { XYCoord } from "react-dnd";
-import { bound } from "../utils";
+import { XY } from "./types.js";
 
-export function measureHover(el: HTMLElement, offset: XYCoord, indent: number) {
-  const nextEl = el.nextElementSibling as HTMLElement | null;
-  const prevEl = el.previousElementSibling as HTMLElement | null;
+export function measureHover(
+  el: HTMLElement,
+  offset: XY,
+  direction: "ltr" | "rtl",
+) {
   const rect = el.getBoundingClientRect();
-  const x = offset.x - Math.round(rect.x);
-  const y = offset.y - Math.round(rect.y);
+  const x = direction === "ltr" ? offset.x : rect.width - offset.x;
+  const y = offset.y;
   const height = rect.height;
   const inTopHalf = y < height / 2;
   const inBottomHalf = !inTopHalf;
   const pad = height / 4;
   const inMiddle = y > pad && y < height - pad;
-  const maxLevel = Number(
-    inBottomHalf ? el.dataset.level : prevEl ? prevEl.dataset.level : 0
-  );
-  const minLevel = Number(
-    inTopHalf ? el.dataset.level : nextEl ? nextEl.dataset.level : 0
-  );
-  const level = bound(Math.floor(x / indent), minLevel, maxLevel);
+  const atTop = !inMiddle && inTopHalf;
+  const atBottom = !inMiddle && inBottomHalf;
 
-  return { level, inTopHalf, inBottomHalf, inMiddle };
+  const result = { x, inTopHalf, inBottomHalf, inMiddle, atTop, atBottom };
+  return result;
 }
 
 export type HoverData = ReturnType<typeof measureHover>;

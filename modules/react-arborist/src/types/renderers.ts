@@ -1,33 +1,38 @@
-import { CSSProperties, HTMLAttributes, ReactElement } from "react";
-import { IdObj } from "./utils";
-import { NodeApi } from "../interfaces/node-api";
-import { TreeApi } from "../interfaces/tree-api";
-import { XYCoord } from "react-dnd";
+import {
+  CSSProperties,
+  HTMLAttributes,
+  MutableRefObject,
+  ReactElement,
+} from "react";
+import { TreeController } from "../controllers/tree-controller.js";
+import { NodeController } from "../controllers/node-controller.js";
+import { XY } from "../dnd/types.js";
 
 export type NodeRendererProps<T> = {
+  attrs: HTMLAttributes<any>;
   style: CSSProperties;
-  node: NodeApi<T>;
-  tree: TreeApi<T>;
+  node: NodeController<T>;
+  tree: TreeController<T>;
   dragHandle?: (el: HTMLDivElement | null) => void;
   preview?: boolean;
 };
 
 export type RowRendererProps<T> = {
-  node: NodeApi<T>;
-  innerRef: (el: HTMLDivElement | null) => void;
+  node: NodeController<T>;
+  innerRef: MutableRefObject<any>;
   attrs: HTMLAttributes<any>;
   children: ReactElement;
 };
 
 export type DragPreviewProps = {
-  offset: XYCoord | null;
-  mouse: XYCoord | null;
+  offset: XY | null;
+  mouse: XY | null;
   id: string | null;
   dragIds: string[];
   isDragging: boolean;
 };
 
-export type CursorProps = {
+export type CursorRendererProps = {
   top: number;
   left: number;
   indent: number;

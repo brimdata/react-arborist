@@ -1,5 +1,5 @@
 import React, { CSSProperties } from "react";
-import { CursorProps } from "../types/renderers";
+import { CursorRendererProps } from "../types/renderers.js";
 
 const placeholderStyle = {
   display: "flex",
@@ -21,17 +21,17 @@ const circleStyle = {
   borderRadius: "50%",
 };
 
-export const DefaultCursor = React.memo(function DefaultCursor({
+export const DefaultCursorRenderer = React.memo(function DefaultCursorRenderer({
   top,
   left,
   indent,
-}: CursorProps) {
+}: CursorRendererProps) {
   const style: CSSProperties = {
     position: "absolute",
     pointerEvents: "none",
-    top: top - 2 + "px",
-    left: left + "px",
-    right: indent + "px",
+    insetBlockStart: top - 2 + "px",
+    insetInlineStart: left + "px",
+    insetInlineEnd: indent + "px",
   };
   return (
     <div style={{ ...placeholderStyle, ...style }}>

@@ -9,10 +9,10 @@
     "test": "yarn workspaces foreach --all run test",
     "watch": "yarn workspace react-arborist watch",
     "bump": "yarn workspace react-arborist version",
+    "publish": "sh bin/publish",
     "clean": "yarn workspace react-arborist clean",
     "showcase": "yarn workspace showcase start",
-    "start": "run-s clean build-lib && run-p watch showcase",
-    "publish": "sh bin/publish"
+    "start": "run-s clean build-lib && run-p watch showcase"
   },
   "private": true,
   "packageManager": "yarn@4.0.2",
