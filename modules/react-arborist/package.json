@@ -40,7 +40,7 @@
   "dependencies": {
     "react-dnd": "^14.0.3",
     "react-dnd-html5-backend": "^14.0.3",
-    "react-window": "^1.8.10",
+    "react-window": "^1.8.11",
     "redux": "^5.0.0",
     "use-sync-external-store": "^1.2.0"
   },
